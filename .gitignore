@@ -1,0 +1,12 @@
+# Merge into the app repository's .gitignore; preserve its existing rules.
+node_modules/
+.expo/
+dist/
+coverage/
+.env
+.env.*
+*.local
+!.env.example
+!*.env.example
+*.log
+.DS_Store
