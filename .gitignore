@@ -10,3 +10,14 @@ coverage/
 !*.env.example
 *.log
 .DS_Store
+*.tsbuildinfo
+# Expo Go only: prevent accidental generated native projects and signing material.
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.keystore
+*.p12
+*.p8
+*.pem
+*.key
+*.mobileprovision
