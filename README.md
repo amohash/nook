@@ -1,5 +1,9 @@
 # Space HackTX team plan
 
+The runnable foundation is now in this repository. See [STARTER.md](STARTER.md)
+for exact install, Expo Go, backend, verification and handoff instructions. The
+planning pack below is preserved; its full P0 scope is not yet implemented.
+
 **Build deadline: Sunday October 25, 2026 at 8:00 a.m. America/Chicago.** This pack is a proposed implementation plan and repository instruction kit, not a completed application. It replaces the supplied plan's later feature freeze and post-8 a.m. recording schedule.
 
 ## The decision to make together
