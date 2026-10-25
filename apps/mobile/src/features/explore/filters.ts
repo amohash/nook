@@ -22,11 +22,16 @@ export function applyIntentPreset(query: Query, intent: 'study' | 'friends'): Qu
 }
 
 export function resetExploreFilters(query: Query): Query {
-  const defaults = createDemoQuery();
-  return QuerySchema.parse({ ...query, categories: defaults.categories,
-    maxPriceLevel: defaults.maxPriceLevel, maxWalkMinutes: defaults.maxWalkMinutes,
-    intent: defaults.intent, groupSize: defaults.groupSize, targetNoise: defaults.targetNoise,
-    targetCrowd: defaults.targetCrowd, tagWeights: defaults.tagWeights,
+  return applyExploreFilters(query, createDemoQuery());
+}
+
+// A GPS result can arrive while the sheet is open. Apply only its filter fields,
+// preserving the latest origin/time instead of restoring stale draft context.
+export function applyExploreFilters(query: Query, draft: Query): Query {
+  return QuerySchema.parse({ ...query, categories: draft.categories,
+    maxPriceLevel: draft.maxPriceLevel, maxWalkMinutes: draft.maxWalkMinutes,
+    intent: draft.intent, groupSize: draft.groupSize, targetNoise: draft.targetNoise,
+    targetCrowd: draft.targetCrowd, tagWeights: draft.tagWeights,
   });
 }
 
