@@ -539,3 +539,119 @@ Actual verification:
 - Opening the first recommendation used its DOM link because the existing collapsed web result sheet is not pointer-accessible to automation. The unchanged web map uses its existing list fallback. These checks do not establish native touch/map acceptance.
 
 Not verified: real two-account authentication/profile/follow navigation, hosted Supabase setup/RLS, photo picker, contacts on a phone, native large text/accessibility and presenter-phone acceptance. Next smallest step: D reviews the nine route files and applies the separately preserved saved-sync lines, then runs the real-account and presenter-phone checklist before merge. gh is unavailable; handoff uses the main...feat/social compare URL.
+
+## Morning shared integration - October 25, 2026 (current handoff)
+
+The user designated A as coordinator while D is unreachable. Target is Devpost at 11:30 and judging at 14:00; A decides whether to merge main around 10:30 after the full demo works. Main remains the known-good fallback at 21ba7a0. No main merge, force push, dependency install/change, lockfile regeneration, DB migration or deployment was performed by A.
+
+Inventory and merge decisions:
+- GitHub's public API reports zero open PRs; gh is unavailable. Check https://github.com/amohash/nook/pulls and https://github.com/amohash/nook/branches. The complete fetched remote-branch list with last commit date/author is recorded below. No inference about D's unpushed work is possible.
+- At initial fetch only origin/fix/explore-study-ux (D, 87ed74e) and origin/feat/social (A, 616464d) were missing from main. PR #43 is merged (a08da34); every other pushed A design/preferences/dependency branch was already an ancestor of main. No redundant merges were made.
+- D and social dry merges had no conflicts. GitHub had zero statuses/check runs for both heads; its combined 'pending' state was not a running CI check. D's actual root typecheck/lint passed; its tests failed only on the same two baseline Windows issues. Social's prior checks had the same known failures. These branches were suitable for integration testing; this did not establish phone acceptance.
+- Created integration/morning from origin/main and pushed it. Pulled with --rebase before work and before each commit/merge, then pushed each small commit immediately. Merge order: D (269da05), skip already-merged #43/other A work, then social (1c715d0). Applied the exact two-line saved-sync addition after local storage succeeds (c810b0c). AuthProvider and all five stack routes/tab callbacks were already pushed in social, so they were retained without duplication. The historical snippet above is superseded by those route files.
+- During this run B pushed fictional-austin-v2 (27e8a93 / f8106b9) and the Windows fixture-path test fix (5b69d30) directly to integration/morning. Pulled and retained both. B's two explicitly fictional venues add real scorer-driven scenario variation; no new real venue facts, reviews or Muse results were fabricated. New dataset namespace intentionally starts fresh onboarding/preferences/saves.
+- Actual live testing found stale following counts when returning to retained tabs. Commit 1385d13 refreshes Profile, UserProfile, FollowList, Friends and useFollowState on focus and filters the Following list by current edges. Confirmed tab navigation updates counts and removes unfollowed rows. No state library, dependency or contract change.
+
+D-owned review scope relative to main (review the actual diff, not the old snippet):
+- apps/mobile/app/_layout.tsx: AuthProvider and five social Stack declarations.
+- apps/mobile/app/(tabs)/_layout.tsx: Friends/Profile header visibility only.
+- apps/mobile/app/(tabs)/friends.tsx and profile.tsx: real social screens, navigation callbacks, guest preferences and recovery.
+- New apps/mobile/app/sign-in.tsx, create-profile.tsx, edit-profile.tsx, follow-list.tsx and user/[id].tsx.
+- apps/mobile/src/data/SessionProvider.tsx: the exact import and void syncSavedSpot(id, savingNew, detail?.spot) call after local success.
+- D's own pushed changes also modify app/(tabs)/map.tsx, app/spot/[id].tsx, src/data/providers.ts, features/explore/PlaceAssistant.tsx, PlaceMap.native.tsx and PlaceMap.types.ts. Those are intentional D UX/tunnel changes, not social overrides. Unified D-owned diff was generated at .expo/morning-integration/d-owned.diff (ignored); public full comparison is https://github.com/amohash/nook/compare/main...integration/morning.
+
+Verification results on the combined shared branch:
+- PASS: npm run typecheck, npm run lint and git diff --check. No dependency/manifest/lockfile/config-plugin diff against origin/main.
+- FAIL, baseline Windows artifact bytes only: npm test reports 528 passed / 1 failed, 43 passing files / 1 failing file. The remaining packages/core/measurements/evaluate-real.test.ts SHA-256 assertion sees CRLF bytes 93646182...; LF normalization and the unchanged origin/main Git blob both hash to the pinned bae26a4d... value. No data corruption or real fixture edit. B fixed the other known C:\C:\... test-path failure; it now passes. A did not change C's test or normalize the checkout.
+- PASS, web guest functionality: physically moved apps/mobile/.env aside, left .env.hold untouched, removed SOCIAL_ENABLED, every SUPABASE_* and CONTACTS_MATCHING from the Metro process, set EXPO_NO_DOTENV=1, restarted --clear. Fresh three-step onboarding/manual UT Austin -> Study/Meet Friends -> explicit 10-minute filter -> web list fallback -> detail -> save -> reload worked. Current Study top three: Paper Lantern, Pocket Library, West Stacks; Friends: Gather Yard, Creekside Coffee, Little Bowl. 15 minutes yielded 12 candidates; 10 minutes yielded 10 and excluded both new 13-minute venues. Save survived reload, and browser Resource Timing recorded no Supabase resources. Existing disabled.test also passed.
+- Exact visual/dataset identity to origin/main: NOT A PASS CLAIM. D intentionally changed sheet/pins/copy; B intentionally changed the labeled fictional dataset from ten venues/v1 to twelve/v2. Social-off P0 behavior works, original-ten golden ranking remains tested, and constraints/ranker are unchanged. Native map interaction cannot be verified on web; the existing web fallback works. The old separate Map/List toggle described in DEMO.md is stale.
+- PASS, real nook-social web: created two clearly labeled QA accounts, created profiles without phone/photo, signed out and signed back in, opened Profile with preference-derived vibe and local saved spots, searched @username in Friends, followed/unfollowed, verified Following and counts, navigated follow lists/person profiles, and signed out to a working guest map. The final app Save generated a real saved_spots POST 201 after local success. Previous immediate full-page QA navigations interrupted an in-flight best-effort sync; reran with page retained until response completed. Local saves were preserved.
+- PASS, live saved-spot read boundary: with account A's real authenticated session, B's saved_spots query returned HTTP 200 / zero rows before follow, two rows after follow, zero after unfollow. The UI likewise switched between 'Saved spots are private' and B's two saved places. This verifies this read boundary, not the entire SQL authorization suite. Hosted RLS SQL test/migration execution and cross-user write denial were not rerun by A.
+- QA usernames qa_mvnx5wb6_a and qa_mvnx5wb6_b remain clearly labeled in nook-social with synthetic demo place snapshots and no phone/contact data. No fake social activity was presented as real users. The QA session is signed out at handoff. Do not use these QA people or counts as pitch evidence.
+- Environment handling: the user approved .env.hold. Printed variable names only; exactly SOCIAL_ENABLED / SUPABASE_URL / SUPABASE_ANON_KEY with public prefixes. Verified flag=1 and expected project URL by equality. JWT role=anon, ref=camhduhuzawmsrimtybw; never printed key/token/password. Copied without deleting .env.hold, ran ON with --clear, moved .env aside for OFF and restarted --clear, restored it, and restarted ON --clear. Final .env and .env.hold are byte-identical, both ignored, untracked and unstaged. Contacts flag is absent, so matching remains off; the QA process also explicitly used CONTACTS_MATCHING=0.
+- PENDING / NOT PHONE-VERIFIED: Expo Go compatibility, native maps/tiles/pins/sheet gestures, GPS allow/deny, Share/Maps, avatar photo picker/upload, contacts on a phone, system large text, safe areas, keyboard/Back and accessibility. No native performance, hosted nearby acquisition or Muse call result is claimed.
+
+Known demo documentation/configuration gaps:
+- Main and integration already declare Expo SDK 58 / RN 0.88, despite the user's SDK 57 description and old DEMO.md. PR #48 made that migration; A made no dependency changes. This branch requires matching SDK-58-compatible Expo Go. Running it in SDK-57-only Expo Go cannot be promised; do not downgrade during the demo.
+- DEMO.md was audited against 7e67622 and incorrectly describes social as absent, the custom navigation as unmounted, only ten demo venues, the older pin legend and the old API timeout/nearby state. Use the current code and fixture-v2 labels. B reports deployed Render cc8f7aa still lacks newer nearby/assistant guest APIs; no deployment was performed here. The verified fixture journey does not need that backend.
+- docs/demo-assets/nook-demo-final.mp4 and its screenshot folder do not exist. They are planned locations, not ready backups. Native device rehearsal and a video recording are still required before submission/judging. No evidence can reveal D's unpushed local changes; no additional pushed D branch was missed.
+
+Run from the repository root. A's Windows location is C:\Users\zgaud\Documents\Nook\nook; B should use his own checkout root. Existing uncommitted work must be committed or explicitly stashed by its owner before switching. Git won't transfer A's ignored .env to B; B needs his own ignored nook-social public configuration if testing accounts.
+
+```powershell
+Set-Location C:\Users\zgaud\Documents\Nook\nook
+git status --short
+git fetch --all --prune
+git switch integration/morning
+git pull --rebase origin integration/morning
+# Keep the installed dependencies from the existing lockfile; no upgrade/install command.
+Remove-Item Env:EXPO_NO_DOTENV -ErrorAction SilentlyContinue
+$env:EXPO_PUBLIC_DATA_PROVIDER = 'fixture'
+$env:EXPO_PUBLIC_CONTACTS_MATCHING = '0'
+# Web (stop with Ctrl+C before starting a different mode):
+npm.cmd run dev:web -- --port 8096 --clear
+# Expo Go on the same LAN, using an SDK-58-compatible client:
+npm.cmd run dev:mobile -- --clear
+# If Wi-Fi blocks Metro, use internet/tunnel instead:
+$env:NODE_PATH = (npm.cmd root -g)
+npm.cmd run dev:mobile -- --tunnel --clear
+```
+
+On B's non-Windows shell use the same Git/root npm scripts with npm instead of npm.cmd and the shell's normal environment syntax. Fixture mode is the verified fallback. A Metro tunnel carries JS, not a laptop-only API; real nearby mode additionally needs B's current reachable HTTPS backend/configuration. No dependency installation is authorized by these commands; if tunnel tooling or the matching Expo Go client is unavailable, that is a prerequisite, not a reason to alter manifests.
+
+Ready-to-paste message for B and C (prepared, not sent):
+
+> We are using integration/morning as the shared demo branch; main stays untouched as the fallback. Pull with git pull --rebase origin integration/morning before starting and again before every commit. Make small commits and push each immediately; never force-push this branch. No dependency/manifest/lockfile changes. Coordinate before overlapping files: A handles mobile/social integration, B backend/data, C ranking/AI. The branch includes D's pushed Explore UX, A social/routes/saved sync and B's labeled fixture-v2 additions/path-test fix. Current Windows checks: typecheck/lint pass; 528 tests pass, one remaining CRLF fixture-hash assertion fails. Web guest/social flows passed, including real followers-only saved reads; phone acceptance is pending. SDK is already 58, not 57. Only A decides a main merge around 10:30 after the complete demo works. Flag blockers immediately and preserve all labels/unknowns; no provider/DB/dependency changes without coordination.
+
+The full remote branch inventory follows; dates are the head commit's author date in its recorded offset, not a promise of last push time.
+
+```text
+origin/chore/backend-demo-release | 2026-10-25 02:14:00 -0500 | Andrew Sun | in main
+origin/chore/foundation | 2026-10-24 18:18:25 -0500 | amohash | in main
+origin/chore/social-deps | 2026-10-25 04:02:57 -0500 | ryhlu | in main
+origin/data/demo-locations | 2026-10-25 09:30:03 -0500 | Andrew Sun | not in main
+origin/docs/demo-pack | 2026-10-25 02:14:16 -0500 | amohash | in main
+origin/feat/austin-data-coverage | 2026-10-25 02:11:40 -0500 | Andrew Sun | in main
+origin/feat/cached-time-dataset | 2026-10-25 02:02:45 -0500 | Andrew Sun | in main
+origin/feat/complete-filters | 2026-10-25 01:25:42 -0500 | amohash | in main
+origin/feat/data-api | 2026-10-25 01:27:32 -0500 | Andrew Sun | in main
+origin/feat/demo-visual-integration | 2026-10-25 02:14:43 -0500 | amohash | in main
+origin/feat/design-detail | 2026-10-25 01:55:43 -0500 | ryhlu | in main
+origin/feat/design-explore | 2026-10-24 23:57:02 -0500 | ryhlu | in main
+origin/feat/design-filters | 2026-10-25 01:55:31 -0500 | ryhlu | in main
+origin/feat/design-onboarding | 2026-10-24 21:28:54 -0500 | ryhlu | in main
+origin/feat/design-tab-bar | 2026-10-25 01:34:33 -0500 | ryhlu | in main
+origin/feat/detail-reasons-sharing | 2026-10-25 01:27:24 -0500 | amohash | in main
+origin/feat/explore-map-layout | 2026-10-25 02:51:24 -0500 | amohash | in main
+origin/feat/group-compromise | 2026-10-25 02:02:48 -0500 | Jeff Jone | in main
+origin/feat/live-mobile-integration | 2026-10-25 03:01:37 -0500 | amohash | in main
+origin/feat/mobile-design-preview | 2026-10-24 22:05:20 -0500 | amohash | in main
+origin/feat/mobile-explore-integration | 2026-10-25 00:23:25 -0500 | amohash | in main
+origin/feat/mobile-flow | 2026-10-24 19:50:19 -0500 | amohash | in main
+origin/feat/mobile-onboarding-integration | 2026-10-24 22:41:55 -0500 | amohash | in main
+origin/feat/mobile-origin | 2026-10-24 20:17:43 -0500 | amohash | in main
+origin/feat/mobile-tabs | 2026-10-25 00:36:10 -0500 | amohash | in main
+origin/feat/muse-assistant-ui | 2026-10-25 02:35:54 -0500 | amohash | in main
+origin/feat/muse-evidence-quality | 2026-10-25 02:54:49 -0500 | amohash | in main
+origin/feat/no-match-recovery | 2026-10-25 01:34:32 -0500 | amohash | in main
+origin/feat/normalize-time-evidence | 2026-10-25 01:35:10 -0500 | amohash | in main
+origin/feat/offline-recovery | 2026-10-25 01:41:09 -0500 | amohash | in main
+origin/feat/onboarding-preferences | 2026-10-25 01:27:41 -0500 | amohash | in main
+origin/feat/place-assistant-evaluation | 2026-10-25 02:44:37 -0500 | amohash | in main
+origin/feat/preferences-page | 2026-10-25 03:23:06 -0500 | ryhlu | in main
+origin/feat/ranking-ai | 2026-10-24 20:37:31 -0500 | Jeff Jone | in main
+origin/feat/real-data-evaluation | 2026-10-25 02:12:47 -0500 | Jeff Jone | in main
+origin/feat/runtime-nearby-api | 2026-10-25 02:32:55 -0500 | amohash | in main
+origin/feat/runtime-nearby-server | 2026-10-25 02:51:46 -0500 | amohash | in main
+origin/feat/sdk-58 | 2026-10-25 04:33:40 -0500 | amohash | in main
+origin/feat/social | 2026-10-25 07:41:44 -0500 | ryhlu | not in main
+origin/feat/ui-apple-polish | 2026-10-25 03:50:28 -0500 | amohash | in main
+origin/fix/austin-discovery-tunnel | 2026-10-25 05:28:28 -0500 | amohash | in main
+origin/fix/cold-start-tolerance | 2026-10-25 04:22:24 -0500 | amohash | in main
+origin/fix/explore-study-ux | 2026-10-25 05:51:10 -0500 | amohash | not in main
+origin/fix/mobile-api-city | 2026-10-24 22:00:39 -0500 | amohash | in main
+origin/fix/muse-assistant-completion-budget | 2026-10-25 03:20:52 -0500 | amohash | in main
+origin/integrate/current-pr-batch | 2026-10-25 02:18:26 -0500 | amohash | in main
+origin/integration/morning | 2026-10-25 09:33:09 -0500 | ryhlu | not in main
+origin/main | 2026-10-25 05:29:01 -0500 | Amogh Astagi | in main
+```
