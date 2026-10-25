@@ -1,6 +1,6 @@
 # C ranking and AI assignment
 
-Status: implemented and locally verified on feat/ranking-ai; live Muse validation and B/D integration remain pending. Not merged or phone-verified.
+Status: implemented and locally verified on feat/ranking-ai; live Muse access/extraction/cache validation passed; B/D integration remains pending. Not merged or phone-verified.
 
 > Read AGENTS.md, docs/ALGORITHM.md and docs/CONTRACTS.md. I am person C on feat/ranking-ai. Verify branch and inspect any existing search source before reusing it. Own the pure TypeScript scorer, golden fixtures, Muse evidence extraction and recommendation route. Implement strict filters first, then normalized scoring, uncertainty treatment, stable ties, evidence-backed reasons and explicit relaxation proposals. Inject clock and use city timezones. Unknown facts must not satisfy strict constraints. Use the same scorer for demo and real data. Test budget/walk limits, unknown amenities/price, midnight/overnight hours, no results, bounds and scenario ordering. Next validate one real Muse request from the server, bounded JSON extraction and source-hash caching with one retry. Do not edit B's bootstrap/migrations or create another API server. Return a route export for B to mount. Report measured performance only. Defer H3 optimization and group compromise until baseline P0 passes.
 
@@ -22,8 +22,10 @@ Review the supplied memo critically: group weights sum to 1.10; synthetic exactn
 - Behavior: strict filters precede scoring; missing/zero-confidence price fails caps; unknown required amenities/access fail. Source confidence is capped at .7 for Muse and .9 for curated facts. Noise older than seven days becomes unknown; typical crowd uses arrival-hour venue timezone with seven-day freshness; hours use the existing 24-hour freshness policy. No live crowd inference from review counts. Null dimensions use neutral values and uncertainty penalties; weights normalize per query, not per place. Stable ties and explicit individual relaxation patches are retained.
 - Hours: offset-qualified injected clock; venue IANA timezone; continuous minute coverage including overnight and DST; a dated exception overrides the entire local date, including weekly spillover. Exact session end is exclusive.
 - Shared-contract compatibility note for B: `QuerySchema.partial()` fills `limit:3` when validating relaxation patches. C explicitly preserves the query's current `limit` in each patch so applying one does not silently change another preference. B can later remove that default from the partial patch schema.
-- Tests actually run: `npm run typecheck`, `npm test` (89 passed across six files), `npm run lint`, `npm run build:server` — all passed. The build uses the unchanged foundation bootstrap; the new router is covered by typechecking and HTTP integration tests but awaits mounting.
-- Real Muse attempt status: smoke runner executed and returned `blocked` because `META_API_KEY` is absent. Actual external calls: **0**. Mocked provider tests validate JSON bounds, source references, identity, retry, deadline, cache invalidation, concurrency and error handling; they do not verify model access or real output quality.
+- Tests actually run: `npm run typecheck`, `npm test` (90 passed across six files), `npm run lint`, `npm run build:server` — all passed. The build uses the unchanged foundation bootstrap; the new router is covered by typechecking and HTTP integration tests but awaits mounting.
+- Real Muse validation passed with `muse-spark-1.3`: one successful extraction request took 5126.96 ms; the repeated source hit the process-local cache in 0.41 ms with zero further provider calls. Output correctly left group suitability null and outlets unknown while citing the supplied synthetic evidence for quiet/Wi-Fi claims. Raw safe result: `server/src/ai/measurements/live-smoke.json`.
+- Validation history: initial two-attempt extraction exhausted its 8000 ms deadline; two small diagnostic requests returned HTTP 200 with null content/token-length termination; completion cap increased from 1500 to 4096 tokens. Successful smoke used a 30-second total budget (default extractor remains 8 seconds) and finished in 5.13 seconds. Total request attempts across this validation: 5. This is one successful sample, not a latency guarantee or real venue verification.
+- Credential is configured only in ignored `server/.env` with mode 0600. Its value was removed from tracked `server/.env.example`; no key was logged or committed.
 - No real recorded venue snapshot is available in this checkout. Real-data scoring smoke tests, at least ten validated real venue extractions, persistent cache integration, merge and presenter-phone P0 verification remain outstanding.
 - H3 optimization and group compromise are deferred. No changes to B's bootstrap, shared schemas, migrations, root manifests or lockfile.
 
@@ -47,7 +49,7 @@ Model default: `muse-spark-1.3`; fixed server endpoint `https://api.meta.ai/v1/c
 
 ### Live validation command
 
-Configure the ignored `server/.env` locally with `META_API_KEY` (never put it in chat or a client variable), then run from the repository root:
+Configure the ignored `server/.env` locally with `META_API_KEY` (never put it in chat or a client variable), then run from the repository root (the smoke permits a bounded 30 seconds, while the extractor default remains 8 seconds):
 
 ```sh
 npx tsx server/src/ai/smoke.ts
@@ -66,4 +68,4 @@ Run `npx tsx packages/core/measurements/measure.ts > packages/core/measurements/
 - 200 candidates, open-session filter False: 200 qualify; first 39.17 ms; subsequent median 35.99 ms, p95 37.39 ms.
 - 200 candidates, open-session filter True: 180 qualify; first 36.82 ms; subsequent median 36.28 ms, p95 37.02 ms.
 
-Next smallest steps: configure the server key and run the live smoke; B mounts the router and supplies persistent cache/real snapshots; D verifies both scenario flows on the presenter phone and owns the main merge.
+Next smallest steps: B mounts the router and supplies persistent cache/real snapshots; D verifies both scenario flows on the presenter phone and owns the main merge.

@@ -12,7 +12,7 @@ export function createMuseProvider({ apiKey, fetchImpl = fetch }: {
       method: 'POST', signal,
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
-        temperature: 0, max_tokens: 1500, response_format: { type: 'json_object' } }),
+        temperature: 0, max_tokens: 4096, response_format: { type: 'json_object' } }),
     });
     if (!response.ok) { await response.body?.cancel(); throw new Error(`Muse request failed (${response.status})`); }
     const reader = response.body?.getReader();
@@ -27,7 +27,8 @@ export function createMuseProvider({ apiKey, fetchImpl = fetch }: {
         chunks.push(value);
       }
     } finally { await reader.cancel(); reader.releaseLock(); }
-    const data = JSON.parse(Buffer.concat(chunks).toString('utf8')) as { choices?: { message?: { content?: unknown } }[] };
+    const data = JSON.parse(Buffer.concat(chunks).toString('utf8')) as { choices?: { finish_reason?: string; message?: { content?: unknown } }[] };
+    if (data?.choices?.[0]?.finish_reason === 'length') throw new Error('Muse completion exceeded token budget');
     const content = data?.choices?.[0]?.message?.content;
     if (typeof content !== 'string') throw new Error('Muse response content missing');
     return content;

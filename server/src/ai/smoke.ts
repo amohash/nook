@@ -19,7 +19,7 @@ if (!key) {
     snippets: [{ id: 'synthetic:1', text: 'Fictional test evidence: quiet tables with Wi-Fi. No information about outlets or groups.' }],
   });
   const extractor = createEvidenceExtractor({ complete: createMuseProvider({ apiKey: key }), cache: new MemoryEvidenceCache(),
-    model: process.env.META_MODEL || undefined });
+    budgetMs: 30_000, model: process.env.META_MODEL || undefined });
   const cold = await extractor(source);
   const warm = cold.status === 'ready' ? await extractor(source) : null;
   console.log(JSON.stringify({ evidenceMode: file ? 'caller-supplied-anonymous-source' : 'synthetic-test-evidence',

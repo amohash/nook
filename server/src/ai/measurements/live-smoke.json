@@ -1,0 +1,119 @@
+{
+  "evidenceMode": "synthetic-test-evidence",
+  "cold": {
+    "status": "ready",
+    "record": {
+      "key": "01a1a627c34b5787da322587ed850075db2f66a8d48ec9c1f11fe7c36e41aa16",
+      "sourceHash": "9b6c8b861dfd7d729d179f4e68f2421e5be132abd08be6607c12eb48bf5a0c96",
+      "model": "muse-spark-1.3",
+      "promptVersion": "space-evidence-v1",
+      "language": "en",
+      "generatedAt": "2026-10-25T00:53:58.499Z",
+      "output": {
+        "placeId": "smoke:fictional-cafe",
+        "summary": {
+          "text": "Quiet tables with Wi-Fi.",
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "tags": [
+          {
+            "tag": "quiet",
+            "weight": 0.8,
+            "evidenceIds": [
+              "synthetic:1"
+            ]
+          }
+        ],
+        "noise": {
+          "value": 0.2,
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "groupFriendly": {
+          "value": null,
+          "evidenceIds": []
+        },
+        "wifi": {
+          "value": "yes",
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "outlets": {
+          "value": "unknown",
+          "evidenceIds": []
+        }
+      }
+    },
+    "externalCalls": 1,
+    "cacheHits": 0,
+    "durationMs": 5126.9555,
+    "cacheWriteFailed": false
+  },
+  "warm": {
+    "status": "ready",
+    "record": {
+      "key": "01a1a627c34b5787da322587ed850075db2f66a8d48ec9c1f11fe7c36e41aa16",
+      "sourceHash": "9b6c8b861dfd7d729d179f4e68f2421e5be132abd08be6607c12eb48bf5a0c96",
+      "model": "muse-spark-1.3",
+      "promptVersion": "space-evidence-v1",
+      "language": "en",
+      "generatedAt": "2026-10-25T00:53:58.499Z",
+      "output": {
+        "placeId": "smoke:fictional-cafe",
+        "summary": {
+          "text": "Quiet tables with Wi-Fi.",
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "tags": [
+          {
+            "tag": "quiet",
+            "weight": 0.8,
+            "evidenceIds": [
+              "synthetic:1"
+            ]
+          }
+        ],
+        "noise": {
+          "value": 0.2,
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "groupFriendly": {
+          "value": null,
+          "evidenceIds": []
+        },
+        "wifi": {
+          "value": "yes",
+          "evidenceIds": [
+            "synthetic:1"
+          ]
+        },
+        "outlets": {
+          "value": "unknown",
+          "evidenceIds": []
+        }
+      }
+    },
+    "externalCalls": 0,
+    "cacheHits": 1,
+    "durationMs": 0.41445800000019517
+  },
+  "validationNotes": {
+    "evidence": "Synthetic test evidence, not real venue facts",
+    "budgetMs": 30000,
+    "defaultExtractorBudgetMs": 8000,
+    "maxCompletionTokens": 4096,
+    "earlierExtractionAttempts": 2,
+    "earlierExtractionDurationMs": 8003.388959,
+    "diagnosticRequests": 2,
+    "diagnosticOutcome": "HTTP 200 with finish_reason length and null content at small token limits",
+    "totalRequestAttemptsThisValidation": 5
+  }
+}

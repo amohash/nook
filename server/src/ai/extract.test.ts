@@ -99,6 +99,7 @@ describe('server Muse transport', () => {
     const text = await provider({ model: 'muse-spark-1.3', system: 'rules', user: 'evidence', signal: new AbortController().signal });
     expect(parseExtraction(text, source).placeId).toBe(source.placeId);
     expect(fetchImpl.mock.calls[0]![0]).toBe('https://api.meta.ai/v1/chat/completions');
+    expect(JSON.parse(fetchImpl.mock.calls[0]![1]!.body as string).max_tokens).toBe(4096);
   });
   it('does not expose upstream error bodies or credentials', async () => {
     const provider = createMuseProvider({ apiKey: 'test-only', fetchImpl: async () => new Response('sensitive provider body', { status: 401 }) });
@@ -133,4 +134,13 @@ describe('cache failure isolation', () => {
     expect(second.cacheHits).toBe(0); expect(second.record!.output.placeId).toBe(source.placeId);
     expect(provider).toHaveBeenCalledTimes(2);
   });
+});
+
+
+it('rejects token-truncated Muse completions even when a partial object parses', async () => {
+  const provider = createMuseProvider({ apiKey: 'test-only', fetchImpl: async () => new Response(JSON.stringify({
+    choices: [{ finish_reason: 'length', message: { content: JSON.stringify(valid()) } }],
+  })) });
+  await expect(provider({ model: 'm', system: '', user: '', signal: new AbortController().signal }))
+    .rejects.toThrow('Muse completion exceeded token budget');
 });
