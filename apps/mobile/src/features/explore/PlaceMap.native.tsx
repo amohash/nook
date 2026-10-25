@@ -1,9 +1,8 @@
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { ErrorState, MapLegend, MapPin } from '../../components';
+import { ErrorState, MapPin } from '../../components';
 import { crowdHours, typicalLevel } from '../../components/exploreContent';
-import { theme } from '../../theme';
 import { venueTime } from './presentation';
 import type { PlaceMapProps } from './PlaceMap.types';
 
@@ -27,7 +26,7 @@ function NativeMap({results, origin, departAt, selectedId, onSelect, onFallback}
     if (!ready) return;
     map.current?.fitToCoordinates([{latitude: origin.lat, longitude: origin.lng},
       ...results.map(({spot}) => ({latitude: spot.lat, longitude: spot.lng}))],
-    {edgePadding: {top: 20, right: 30, bottom: 20, left: 30}, animated: true});
+    {edgePadding: {top: 160, right: 30, bottom: 180, left: 30}, animated: true});
   }, [ready, results, origin]);
   if (timedOut && !ready) return <ErrorState title="Map took too long" message="Use the list while map tiles are unavailable."
     action={{label: 'Use list', onPress: onFallback}} />;
@@ -47,9 +46,7 @@ function NativeMap({results, origin, departAt, selectedId, onSelect, onFallback}
         </Marker>;
       })}
     </MapView>
-    <MapLegend />
   </View>;
 }
 export function PlaceMap(props: PlaceMapProps) {return <MapBoundary onFallback={props.onFallback}><NativeMap {...props} /></MapBoundary>;}
-const s = StyleSheet.create({container: {flex: 1, gap: 4}, map: {flex: 1, width: '100%', borderRadius: 20},
-  caption: {fontSize: 12, lineHeight: 18, color: theme.colors.textMuted}});
+const s = StyleSheet.create({container: {flex: 1}, map: {flex: 1, width: '100%'}});

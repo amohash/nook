@@ -9,6 +9,7 @@ describe('mobile provider recovery', () => {
     await expect(fixtureProvider.getSpot('missing')).rejects.toBeInstanceOf(PlaceNotFoundError);
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(null, { status: 404 })));
     await expect(createApiProvider('https://example.test').getSpot('missing')).rejects.toBeInstanceOf(PlaceNotFoundError);
+    await expect(createApiProvider('https://example.test').getSpot('missing', 'nearby-test')).rejects.toBeInstanceOf(PlaceNotFoundError);
   });
 
   it('keeps a network failure retryable and recovers on the next request', async () => {
@@ -25,5 +26,38 @@ describe('mobile provider recovery', () => {
     const api = createApiProvider('https://example.test');
     await expect(api.getSpot('demo:spot-1')).rejects.toThrow();
     await expect(api.recommend(createDemoQuery())).rejects.toThrow();
+  });
+});
+
+describe('runtime provider boundary', () => {
+  it('exchanges tester access once and scopes authenticated reads without putting secrets in URLs', async () => {
+    const token = 't'.repeat(32);
+    const mock = vi.fn().mockResolvedValueOnce(Response.json({schemaVersion: 1, sessionId: token, expiresAt: '2026-10-25T10:00:00Z'}))
+      .mockResolvedValueOnce(Response.json({schemaVersion: 1, cityId: 'us-tx-austin', mode: 'live', datasetVersion: 'nearby-test',
+        fetchedAt: '2026-10-25T07:00:00Z', spots: []}));
+    vi.stubGlobal('fetch', mock);
+    const api = createApiProvider('https://example.test');
+    await api.createTesterSession!({accessCode: 'private-test-code'});
+    await api.listSpots('us-tx-austin', 'nearby-test');
+    expect(mock.mock.calls[0]![0]).toBe('https://example.test/v1/tester-sessions');
+    expect(mock.mock.calls[1]![0]).toBe('https://example.test/v1/discovery/nearby-test');
+    expect(mock.mock.calls[1]![1].headers.Authorization).toBe(`Bearer ${token}`);
+    expect(mock.mock.calls[1]![1].body).toBeUndefined();
+  });
+
+  it('sends the exact selected origin through validated discovery and rejects malformed state', async () => {
+    const mock = vi.fn().mockResolvedValue(Response.json({status: 'ready', snapshotId: null}));
+    vi.stubGlobal('fetch', mock);
+    const api = createApiProvider('https://example.test');
+    const origin = {lat: 30.29, lng: -97.73, source: 'device' as const};
+    await expect(api.discover!({sessionId: 't'.repeat(32), origin, refresh: true})).rejects.toThrow();
+    expect(JSON.parse(mock.mock.calls[0]![1].body)).toEqual({sessionId: 't'.repeat(32), origin, refresh: true});
+  });
+
+  it('rejects an unsafe assistant filter patch before the UI can offer it', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({schemaVersion: 1, requestId: 'r', status: 'ready',
+      text: 'Change your origin', references: [], proposedQueryPatch: {origin: {lat: 0, lng: 0, source: 'manual'}}})));
+    await expect(createApiProvider('https://example.test').assist!({sessionId: 't'.repeat(32), snapshotId: 'nearby-test',
+      query: createDemoQuery(), message: 'Find a place', placeIds: []})).rejects.toThrow();
   });
 });

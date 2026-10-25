@@ -1,5 +1,6 @@
 import { CitiesSchema, QuerySchema, RecommendationSchema, SnapshotSchema,
-  SpotDetailSchema, type DataProvider, type Query } from '@space/contracts';
+  SpotDetailSchema, DiscoveryRequestSchema, DiscoveryResponseSchema, AssistantRequestSchema, AssistantResponseSchema,
+  TesterSessionRequestSchema, TesterSessionResponseSchema, ApiErrorSchema, type DataProvider, type Query } from '@space/contracts';
 import { rankSpots } from '@space/core';
 import { cities, DEMO_NOW, getDemoDetail, snapshot } from '@space/fixtures';
 
@@ -36,37 +37,62 @@ export const fixtureProvider: DataProvider = {
   },
 };
 
+export class ApiUnavailableError extends Error {
+  constructor(public readonly code: string, public readonly retryable: boolean, message: string) {
+    super(message); this.name = 'ApiUnavailableError';
+  }
+}
+
 export function createApiProvider(baseUrl: string, timeoutMs = 8000): DataProvider {
   const base = publicApiBase(baseUrl);
-  async function request(path: string, query?: Query): Promise<unknown> {
+  let sessionId: string | null = null;
+  async function request(path: string, body?: unknown): Promise<unknown> {
     if (!base) throw new Error('Set a valid API base URL before using the API provider.');
+    const deadlineMs = path === '/v1/discovery' ? Math.max(timeoutMs, 60_000) : path === '/v1/assistant' ? Math.max(timeoutMs, 20_000) : timeoutMs;
     const controller = new AbortController();
     let timeout: ReturnType<typeof setTimeout> | undefined;
     // Race the whole operation, including body reads. Abort alone is not a deadline
     // on transports that fail to settle after cancellation.
     const operation = async () => {
       const response = await fetch(`${base}${path}`, { signal: controller.signal,
-        ...(query ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(QuerySchema.parse(query)) } : {}) });
-      if (response.status === 404 && path.startsWith('/v1/spots/')) throw new PlaceNotFoundError();
+        headers: { ...(body ? {'Content-Type': 'application/json'} : {}), ...(sessionId ? {Authorization: `Bearer ${sessionId}`} : {}) },
+        ...(body ? { method: 'POST', body: JSON.stringify(body) } : {}) });
+      if (response.status === 404 && (path.startsWith('/v1/spots/') || /^\/v1\/discovery\/[^/]+\/places\//.test(path))) throw new PlaceNotFoundError();
       if (response.status === 404 && (path.startsWith('/v1/cities/') || path === '/v1/recommendations')) throw new Error('City not found');
-      const body: unknown = await response.json();
-      if (!response.ok) throw new Error('API unavailable. Retry or choose an offline dataset.');
-      return body;
+      const result: unknown = await response.json();
+      if (!response.ok && path === '/v1/assistant') {
+        const assistant = AssistantResponseSchema.safeParse(result);
+        if (assistant.success) return assistant.data;
+      }
+      if (!response.ok) {
+        const parsed = ApiErrorSchema.safeParse(result);
+        throw new ApiUnavailableError(parsed.success ? parsed.data.error.code : 'unavailable',
+          parsed.success ? parsed.data.error.retryable : true,
+          response.status === 401 || response.status === 403 ? 'Tester access expired or was denied. Enter the access code again.' : 'API unavailable. Retry or choose an offline dataset.');
+      }
+      return result;
     };
     try {
       return await Promise.race([operation(), new Promise<never>((_, reject) => {
         timeout = setTimeout(() => {
           controller.abort();
           reject(new Error('API timed out. Retry or choose an offline dataset.'));
-        }, timeoutMs);
+        }, deadlineMs);
       })]);
     } finally { clearTimeout(timeout); }
   }
   return {
+    async createTesterSession(input) {
+      const result = TesterSessionResponseSchema.parse(await request('/v1/tester-sessions', TesterSessionRequestSchema.parse(input)));
+      sessionId = result.sessionId;
+      return result;
+    },
+    async discover(input) { return DiscoveryResponseSchema.parse(await request('/v1/discovery', DiscoveryRequestSchema.parse(input))); },
+    async assist(input) { return AssistantResponseSchema.parse(await request('/v1/assistant', AssistantRequestSchema.parse(input))); },
     async listCities() { return CitiesSchema.parse(await request('/v1/cities')).cities; },
-    async listSpots(id) { return SnapshotSchema.parse(await request(`/v1/cities/${encodeURIComponent(id)}/spots`)); },
-    async getSpot(id) { return SpotDetailSchema.parse(await request(`/v1/spots/${encodeURIComponent(id)}`)); },
-    async recommend(query) { return RecommendationSchema.parse(await request('/v1/recommendations', query)); },
+    async listSpots(id, snapshotId) { return SnapshotSchema.parse(await request(snapshotId ? `/v1/discovery/${encodeURIComponent(snapshotId)}` : `/v1/cities/${encodeURIComponent(id)}/spots`)); },
+    async getSpot(id, snapshotId) { return SpotDetailSchema.parse(await request(snapshotId ? `/v1/discovery/${encodeURIComponent(snapshotId)}/places/${encodeURIComponent(id)}` : `/v1/spots/${encodeURIComponent(id)}`)); },
+    async recommend(query) { return RecommendationSchema.parse(await request('/v1/recommendations', QuerySchema.parse(query))); },
   };
 }
 

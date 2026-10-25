@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode, type SetStateAction } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { QuerySchema, type City, type Query } from '@space/contracts';
+import { QuerySchema, type DiscoveryResponse, type TesterSessionResponse, type City, type Query } from '@space/contracts';
 import { provider, recovery } from '.';
 import { queryAfterSwitch } from './recovery';
 import { createInitialQuery } from './initialQuery';
@@ -18,11 +18,18 @@ type SessionValue = {
   finishOnboarding(styles: StudyStyleId[], values?: PreferenceValues): Promise<void>;
   savePreferences(values: PreferenceValues): Promise<void>;
   reset(): Promise<void>;
+  nearby: {enabled: boolean; busy: boolean; result: DiscoveryResponse | null; error: string | null};
+  testerSession: TesterSessionResponse | null;
+  authorizeNearby(accessCode: string): Promise<void>;
+  refreshNearby(): void;
   toggleSaved(id: string): Promise<void>;
 };
 const Context = createContext<SessionValue | null>(null);
 export function SessionProvider({children}: {children: ReactNode}) {
   const {revision} = useSyncExternalStore(recovery.subscribe, recovery.getState, recovery.getState);
+  const [testerSession, setTesterSession] = useState<TesterSessionResponse | null>(null);
+  const [nearbyAttempt, setNearbyAttempt] = useState(0);
+  const [nearbyState, setNearbyState] = useState<{key: string; busy: boolean; result: DiscoveryResponse | null; error: string | null} | null>(null);
   const [session, commitSession] = useState<Session | null>(null);
   const [loadedRevision, setLoadedRevision] = useState(-1);
   const previous = useRef<Session | null>(null);
@@ -62,9 +69,58 @@ export function SessionProvider({children}: {children: ReactNode}) {
     }).finally(() => {if (isCurrent()) setLoading(false);});
     return () => {active = false;};
   }, [attempt, revision, setSession]);
+  const nearbyEnabled = process.env.EXPO_PUBLIC_NEARBY_ENABLED === '1' && recovery.getState().choice === 'api' && session?.city.mode !== 'demo';
+  const originKey = session ? JSON.stringify([revision, session.query.origin]) : '';
+  const discoveryGeneration = useRef(0);
+  const refreshRequested = useRef(false);
+  useEffect(() => {setTesterSession(null); setNearbyState(null);}, [revision]);
+  useEffect(() => {
+    const generation = ++discoveryGeneration.current;
+    if (!nearbyEnabled || !session || !testerSession) return;
+    let active = true;
+    const key = originKey;
+    const origin = session.query.origin;
+    const refresh = refreshRequested.current;
+    refreshRequested.current = false;
+    const current = () => active && generation === discoveryGeneration.current && revision === recovery.getState().revision;
+    setNearbyState({key, busy: true, result: null, error: null});
+    void provider.discover!({sessionId: testerSession.sessionId, origin, refresh}).then((result) => {
+      if (!current()) return;
+      setNearbyState({key, busy: false, result, error: null});
+      setSession((value) => value && JSON.stringify(value.query.origin) === JSON.stringify(origin)
+        ? {...value, query: QuerySchema.parse({...value.query, snapshotId: result.snapshotId ?? undefined})} : value);
+    }).catch(() => {if (current()) setNearbyState({key, busy: false, result: null,
+      error: 'Nearby discovery unavailable. Retry, renew tester access, or explicitly choose an offline dataset.'});});
+    return () => {active = false;};
+    // Filters are deliberately excluded: only origin, access and explicit Refresh acquire candidates.
+  }, [originKey, nearbyEnabled, testerSession, nearbyAttempt, revision, setSession]);
+  const authorizeNearby = async (accessCode: string) => {
+    const result = await provider.createTesterSession!({accessCode});
+    if (revision !== recovery.getState().revision) return;
+    ++discoveryGeneration.current;
+    setNearbyState(null);
+    setSession((value) => value ? {...value, query: {...value.query, snapshotId: undefined}} : value);
+    setTesterSession(result);
+  };
+  const refreshNearby = () => {
+    refreshRequested.current = true;
+    ++discoveryGeneration.current;
+    setSession((value) => value ? {...value, query: {...value.query, snapshotId: undefined}} : value);
+    setNearbyState(null); setNearbyAttempt((value) => value + 1);
+  };
+  const currentNearby = nearbyState?.key === originKey ? nearbyState : null;
+  const nearby = {enabled: nearbyEnabled, busy: nearbyEnabled && !!testerSession && (!currentNearby || currentNearby.busy),
+    result: currentNearby?.result ?? null, error: currentNearby?.error ?? null};
   const setQuery = useCallback((update: SetStateAction<Query>) => {
-    setSession((current) => current ? {...current, query: QuerySchema.parse(
-      typeof update === 'function' ? update(current.query) : update)} : current);
+    setSession((current) => {
+      if (!current) return current;
+      const query = QuerySchema.parse(typeof update === 'function' ? update(current.query) : update);
+      if (JSON.stringify(query.origin) !== JSON.stringify(current.query.origin)) {
+        query.snapshotId = undefined;
+        ++discoveryGeneration.current;
+      }
+      return {...current, query};
+    });
   }, [setSession]);
   const finishOnboarding = async (styles: StudyStyleId[], values?: PreferenceValues) => {
     if (!session) throw new Error('Session unavailable');
@@ -108,7 +164,7 @@ export function SessionProvider({children}: {children: ReactNode}) {
     setAttempt((value) => value + 1);
   };
   return <Context.Provider value={{session: loadedRevision === revision ? session : null, loading: loading || (loadedRevision !== revision && !error), error, retry: () => setAttempt((value) => value + 1),
-    recoverStorage, setQuery, finishOnboarding, savePreferences, reset, toggleSaved}}>{children}</Context.Provider>;
+    recoverStorage, setQuery, finishOnboarding, savePreferences, reset, toggleSaved, nearby, testerSession, authorizeNearby, refreshNearby}}>{children}</Context.Provider>;
 }
 export function useSession() {
   const context = useContext(Context);
