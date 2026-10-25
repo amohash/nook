@@ -19,8 +19,8 @@ export default function MainTabs() {
     tabBarHideOnKeyboard: true,
   }}>
     <Tabs.Screen name="map" options={{headerShown: false, title: 'Map', tabBarAccessibilityLabel: 'Map tab'}} />
-    <Tabs.Screen name="friends" options={{title: 'Friends', tabBarAccessibilityLabel: 'Friends tab'}} />
+    <Tabs.Screen name="friends" options={{headerShown: false, title: 'Friends', tabBarAccessibilityLabel: 'Friends tab'}} />
     <Tabs.Screen name="bookmarks" options={{title: 'Bookmarks', tabBarAccessibilityLabel: 'Bookmarks tab'}} />
-    <Tabs.Screen name="profile" options={{title: 'Profile', tabBarAccessibilityLabel: 'Profile tab'}} />
+    <Tabs.Screen name="profile" options={{headerShown: false, title: 'Profile', tabBarAccessibilityLabel: 'Profile tab'}} />
   </Tabs></SessionGate>;
 }
