@@ -16,7 +16,7 @@ export function NearbyControls() {
   return <View style={s.panel}>
     <Text style={s.title}>Nearby places · Austin</Text>
     {nearby.busy ? <Text accessibilityLiveRegion="polite" style={s.body}>Finding places near your selected location…</Text>
-      : result && <Text accessibilityLiveRegion="polite" style={s.body}>{messages[result.status]}{result.snapshot ? ` ${result.snapshot.spots.length} candidates found.` : ''}</Text>}
+      : result && <Text accessibilityLiveRegion="polite" style={s.body}>{messages[result.status]}{result.snapshot ? ` ${result.snapshot.spots.length} places found before your filters.` : ''}</Text>}
     {result?.metrics.stale && <Text style={s.body}>Showing older saved place information.</Text>}
     {nearby.error && <Text accessibilityRole="alert" style={s.body}>{nearby.error}</Text>}
     <Button label={nearby.busy ? 'Finding nearby places…' : nearby.error ? 'Retry nearby discovery' : 'Refresh nearby'}

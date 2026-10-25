@@ -49,7 +49,7 @@ export const QuerySchema = z.strictObject({
   amenities: z.strictObject({
     wifi: z.enum(['ignore', 'prefer', 'require']), outlets: z.enum(['ignore', 'prefer', 'require']),
   }),
-  access: z.enum(['any', 'public_only']), limit: z.number().int().min(1).max(10).default(3),
+  access: z.enum(['any', 'public_only']), limit: z.number().int().min(1).max(200).default(3),
 });
 export type Query = z.infer<typeof QuerySchema>;
 export type DatasetMode = z.infer<typeof DatasetModeSchema>;
@@ -104,7 +104,7 @@ export const RelaxationSchema = z.strictObject({
 export const RecommendationSchema = z.strictObject({
   schemaVersion: z.literal(1), requestId: IdSchema, mode: DatasetModeSchema,
   datasetVersion: IdSchema, generatedAt: InstantSchema,
-  results: z.array(RankingResultSchema.extend({ spot: SpotSchema })).max(10),
+  results: z.array(RankingResultSchema.extend({ spot: SpotSchema })).max(200),
   excludedCounts: z.partialRecord(ExclusionCodeSchema, z.number().int().nonnegative()),
   relaxations: z.array(RelaxationSchema),
   metrics: z.strictObject({ rankMs: z.number().nonnegative(), candidateCount: z.number().int().nonnegative(),

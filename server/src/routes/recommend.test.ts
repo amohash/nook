@@ -48,3 +48,22 @@ describe('mountable recommendation route', () => {
     expect(response.status).toBe(503); expect(await response.text()).not.toContain('credential');
   });
 });
+
+it('returns every eligible ranked candidate above the old ten-result cap while preserving strict filters', async () => {
+  const data = structuredClone(snapshot);
+  data.spots = Array.from({length: 40}, (_, index) => ({...structuredClone(snapshot.spots[0]!),
+    id: `demo:all-${index}`, providerPlaceId: `synthetic:all-${index}`, categories: [index < 35 ? 'cafe' : 'restaurant']}));
+  const query = createDemoQuery({limit: 200, categories: ['cafe']});
+  const response = await request(data, JSON.stringify(query));
+  expect(response.status).toBe(200);
+  const result = RecommendationSchema.parse(await response.json());
+  const expected = rankSpots(data.spots, query, {now: DEMO_NOW});
+  expect(result.results).toHaveLength(35);
+  expect(result.results.map(({spot: _spot, ...r}) => r)).toEqual(expected.results);
+  expect(result.metrics.qualifyingCount).toBe(35);
+  expect(result.excludedCounts.category).toBe(5);
+  expect(result.results.every(r => r.spot.categories.includes('cafe'))).toBe(true);
+});
+it('rejects result requests above the bounded snapshot size', async () => {
+  expect((await request(snapshot, JSON.stringify({...createDemoQuery(), limit: 201}))).status).toBe(400);
+});
