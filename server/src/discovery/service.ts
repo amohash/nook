@@ -71,7 +71,10 @@ export function createDiscoveryService(options: { store: DiscoveryStore; apiKey:
   const snapshotKey = (id: string) => cacheKey({ kind: 'nearby-snapshot-v1', id });
   function response(status: DiscoveryResponse['status'], value: Stored | null,
     metrics: Partial<DiscoveryResponse['metrics']> = {}, coverage = value?.coverage ?? null): DiscoveryResponse {
-    const times = value?.dataset.snapshot.spots.map((s) => Date.parse(s.fetchedAt)) ?? [];
+    const times = value?.dataset.snapshot.spots.flatMap((s) => [s.fetchedAt, s.hoursFetchedAt,
+      s.typicalCrowd?.fetchedAt, s.liveObservation?.fetchedAt,
+      ...Object.values(s).flatMap((field) => field && typeof field === 'object' && 'fetchedAt' in field ? [field.fetchedAt] : []),
+    ].filter((time): time is string => typeof time === 'string').map((time) => Date.parse(time))) ?? [];
     const oldest = times.length ? new Date(Math.min(...times)).toISOString() : null;
     const newest = times.length ? new Date(Math.max(...times)).toISOString() : null;
     return DiscoveryResponseSchema.parse({ schemaVersion: 1, requestId: randomUUID(), status,
@@ -158,6 +161,20 @@ export function createDiscoveryService(options: { store: DiscoveryStore; apiKey:
         const candidate = accept(result.payload.place_results, result.fetchedAt);
         if (!candidate || candidate.providerPlaceId !== spot.providerPlaceId ||
           (spot.providerDataId && candidate.providerDataId && spot.providerDataId !== candidate.providerDataId)) throw new ServiceError('provider_identity_mismatch');
+        // Detail responses are often sparse. Missing detail fields cannot erase
+        // supported listing facts or renew their original source timestamps.
+        for (const field of ['priceLevel', 'rating', 'reviewCount', 'noise', 'groupFriendly', 'wifi', 'outlets', 'publicAccess', 'tags', 'summary'] as const) {
+          if (candidate[field].value === null || candidate[field].value === 'unknown') Object.assign(candidate, { [field]: spot[field] });
+        }
+        candidate.fetchedAt = Date.parse(spot.fetchedAt) < Date.parse(candidate.fetchedAt) ? spot.fetchedAt : candidate.fetchedAt;
+        candidate.providerDataId ??= spot.providerDataId;
+        candidate.image ??= spot.image;
+        candidate.categories = [...new Set([...spot.categories, ...candidate.categories])].slice(0, 20);
+        if (candidate.status === 'unknown') candidate.status = spot.status;
+        if (candidate.hoursStatus === 'unknown') Object.assign(candidate, { hoursStatus: spot.hoursStatus,
+          hoursFetchedAt: spot.hoursFetchedAt, weeklyHours: spot.weeklyHours, hoursExceptions: spot.hoursExceptions });
+        candidate.typicalCrowd ??= spot.typicalCrowd;
+        candidate.liveObservation ??= spot.liveObservation;
         const bundle = collectReviewEvidence(candidate, result.payload.place_results, result.fetchedAt);
         if (bundle) reviews.set(candidate.id, bundle);
         return candidate;
