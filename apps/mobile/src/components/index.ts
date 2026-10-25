@@ -1,6 +1,7 @@
 export { Button, type ButtonProps } from './Button';
 export { Chip, type ChipProps } from './Chip';
 export { SpotCard, type SpotCardProps } from './SpotCard';
+export { ExploreLayout, type ExploreLayoutProps } from './ExploreLayout';
 export { EvidenceLabel, DatasetLabel, type EvidenceLabelProps, type DatasetLabelProps } from './EvidenceLabel';
 export { LoadingState, EmptyState, ErrorState, type LoadingStateProps, type MessageStateProps } from './States';
 export { MapPin, MapLegend, type MapPinProps } from './MapPin';
@@ -14,4 +15,6 @@ export { NowLaterControl, type NowLaterControlProps } from './NowLaterControl';
 export { ActionRow, type ActionRowProps } from './ActionRow';
 export { SheetContainer, type SheetContainerProps } from './SheetContainer';
 export { ExploreDesignPreview } from './ExploreDesignPreview';
+export { NookTabBar, type NookTabBarProps } from './NookTabBar';
+export { FriendsPlaceholder, BookmarksPlaceholder, ProfilePlaceholder } from './TabPlaceholders';
 export type { TypicalCrowd, LiveObservation, TypicalLevel, OpenStatus } from './exploreContent';
