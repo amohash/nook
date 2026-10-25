@@ -594,3 +594,39 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   credential is available here. No deployment was attempted. User sign-in to the
   existing service and private runtime configuration are the exact release blockers.
   No new deployed commit, live-provider result or physical-phone acceptance claimed.
+
+## Morning demo fixtures — B, October 25
+
+- User authorized morning integration/fixture preparation despite the prior overnight
+  freeze, and designated A as integration/morning coordinator while D is unavailable.
+  Preserved root package-lock edit in stash named
+  `B morning preservation: existing root package-lock before demo-locations`.
+- Branch `data/demo-locations` from latest origin/main `21ba7a0`. Only bundled
+  fictional fixture data/docs and related tests change; every real cached JSON
+  artifact remains unchanged. Notified A/C in GitHub issue #3 comment 6398869271;
+  no screen/components/scorer/dependency implementation changes.
+- `fictional-austin-v2` extends the ten existing fictional venues with West Stacks
+  (quiet library) and Creekside Coffee (lively cafe), both explicitly fictional.
+  Coordinates, noise/group/amenity/opening facts and sparse typical patterns are
+  synthetic scenario inputs. All spots remain demo mode, with the existing Demo
+  scenario label. Ratings/review counts remain null; no fabricated real reviews,
+  Muse output, live crowd or seat claims. Real cached Austin datasets are untouched.
+- Actual shared ranker/provider at fixed demo clock: Study top three = Paper Lantern,
+  Pocket Library, West Stacks; Meet Friends = Gather Yard, Creekside Coffee, Little
+  Bowl. Both added venues estimate 13 walking minutes: 15-minute filter qualifies12,
+  10-minute filter qualifies10. No winner override or second scorer. Original ten
+  golden-order test remains scoped to those ten; new full-dataset test covers12.
+- Verification: root typecheck and lint passed; full suite501 tests passed after
+  updating data-count/order expectations. Four added tests cover schema/provenance,
+  actual intent-preset/provider parity, 15->10 walk exclusion, unknown-price strictness
+  and synthetic crowd gaps. Pending shared-branch merge and final checks below.
+- Render cold wake health200 took32.198s; subsequent health200 took0.233s,
+  cities2000.075s, list2000.109s. Hosted SHA cc8f7aa, cached photo-v1:30places,
+  30image URLs,10Muse summaries. This is older than current main and lacks newer
+  Nearby/assistant guest APIs; no redeployment/migration performed. Fixture demo
+  remains independent of server keys/network once the JS bundle is loaded.
+- SDK discrepancy: latest main AND morning branch declare Expo58/RN0.88, not user-
+  expected SDK57. No dependency changes by B. Warned A; phone must match actual SDK.
+  Social public env/account identity/profile photo and presenter phone are pending
+  user/A details. Do not substitute invented people/profile facts or use data DB
+  credentials in the separate nook-social project.

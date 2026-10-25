@@ -89,7 +89,7 @@ describe('reproducible real-dataset evaluation', () => {
     const goldens = fictionalGoldens();
     expect(goldens.map(({ label }) => label)).toEqual(['FICTIONAL study', 'FICTIONAL friends']);
     expect(goldens.map(({ ranking }) => ranking.results.map(({ spotId }) => spotId))).toEqual([
-      ['demo:spot-1', 'demo:spot-3', 'demo:spot-5'], ['demo:spot-2', 'demo:spot-10', 'demo:spot-6'],
+      ['demo:spot-1', 'demo:spot-3', 'demo:spot-11'], ['demo:spot-2', 'demo:spot-12', 'demo:spot-10'],
     ]);
     const spots = ['tie:z', 'tie:a'].map((id) => ({ ...structuredClone(snapshot.spots[0]!), id, providerPlaceId: id }));
     expect(rankSpots(spots, createDemoQuery(), { now: goldens[0]!.clock }).results.map(({ spotId }) => spotId))

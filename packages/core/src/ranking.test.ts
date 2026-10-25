@@ -47,7 +47,7 @@ describe('strict eligibility', () => {
   });
   it('returns no matches honestly', () => {
     const result = rankSpots(snapshot.spots, createDemoQuery({ categories: ['nonexistent'] }), clock);
-    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(10);
+    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(snapshot.spots.length);
   });
 });
 

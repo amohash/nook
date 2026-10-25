@@ -4,7 +4,7 @@ import { createDemoQuery, snapshot } from '@space/fixtures';
 
 describe('contract version 1', () => {
   it('validates every labeled fixture and its provenance', () => {
-    expect(SnapshotSchema.parse(snapshot).spots).toHaveLength(10);
+    expect(SnapshotSchema.parse(snapshot).spots).toHaveLength(12);
     for (const spot of snapshot.spots) {
       expect(spot.datasetMode).toBe('demo');
       expect(spot.name).toContain('(fictional)');

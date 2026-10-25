@@ -23,7 +23,7 @@ describe('mountable recommendation route', () => {
     const result = RecommendationSchema.parse(await response.json());
     const direct = rankSpots(data.spots, createDemoQuery(), { now: DEMO_NOW });
     expect(result.results.map(({ spot: _spot, ...ranking }) => ranking)).toEqual(direct.results);
-    expect(result.metrics).toMatchObject({ candidateCount: 10, qualifyingCount: 10, externalCalls: 0, cacheHits: 0 });
+    expect(result.metrics).toMatchObject({ candidateCount: snapshot.spots.length, qualifyingCount: snapshot.spots.length, externalCalls: 0, cacheHits: 0 });
     expect(result.metrics.rankMs).toBeGreaterThanOrEqual(0);
   });
   it('returns honest empty results and unapplied proposals', async () => {
