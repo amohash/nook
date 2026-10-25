@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View,
+  type ScrollViewInstance } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '../theme';
 import { Button } from './Button';
@@ -57,7 +58,7 @@ const statusCopy = {
 export function MuseAssistantPanel({ input, onInputChange, onSubmit, onRetry, onClose, status, messages,
   canSubmit, disabledReason, statusMessage, retryable = false, inputMaxLength = 1000,
   proposal, onApply, onCancel, onPlacePress, onSourcePress, keyboardVerticalOffset = 0 }: MuseAssistantPanelProps) {
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   const waiting = status === 'waiting';
   const blocked = !canSubmit || waiting || status === 'quota' || status === 'unavailable';
   const submit = () => { if (!blocked && input.trim()) onSubmit(); };

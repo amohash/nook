@@ -15,7 +15,7 @@ function tabLabel(name: string, title?: string): TabLabel | null {
 }
 
 /** Standard Expo Router JS Tabs bar; never creates routes or owns navigation state. */
-export function NookTabBar({ state, descriptors, navigation, insets }: NookTabBarProps) {
+export function NookTabBar({ state, descriptors, emitter, navigateToTab, insets }: NookTabBarProps) {
   return <View accessibilityRole="tablist" style={[styles.bar, { paddingBottom: Math.max(insets.bottom, theme.spacing.xs),
     paddingLeft: insets.left, paddingRight: insets.right }]}>
     {state.routes.map((route, index) => {
@@ -29,10 +29,10 @@ export function NookTabBar({ state, descriptors, navigation, insets }: NookTabBa
         accessibilityLabel={options.tabBarAccessibilityLabel ?? label}
         accessibilityState={{ selected }} aria-selected={selected} testID={options.tabBarButtonTestID}
         onPress={() => {
-          const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-          if (!selected && !event.defaultPrevented) navigation.navigate(route.name, route.params);
+          const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+          if (!selected && !event.defaultPrevented) navigateToTab(route.key);
         }}
-        onLongPress={() => navigation.emit({ type: 'tabLongPress', target: route.key })}
+        onLongPress={() => emitter.emit({ type: 'tabLongPress', target: route.key })}
         style={styles.tab}>
         <View style={[styles.iconPill, selected && styles.activeIconPill]}>
           <StrokeIcon label={label} color={color} />
