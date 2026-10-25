@@ -20,6 +20,18 @@ let server: Server | undefined;
 afterEach(async () => { if (server) await new Promise<void>((resolve) => server!.close(() => resolve())); server = undefined; });
 
 describe('grounded focused place assistant', () => {
+  it('allows a valid provider answer beyond eight seconds within the mobile request deadline', async () => {
+    vi.useFakeTimers();
+    try {
+      const complete = vi.fn(() => new Promise<string>((resolve) => setTimeout(() => resolve(selection()), 9000)));
+      const pending = createPlaceAssistant(deps({ complete }))(input());
+      await vi.advanceTimersByTimeAsync(9000);
+      const response = await pending;
+      expect(response.httpStatus).toBe(200);
+      expect(response.body.status).toBe('ready');
+      expect(complete).toHaveBeenCalledTimes(1);
+    } finally { vi.useRealTimers(); }
+  });
   it('renders only server facts and valid IDs; omits coordinates/time from the prompt; retains no history', async () => {
     const complete = vi.fn(async () => selection());
     const assist = createPlaceAssistant(deps({ complete }));

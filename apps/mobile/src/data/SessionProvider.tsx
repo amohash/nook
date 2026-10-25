@@ -4,7 +4,7 @@ import { QuerySchema, type DiscoveryResponse, type TesterSessionResponse, type C
 import { provider, recovery } from '.';
 import { queryAfterSwitch } from './recovery';
 import { createInitialQuery } from './initialQuery';
-import { applyPreferences, onboardingQuery, createSettingsStore, defaultSettings, PreferenceSchema, RankingPreferencesSchema,
+import { applyPreferences, applyStudyStyles, onboardingQuery, createSettingsStore, defaultSettings, PreferenceSchema, RankingPreferencesSchema,
   restoredQuery, settingsKey, type Settings } from './settings';
 import type { StudyStyleId } from '../features/onboarding/studyStyle';
 import type { PreferenceValues } from '../features/preferences';
@@ -16,7 +16,7 @@ type SessionValue = {
   recoverStorage(): Promise<void>;
   setQuery(update: SetStateAction<Query>): void;
   finishOnboarding(styles: StudyStyleId[], values?: PreferenceValues): Promise<void>;
-  savePreferences(values: PreferenceValues): Promise<void>;
+  savePreferences(values: PreferenceValues, styles?: StudyStyleId[]): Promise<void>;
   reset(): Promise<void>;
   nearby: {enabled: boolean; busy: boolean; result: DiscoveryResponse | null; error: string | null};
   testerSession: TesterSessionResponse | null;
@@ -130,14 +130,15 @@ export function SessionProvider({children}: {children: ReactNode}) {
     setSession((current) => current ? {...current, settings,
       query: {...query, origin: current.query.origin, departAt: current.query.departAt}} : current);
   };
-  const savePreferences = async (values: PreferenceValues) => {
+  // Optional styles mirror restoredQuery: explicit preference edits stay authoritative over style tags.
+  const savePreferences = async (values: PreferenceValues, styles?: StudyStyleId[]) => {
     if (!session) throw new Error('Session unavailable');
     const preferences = PreferenceSchema.parse(values);
-    const query = applyPreferences(session.query, preferences);
+    const apply = (query: Query) => applyPreferences(styles ? applyStudyStyles(query, styles) : query, preferences);
+    const query = apply(session.query);
     const settings = await store.update(settingsKey(session.city), (current) => ({...(current ?? session.settings), preferences,
-      rankingPreferences: RankingPreferencesSchema.parse(query)}));
-    setSession((current) => current ? {...current, settings,
-      query: applyPreferences(current.query, preferences)} : current);
+      ...(styles ? {styles} : {}), rankingPreferences: RankingPreferencesSchema.parse(query)}));
+    setSession((current) => current ? {...current, settings, query: apply(current.query)} : current);
   };
   const toggleSaved = async (id: string) => {
     if (!session) throw new Error('Session unavailable');

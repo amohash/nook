@@ -1,6 +1,6 @@
 # A design and onboarding assignment
 
-Status: original design integrated. P0 onboarding intent, budget, walking limit and preference restoration implemented on `feat/onboarding-preferences`; review and presenter-phone verification pending. No merge by this thread.
+Status: original design integrated. P0 onboarding intent, budget, walking limit and preference restoration implemented on `feat/onboarding-preferences`. Study preferences page (study styles, session starting point, sticky Save, confirmed reset, Redo onboarding, Profile row, `getPreferenceTags`) implemented on `feat/preferences-page`; D review and presenter-phone verification pending. No merge by this thread.
 
 Paste this prompt into your T3 Code thread after opening your assigned branch:
 

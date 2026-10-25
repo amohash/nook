@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Chip } from '../../components';
 import { theme } from '../../theme/theme';
-import { VISIBLE_STUDY_STYLE_OPTIONS, toggleStudyStyle, type StudyStyleId } from './studyStyle';
+import { STUDY_STYLE_OPTIONS, toggleStudyStyle, type StudyStyleId } from './studyStyle';
 import type { PreferenceValues } from '../preferences';
 import { OnboardingHeader, OnboardingProgress, onboardingStyles as s } from './OnboardingParts';
 
@@ -62,9 +62,9 @@ export function StudyStyleScreen({ initialSelected = [], onBack, onContinue, onS
         </View>
       </View>}
       <Text style={styles.label}>Nice to have</Text>
-      <Text style={s.helper}>These rank places higher. They never hide a place.</Text>
+      <Text style={s.helper}>Shown on your profile. Most also rank places higher; they never hide a place.</Text>
       <View style={styles.choices}>
-        {VISIBLE_STUDY_STYLE_OPTIONS.map(({ id, label }) => <Chip key={id} label={label}
+        {STUDY_STYLE_OPTIONS.map(({ id, label }) => <Chip key={id} label={id === 'coffee_nearby' || id === 'whiteboards' ? `${label} · profile only` : label}
           selected={selected.includes(id)}
           onPress={() => setSelected(toggleStudyStyle(selected, id))} />)}
       </View>
