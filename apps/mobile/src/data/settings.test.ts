@@ -75,6 +75,15 @@ describe('device preference persistence', () => {
     expect(next.targetNoise).toBe(0.4);
     expect(next.groupSize).toBe(1);
   });
+  it('merges queued save and preference writes against the latest stored settings', async () => {
+    const {store} = memory();
+    const defaults = defaultSettings(createDemoQuery());
+    await store.save('x', defaults);
+    const save = store.update('x', (current) => ({...current!, savedIds: ['place-a']}));
+    const preference = store.update('x', (current) => ({...current!, preferences: {...current!.preferences, maxPriceLevel: 0}}));
+    await Promise.all([save, preference]);
+    expect(await store.load('x')).toMatchObject({savedIds: ['place-a'], preferences: {maxPriceLevel: 0}});
+  });
   it('restores saved preference edits ahead of earlier onboarding tags', () => {
     const city = {...cities[0]!, id: 'us-tx-austin', mode: 'cached' as const};
     const settings = {...defaultSettings(createDemoQuery()), completed: true, styles: ['outdoor'] as ['outdoor']};

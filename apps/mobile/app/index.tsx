@@ -1,113 +1,129 @@
-import { SessionGate } from '../src/features/session/SessionGate';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link } from 'expo-router';
-import { QuerySchema, type Query, type Recommendation } from '@space/contracts';
-import { DEMO_LABEL } from '@space/fixtures';
+import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/contracts';
+import { DEMO_LABEL, DEMO_NOW } from '@space/fixtures';
 import { provider } from '../src/data';
 import { useSession } from '../src/data/SessionProvider';
-import { SpotCard } from '../src/components';
+import { Button, DatasetLabel, EmptyState, ErrorState, FilterChipRow, LoadingState, MapListToggle,
+  NowLaterControl, SearchBar, SpotCard } from '../src/components';
 import { theme } from '../src/theme';
+import { SessionGate } from '../src/features/session/SessionGate';
 import { FiltersSheet } from '../src/features/explore/FiltersSheet';
 import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../src/features/explore/filters';
 import { OriginControls } from '../src/features/explore/OriginControls';
 import { useOrigin } from '../src/features/explore/useOrigin';
+import { PlaceMap } from '../src/features/explore/PlaceMap';
+import { departureAt, lookupPlaces, venueTime } from '../src/features/explore/presentation';
 
 function Explore() {
   const {session, setQuery} = useSession();
-  const query = session?.query ?? null;
+  const query = session!.query;
+  const city = session!.city;
+  const router = useRouter();
   const [draft, setDraft] = useState<Query | null>(null);
   const [response, setResponse] = useState<Recommendation | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const selectOrigin = useCallback((origin: Query['origin']) => {
-    setQuery((current) => current ? QuerySchema.parse({ ...current, origin }) : current);
-  }, []);
+  const [view, setView] = useState<'map' | 'list'>('list');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [timeMode, setTimeMode] = useState<'now' | 'later'>('now');
+  const [offset, setOffset] = useState<0 | 60 | 120>(0);
+  const [search, setSearch] = useState('');
+  const [places, setPlaces] = useState<Spot[]>([]);
+  const [lookupLoading, setLookupLoading] = useState(true);
+  const [lookupFailed, setLookupFailed] = useState(false);
+  const [lookupAttempt, setLookupAttempt] = useState(0);
+  const selectOrigin = useCallback((origin: Query['origin']) => setQuery((current) => QuerySchema.parse({...current, origin})), [setQuery]);
   const location = useOrigin(selectOrigin);
   useEffect(() => {
-    if (!query) return;
     let active = true;
-    setLoading(true); setError(null); setResponse(null);
-    provider.recommend(query).then((data) => { if (active) setResponse(data); })
-      .catch(() => { if (active) setError('Places could not be loaded. Check your connection and try again.'); })
-      .finally(() => { if (active) setLoading(false); });
-    return () => { active = false; }; // Ignore stale requests after a filter change or unmount.
+    setLoading(true); setError(false); setResponse(null); setSelectedId(null);
+    provider.recommend(query).then((data) => {if (active) setResponse(data);})
+      .catch(() => {if (active) setError(true);})
+      .finally(() => {if (active) setLoading(false);});
+    return () => {active = false;};
   }, [query, attempt]);
-  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => current ? applyIntentPreset(current, intent) : current);
-  if (!query) return <View style={s.page}>
-    <Text style={s.section}>{loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
-    {loading ? <ActivityIndicator accessibilityLabel="Loading dataset" /> : <>
-      <Text role="alert" style={s.body}>{error}</Text>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable>
-    </>}
-  </View>;
-  const resultCount = response?.results.length ?? 0;
-  return <><ScrollView contentContainerStyle={s.page}>
-    {__DEV__ && <Link href="/design-preview" asChild>
-      <Pressable accessibilityRole="link" style={s.chip}><Text style={s.chipText}>Preview A’s design</Text></Pressable>
-    </Link>}
-    <Link href="/preferences" asChild><Pressable accessibilityRole="link" style={s.chip} onPress={location.cancel}><Text style={s.chipText}>Preferences</Text></Pressable></Link>
-    <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
-    <Text style={s.title}>A place for{ '\n' }this moment.</Text>
+  useEffect(() => {
+    let active = true;
+    setPlaces([]); setLookupFailed(false); setLookupLoading(true);
+    provider.listSpots(city.id).then((snapshot) => {if (active) setPlaces(snapshot.spots);})
+      .catch(() => {if (active) setLookupFailed(true);})
+      .finally(() => {if (active) setLookupLoading(false);});
+    return () => {active = false;};
+  }, [city.id, lookupAttempt]);
+  const changeTime = (minutes: 0 | 60 | 120) => {
+    setOffset(minutes); setTimeMode(minutes === 0 ? 'now' : 'later');
+    const now = city.mode === 'demo' ? DEMO_NOW : new Date().toISOString();
+    setQuery((current) => QuerySchema.parse({...current, departAt: departureAt(now, minutes)}));
+  };
+  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => applyIntentPreset(current, intent));
+  const lookup = lookupPlaces(places, search);
+  const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
+  const shown = view === 'map' && selected ? [selected] : response?.results ?? [];
+  return <><ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
+    <View style={s.row}>
+      <Button label="Preferences" variant="outline" onPress={() => {location.cancel(); router.push('/preferences');}} />
+      <Button label={`Saved places (${session!.settings.savedIds.length})`} variant="outline" onPress={() => {location.cancel(); router.push('/saved');}} />
+      {__DEV__ && <Button label="Preview A’s design" variant="outline" onPress={() => {location.cancel(); router.push('/design-preview');}} />}
+    </View>
+    <Text style={s.eyebrow}>FIND YOUR NOOK</Text>
+    <Text style={s.title}>A place for{'\n'}this moment.</Text>
+    <SearchBar value={search} onChangeText={(value) => setSearch(value.slice(0, 120))}
+      onSubmit={() => Keyboard.dismiss()} placeholder="Find a place by name" accessibilityLabel="Find a place in this dataset" />
+    {search.trim().length > 0 && <View style={s.panel}>
+      <Text style={s.heading}>Place lookup</Text>
+      <Text style={s.small}>Looks up this dataset by name/address. Recommendation filters do not apply to these lookup links.</Text>
+      {lookupLoading ? <LoadingState message="Loading place lookup…" /> : lookupFailed ? <ErrorState title="Place lookup unavailable"
+        message="Recommendations remain separate. Retry the place directory." action={{label: 'Retry lookup', onPress: () => setLookupAttempt((value) => value + 1)}} />
+        : lookup.length ? lookup.map((spot) => <Button key={spot.id} label={spot.name} variant="outline"
+          onPress={() => {location.cancel(); Keyboard.dismiss(); router.push({pathname: '/spot/[id]', params: {id: spot.id}});}} />)
+          : <EmptyState title="No place found" message="Try another name or clear your search." action={{label: 'Clear search', onPress: () => setSearch('')}} />}
+    </View>}
     <OriginControls origin={query.origin} busy={location.busy} error={location.error} accuracyMeters={location.accuracyMeters}
-      onDevice={() => { void location.useDevice(); }} onManual={location.useManual} />
-    <Text style={s.body}>{response?.mode === 'demo' ? 'Demo clock' : 'Departure'} · {query.departAt}</Text>
-    <View style={s.banner}><Text style={s.badge}>{response ? response.mode === 'demo' ? DEMO_LABEL : `${response.mode} dataset` : loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
-      {response?.mode === 'demo' && <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text>}</View>
-    <View style={s.row}>
-      {(['study', 'friends'] as const).map((intent) => <Pressable key={intent} accessibilityRole="button"
-        accessibilityState={{ selected: query.intent === intent }} aria-pressed={query.intent === intent} onPress={() => chooseIntent(intent)}
-        style={[s.chip, query.intent === intent && s.selected]}><Text style={s.chipText}>{intent === 'study' ? 'Study' : 'Meet Friends'}</Text></Pressable>)}
-    </View>
-    <View style={s.row}>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}>
-        <Text style={s.chipText}>Filters ({activeFilterCount(query)})</Text>
-      </Pressable>
-    </View>
-    <Text style={s.section}>{loading ? 'Finding matches…' : error ? 'Places unavailable' : `${resultCount} ${resultCount === 1 ? 'place' : 'places'} for you`}</Text>
-    <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {priceLabel(query.maxPriceLevel)}{ '\n' }
-      Categories: {query.categories.length ? query.categories.join(', ') : 'any'} · {query.intent === 'study' ? 'Solo study' : 'Meeting friends'}
-    </Text>
-    {loading && <ActivityIndicator color={theme.colors.chipSelectedText} accessibilityLabel="Loading places" style={s.loader} />}
-    {error && <View style={s.card}><Text role="alert" style={s.body}>{error}</Text>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable></View>}
-    {!loading && response?.results.length === 0 && <View style={s.card}><Text style={s.cardTitle}>No matching places</Text>
-      <Text style={s.body}>No known places meet the selected origin, category, price and estimated walk limits. Your constraints stay in place; edit filters or reset to Study defaults.</Text>
-      {query.origin.source === 'device' && <><Text style={s.body}>Your location may be outside this campus dataset's walking range. Explore from UT Austin without changing your filters.</Text>
-        <Pressable accessibilityRole="button" style={s.chip} onPress={location.useManual}><Text style={s.chipText}>Explore from UT Austin</Text></Pressable></>}
+      onDevice={() => {void location.useDevice();}} onManual={location.useManual} />
+    <DatasetLabel mode={response?.mode ?? city.mode} description={city.mode === 'demo' ? DEMO_LABEL : `Dataset ${city.datasetVersion}`} />
+    <NowLaterControl mode={timeMode} onModeChange={(mode) => changeTime(mode === 'now' ? 0 : offset || 60)}
+      presets={[{id: '60', label: 'In 1 hour'}, {id: '120', label: 'In 2 hours'}]}
+      selectedPresetId={offset ? String(offset) : null} onSelectPreset={(id) => changeTime(id === '120' ? 120 : 60)}
+      timeLabel={`${city.mode === 'demo' ? 'Demo clock · ' : ''}${venueTime(query.departAt, city.timezone).label}`}
+      timezoneLabel={city.timezone} />
+    <FilterChipRow options={[{id: 'study', label: 'Study'}, {id: 'friends', label: 'Meet Friends'}]}
+      selectedId={query.intent === 'study' || query.intent === 'friends' ? query.intent : null}
+      onSelect={chooseIntent} filterCount={activeFilterCount(query)} onOpenFilters={() => setDraft(QuerySchema.parse(query))} />
+    <MapListToggle value={view} onChange={setView} />
+    <Text style={s.heading}>{loading ? 'Finding matches…' : error ? 'Places unavailable' : `${response?.results.length ?? 0} places for you`}</Text>
+    <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {priceLabel(query.maxPriceLevel)}{'\n'}
+      Categories: {query.categories.length ? query.categories.join(', ') : 'any'} · {query.intent === 'study' ? 'Solo study' : 'Meeting friends'}</Text>
+    {loading && <LoadingState />}
+    {error && <ErrorState title="Places unavailable" message="Places could not be loaded. Check your connection and retry."
+      action={{label: 'Retry', onPress: () => setAttempt((a) => a + 1)}} />}
+    {!loading && response?.results.length === 0 && <View style={s.panel}>
+      <EmptyState title="No matching places" message="No known places meet your selected constraints. Edit filters or explicitly reset; constraints are never relaxed automatically."
+        action={{label: 'Edit filters', onPress: () => setDraft(QuerySchema.parse(query))}} />
       <Text style={s.small}>{Object.entries(response.excludedCounts).map(([code, count]) => `${code.replaceAll('_', ' ')}: ${count}`).join(' · ')}</Text>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}><Text style={s.chipText}>Edit filters</Text></Pressable>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(resetExploreFilters(query))}><Text style={s.chipText}>Reset filters</Text></Pressable></View>}
-    {response?.results.map((result, index) => <Link key={result.spotId} href={{ pathname: '/spot/[id]', params: { id: result.spotId } }} asChild>
-      <SpotCard result={result} rank={index + 1} accessibilityRole="link" onPress={location.cancel} />
+      {query.origin.source === 'device' && <Button label="Explore from UT Austin" onPress={location.useManual} variant="outline" />}
+      <Button label="Reset filters" variant="outline" onPress={() => setQuery(resetExploreFilters(query))} />
+    </View>}
+    {view === 'map' && !!response?.results.length && <PlaceMap results={response.results} origin={query.origin}
+      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={setSelectedId} onFallback={() => setView('list')} />}
+    {shown.map((result) => <Link key={result.spotId} href={{pathname: '/spot/[id]', params: {id: result.spotId, arrivalAt: result.arrivalAt}}} asChild>
+      <SpotCard result={result} rank={(response?.results.findIndex((r) => r.spotId === result.spotId) ?? 0) + 1}
+        accessibilityRole="link" onPress={location.cancel} />
     </Link>)}
-    <Text style={s.footer}>{response && `Ranked among ${response.metrics.candidateCount} known ${response.mode === 'demo' ? 'fictional ' : ''}candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
+    <Text style={s.small}>{response && `Ranked among ${response.metrics.candidateCount} known candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
   </ScrollView>
     {draft && <FiltersSheet query={draft} onChange={setDraft} onClose={() => setDraft(null)}
-      onApply={() => { setQuery((current) => current ? applyExploreFilters(current, draft) : current); setDraft(null); }} />}
+      onApply={() => {setQuery((current) => applyExploreFilters(current, draft)); setDraft(null);}} />}
   </>;
 }
-
 const s = StyleSheet.create({
-  page: { padding: 24, gap: 16, paddingBottom: 48, width: '100%', maxWidth: 680, alignSelf: 'center' },
-  eyebrow: { color: theme.colors.chipSelectedText, fontSize: 12, letterSpacing: 3, fontWeight: '700' },
-  title: { color: theme.colors.text, fontSize: 40, lineHeight: 46, fontWeight: '700' },
-  body: { color: theme.colors.textMuted, fontSize: 15, lineHeight: 23 },
-  banner: { backgroundColor: theme.colors.chipSelectedBackground, padding: 16, borderRadius: 14, gap: 8 },
-  badge: { color: theme.colors.chipSelectedText, fontSize: 13, fontWeight: '600' },
-  small: { color: theme.colors.textMuted, fontSize: 13, lineHeight: 20 },
-  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  chip: { minHeight: 48, justifyContent: 'center', paddingHorizontal: 18, borderWidth: 1, borderColor: theme.colors.chipBorder, borderRadius: 24 },
-  selected: { backgroundColor: theme.colors.chipSelectedBackground, borderColor: theme.colors.chipSelectedText },
-  chipText: { color: theme.colors.text, fontSize: 15, fontWeight: '600' },
-  section: { color: theme.colors.text, fontSize: 23, fontWeight: '600', marginTop: 8 },
-  card: { padding: 20, gap: 12, borderRadius: 20, backgroundColor: theme.colors.surface, borderWidth: 1, borderColor: theme.colors.chipBorder },
-  topline: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
-  rank: { color: theme.colors.chipSelectedText, fontSize: 20, fontWeight: '700' }, score: { color: theme.colors.chipSelectedText, fontSize: 13 },
-  cardTitle: { color: theme.colors.text, fontSize: 21, fontWeight: '600' },
-  reason: { color: theme.colors.text, fontSize: 14 }, action: { color: theme.colors.chipSelectedText, fontSize: 14, marginTop: 4 },
-  loader: { padding: 30 }, footer: { color: theme.colors.textMuted, fontSize: 12, lineHeight: 19 },
+  page: {padding: 24, gap: 16, paddingBottom: 48, width: '100%', maxWidth: 680, alignSelf: 'center'},
+  row: {gap: 8}, eyebrow: {color: theme.colors.chipSelectedText, fontSize: 12, letterSpacing: 3, fontWeight: '700'},
+  title: {color: theme.colors.text, fontSize: 40, lineHeight: 46, fontWeight: '700'},
+  heading: {color: theme.colors.text, fontSize: 22, fontWeight: '600'},
+  small: {color: theme.colors.textMuted, fontSize: 13, lineHeight: 20},
+  panel: {backgroundColor: theme.colors.surface, padding: 16, gap: 12, borderRadius: 20},
 });
-
 export default function ExploreRoute() {return <SessionGate><Explore /></SessionGate>;}

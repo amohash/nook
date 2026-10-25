@@ -45,7 +45,7 @@ function Preferences() {
     <PreferencesScreen value={draft} onChange={setDraft} onSave={() => {void save();}}
       onCancel={back} onReset={() => setDraft(PreferenceSchema.parse(createInitialQuery(session.city, new Date().toISOString())))}
       saving={saving} error={error} />
-    <View style={[s.reset, {paddingBottom: Math.max(insets.bottom, 16)}]}><Button label="Reset local preferences & onboarding" variant="outline" disabled={saving}
+    <View style={[s.reset, {paddingBottom: Math.max(insets.bottom, 16)}]}><Button label="Reset local preferences, saves & onboarding" variant="outline" disabled={saving}
       onPress={() => {void resetApp();}} /></View>
   </View>;
 }

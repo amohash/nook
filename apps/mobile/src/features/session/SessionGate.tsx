@@ -14,7 +14,7 @@ export function SessionGate({children}: {children: ReactNode}) {
     {loading ? <LoadingState message="Loading dataset and local preferences…" /> : <>
       <ErrorState title="Dataset or preferences unavailable" message={resetError ?? error ?? 'Please retry.'}
         action={{label: 'Retry', onPress: retry}} />
-      <Button label="Reset local preferences and retry" variant="outline" busy={recovering} onPress={() => {
+      <Button label="Reset local settings and retry" variant="outline" busy={recovering} onPress={() => {
         setRecovering(true); setResetError(null);
         void recoverStorage().catch(() => setResetError('Reset unavailable. Restore the API connection and retry.'))
           .finally(() => setRecovering(false));
