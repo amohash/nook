@@ -553,3 +553,34 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   Render service and repeat audit. Keep all prior artifacts/configuration for rollback.
   D must verify physical-phone filters/parity/source labels/warmup/outage/reconnect.
 - This section is B3-only; preserve B1/B2 appended sections during D's main merge.
+
+## Runtime nearby discovery — implemented, live configuration pending
+
+- Isolated `/private/tmp/nook-runtime-nearby-api`, runtime branch
+  `feat/runtime-nearby-server`; clean main/teammate work preserved. Shared contracts
+  published first as PR#37 (`f075304`,`01d9011`), merged by D as`18b4293`.
+  C's assistant implementation cherry-picked only for B's agreed mount integration;
+  D merges C#39 first. No competing scorer, endpoint, schema or root edits.
+- Implemented `/v1/tester-sessions`, bounded `/v1/discovery`, immutable scoped
+  snapshot/detail reads, session-gated recommendation lookup and C assistant mount.
+  Private api_cache and existing durable budget RPC reused; no migration/service.
+  Fixed all4 supported categories, central Austin box, quantized0.01-degree centers,
+  3000m candidate radius, max4listings+4details, max3 concurrent provider requests,
+  shared durable18 account ceiling and adapter18 acquisition ceiling, no retries.
+  Warm repeat/60s refresh cooldown, persistent leases, stale fallback and measured
+  source freshness/error states implemented; no precise device coordinates retained.
+- Reviews feed C's existing extraction pipeline using validated cache-only inference.
+  Missing AI preserves source places and labels unknown inference. Assistant uses
+  C's bounded transport only if configured; B made0Muse calls.
+- Exact configuration, reproduction, boundaries and existing Render release workflow:
+  `server/NEARBY-OPERATIONS.md`. Operator verification job writes two named public-
+  origin normalized snapshots plus measured cold/warm report for C; no fake live data.
+- Automatically verified checkpoint:418tests/35files, root workspace typecheck,
+  lint, build:server and diff check passed before the final operator-job/documentation
+  additions. Final complete-check results are reported in PR/handoff below.
+- Live command actually attempted with the existing private main server/.env:
+  blocked before network; missing SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,
+  SERPAPI_API_KEY,NEARBY_TESTER_ACCESS_CODE,NEARBY_ACCOUNT_BUDGET_KEY. All were empty/
+  absent; exact names only emitted. User will configure after code. SerpApi attempts0,
+  retries0; Muse attempts0. No live area artifacts, deployment, migration or physical-
+  phone acceptance claimed. Existing public Render release unchanged by this work.
