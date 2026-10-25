@@ -91,11 +91,12 @@ export function CreateProfileScreen({ onDone, onBack }: CreateProfileScreenProps
     if (!client || avatarBusy) return;
     setAvatarError(null);
     try {
-      const picked = await pickAvatar();
-      if (!picked) return;
+      const pick = await pickAvatar();
+      if (!pick) return;
+      if (!pick.ok) { setAvatarError(pick.message); return; }
       setAvatarBusy(true);
-      const result = await uploadAvatar(client, user.id, picked);
-      if (result.ok) setAvatar({ url: result.url, preview: picked.uri });
+      const result = await uploadAvatar(client, user.id, pick.picked);
+      if (result.ok) setAvatar({ url: result.url, preview: result.url });
       else setAvatarError(result.message);
     } catch {
       setAvatarError('Couldn’t open your photos. You can add a picture later.');
