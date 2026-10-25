@@ -9,14 +9,15 @@ Status: P1. CONTRACTS.md keeps P0 guest saves on-device; nothing in P0 depends o
 | File | Purpose |
 |---|---|
 | `migrations/001_social.sql` | Tables, `public_profiles` view, RLS, functions, `avatars` bucket. Idempotent; wrapped in one transaction. |
+| `migrations/002_username_fixed.sql` | Trigger that rejects username changes after creation. Idempotent. |
 | `tests/social_rls.sql` | RLS/permission checks with three throwaway users. Runs in a transaction and rolls back. |
 
 ## Apply
 
 1. Open the **nook-social** project → SQL Editor. Check the project name in the top bar.
-2. Paste `migrations/001_social.sql` and run it. Re-running is safe.
+2. Paste `migrations/001_social.sql` and run it, then `migrations/002_username_fixed.sql`. Re-running is safe.
 3. Paste `tests/social_rls.sql` and run it. The last result should be `social RLS checks passed`. Any exception names the broken rule. No rows are kept.
-4. Authentication → Providers: enable the sign-in method the app uses (for example, email OTP).
+4. Authentication → Providers → Email: enabled, with **Confirm email turned off** (the app signs in right after sign-up).
 
 ## Schema
 
@@ -41,7 +42,9 @@ Status: P1. CONTRACTS.md keeps P0 guest saves on-device; nothing in P0 depends o
 
 ## Client usage
 
-- Env: `EXPO_PUBLIC_SOCIAL_SUPABASE_URL` and `EXPO_PUBLIC_SOCIAL_SUPABASE_ANON_KEY`. Both are public by design; RLS is the boundary. **Never put the service-role key in the app.**
+- App code: `apps/mobile/src/social/` (gate, lazy client, AuthProvider, SignIn/CreateProfile screens).
+- Env (`apps/mobile/.env`, git-ignored; template in `apps/mobile/.env.example`): `EXPO_PUBLIC_SOCIAL_ENABLED=1`, `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`. Social is on only when the flag is `1` and both values are non-empty. These are public by design; RLS is the boundary. **Never put a service-role or secret key in any `EXPO_PUBLIC_*` variable**; the gate refuses to start with one.
+- Usernames are fixed after creation (`002`); the app never sends `username` on update.
 - Username check: `supabase.rpc('is_username_available', { name })`. The unique constraint is still the final arbiter, so handle the `23505` error on insert.
 - Contacts: normalize each number to E.164 on-device, hash it with SHA-256, lowercase the hex, and send at most 200 per `supabase.rpc('match_contacts', { hashes })` call. Store the user's own hash the same way in `profiles.phone_hash`.
 - Avatars: upload to `avatars/{uid}/avatar.jpg` with `upsert: true` (JPEG/PNG/WebP, ≤2 MB), then save the public URL in `profiles.avatar_url`.

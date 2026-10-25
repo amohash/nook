@@ -1,4 +1,4 @@
--- Run in the nook-social SQL editor after 001_social.sql. Everything rolls back; no data is kept.
+-- Run in the nook-social SQL editor after all migrations (001, 002). Everything rolls back; no data is kept.
 -- Success: the script finishes and the last result row says 'social RLS checks passed'.
 -- Failure: an exception names the first broken rule.
 
@@ -57,6 +57,10 @@ do $$ begin
      or public.is_username_available('NO') then raise exception 'is_username_available wrong'; end if;
 end $$;
 
+do $$ begin
+  update public.profiles set username = 'renamed_a' where id = '00000000-0000-4000-8000-00000000000a';
+  raise exception 'username changed after creation';
+exception when insufficient_privilege then null; end $$;
 do $$ begin
   insert into public.follows values ('00000000-0000-4000-8000-00000000000b', '00000000-0000-4000-8000-00000000000c');
   raise exception 'A created a follow on B''s behalf';
