@@ -59,3 +59,19 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
 - Ignored `server/.env` prepared with owner-only permissions; credentials are pending.
   No migration applied or paid provider request made. Phone results are user-reported.
 - D owns PR review/main merge and integrated presenter-phone acceptance.
+
+## PR #7 review fix — C router mount
+
+- Replaced the inline recommendation route/handler injection with C's actual
+  `createRecommendationRouter`, mounted using `app.use('/v1/recommendations', router)`.
+  Removed the unused proposed `RecommendationData` interface.
+- Production-app HTTP tests exercise the real router at the prefix with and without
+  trailing slash. They validate RecommendationSchema, request IDs, scorer parity,
+  fixed demo time, advancing server time for cached/live mode, and preserved source
+  timestamps. Cached/live tests use explicitly synthetic provider test data.
+- Checks: focused HTTP/router tests 27/27; full suite 138/138 across 11 files;
+  workspace typecheck, lint, server build and `git diff --check` passed.
+- User reports provider configuration complete; credentials were not printed or
+  committed. Real capture, migration execution, deployment and the updated router's
+  presenter-phone acceptance remain separately unverified. No paid call or migration
+  was run for this fix. D retains review and main merge.

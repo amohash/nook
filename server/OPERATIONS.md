@@ -6,8 +6,9 @@ Implementation on `feat/data-api` preserves contract version 1. No remote deploy
 real SerpApi capture or Supabase migration application has occurred.
 Coordination is now recorded in [GitHub issue #3](https://github.com/amohash/nook/issues/3),
 **Contract v1: docs/CONTRACTS.md**, tagging C (@Jeffjone) and D (@amohash).
-C and D explicitly approved contract v1 in issue #3 (verified during PR preparation). No additional contract-dependent implementation is included in this handoff.
-The earlier local implementation remains provisional. C now supplies a recommendation router on main; mounting it remains an integration task. The schema review and adapter/fixture plan are in
+C and D explicitly approved contract v1 in issue #3 (verified during PR preparation).
+C’s actual recommendation router is mounted at `/v1/recommendations` through `app.use`.
+The schema review and adapter/fixture plan are in
 [CONTRACT-V1-REVIEW.md](CONTRACT-V1-REVIEW.md).
 
 Current choice: run the API on B's laptop and share it through a temporary Cloudflare
@@ -20,7 +21,7 @@ capture/scenario time `2026-10-24T18:00:00-05:00`. Its ten venues are fictional.
 There is no real Austin dataset artifact yet. Do not present the mock provider tests as
 real captures, measured quota savings, or a deployed API.
 
-## Contract coordination — approved v1, integration pending
+## Contract coordination — approved v1, router integrated
 
 - Keep the existing v1 JSON fields, tag vocabulary and null semantics unchanged.
 - Real Austin canonical city ID: `us-tx-austin`; real snapshot mode: `cached`.
@@ -30,13 +31,13 @@ real captures, measured quota savings, or a deployed API.
 - B's dataset envelope is `{city, snapshot, details}`. Only normalized, validated
   public fields enter this artifact; the private provider response never does.
 - C's merged export is `createRecommendationRouter({loadSnapshot, clock})` from
-  `server/src/routes/recommend.ts`, mounted at `/v1/recommendations`. The earlier
-  `createRecommendationHandler` proposal is superseded. Mounting C's router is the
-  next bootstrap integration step; the optional handler injection remains available.
+  `server/src/routes/recommend.ts`, mounted with `app.use` at `/v1/recommendations`.
+  The earlier `createRecommendationHandler` proposal and optional handler injection
+  are removed; the production app directly constructs C’s router.
   The loader returns the pinned snapshot for its city, null for unknown cities, and
   throws on storage failure. Demo uses the fixed clock; cached real data uses current time.
-- The existing foundation handler still uses `@space/core` and has not been replaced
-  with a new scorer. C's actual route is **not yet mounted**.
+- The inline foundation handler has been removed. C’s router uses the same
+  `@space/core` scorer as the fixture provider; no competing scorer is introduced.
 - D can keep current mobile v1 parsers. Selecting a real dataset must be explicit;
   this API serves one pinned dataset at a time, never a silent demo/live mix.
 - Exporting `z` from contracts keeps server schemas on the same installed Zod major.

@@ -1,15 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import express, { type ErrorRequestHandler, type RequestHandler } from 'express';
 import cors from 'cors';
-import { CitiesSchema, HealthSchema, QuerySchema, RecommendationSchema, SnapshotSchema,
+import { CitiesSchema, HealthSchema, SnapshotSchema,
   SpotDetailSchema } from '@space/contracts';
-import { rankSpots } from '@space/core';
 import { DEMO_NOW } from '@space/fixtures';
 import { z } from '@space/contracts';
 import { DatasetSchema, demoDataset, type Dataset } from './data/dataset';
+import { createRecommendationRouter } from './routes/recommend';
 
-export function createApp({ commit = 'development', dataset = demoDataset, recommendationHandler }: {
-  commit?: string; dataset?: Dataset; recommendationHandler?: RequestHandler;
+export function createApp({ commit = 'development', dataset = demoDataset }: {
+  commit?: string; dataset?: Dataset;
 } = {}) {
   const validated = DatasetSchema.parse(dataset);
   const { snapshot } = validated;
@@ -41,22 +41,9 @@ export function createApp({ commit = 'development', dataset = demoDataset, recom
     }
     res.json(SpotDetailSchema.parse(getDetail(idSchema.parse(req.params.id))));
   });
-  // C can supply the agreed handler here; retain the foundation route until that handoff.
-  app.post('/v1/recommendations', recommendationHandler ?? ((req, res) => {
-    const parsed = QuerySchema.safeParse(req.body);
-    if (!parsed.success) { res.status(400).json(error('invalid_query', 'Query does not match contract version 1', res.locals.requestId)); return; }
-    if (parsed.data.cityId !== snapshot.cityId) { res.status(404).json(error('not_found', 'City not found', res.locals.requestId)); return; }
-    const started = performance.now();
-    const now = snapshot.mode === 'demo' ? DEMO_NOW : new Date().toISOString();
-    const ranking = rankSpots(snapshot.spots, parsed.data, { now });
-    const rankMs = performance.now() - started;
-    res.json(RecommendationSchema.parse({ schemaVersion: 1, requestId: res.locals.requestId,
-      mode: snapshot.mode, datasetVersion: snapshot.datasetVersion, generatedAt: now,
-      results: ranking.results.map((result) => ({ ...result, spot: getDetail(result.spotId).spot })),
-      excludedCounts: ranking.excludedCounts, relaxations: ranking.relaxations,
-      metrics: { rankMs, candidateCount: ranking.candidateCount, qualifyingCount: ranking.qualifyingCount,
-        externalCalls: 0, cacheHits: 0 },
-    }));
+  app.use('/v1/recommendations', createRecommendationRouter({
+    loadSnapshot: async (cityId) => cityId === snapshot.cityId ? snapshot : null,
+    clock: (data) => ({ now: data.mode === 'demo' ? DEMO_NOW : new Date().toISOString() }),
   }));
   app.use((_req, res) => res.status(404).json(error('not_found', 'Route not found', res.locals.requestId)));
   const handleError: ErrorRequestHandler = (err: unknown, _req, res, _next) => {

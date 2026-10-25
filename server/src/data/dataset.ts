@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { z } from '@space/contracts';
-import { CitySchema, SnapshotSchema, SpotDetailSchema, type Snapshot, type SpotDetail } from '@space/contracts';
+import { CitySchema, SnapshotSchema, SpotDetailSchema } from '@space/contracts';
 import { cities, snapshot, getDemoDetail } from '@space/fixtures';
 
 export const DatasetSchema = z.strictObject({ city: CitySchema, snapshot: SnapshotSchema,
@@ -25,10 +25,4 @@ export async function loadDataset(path?: string): Promise<Dataset> {
   const buffer = await readFile(path);
   if (buffer.length > 5_000_000) throw new Error('Dataset too large');
   return DatasetSchema.parse(JSON.parse(buffer.toString('utf8')));
-}
-
-// Proposed C integration boundary: inject C's handler, using the same immutable dataset.
-export interface RecommendationData {
-  snapshot: Snapshot;
-  getDetail(id: string): SpotDetail | undefined;
 }
