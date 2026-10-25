@@ -2,25 +2,41 @@ import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation } from '@space/contracts';
-import { createDemoQuery, DEMO_LABEL } from '@space/fixtures';
+import { DEMO_LABEL } from '@space/fixtures';
 import { provider } from '../src/data';
+import { createInitialQuery } from '../src/data/initialQuery';
 import { FiltersSheet } from '../src/features/explore/FiltersSheet';
 import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../src/features/explore/filters';
 import { OriginControls } from '../src/features/explore/OriginControls';
 import { useOrigin } from '../src/features/explore/useOrigin';
 
 export default function Explore() {
-  const [query, setQuery] = useState<Query>(() => createDemoQuery());
+  const [query, setQuery] = useState<Query | null>(null);
   const [draft, setDraft] = useState<Query | null>(null);
   const [response, setResponse] = useState<Recommendation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
   const selectOrigin = useCallback((origin: Query['origin']) => {
-    setQuery((current) => QuerySchema.parse({ ...current, origin }));
+    setQuery((current) => current ? QuerySchema.parse({ ...current, origin }) : current);
   }, []);
   const location = useOrigin(selectOrigin);
   useEffect(() => {
+    if (query) return;
+    let active = true;
+    setLoading(true); setError(null);
+    provider.listCities().then((cities) => {
+      if (!active) return;
+      const city = cities[0];
+      if (!city) throw new Error('No supported datasets');
+      setQuery(createInitialQuery(city, new Date().toISOString()));
+    }).catch(() => {
+      if (active) { setError('Dataset could not be loaded. Check your connection and try again.'); setLoading(false); }
+    });
+    return () => { active = false; };
+  }, [query, attempt]);
+  useEffect(() => {
+    if (!query) return;
     let active = true;
     setLoading(true); setError(null); setResponse(null);
     provider.recommend(query).then((data) => { if (active) setResponse(data); })
@@ -28,14 +44,21 @@ export default function Explore() {
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; }; // Ignore stale requests after a filter change or unmount.
   }, [query, attempt]);
-  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => applyIntentPreset(current, intent));
+  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => current ? applyIntentPreset(current, intent) : current);
+  if (!query) return <View style={s.page}>
+    <Text style={s.section}>{loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
+    {loading ? <ActivityIndicator accessibilityLabel="Loading dataset" /> : <>
+      <Text role="alert" style={s.body}>{error}</Text>
+      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable>
+    </>}
+  </View>;
   const resultCount = response?.results.length ?? 0;
   return <><ScrollView contentContainerStyle={s.page}>
     <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
     <Text style={s.title}>A place for{ '\n' }this moment.</Text>
     <OriginControls origin={query.origin} busy={location.busy} error={location.error} accuracyMeters={location.accuracyMeters}
       onDevice={() => { void location.useDevice(); }} onManual={location.useManual} />
-    <Text style={s.body}>Demo clock · Oct 24, 2026, 6:00 PM America/Chicago</Text>
+    <Text style={s.body}>{response?.mode === 'demo' ? 'Demo clock' : 'Departure'} · {query.departAt}</Text>
     <View style={s.banner}><Text style={s.badge}>{response ? response.mode === 'demo' ? DEMO_LABEL : `${response.mode} dataset` : loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
       {response?.mode === 'demo' && <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text>}</View>
     <View style={s.row}>
@@ -57,7 +80,7 @@ export default function Explore() {
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable></View>}
     {!loading && response?.results.length === 0 && <View style={s.card}><Text style={s.cardTitle}>No matching places</Text>
       <Text style={s.body}>No known places meet the selected origin, category, price and estimated walk limits. Your constraints stay in place; edit filters or reset to Study defaults.</Text>
-      {query.origin.source === 'device' && <><Text style={s.body}>Your location may be outside this campus dataset's walking range. Explore the demo from UT Austin without changing your filters.</Text>
+      {query.origin.source === 'device' && <><Text style={s.body}>Your location may be outside this campus dataset's walking range. Explore from UT Austin without changing your filters.</Text>
         <Pressable accessibilityRole="button" style={s.chip} onPress={location.useManual}><Text style={s.chipText}>Explore from UT Austin</Text></Pressable></>}
       <Text style={s.small}>{Object.entries(response.excludedCounts).map(([code, count]) => `${code.replaceAll('_', ' ')}: ${count}`).join(' · ')}</Text>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}><Text style={s.chipText}>Edit filters</Text></Pressable>
@@ -74,7 +97,7 @@ export default function Explore() {
     <Text style={s.footer}>{response && `Ranked among ${response.metrics.candidateCount} known ${response.mode === 'demo' ? 'fictional ' : ''}candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
   </ScrollView>
     {draft && <FiltersSheet query={draft} onChange={setDraft} onClose={() => setDraft(null)}
-      onApply={() => { setQuery((current) => applyExploreFilters(current, draft)); setDraft(null); }} />}
+      onApply={() => { setQuery((current) => current ? applyExploreFilters(current, draft) : current); setDraft(null); }} />}
   </>;
 }
 
