@@ -15,6 +15,8 @@ export const ProviderPlaceSchema = z.object({
   // soft on malformed evidence rather than rejecting an otherwise valid place.
   hours: z.unknown().optional(), operating_hours: z.unknown().optional(),
   popular_times: z.unknown().optional(),
+  // An unusable optional photo must not discard an otherwise valid place.
+  thumbnail: z.unknown().optional(),
 });
 export const ProviderResponseSchema = z.object({
   local_results: z.array(z.unknown()).max(200).optional(),
