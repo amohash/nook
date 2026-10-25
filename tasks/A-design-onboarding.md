@@ -1,6 +1,6 @@
 # A design and onboarding assignment
 
-Status: theme, reusable components, three onboarding screens and controlled preferences implemented; checked on Windows and prepared for PR review. D owns integration. New-screen presenter-phone verification is pending; the existing app was confirmed working in Expo Go by D.
+Status: theme, reusable components, three onboarding screens and controlled preferences implemented and checked on Windows. [PR #6](https://github.com/amohash/nook/pull/6) is open against main; not merged. D owns integration. New-screen presenter-phone verification is pending; the existing app was confirmed working in Expo Go by D.
 
 Paste this prompt into your T3 Code thread after opening your assigned branch:
 
@@ -17,7 +17,7 @@ If you are design-only, export specs/assets and test D's implementation; D takes
 
 ## Handoff record
 
-- Branch: `feat/design-onboarding`, safely updated to `origin/main` at `04b2b7c`, including D's foreground-origin adapter. A-only changes are being committed/pushed for a PR to main; D is the merger.
+- Branch: `feat/design-onboarding`, safely updated to `origin/main` at `04b2b7c`, including D's foreground-origin adapter. Implementation commit: `b01bead`. Pushed to origin; [PR #6](https://github.com/amohash/nook/pull/6) targets main. D is the merger. The existing pending write invitation for this repository was accepted to resolve the initial push 403; no repository or remote was created.
 - References: all eight PNGs in `C:\Users\zgaud\Downloads\Nook — Design Foundations(2)` were inspected: component sheet, three onboarding frames, Explore default/loading/empty and detail. Frames use 390 × 844 logical pixels. System sans-serif and Georgia/system serif approximate the reference fonts; no font dependency was added.
 - Existing work preserved: the local root `package.json` `allowScripts` edit remains uncommitted and excluded from this PR. D's routes, Explore/filter/detail/data files, manifests, lockfile and shared contracts were not edited by A.
 - D confirmed the existing app runs in Expo Go. The new A screens still require D's route/storage/GPS wiring and a separate presenter-phone check; source/bundle/browser checks do not establish that device pass.
