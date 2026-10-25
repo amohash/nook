@@ -71,7 +71,7 @@ describe('bounded runtime acquisition (synthetic provider responses)', () => {
     expect(JSON.stringify(data)).not.toContain('97.73949876');
   });
   it('single-flights identical acquisitions and preserves independent concurrent areas', async () => {
-    const { service, store } = setup();
+    const { service, store, count } = setup();
     const other = { ...origin, lat: 30.25, lng: -97.76 };
     const [a, repeat, b] = await Promise.all([service.discover({ sessionId, origin }), service.discover({ sessionId, origin }), service.discover({ sessionId, origin: other })]);
     expect(a.snapshotId).toBe(repeat.snapshotId); expect(repeat.metrics.externalAttempts).toBe(0); expect(repeat.metrics.coalesced).toBe(1);
@@ -80,6 +80,23 @@ describe('bounded runtime acquisition (synthetic provider responses)', () => {
     expect((await service.getDataset(a.snapshotId!))?.snapshot).toEqual(a.snapshot);
     expect((await service.getDataset(b.snapshotId!))?.snapshot).toEqual(b.snapshot);
     expect(store.attempts).toBe(16);
+    expect(count.peak).toBeLessThanOrEqual(3);
+  });
+  it('sparse detail preserves known listing evidence and original capture times', async () => {
+    const { opts, advance } = setup();
+    const transport: typeof fetch = async (input, init) => {
+      const result = await opts.transport(input, init);
+      const payload = await result.json();
+      if (payload.place_results) {
+        advance(1000);
+        delete payload.place_results.rating; delete payload.place_results.reviews;
+      }
+      return Response.json(payload);
+    };
+    const result = await createDiscoveryService({ ...opts, transport }).discover({ sessionId, origin });
+    expect(result.snapshot?.spots.every((s) => s.rating.value === 4.2 && s.reviewCount.value === 30 && s.rating.fetchedAt === '2026-10-25T08:00:00.000Z')).toBe(true);
+    expect(result.metrics.sourceOldestAt).toBe('2026-10-25T08:00:00.000Z');
+    expect(result.metrics.externalAttempts).toBe(8);
   });
   it('persistent lease prevents duplicate paid acquisitions across service instances', async () => {
     const { service, opts, store } = setup();
