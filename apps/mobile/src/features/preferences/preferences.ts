@@ -1,4 +1,5 @@
 import type { Query } from '@space/contracts';
+import { STUDY_STYLE_OPTIONS, type StudyStyleId } from '../onboarding/studyStyle';
 
 export type PreferenceValues = Pick<Query, 'intent' | 'maxWalkMinutes' | 'maxPriceLevel' | 'tagWeights' | 'amenities'>;
 export type VibeTag = keyof Query['tagWeights'];
@@ -20,4 +21,15 @@ export function toggleVibe(values: PreferenceValues, tag: VibeTag): PreferenceVa
     tagWeights[tag] = 1;
   }
   return { ...values, tagWeights };
+}
+
+type TaggedSettings = { styles: readonly StudyStyleId[]; preferences: Pick<PreferenceValues, 'tagWeights'> };
+
+/** Display labels for the saved study styles, then saved vibes not already covered by a style. */
+export function getPreferenceTags({ styles, preferences }: TaggedSettings): string[] {
+  const tags: string[] = STUDY_STYLE_OPTIONS.filter(({ id }) => styles.includes(id)).map(({ label }) => label);
+  for (const { id, label } of VIBE_LABELS) {
+    if ((preferences.tagWeights[id] ?? 0) > 0 && !(styles as readonly string[]).includes(id)) tags.push(label);
+  }
+  return tags;
 }
