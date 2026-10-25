@@ -13,20 +13,20 @@ export function TabBarDesignPreview() {
   const [index, setIndex] = useState(0);
   const [eventText, setEventText] = useState('Tap each tab to preview its selected state.');
   const insets = useSafeAreaInsets();
-  // Only emit/navigate are consumed by NookTabBar. This specimen deliberately has
+  // Only emitter.emit and navigateToTab are consumed by NookTabBar. This specimen deliberately has
   // no Router or real navigation object; production receives the complete props.
   const props = {
     state: { index, routes },
     descriptors: Object.fromEntries(routes.map((route) => [route.key, { options: {} }])),
-    navigation: {
+    emitter: {
       emit: ({ type, target }: { type: string; target: string }) => {
         setEventText(`Preview only: ${type} · ${target.replace('preview-', '')}`);
         return { defaultPrevented: false };
       },
-      navigate: (name: string) => setIndex(routes.findIndex((route) => route.name === name)),
     },
+    navigateToTab: (key: string) => setIndex(routes.findIndex((route) => route.key === key)),
     insets,
-  } as NookTabBarProps;
+  } as unknown as NookTabBarProps;
   return <View style={styles.example}>
     <Text accessibilityRole="header" style={styles.heading}>TabBar + coming-soon screens</Text>
     <Text style={styles.body}>Local visual preview · no routes, accounts or saved data. D keeps the working Saved screen.</Text>

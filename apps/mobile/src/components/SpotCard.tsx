@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { PressableProps } from 'react-native';
+import type { HostInstance, PressableProps } from 'react-native';
 import type { Recommendation } from '@space/contracts';
 import { theme } from '../theme/theme';
 import { DatasetLabel, EvidenceLabel } from './EvidenceLabel';
@@ -25,7 +25,7 @@ function SpotThumbnail({ image, name }: { image: Recommendation['results'][numbe
 }
 
 // Forward the ref and Pressable handlers so D can use <Link asChild> unchanged.
-export const SpotCard = forwardRef<View, SpotCardProps>(function SpotCard({ result, rank, variant = 'default',
+export const SpotCard = forwardRef<HostInstance, SpotCardProps>(function SpotCard({ result, rank, variant = 'default',
   typicalCrowdValue = null, accessibilityRole = 'button', ...props }, ref) {
   const { spot } = result;
   if (variant === 'compact') {

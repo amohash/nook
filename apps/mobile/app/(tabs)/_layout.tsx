@@ -3,8 +3,11 @@ import { NookTabBar } from '../../src/components';
 import { SessionGate } from '../../src/features/session/SessionGate';
 import { theme } from '../../src/theme';
 
+// SDK 58 replaced the Tabs initialRouteName prop with this layout setting.
+export const unstable_settings = { anchor: 'map' };
+
 export default function MainTabs() {
-  return <SessionGate><Tabs tabBar={(props) => <NookTabBar {...props} />} initialRouteName="map" backBehavior="history" screenOptions={{
+  return <SessionGate><Tabs tabBar={(props) => <NookTabBar {...props} />} backBehavior="history" screenOptions={{
     headerStyle: {backgroundColor: theme.colors.background},
     headerTintColor: theme.colors.text,
     sceneStyle: {backgroundColor: theme.colors.background},

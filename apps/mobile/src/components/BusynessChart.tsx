@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, type ScrollViewInstance } from 'react-native';
 import { theme } from '../theme';
 import { EvidenceLabel } from './EvidenceLabel';
 import { crowdHours, typicalWording, validHour, type TypicalCrowd } from './exploreContent';
@@ -9,7 +9,7 @@ export type BusynessChartProps = { typicalCrowd: TypicalCrowd; weekday: number; 
 export function BusynessChart({ typicalCrowd, weekday, currentHour }: BusynessChartProps) {
   const hours = crowdHours(typicalCrowd, weekday);
   const hasData = hours.some((value) => value !== null);
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   const [chartWidth, setChartWidth] = useState(0);
   useEffect(() => {
     if (hasData && chartWidth > 0 && validHour(currentHour)) {
