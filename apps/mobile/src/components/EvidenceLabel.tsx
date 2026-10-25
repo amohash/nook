@@ -2,10 +2,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { DatasetMode, Evidence } from '@space/contracts';
 import { theme } from '../theme/theme';
 import { datasetLabel, evidenceLabel } from './content';
+import { crowdSourceLabel, type TypicalCrowd } from './exploreContent';
 
-export type EvidenceLabelProps = { evidence: Evidence<unknown>; label?: string };
+export type EvidenceLabelProps =
+  | { evidence: Evidence<unknown>; label?: string; source?: never; fetchedAt?: never }
+  | { source: NonNullable<TypicalCrowd>['source']; fetchedAt: string; evidence?: never; label?: never };
 
-export function EvidenceLabel({ evidence, label }: EvidenceLabelProps) {
+export function EvidenceLabel(props: EvidenceLabelProps) {
+  if (props.source !== undefined) return <Text style={[styles.evidence, styles.source]}>{crowdSourceLabel(props.source)} · Fetched {props.fetchedAt}</Text>;
+  const { evidence, label } = props;
   return <Text style={styles.evidence}>{label ? `${label} · ` : ''}{evidenceLabel(evidence)}</Text>;
 }
 
@@ -20,6 +25,7 @@ export function DatasetLabel({ mode, description, fetchedAt }: DatasetLabelProps
 }
 
 const styles = StyleSheet.create({
+  source: { color: theme.colors.secondaryText },
   banner: { borderRadius: theme.radii.card, padding: theme.spacing.lg,
     backgroundColor: theme.colors.chipSelectedBackground, gap: theme.spacing.xxs },
   title: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily,

@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import { palette } from './palette';
 
 // Study style frame: 390 × 844 logical pixels (the supplied export is 2×).
 export const theme = {
@@ -16,10 +17,30 @@ export const theme = {
     progressInactive: '#D9CEB2',
     surface: '#F7F2E4',
     placeholder: '#EEE5CF',
-    error: '#8A392D',
+    error: palette.error,
     disabled: '#B7AE98',
     focus: '#4D6A51',
     transparent: 'transparent',
+    sage: palette.sage500,
+    // UI contrast exception: amber500 is only 2.98:1 on background; this clears 3:1.
+    amber: '#BE882D',
+    rust: palette.rust500,
+    grey: '#89877F',
+    greyBackground: '#ECEBE5',
+    greyText: '#5F625E',
+    // Small-text exception: sage700 is 4.28:1 on chipSelectedBackground; this is 4.96:1.
+    sageText: '#425C46',
+    rustText: palette.error,
+    // Small-caption exception: textMuted is 4.35:1 on surface; this is 5.44:1.
+    secondaryText: '#6D6148',
+    amberBackground: palette.amber300,
+    rustBackground: palette.rust300,
+    observationBackground: '#E8EEF1',
+    observationBorder: '#647986',
+    observationText: '#506570',
+    fitLow: '#E7DFCD',
+    fitModerate: '#B1C0A3',
+    fitHigh: '#4D6A51',
   },
   spacing: { none: 0, xxs: 4, xs: 8, sm: 10, md: 12, lg: 16, section: 20, xl: 24, xxl: 28, xxxl: 40, hero: 56 },
   radii: { field: 12, card: 20, pill: 999 },
@@ -45,6 +66,15 @@ export const theme = {
     logoWidth: 304,
     logoHeight: 158,
     logoMinSpace: 240,
+    mapPin: 44,
+    mapRing: 56,
+    mapHalo: 64,
+    chartHeight: 96,
+    chartColumn: 28,
+    chartZero: 3,
+    chartGap: 12,
+    controlMinWidth: 96,
+    previewSheet: 420,
   },
   opacity: { disabled: 0.55 },
 } as const;
