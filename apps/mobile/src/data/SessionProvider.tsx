@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QuerySchema, type City, type Query } from '@space/contracts';
 import { provider } from '.';
 import { createInitialQuery } from './initialQuery';
-import { applyPreferences, applyStudyStyles, createSettingsStore, defaultSettings, PreferenceSchema,
+import { applyPreferences, onboardingQuery, createSettingsStore, defaultSettings, PreferenceSchema, RankingPreferencesSchema,
   restoredQuery, settingsKey, type Settings } from './settings';
 import type { StudyStyleId } from '../features/onboarding/studyStyle';
 import type { PreferenceValues } from '../features/preferences';
@@ -14,7 +14,7 @@ type SessionValue = {
   session: Session | null; loading: boolean; error: string | null; retry(): void;
   recoverStorage(): Promise<void>;
   setQuery(update: SetStateAction<Query>): void;
-  finishOnboarding(styles: StudyStyleId[]): Promise<void>;
+  finishOnboarding(styles: StudyStyleId[], values?: PreferenceValues): Promise<void>;
   savePreferences(values: PreferenceValues): Promise<void>;
   reset(): Promise<void>;
   toggleSaved(id: string): Promise<void>;
@@ -47,19 +47,20 @@ export function SessionProvider({children}: {children: ReactNode}) {
     setSession((current) => current ? {...current, query: QuerySchema.parse(
       typeof update === 'function' ? update(current.query) : update)} : current);
   }, []);
-  const finishOnboarding = async (styles: StudyStyleId[]) => {
+  const finishOnboarding = async (styles: StudyStyleId[], values?: PreferenceValues) => {
     if (!session) throw new Error('Session unavailable');
-    const query = applyStudyStyles(session.query, styles);
-    const settings: Settings = {...session.settings, completed: true, styles,
-      preferences: PreferenceSchema.parse(query)};
-    await store.save(settingsKey(session.city), settings);
+    const query = onboardingQuery(session.query, styles, values ?? session.settings.preferences);
+    const settings = await store.update(settingsKey(session.city), (current) => ({...(current ?? session.settings),
+      completed: true, styles, preferences: PreferenceSchema.parse(query), rankingPreferences: RankingPreferencesSchema.parse(query)}));
     setSession((current) => current ? {...current, settings,
-      query: applyStudyStyles(current.query, styles)} : current);
+      query: {...query, origin: current.query.origin, departAt: current.query.departAt}} : current);
   };
   const savePreferences = async (values: PreferenceValues) => {
     if (!session) throw new Error('Session unavailable');
     const preferences = PreferenceSchema.parse(values);
-    const settings = await store.update(settingsKey(session.city), (current) => ({...(current ?? session.settings), preferences}));
+    const query = applyPreferences(session.query, preferences);
+    const settings = await store.update(settingsKey(session.city), (current) => ({...(current ?? session.settings), preferences,
+      rankingPreferences: RankingPreferencesSchema.parse(query)}));
     setSession((current) => current ? {...current, settings,
       query: applyPreferences(current.query, preferences)} : current);
   };
