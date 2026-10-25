@@ -22,23 +22,32 @@ database, migrations, provider accounts or deployment are needed for this starte
 The root `mobile.env.example` and `server.env.example` remain planning references;
 use the colocated examples above for these commands.
 
-## Expo Go
+## Expo Go (SDK 58)
+
+From the repository root:
 
 ```sh
-npm run dev:mobile
+npm start -- --clear
 ```
 
-Open **Expo Go compatible with SDK 57** on the presenter phone and scan Metro's
-QR code (iOS Camera or Android Expo Go scanner). Phone and laptop must be on a
-reachable shared network; allow Metro through the laptop firewall. No Xcode,
-Android native project, prebuild, or development client is required.
+`npm start` and `npm run dev:mobile` both launch the Expo Router application in
+`apps/mobile`. Do not run `npx expo start` at the workspace root: it is not an
+Expo app and would otherwise use `expo/AppEntry` and look for a nonexistent
+`App`. The root config now explains the correct command before bundling.
+To invoke Expo directly, use `cd apps/mobile && npx expo start --go --clear`.
+Install Expo/native dependencies from `apps/mobile` with `npx expo install`.
 
-SDK 57 was selected because Expo's current starter guide recommends it for
-physical-device Expo Go during the SDK 58 transition. Match the installed Expo Go
-SDK, rather than assuming the store build matches the newest SDK. See Expo's
-[starter guide](https://docs.expo.dev/more/create-expo/) and
-[compatible Go downloads](https://expo.dev/go). Device launch remains a manual
-handoff gate; browser and native bundle checks do not prove phone compatibility.
+The app uses **Expo SDK 58**, React Native **0.88** and React **19.3**. Use an
+SDK-58-compatible Expo Go; press `i` in Metro to open the iOS Simulator, or scan
+its QR code on the presenter phone. Phone and laptop must be on a reachable
+shared network; allow Metro through the laptop firewall. No prebuild or custom
+native project is required for Expo Go. An older SDK-57 Expo Go simulator app
+must be updated before opening this bundle.
+
+The SDK 58 migration also updates the Router tab-bar API and React Native ref
+types. Runtime startup was checked in Expo Go 58.0.7 on an iPhone 17 Pro
+simulator; this is not physical-device or full-flow acceptance. Match the SDK
+of the installed Expo Go. See [compatible Go downloads](https://expo.dev/go).
 
 The default `EXPO_PUBLIC_DATA_PROVIDER=fixture` opens without a backend. The list
 shows a demo badge, manual UT Austin origin, and the fixed clock **October 24,

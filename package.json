@@ -15,6 +15,7 @@
   },
   "packageManager": "npm@11.6.2",
   "scripts": {
+    "start": "npm run dev:mobile --",
     "dev": "concurrently -k -n api,mobile \"npm run dev:server\" \"npm run dev:mobile\"",
     "dev:mobile": "npm run dev --workspace @space/mobile --",
     "dev:server": "npm run dev --workspace @space/server",
@@ -25,7 +26,7 @@
     "build": "npm run build:server",
     "build:server": "npm run build --workspace @space/server",
     "start:server": "npm run start --workspace @space/server",
-    "export:mobile": "npm run export --workspace @space/mobile"
+    "export:mobile": "npm run export --workspace @space/mobile --"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
