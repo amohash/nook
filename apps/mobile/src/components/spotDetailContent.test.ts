@@ -5,7 +5,7 @@ const unknown: SpotDetailFacts = { wifi: null, outlets: null, noise: null, price
 describe('detail display facts', () => {
   it('consolidates unknown facts into one caption and keeps known negative facts', () => {
     expect(detailFacts({ ...unknown, outlets: 'No', price: 'Free' })).toEqual({
-      known: [{ id: 'outlets', label: 'outlets', value: 'No' }, { id: 'price', label: 'price', value: 'Free' }],
+      known: [{ id: 'outlets', label: 'Outlets', value: 'No' }, { id: 'price', label: 'Price', value: 'Free' }],
       unknownCaption: 'Not yet known: Wi-Fi, noise, hours, public access',
     });
   });

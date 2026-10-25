@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Chip, ErrorState, LoadingState } from '../../components';
 import { theme } from '../../theme/theme';
@@ -24,10 +24,15 @@ export function PreferencesScreen({ value, onChange, onSave, onCancel, onReset, 
   saving = false, error, onRetryLoad, availableIntents = ['study', 'friends'] }: PreferencesScreenProps) {
   const selectedTags = Object.values(value.tagWeights).filter((weight) => (weight ?? 0) > 0).length;
   const walkOptions = [...new Set([5, 10, 15, 20, 30, 45, 60, value.maxWalkMinutes])].sort((a, b) => a - b);
-  return <SafeAreaView style={styles.safeArea}>
+  return <SafeAreaView edges={['top', 'left', 'right']} style={styles.safeArea}>
+    {/* iOS edit-form convention: Cancel leading, Save trailing, always reachable. */}
+    <View style={styles.bar}>
+      <BarButton label="Cancel" disabled={saving} onPress={onCancel} />
+      <Text accessibilityRole="header" numberOfLines={1} style={styles.barTitle}>Preferences</Text>
+      <BarButton label="Save" emphasized busy={saving} disabled={saving || loading} onPress={onSave} />
+    </View>
     <ScrollView style={styles.scroll} contentContainerStyle={styles.page}>
-      <Text accessibilityRole="header" style={styles.title}>Preferences on this device</Text>
-      <Text style={styles.body}>Your defaults for finding a place. Changes take effect when you save.</Text>
+      <Text style={styles.body}>Used to rank places for you. Saved on this device.</Text>
       {loading ? <LoadingState message="Loading your preferences…" /> : <>
         {error && <ErrorState title="Preferences unavailable" message={error}
           action={onRetryLoad ? { label: 'Retry', onPress: onRetryLoad } : undefined} />}
@@ -40,55 +45,71 @@ export function PreferencesScreen({ value, onChange, onSave, onCancel, onReset, 
               onPress={() => onChange({ ...value, intent: id })} />)}
         </View>
         <Text accessibilityRole="header" style={styles.heading}>Your vibe</Text>
-        <Text style={styles.body}>Choose up to three. These are preferences, not promises about available seats.</Text>
+        <Text style={styles.body}>Pick up to three. These rank places higher; they never hide one.</Text>
         <View style={styles.row}>
           {VIBE_LABELS.map(({ id, label }) => <Chip key={id} label={label} selected={(value.tagWeights[id] ?? 0) > 0}
             disabled={saving || (selectedTags >= 3 && !(value.tagWeights[id] ?? 0))}
             onPress={() => onChange(toggleVibe(value, id))} />)}
         </View>
         <Text accessibilityRole="header" style={styles.heading}>Maximum price</Text>
-        <Text style={styles.body}>A price cap is strict and excludes unknown prices. Dollar signs are price levels.</Text>
+        <Text style={styles.body}>With a cap set, places with unknown prices are hidden.</Text>
         <View accessibilityRole="radiogroup" accessibilityLabel="Maximum price" style={styles.row}>
           {([null, 0, 1, 2, 3, 4] as const).map((price) => <Chip key={String(price)}
-            label={price === null ? 'No cap' : price === 0 ? 'Free only' : '$'.repeat(price)}
+            label={price === null ? 'Any price' : price === 0 ? 'Free only' : `Up to ${'$'.repeat(price)}`}
             selectionRole="radio" selected={value.maxPriceLevel === price} disabled={saving}
             onPress={() => onChange({ ...value, maxPriceLevel: price })} />)}
         </View>
-        <Text accessibilityRole="header" style={styles.heading}>Maximum estimated walk</Text>
+        <Text accessibilityRole="header" style={styles.heading}>Walking distance</Text>
         <View accessibilityRole="radiogroup" accessibilityLabel="Maximum estimated walk" style={styles.row}>
           {walkOptions.map((minutes) => <Chip key={minutes} label={`${minutes} min`} selectionRole="radio"
             selected={value.maxWalkMinutes === minutes} disabled={saving}
             onPress={() => onChange({ ...value, maxWalkMinutes: minutes })} />)}
         </View>
         <Text accessibilityRole="header" style={styles.heading}>Wi-Fi and outlets</Text>
-        <Text style={styles.body}>Prefer influences ranking. Require is strict and excludes unknown evidence.</Text>
+        <Text style={styles.body}>Prefer ranks places higher. Require hides places without confirmed Wi-Fi or outlets.</Text>
         {(['wifi', 'outlets'] as const).map((amenity) => <View key={amenity} style={styles.section}>
           <Text style={styles.body}>{amenity === 'wifi' ? 'Wi-Fi' : 'Outlets'}</Text>
           <View accessibilityRole="radiogroup" accessibilityLabel={amenity === 'wifi' ? 'Wi-Fi preference' : 'Outlets preference'} style={styles.row}>
             {(['ignore', 'prefer', 'require'] as const).map((choice) => <Chip key={choice}
-              label={choice === 'ignore' ? 'No preference' : choice === 'prefer' ? 'Prefer' : 'Require (strict)'}
+              label={choice === 'ignore' ? 'Any' : choice === 'prefer' ? 'Prefer' : 'Require'}
               selectionRole="radio" selected={value.amenities[amenity] === choice} disabled={saving}
               onPress={() => onChange({ ...value, amenities: { ...value.amenities, [amenity]: choice } })} />)}
           </View>
         </View>)}
         <View style={styles.section}>
-          <Button label="Save preferences" busy={saving} onPress={onSave} />
           <Button label="Reset to defaults" variant="outline" disabled={saving} onPress={onReset} />
         </View>
       </>}
-      <Button label="Cancel" variant="outline" disabled={saving} onPress={onCancel} />
     </ScrollView>
   </SafeAreaView>;
 }
 
+function BarButton({ label, onPress, disabled, busy = false, emphasized = false }:
+  { label: string; onPress: () => void; disabled: boolean; busy?: boolean; emphasized?: boolean }) {
+  return <Pressable accessibilityRole="button" accessibilityState={{ disabled, busy }} disabled={disabled}
+    onPress={onPress} hitSlop={theme.spacing.xs} style={({ pressed }) => [styles.barButton, (pressed || disabled) && styles.dimmed]}>
+    {busy ? <ActivityIndicator accessibilityLabel={`${label} in progress`} color={theme.colors.text} />
+      : <Text style={[styles.barLabel, emphasized && styles.barLabelEmphasized]}>{label}</Text>}
+  </Pressable>;
+}
+
 const styles = StyleSheet.create({
+  bar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: theme.spacing.xs,
+    minHeight: theme.sizes.tapTarget + theme.spacing.xs, paddingHorizontal: theme.spacing.md,
+    borderBottomWidth: theme.borders.thin, borderBottomColor: theme.colors.chipBorder },
+  barTitle: { flex: 1, textAlign: 'center', color: theme.colors.text, fontFamily: theme.typography.bodyFamily,
+    fontSize: theme.typography.size.button, lineHeight: theme.typography.lineHeight.button,
+    fontWeight: theme.typography.weight.semibold },
+  barButton: { minWidth: theme.sizes.tapTarget, minHeight: theme.sizes.tapTarget,
+    justifyContent: 'center', alignItems: 'center', paddingHorizontal: theme.spacing.xs },
+  barLabel: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily,
+    fontSize: theme.typography.size.button, lineHeight: theme.typography.lineHeight.button },
+  barLabelEmphasized: { fontWeight: theme.typography.weight.bold },
+  dimmed: { opacity: theme.opacity.disabled },
   safeArea: { flex: 1, backgroundColor: theme.colors.background },
   scroll: { flex: 1 },
   page: { flexGrow: 1, width: '100%', maxWidth: theme.sizes.contentMaxWidth, alignSelf: 'center',
     padding: theme.spacing.xl, gap: theme.spacing.lg },
-  title: { color: theme.colors.text, fontFamily: theme.typography.headingFamily,
-    fontSize: theme.typography.size.title, lineHeight: theme.typography.lineHeight.title,
-    fontWeight: theme.typography.weight.bold },
   heading: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily,
     fontSize: theme.typography.size.button, lineHeight: theme.typography.lineHeight.button,
     fontWeight: theme.typography.weight.semibold },

@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     borderRadius: theme.radii.pill, borderWidth: theme.borders.outline,
   },
   primary: { backgroundColor: theme.colors.buttonBackground, borderColor: theme.colors.buttonBackground },
-  outline: { backgroundColor: theme.colors.transparent, borderColor: theme.colors.text },
+  // Secondary actions stay quieter than the one primary action on a screen.
+  outline: { backgroundColor: theme.colors.chipBackground, borderColor: theme.colors.chipBorder, borderWidth: theme.borders.thin },
   pressed: { borderColor: theme.colors.chipSelectedBorder },
   disabled: { opacity: theme.opacity.disabled },
   label: {
