@@ -4,13 +4,17 @@ import { theme } from '../theme/theme';
 import { datasetLabel, evidenceLabel } from './content';
 import { crowdSourceLabel, type TypicalCrowd } from './exploreContent';
 
-export type EvidenceLabelProps =
+export type EvidenceLabelProps = (
   | { evidence: Evidence<unknown>; label?: string; source?: never; fetchedAt?: never }
-  | { source: NonNullable<TypicalCrowd>['source']; fetchedAt: string; evidence?: never; label?: never };
+  | { source: NonNullable<TypicalCrowd>['source']; fetchedAt: string; evidence?: never; label?: never }
+) & { variant?: 'default' | 'compact' };
 
 export function EvidenceLabel(props: EvidenceLabelProps) {
   if (props.source !== undefined) return <Text style={[styles.evidence, styles.source]}>{crowdSourceLabel(props.source)} · Fetched {props.fetchedAt}</Text>;
   const { evidence, label } = props;
+  if (props.variant === 'compact') return <Text style={[styles.evidence, styles.source]}>
+    Source: {evidence.source} · {evidence.observedAt ? `Observed ${evidence.observedAt}` : `Fetched ${evidence.fetchedAt}`}
+  </Text>;
   return <Text style={styles.evidence}>{label ? `${label} · ` : ''}{evidenceLabel(evidence)}</Text>;
 }
 
