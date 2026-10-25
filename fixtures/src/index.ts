@@ -1,4 +1,5 @@
 import { CitiesSchema, QuerySchema, SnapshotSchema, type Evidence, type Spot } from '@space/contracts';
+export { demoPlaceNotes, demoNoteWarnings, type DemoPlaceNotes } from './demo-place-notes';
 
 export const DEMO_NOW = '2026-10-24T18:00:00-05:00';
 export const DATASET_VERSION = 'fictional-austin-v2';

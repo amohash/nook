@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Linking, Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { QuerySchema, type SpotDetail } from '@space/contracts';
-import { DEMO_NOW } from '@space/fixtures';
+import { DEMO_NOW, demoPlaceNotes, demoNoteWarnings } from '@space/fixtures';
 import { useSession } from '../../src/data/SessionProvider';
 import { hoursStatus, venueTime } from '../../src/features/explore/presentation';
 import { isShareCancellation, matchingRecommendation, publicAccessLabel, publicMapsUrl, shareMessage,
@@ -24,6 +24,7 @@ function Detail() {
   const [fitLoading, setFitLoading] = useState(true);
   const [fitError, setFitError] = useState(false);
   const [fitAttempt, setFitAttempt] = useState(0);
+  const [showProviderEvidence, setShowProviderEvidence] = useState(false);
   useEffect(() => {
     let active = true;
     setContext(null); setFitLoading(true); setFitError(false);
@@ -47,6 +48,7 @@ function Detail() {
   useEffect(() => {
     let active = true;
     setLoading(true); setError(null); setDetail(null);
+    setShowProviderEvidence(false);
     const load = archived ? Promise.resolve({...archived, spot: {...archived.spot,
       datasetMode: archived.spot.datasetMode === 'demo' ? 'demo' as const : 'cached' as const}}) : provider.getSpot(id, detailSnapshotId);
     load.then((data) => {if (active) setDetail(data);})
@@ -55,7 +57,9 @@ function Detail() {
     return () => {active = false;};
   }, [id, attempt, detailSnapshotId, archived]);
   const spot = detail?.spot;
+  const demoNotes = spot ? demoPlaceNotes(spot) : null;
   const result = spot ? matchingRecommendation(spot, query, context) : null;
+  const warnings = demoNoteWarnings(result?.warnings ?? [], demoNotes);
   const reasons = spot ? supportedReasons(spot, result) : [];
   const selectedTime = result?.arrivalAt ?? query.departAt;
   const moment = venueTime(selectedTime, spot?.timezone ?? session!.city.timezone);
@@ -95,10 +99,11 @@ function Detail() {
     name={spot.name} photoUrl={spot.image?.url} photoAttribution={spot.image?.attribution}
     category={spot.categories.join(' · ')} walkMinutes={result?.estimatedWalkMinutes ?? null}
     rating={spot.rating.value} reviewCount={spot.reviewCount.value} fitScore={result?.score ?? null}
-    openStatus={status}
+    openStatus={demoNotes ? {status: 'unknown', label: `Team demo hours: ${demoNotes.facts.hours}`} : status}
     dataset={{mode: spot.datasetMode, fetchedAt: spot.fetchedAt,
       description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : archived ? 'Saved public place snapshot; current conditions unverified.' : undefined}}
     typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour}
+    activityNote={demoNotes ? {text: demoNotes.typicalActivity, source: demoNotes.label} : undefined}
     liveObservation={spot.liveObservation}
     vibe={{summary: spot.summary, tags: Object.keys(spot.tags.value ?? {}).map((tag) => tag.replaceAll('_', ' '))}}
     facts={{
@@ -108,6 +113,7 @@ function Detail() {
       price: spot.priceLevel.value === null ? null : priceLabel(spot.priceLevel.value),
       hours: spot.hoursStatus === 'known' ? 'Weekly schedule available; source times apply' : null,
       publicAccess: spot.publicAccess.value === null || spot.publicAccess.value === 'unknown' ? null : publicAccessLabel(spot),
+      ...demoNotes?.facts,
     }}
     actionError={actionError}
     actions={{saved: session!.settings.savedIds.includes(id), saving, mapsDisabled: !url,
@@ -117,6 +123,11 @@ function Detail() {
       <Text style={s.body}>{spot.address}</Text>
       <Text style={s.small}>{result ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {query.sessionMinutes} min session</Text>
       <View style={s.panel}><Text style={s.heading}>Why this spot</Text>
+        {demoNotes && <>
+          <Text style={s.small}>{demoNotes.label}</Text>
+          <Text style={s.small}>These notes describe the demo locations. Fit scores and strict filters still use the separate provider evidence.</Text>
+          {warnings.map((warning, index) => <Text key={`demo-${index}`} style={s.body}>{warning}</Text>)}
+        </>}
         {result ? <>
           <Text style={s.small}>Matches in the current ranked shortlist. Fit is based on available evidence, not guaranteed conditions.</Text>
           {reasons.map((reason) => <View key={reason.code}>
@@ -125,8 +136,8 @@ function Detail() {
               <Text style={s.small}>Estimated from distance; actual walking routes may differ.</Text>}
           </View>)}
           {!reasons.length && <Text style={s.body}>No supported fit explanations available.</Text>}
-          {result.warnings.length > 0 && <Text style={s.heading}>Things to check</Text>}
-          {result.warnings.map((warning, index) => <Text key={index} style={s.body}>{warning}</Text>)}
+          {!demoNotes && warnings.length > 0 && <Text style={s.heading}>Things to check</Text>}
+          {!demoNotes && warnings.map((warning, index) => <Text key={index} style={s.body}>{warning}</Text>)}
         </> : <>
           <Text style={s.body}>{fitLoading ? 'Checking fit with your current preferences…' : fitError
             ? 'Fit check unavailable. Place facts are shown below.'
@@ -137,10 +148,18 @@ function Detail() {
           </Pressable>}
         </>}
       </View>
-      <Text style={s.small}>Historical typical crowd at the selected time in {spot.timezone}. This is not seat availability. Walking estimates use distance, not a verified route.</Text>
+      <Text style={s.small}>{demoNotes ? 'Typical activity is a qualitative team demo note, not a current observation.' : `Historical typical crowd at the selected time in ${spot.timezone}. This is not seat availability.`} Walking estimates use distance, not a verified route.</Text>
       {!spot.liveObservation && <Text style={s.small}>Current observation unknown.</Text>}
       {spot.datasetMode === 'demo' && <Text style={s.small}>Maps is unavailable for fictional demo places.</Text>}
-      <View style={s.panel}><Text style={s.heading}>Fact sources</Text>
+      <View style={s.panel}><Text style={s.heading}>{demoNotes ? 'Provider evidence' : 'Fact sources'}</Text>
+        {demoNotes && <>
+          <Text style={s.small}>Separate from the team-provided demo notes above. Provider fields may still be unknown.</Text>
+          <Pressable accessibilityRole="button" accessibilityState={{expanded: showProviderEvidence}}
+            onPress={() => setShowProviderEvidence((value) => !value)}>
+            <Text style={s.action}>{showProviderEvidence ? 'Hide provider evidence' : 'Show provider evidence'}</Text>
+          </Pressable>
+        </>}
+        {(!demoNotes || showProviderEvidence) && <>
         <EvidenceLabel label="Price" evidence={spot.priceLevel} />
         <EvidenceLabel label="Rating" evidence={spot.rating} />
         <EvidenceLabel label="Review count" evidence={spot.reviewCount} />
@@ -158,6 +177,7 @@ function Detail() {
           disabled={!evidence.sourceUrl || !/^https?:\/\//.test(evidence.sourceUrl)} onPress={() => {void openLink(evidence.sourceUrl);}}>
           <Text style={s.small}>{evidence.text}</Text>{evidence.sourceUrl && <Text style={s.action}>View source →</Text>}
         </Pressable>)}
+        </>}
       </View>
       <Text style={s.small}>Dataset: {spot.datasetVersion}</Text>
     </>}
