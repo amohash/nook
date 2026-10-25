@@ -6,8 +6,10 @@ import type { PreferenceValues } from '../features/preferences';
 
 export const PreferenceSchema = QuerySchema.pick({intent: true, maxWalkMinutes: true,
   maxPriceLevel: true, tagWeights: true, amenities: true}).strip();
+export const RankingPreferencesSchema = QuerySchema.pick({targetNoise: true, targetCrowd: true, groupSize: true}).strip();
 const StyleSchema = z.enum(STUDY_STYLE_OPTIONS.map(({id}) => id) as [StudyStyleId, ...StudyStyleId[]]);
 export const SettingsSchema = z.strictObject({version: z.literal(1), completed: z.boolean(),
+  rankingPreferences: RankingPreferencesSchema.optional(),
   savedIds: z.array(z.string().min(1).max(200)).max(200).default([]),
   styles: z.array(StyleSchema).max(STUDY_STYLE_OPTIONS.length), preferences: PreferenceSchema});
 export type Settings = z.infer<typeof SettingsSchema>;
@@ -57,7 +59,7 @@ export function applyStudyStyles(query: Query, styles: readonly StudyStyleId[]):
   const someChatter = styles.includes('some_chatter');
   return QuerySchema.parse({...query,
     // Both noise choices use the existing Balanced target; no new scorer.
-    targetNoise: someChatter ? 0.4 : query.targetNoise,
+    targetNoise: someChatter ? 0.4 : styles.includes('quiet') ? 0.15 : query.targetNoise,
     groupSize: styles.includes('solo') ? 1 : query.groupSize,
     tagWeights: {...query.tagWeights, ...tags},
     amenities: {...query.amenities,
@@ -65,7 +67,18 @@ export function applyStudyStyles(query: Query, styles: readonly StudyStyleId[]):
       outlets: styles.includes('outlets') && query.amenities.outlets === 'ignore' ? 'prefer' : query.amenities.outlets},
   });
 }
+// Apply intent first so styles (Balanced noise / Solo) survive a Friends restart.
+// Saved preference edits remain authoritative over the earlier style tags.
+export function onboardingQuery(query: Query, styles: readonly StudyStyleId[], values: PreferenceValues): Query {
+  const intent = values.intent;
+  const preset = intent === 'study' || intent === 'friends' ? applyIntentPreset(query, intent) : query;
+  return applyStudyStyles(applyPreferences(preset, {...values, tagWeights: preset.tagWeights}), styles);
+}
 export function restoredQuery(city: City, settings: Settings | null, now: string): Query {
   const initial = createInitialQuery(city, now);
-  return settings ? applyPreferences(applyStudyStyles(initial, settings.styles), settings.preferences) : initial;
+  if (!settings) return initial;
+  const intent = settings.preferences.intent;
+  const preset = intent === 'study' || intent === 'friends' ? applyIntentPreset(initial, intent) : initial;
+  const restored = applyPreferences(applyStudyStyles(preset, settings.styles), settings.preferences);
+  return QuerySchema.parse({...restored, ...settings.rankingPreferences});
 }

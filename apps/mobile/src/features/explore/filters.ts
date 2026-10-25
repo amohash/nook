@@ -25,13 +25,15 @@ export function resetExploreFilters(query: Query): Query {
   return applyExploreFilters(query, createDemoQuery());
 }
 
-// A GPS result can arrive while the sheet is open. Apply only its filter fields,
+// Origin or departure time can change while the sheet is open. Apply only filter fields,
 // preserving the latest origin/time instead of restoring stale draft context.
 export function applyExploreFilters(query: Query, draft: Query): Query {
   return QuerySchema.parse({ ...query, categories: draft.categories,
     maxPriceLevel: draft.maxPriceLevel, maxWalkMinutes: draft.maxWalkMinutes,
     intent: draft.intent, groupSize: draft.groupSize, targetNoise: draft.targetNoise,
     targetCrowd: draft.targetCrowd, tagWeights: draft.tagWeights,
+    sessionMinutes: draft.sessionMinutes, requireOpenForSession: draft.requireOpenForSession,
+    amenities: draft.amenities, access: draft.access,
   });
 }
 
@@ -47,6 +49,11 @@ export function activeFilterCount(query: Query): number {
     query.maxWalkMinutes !== defaults.maxWalkMinutes,
     query.targetNoise !== defaults.targetNoise || query.targetCrowd !== defaults.targetCrowd || !sameTags(query.tagWeights, defaults.tagWeights),
     query.intent !== defaults.intent || query.groupSize !== defaults.groupSize,
+    query.sessionMinutes !== defaults.sessionMinutes,
+    query.requireOpenForSession !== defaults.requireOpenForSession,
+    query.amenities.wifi !== defaults.amenities.wifi,
+    query.amenities.outlets !== defaults.amenities.outlets,
+    query.access !== defaults.access,
   ].filter(Boolean).length;
 }
 

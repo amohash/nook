@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cities, createDemoQuery } from '@space/fixtures';
 import { applyPreferences, applyStudyStyles, createSettingsStore, defaultSettings,
-  restoredQuery, settingsKey, type SettingsStorage } from './settings';
+  RankingPreferencesSchema, onboardingQuery, restoredQuery, settingsKey, type SettingsStorage } from './settings';
 
 function memory() {
   const values = new Map<string, string>();
@@ -93,5 +93,54 @@ describe('device preference persistence', () => {
     expect(restored.cityId).toBe('us-tx-austin');
     expect(restored.departAt).toBe('2026-10-26T01:00:00Z');
     expect(restored.origin.source).toBe('manual');
+  });
+});
+
+
+describe('onboarding choices', () => {
+  it('keeps later preference edits authoritative over original Solo / chatter choices', () => {
+    const initial = createDemoQuery();
+    const original = onboardingQuery(initial, ['solo', 'some_chatter'], {...initial, intent: 'friends'});
+    const edited = applyPreferences(original, {...original, intent: 'study'});
+    const settings = {...defaultSettings(edited), completed: true, styles: ['solo', 'some_chatter'] as ['solo', 'some_chatter'],
+      rankingPreferences: RankingPreferencesSchema.parse(edited)};
+    const restored = restoredQuery(cities[0]!, settings, initial.departAt);
+    expect(restored).toMatchObject({intent: 'study', groupSize: edited.groupSize, targetNoise: edited.targetNoise, targetCrowd: edited.targetCrowd});
+  });
+
+  it('restores Friends intent, budget, walk, Solo and Balanced exactly after restart', async () => {
+    const {store, values} = memory();
+    const city = {...cities[0]!, mode: 'cached' as const};
+    const initial = createDemoQuery({origin: {lat: 11, lng: 22, source: 'device'}});
+    const styles = ['solo', 'some_chatter', 'wifi', 'outdoor', 'whiteboards'] as const;
+    const query = onboardingQuery(initial, styles, {...initial, intent: 'friends', maxPriceLevel: 0, maxWalkMinutes: 10});
+    const settings = {...defaultSettings(query), completed: true, styles: [...styles]};
+    await store.save(settingsKey(city), settings);
+    const restored = restoredQuery(city, await store.load(settingsKey(city)), '2026-10-25T12:00:00Z');
+    for (const key of ['intent', 'maxPriceLevel', 'maxWalkMinutes', 'targetNoise', 'targetCrowd', 'groupSize', 'tagWeights', 'amenities'] as const) {
+      expect(restored[key]).toEqual(query[key]);
+    }
+    expect(query).toMatchObject({intent: 'friends', groupSize: 1, targetNoise: 0.4});
+    expect(restored.origin).toEqual({lat: city.lat, lng: city.lng, source: 'manual'});
+    expect(values.get(settingsKey(city))).not.toContain('"lat"');
+    expect(query.tagWeights).not.toHaveProperty('whiteboards');
+  });
+  it('uses the selected intent preset before styles and preserves strict fields', () => {
+    const initial = createDemoQuery({categories: ['library'], requireOpenForSession: true, access: 'public_only'});
+    const friends = onboardingQuery(initial, [], {...initial, intent: 'friends'});
+    expect(friends).toMatchObject({intent: 'friends', groupSize: 4, targetNoise: 0.65,
+      categories: ['library'], requireOpenForSession: true, access: 'public_only'});
+    expect(friends.tagWeights).toEqual({lively: 1, group_friendly: 1});
+    expect(onboardingQuery(initial, ['quiet'], {...initial, intent: 'friends'}).targetNoise).toBe(0.15);
+  });
+  it('resets persisted completion, choices and saved places to the initial defaults', async () => {
+    const {store} = memory();
+    const initial = createDemoQuery();
+    await store.save('x', {...defaultSettings(initial), completed: true, styles: ['outdoor'], savedIds: ['place-a'],
+      preferences: {...defaultSettings(initial).preferences, intent: 'friends', maxPriceLevel: 0, maxWalkMinutes: 5}});
+    await store.save('x', defaultSettings(initial));
+    expect(await store.load('x')).toEqual(defaultSettings(initial));
+    expect(restoredQuery(cities[0]!, await store.load('x'), initial.departAt)).toMatchObject({
+      intent: 'study', maxPriceLevel: null, maxWalkMinutes: 15, origin: {...initial.origin, source: 'manual'}});
   });
 });
