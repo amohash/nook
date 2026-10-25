@@ -2,24 +2,36 @@
 
 ## Current state
 
-Implementation on `feat/data-api` preserves contract version 1. No remote deployment,
-real SerpApi capture or Supabase migration application has occurred.
-Coordination is now recorded in [GitHub issue #3](https://github.com/amohash/nook/issues/3),
-**Contract v1: docs/CONTRACTS.md**, tagging C (@Jeffjone) and D (@amohash).
-C and D explicitly approved contract v1 in issue #3 (verified during PR preparation).
-C’s actual recommendation router is mounted at `/v1/recommendations` through `app.use`.
-The schema review and adapter/fixture plan are in
-[CONTRACT-V1-REVIEW.md](CONTRACT-V1-REVIEW.md).
+Implementation on `feat/data-api` preserves contract version 1. C/D approvals are
+recorded in [issue #3](https://github.com/amohash/nook/issues/3). C's actual router is
+mounted through `app.use('/v1/recommendations', router)`.
 
-Current choice: run the API on B's laptop and share it through a temporary Cloudflare
-Quick Tunnel. The user rejected Koyeb; Render and Koyeb notes below are historical,
-not active deployment instructions. No paid host or Supabase project was created.
-Migrations remain files only. No shared contract changes are part of this setup.
+On 2026-10-25 UTC, B applied `202610250001_data_api.sql` once through SQL Editor to
+project `nntbhzrhvqgvmwrmorhe` (user-reported region `us-east-1`). Public schema was
+empty and no CLI migration-history table existed. The file's SHA-256 is
+`572fa04660488fd76b239784478ec1a50e6c9cc74485ec94b7b5ce065fe0c51e`.
+This manual application must be reconciled before any future CLI migration push;
+do not reapply the create-table migration. Privilege/RLS checks and actual read/RPC
+denial under anon/authenticated passed; service-role cache reads returned 200.
 
-The active bundled dataset remains **`fictional-austin-v1`**, city `demo-austin`,
-capture/scenario time `2026-10-24T18:00:00-05:00`. Its ten venues are fictional.
-There is no real Austin dataset artifact yet. Do not present the mock provider tests as
-real captures, measured quota savings, or a deployed API.
+Real snapshot: `fixtures/data/austin-20261025-v1.json`, city `us-tx-austin`, mode
+`cached`, 30 places and ten detail evidence records. Published document in Supabase
+matches the artifact. Total durable provider attempts: 13 of the 18 ceiling. No
+budget reset was used. Raw cache stays private; the file contains normalized facts.
+The single-place smoke artifact is separate and not published.
+
+The actual app locally served this artifact with list/detail/recommendation 200,
+three qualifying recommendations, zero external calls during reranking, honest
+empty results and missing detail 404. This does not verify presenter-phone behavior
+or a public deployment using real data. Hours/amenities/atmosphere and real Muse
+summaries remain unknown; detail evidence contains provider identity/address facts.
+
+Current hosting choice is B's laptop plus a temporary Cloudflare tunnel. No paid
+host was created by B. The existing running server still serves the labeled demo;
+no automatic switch to real data was performed. After review, start the server with
+`DATASET_PATH=../fixtures/data/austin-20261025-v1.json` (server working directory),
+then explicitly select `us-tx-austin` in the mobile query. Do not reuse demo city IDs
+or a demo clock for the real snapshot. D owns the mobile selection and phone check.
 
 ## Contract coordination — approved v1, router integrated
 

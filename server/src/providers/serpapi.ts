@@ -6,7 +6,9 @@ export const ProviderPlaceSchema = z.object({
   place_id: z.string().min(1).max(200), data_id: z.string().max(200).optional(),
   title: z.string().min(1).max(160), address: z.string().min(1).max(300),
   gps_coordinates: z.object({ latitude: z.number().min(-90).max(90), longitude: z.number().min(-180).max(180) }),
-  type: z.string().max(60).optional(), rating: z.number().min(0).max(5).optional(),
+  // Search uses a string; place details may return an ordered category array.
+  type: z.union([z.string().max(60), z.array(z.string().max(60)).min(1).max(20)])
+    .transform((value) => typeof value === 'string' ? value : value[0]).optional(), rating: z.number().min(0).max(5).optional(),
   reviews: z.number().int().nonnegative().optional(), price: z.string().max(40).optional(),
   permanently_closed: z.boolean().optional(), temporarily_closed: z.boolean().optional(),
 });

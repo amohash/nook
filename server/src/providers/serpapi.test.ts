@@ -109,6 +109,12 @@ describe('normalization and snapshot integrity', () => {
     expect(first.publicPlaceUrl).toContain('query_place_id=test-place');
     expect(deduplicatePlaces([first, later])).toEqual([later]);
   });
+  it('accepts detail category arrays and retains the primary category', () => {
+    const detail = normalizePlace({ ...place, type: ['Coffee shop', 'Tea house'] }, '2026-10-25T00:00:00Z', 'austin-test');
+    expect(detail.categories).toEqual(['cafe']);
+    expect(detail.providerPlaceId).toBe(place.place_id);
+    expect(() => normalizePlace({ ...place, type: [42] }, '2026-10-25T00:00:00Z', 'austin-test')).toThrow();
+  });
   it('rejects invalid coordinates and mismatched or duplicate snapshot records', () => {
     expect(() => normalizePlace({ ...place, gps_coordinates: { latitude: 91, longitude: 0 } }, '2026-10-25T00:00:00Z', 'austin-test')).toThrow();
     expect(DatasetSchema.safeParse({ ...demoDataset, city: { ...demoDataset.city, id: 'wrong' } }).success).toBe(false);

@@ -1,9 +1,11 @@
 # B data and infrastructure assignment
 
-Status: C/D contract approval verified in issue #3; user reports presenter-phone/API access complete.
-Earlier local provider/cache work is ready for D's PR review. Local laptop hosting
-uses a temporary HTTPS tunnel. Supabase setup and credentials are pending;
-migrations remain unapplied and real SerpApi capture is not verified.
+Status: contract v1 approved; C's router integrated. Supabase migration applied and
+private-role checks passed on project `nntbhzrhvqgvmwrmorhe` (`us-east-1`). Real cached
+Austin snapshot captured: 30 places, ten details, 13 total external attempts under
+the 18-attempt ceiling. Real dataset API smoke passed locally. Presenter-phone
+acceptance of this real snapshot and a hosted/restarted server remain pending.
+GitHub reports PR #7 open; D owns main merge.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -75,3 +77,43 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   committed. Real capture, migration execution, deployment and the updated router's
   presenter-phone acceptance remain separately unverified. No paid call or migration
   was run for this fix. D retains review and main merge.
+
+## Real capture checkpoint — 2026-10-25 02:52 UTC
+
+- Target confirmed: `nntbhzrhvqgvmwrmorhe`, user-reported region `us-east-1`.
+  Fixed the ignored local URL's missing `h`; credentials never printed or committed.
+- SQL Editor preflight: empty public schema; `supabase_migrations.schema_migrations`
+  absent. Applied the existing `202610250001_data_api.sql` in its transaction once.
+  SHA-256: `572fa04660488fd76b239784478ec1a50e6c9cc74485ec94b7b5ce065fe0c51e`.
+  This was a manual SQL Editor application, not a CLI migration-history entry;
+  future migration tooling must reconcile this application instead of rerunning it.
+- `supabase/tests/private_access.sql` passed. Additional rolled-back SQL switched to
+  both `anon` and `authenticated`: all seven private table reads and the ingestion
+  reservation RPC raised insufficient_privilege. Service-role cache reads returned 200.
+- First provider response persisted successfully but the seed's string timestamp check
+  rejected equivalent `Z`/`+00:00` instants. Fixed comparison to use instants; restart
+  reused the persistent cache. One-place smoke: one place, zero extra calls, two hits.
+- Detail capture exposed `type` as an array. Added bounded primary-category parsing
+  with a synthetic regression test. One intermediate provider attempt failed without
+  a cached result; the failure type was not recorded by the old generic CLI handler.
+  The CLI now emits only safe internal error codes. Resumed under the same durable
+  version budget, without resetting or increasing it.
+- Published `austin-20261025-v1`: 30 unique places, ten detail evidence records, no
+  invalid records in the successful capture. Final successful run made six external
+  calls and eight cache hits; total durable attempts across all runs = 13.
+- Supabase counts: 30 spots, ten evidence rows, one dataset. Canonical stored document
+  matches `fixtures/data/austin-20261025-v1.json`; normalized artifact credential scan
+  passed. One-place artifact is also retained separately and was never published.
+- Actual app smoke over this real snapshot: list/detail/recommendation 200, three
+  matching recommendations, zero provider calls during ranking, no-match count zero,
+  missing detail 404. Real mode is `cached`, with current server ranking time and
+  unchanged source times. No map/mobile state was changed to select it silently.
+- Checks after syncing A's merged UI: workspace typecheck, 149 tests across 14 files,
+  lint, server build, diff whitespace check all pass.
+- Limits: hours, amenities, atmosphere and Muse summaries remain unknown unless source
+  evidence exists; detail evidence here contains source name/address/fetch facts, not
+  review excerpts. No real-venue Muse extraction or presenter-phone real snapshot
+  verification was performed. Existing laptop tunnel was not redeployed/restarted.
+- Next: D reviews PR #7 and explicitly selects real city `us-tx-austin` and dataset
+  `austin-20261025-v1` in the mobile flow. B sets DATASET_PATH for a reviewed server
+  restart and C receives the snapshot for evidence work. Keep demo mode separate.

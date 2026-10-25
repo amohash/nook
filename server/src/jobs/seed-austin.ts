@@ -5,6 +5,7 @@ import { z } from '@space/contracts';
 import type { Spot, SpotDetail } from '@space/contracts';
 import { SerpApi, ProviderPlaceSchema } from '../providers/serpapi';
 import { SupabaseStore } from '../data/supabase';
+import { ServiceError } from '../providers/http';
 import { AUSTIN_CITY_ID, deduplicatePlaces, normalizePlace } from '../data/normalize';
 import { DatasetSchema } from '../data/dataset';
 
@@ -27,7 +28,8 @@ async function main() {
       const response = await api.request(params);
       // Verify a repeat is served from persistent cache without resetting fetchedAt.
       const repeat = await api.request(params);
-      if (repeat.fetchedAt !== response.fetchedAt) throw new Error('Cache repeat mismatch');
+      // Postgres may render the same timestamptz as +00:00 instead of Z.
+      if (Date.parse(repeat.fetchedAt) !== Date.parse(response.fetchedAt)) throw new Error('Cache repeat mismatch');
       for (const raw of response.payload.local_results ?? []) {
         const parsed = ProviderPlaceSchema.safeParse(raw);
         if (!parsed.success) { invalidRecords++; continue; }
@@ -68,4 +70,8 @@ async function main() {
   console.log(JSON.stringify({ datasetVersion: version, places: spots.length, invalidRecords,
     ...api.metrics, output, published: !one }));
 }
-main().catch(() => { console.error('Austin capture failed; check configuration, budget and provider availability. No secret details logged.'); process.exitCode = 1; });
+main().catch((error: unknown) => {
+  const code = error instanceof ServiceError ? error.code : error instanceof z.ZodError ? 'validation_failed' : 'ingestion_failed';
+  console.error(`Austin capture failed (${code}); check configuration, budget and provider availability. No secret details logged.`);
+  process.exitCode = 1;
+});
