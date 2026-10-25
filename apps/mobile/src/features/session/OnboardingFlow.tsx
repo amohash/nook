@@ -34,7 +34,7 @@ export function OnboardingFlow() {
   const finish = async (choices: StudyStyleId[]) => {
     if (saving) return;
     location.cancel(); setSaving(true); setError(null);
-    try { await finishOnboarding(choices); router.replace('/'); }
+    try { await finishOnboarding(choices); router.replace('/(tabs)/map'); }
     catch {setError('Preferences could not be saved on this device. Try again.');}
     finally {setSaving(false);}
   };

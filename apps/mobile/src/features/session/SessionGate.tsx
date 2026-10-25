@@ -22,7 +22,7 @@ export function SessionGate({children}: {children: ReactNode}) {
     </>}
   </View>;
   if (!session.settings.completed && path !== '/onboarding') return <Redirect href="/onboarding" />;
-  if (session.settings.completed && path === '/onboarding') return <Redirect href="/" />;
+  if (session.settings.completed && path === '/onboarding') return <Redirect href="/(tabs)/map" />;
   return children;
 }
 const s = StyleSheet.create({center: {flex: 1, backgroundColor: theme.colors.background, padding: 24, justifyContent: 'center', gap: 16}});
