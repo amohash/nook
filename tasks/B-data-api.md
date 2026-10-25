@@ -306,6 +306,86 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
 - Limits: photos are public Google-hosted resources and require network access;
   existing image-failure placeholders remain. No claim of device verification.
 
+## Time-evidence parser — implemented, publication pending
+
+- Branch `feat/normalize-time-evidence`; isolated worktree
+  `/private/tmp/space-normalize-time-evidence`. Started from clean main `d8b0610`,
+  then synced `origin/main` at `cc8f7aa`, preserving the merged photo recovery.
+- Changed `server/src/data/normalize.ts`, `server/src/providers/serpapi.ts`, new
+  `server/src/providers/serpapi-time.ts`, and focused `server/src/data/normalize.test.ts`.
+  No mobile, scorer, shared schema, manifest, lockfile, migration or dataset edits.
+- Provider validation now retains optional `hours`, `operating_hours` and
+  `popular_times` through the existing seed's repeated schema parsing. Normalization
+  projects them into the existing six time-evidence fields. IDs remain unchanged.
+- Weekly hours: documented detail weekday rows and listing weekday maps; explicit
+  closed/24-hour days, split sessions, Unicode spaces/dashes, 12/24-hour clocks,
+  unambiguous shared AM/PM suffixes and overnight end minutes. All seven weekdays
+  must parse before hours are known: the schema cannot express a missing weekday.
+  Conflicting days, invalid times, equal endpoints, partial weeks and qualified
+  holiday text stay unknown. `open_now` and today's open-state string do not qualify.
+- Exceptions: only exact valid YYYY-MM-DD keys explicitly present in a supplied
+  hours map/row are projected (including closed dates). This is a synthetic-tested
+  boundary, not a claim that Austin responses supply that shape. No holiday date is
+  inferred. An invalid/unsupported schedule fails closed; other provider variants
+  require inspection and a fixture before adding support.
+- Typical activity: documented `popular_times.graph_results[weekday]` rows map
+  hourly `busyness_score` 0..100 to 0..1. Explicit zero survives; absent hours remain
+  absent, invalid/missing scores remain null, and duplicate hour scores become null.
+  This is relative historical activity, never headcount or seat availability.
+- Live text comes only from `live_hash.info`. Numeric live data comes independently
+  from one unambiguous `current: true` row on the provider's `current_day` with an
+  explicit 0..100 `live_busyness_score`. Neither text nor historical values is
+  converted into a live number. Time-spent text is not an observation.
+- Every output uses the original cache-entry `fetchedAt`, including its offset;
+  cache replay never refreshes it. Supported provider shapes have no observation
+  instant, so live `observedAt` remains null. Relative `hours_last_updated` labels,
+  weekday/hour labels and retrieval time are not fabricated source timestamps.
+- Evidence availability: local ignored `server/.env` has no configured
+  SUPABASE_SERVICE_ROLE_KEY, so no private cache fetch was possible. Inspected
+  public SerpApi examples at https://serpapi.com/maps-place-results and
+  https://serpapi.com/google-maps-api instead. All new fixtures are explicitly
+  synthetic. Real-cache coverage, exact captured shapes and real-data validation
+  remain pending; no claim of Austin hours/activity enrichment or phone acceptance.
+- Verification: 41 new parser/integration cases; full suite 248/248 across 25 files,
+  workspace typecheck, lint, server build and diff whitespace check passed. Tests
+  cover overnight/timezone/DST behavior, dated overrides, gaps, invalid evidence,
+  stale strict-hours eligibility, future-query live isolation, and a cache-only
+  replay with zero transport calls. Existing photo tests pass after sync.
+- No paid provider/model calls, DB writes, migration, dataset publication, deployment
+  or merge to main performed. Published artifact/version contents are unchanged.
+
+### B's next smallest step: cache-only dry-run reconstruction
+
+1. Load the reviewed immutable source with `loadDataset`; use the latest approved
+   source (currently `fixtures/data/austin-20261025-muse-photos-v1.json`), preserving
+   all IDs, source facts/timestamps, photos, Muse summaries and selected citations.
+2. With B's private operator configuration, read `api_cache` via `SupabaseStore.call`
+   using GET only (`api_cache?select=payload,fetched_at&limit=100`, paginate if needed).
+   Inspect local_results/place_results, match exact `providerPlaceId` (never title),
+   and validate `ProviderPlaceSchema`. Expired entries can be inspected as historical
+   evidence; do not change their fetched timestamps. Do not run seed-austin or use
+   SerpApi.request: those may acquire on a miss/expiry. No SerpApi/Muse transport is
+   needed for this dry run.
+3. For each matched cached place call
+   `normalizeTimeEvidence(parsedPlace, cacheRow.fetched_at)` from
+   `server/src/providers/serpapi-time.ts`. Inspect conflicts across captures and
+   choose evidence per field with recorded cache provenance. A detail missing hours
+   must not erase a supported listing schedule; unsupported evidence remains unknown.
+   Preserve each field's actual chosen capture time, even when captures differ.
+4. Patch ONLY `hoursStatus`, `hoursFetchedAt`, `weeklyHours`, `hoursExceptions`,
+   `typicalCrowd`, `liveObservation` into both copies of each spot (snapshot and
+   detail). Do not replace whole spots with normalizePlace: that would erase Muse
+   and other enrichment. Keep original spot.fetchedAt and all non-time facts.
+5. Choose a new, agreed, unpublished dataset version; update city/snapshot and both
+   spot-copy version identities. Validate the entire candidate with DatasetSchema.
+   Write a separate local dry-run artifact and inspect a diff allowing only those
+   six fields and version metadata. Report known-hours, historical-hours, live-text,
+   numeric-live and unknown counts with cache timestamps; do not publish yet.
+6. After review and separate publication authorization, B checks the new version
+   does not exist, then uses publishDataset with no inference callback. Retain all
+   old artifacts/versions. Deployment is a separate authorized B action after D's
+   merge. D must verify source/fetched labels, strict hours, gaps, Now/Later and
+   overnight behavior on the physical presenter phone before calling this shipped.
 
 ## Place photos — deployed and publicly verified
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/contracts';
@@ -12,6 +12,7 @@ import { theme } from '../../src/theme';
 import { SessionGate } from '../../src/features/session/SessionGate';
 import { FiltersSheet } from '../../src/features/explore/FiltersSheet';
 import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../../src/features/explore/filters';
+import { applyRelaxation, relaxationActions } from '../../src/features/explore/relaxations';
 import { OriginControls } from '../../src/features/explore/OriginControls';
 import { useOrigin } from '../../src/features/explore/useOrigin';
 import { PlaceMap } from '../../src/features/explore/PlaceMap';
@@ -23,7 +24,9 @@ function Explore() {
   const city = session!.city;
   const router = useRouter();
   const [draft, setDraft] = useState<Query | null>(null);
-  const [response, setResponse] = useState<Recommendation | null>(null);
+  const [loaded, setLoaded] = useState<{query: Query; data: Recommendation} | null>(null);
+  const response = loaded?.query === query ? loaded.data : null;
+  const consumedResponse = useRef<Recommendation | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
@@ -40,8 +43,8 @@ function Explore() {
   const location = useOrigin(selectOrigin);
   useEffect(() => {
     let active = true;
-    setLoading(true); setError(false); setResponse(null); setSelectedId(null);
-    provider.recommend(query).then((data) => {if (active) setResponse(data);})
+    setLoading(true); setError(false); setLoaded(null); setSelectedId(null);
+    provider.recommend(query).then((data) => {if (active) setLoaded({query, data});})
       .catch(() => {if (active) setError(true);})
       .finally(() => {if (active) setLoading(false);});
     return () => {active = false;};
@@ -60,6 +63,12 @@ function Explore() {
     setQuery((current) => QuerySchema.parse({...current, departAt: departureAt(now, minutes)}));
   };
   const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => applyIntentPreset(current, intent));
+  const relaxations = response ? relaxationActions(query, response.relaxations) : [];
+  const chooseRelaxation = (proposal: unknown) => {
+    if (loading || error || !response || response.results.length || consumedResponse.current === response) return;
+    consumedResponse.current = response;
+    setQuery((current) => current === query ? applyRelaxation(current, proposal) : current);
+  };
   const lookup = lookupPlaces(places, search);
   const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
   const shown = view === 'map' && selected ? [selected] : response?.results ?? [];
@@ -102,9 +111,15 @@ function Explore() {
     {error && <ErrorState title="Places unavailable" message="Places could not be loaded. Check your connection and retry."
       action={{label: 'Retry', onPress: () => setAttempt((a) => a + 1)}} />}
     {!loading && response?.results.length === 0 && <View style={s.panel}>
-      <EmptyState title="No matching places" message="No known places meet your selected constraints. Edit filters or explicitly reset; constraints are never relaxed automatically."
+      <EmptyState title="No matching places" message="No known places meet your selected constraints. Choose one constraint to change, edit filters or explicitly reset. Constraints are never relaxed automatically; a change may still return no matches."
         action={{label: 'Edit filters', onPress: () => setDraft(QuerySchema.parse(query))}} />
       <Text style={s.small}>{Object.entries(response.excludedCounts).map(([code, count]) => `${code.replaceAll('_', ' ')}: ${count}`).join(' · ')}</Text>
+      {relaxations.length > 0 ? <>
+        <Text style={s.heading}>Change one constraint</Text>
+        {relaxations.map((action) => <Button key={JSON.stringify(action.patch)} label={action.label} variant="outline"
+          accessibilityHint="Applies only this change and searches again. Other constraints stay selected."
+          onPress={() => chooseRelaxation(action)} />)}
+      </> : <Text style={s.small}>No individual changes are available. Edit filters or reset them to try again.</Text>}
       {query.origin.source === 'device' && <Button label="Explore from UT Austin" onPress={location.useManual} variant="outline" />}
       <Button label="Reset filters" variant="outline" onPress={() => setQuery(resetExploreFilters(query))} />
     </View>}
