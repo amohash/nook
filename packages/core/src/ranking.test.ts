@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoQuery, DEMO_NOW, snapshot } from '@space/fixtures';
 import type { Query, Spot } from '@space/contracts';
-import { coversSession, rankSpots } from './index';
+import { coversSession, rankSpots, type ScoreDiagnostic } from './index';
 
 const base = (): Spot => structuredClone(snapshot.spots[0]!);
 const clock = { now: DEMO_NOW };
@@ -40,6 +40,8 @@ describe('strict eligibility', () => {
   it('unknown and stale hours cannot satisfy open-for-session', () => {
     const spot = base(); spot.hoursStatus = 'unknown';
     expect(rank(spot, { requireOpenForSession: true }).excludedCounts).toEqual({ unknown_hours: 1 });
+    spot.hoursFetchedAt = '2026-10-25T23:00:00Z';
+    expect(rank(spot, { requireOpenForSession: true }).excludedCounts).toEqual({ unknown_hours: 1 });
     spot.hoursStatus = 'known'; spot.hoursFetchedAt = '2026-10-22T18:00:00-05:00';
     expect(rank(spot, { requireOpenForSession: true }).excludedCounts).toEqual({ unknown_hours: 1 });
   });
@@ -76,6 +78,25 @@ describe('timezones and opening intervals', () => {
 });
 
 describe('deterministic scoring', () => {
+  it('reports exact normalized score components only for eligible candidates without changing results', () => {
+    const diagnostics: ScoreDiagnostic[] = [];
+    const query = createDemoQuery({ tagWeights: {}, amenities: { wifi: 'ignore', outlets: 'ignore' }, maxPriceLevel: 1 });
+    const instrumented = rankSpots(snapshot.spots, query, clock, (record) => diagnostics.push(record));
+    expect(instrumented).toEqual(rankSpots(snapshot.spots, query, clock));
+    expect(diagnostics).toHaveLength(instrumented.qualifyingCount);
+    for (const record of diagnostics) {
+      const features = Object.values(record.components);
+      expect(features.reduce((sum, f) => sum + f.weight, 0)).toBeCloseTo(1, 14);
+      expect(features.reduce((sum, f) => sum + f.contribution, 0)).toBeCloseTo(record.base, 14);
+      expect(features.reduce((sum, f) => sum + f.weight * f.confidence, 0)).toBeCloseTo(record.evidenceCoverage, 14);
+      expect(record.score).toBeCloseTo(100 * Math.max(0, Math.min(1, record.base - record.uncertaintyPenalty)), 12);
+      expect(record.components.M!.weight).toBe(0); expect(record.components.V!.weight).toBe(0);
+    }
+    for (const result of instrumented.results) expect(diagnostics.find((d) => d.spotId === result.spotId)!.score).toBe(result.score);
+    const none: ScoreDiagnostic[] = [];
+    rankSpots(snapshot.spots, createDemoQuery({ categories: ['missing'] }), clock, (record) => none.push(record));
+    expect(none).toEqual([]);
+  });
   it('bounds every score and normalizes weights when dimensions are irrelevant', () => {
     const result = rankSpots(snapshot.spots, createDemoQuery({ limit: 10, tagWeights: {},
       amenities: { wifi: 'ignore', outlets: 'ignore' } }), clock);

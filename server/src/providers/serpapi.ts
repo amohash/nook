@@ -33,20 +33,20 @@ export class SerpApi {
     beforeAttempt?: () => Promise<void> }) {
     if (!Number.isInteger(options.maxCalls) || options.maxCalls < 1 || options.maxCalls > 18) throw new Error('Call budget must be 1..18');
   }
-  async request(params: Record<string, string>): Promise<ProviderResult> {
+  async request(params: Record<string, string>, { refresh = false }: { refresh?: boolean } = {}): Promise<ProviderResult> {
     if (!this.options.authorized) throw new ServiceError('spend_not_authorized', 403);
     const canonical = { ...params, engine: 'google_maps', hl: 'en', gl: 'us' };
     const key = cacheKey(canonical);
     const existing = this.flights.get(key);
     if (existing) { this.metrics.coalesced++; return existing; }
-    const pending = this.load(key, canonical);
+    const pending = this.load(key, canonical, refresh);
     this.flights.set(key, pending);
     try { return await pending; } finally { this.flights.delete(key); }
   }
-  private async load(key: string, params: Record<string, string>): Promise<ProviderResult> {
+  private async load(key: string, params: Record<string, string>, refresh: boolean): Promise<ProviderResult> {
     const now = this.options.now ?? Date.now;
     const cached = await this.options.cache.get(key);
-    if (cached && Date.parse(cached.expiresAt) > now()) {
+    if (!refresh && cached && Date.parse(cached.expiresAt) > now()) {
       const parsed = ProviderResponseSchema.safeParse(cached.payload);
       if (parsed.success && !parsed.data.error) {
         this.metrics.cacheHits++;

@@ -11,7 +11,7 @@ import { Button, EmptyState, ErrorState, ExploreLayout, LoadingState,
 import { theme } from '../../src/theme';
 import { SessionGate } from '../../src/features/session/SessionGate';
 import { FiltersSheet } from '../../src/features/explore/FiltersSheet';
-import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../../src/features/explore/filters';
+import { activeFilterCount, applyExploreFilters, applyIntentPreset, resetExploreFilters } from '../../src/features/explore/filters';
 import { applyRelaxation, relaxationActions } from '../../src/features/explore/relaxations';
 import { useOrigin } from '../../src/features/explore/useOrigin';
 import { PlaceMap } from '../../src/features/explore/PlaceMap';
@@ -29,12 +29,13 @@ function Explore() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [view, setView] = useState<'map' | 'list'>('list');
+  const [sheetPosition, setSheetPosition] = useState<'peek' | 'expanded'>('expanded');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [timeMode, setTimeMode] = useState<'now' | 'later'>('now');
   const [offset, setOffset] = useState<0 | 60 | 120>(0);
   const [search, setSearch] = useState('');
   const [originOpen, setOriginOpen] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(false);
   const [places, setPlaces] = useState<Spot[]>([]);
   const [lookupLoading, setLookupLoading] = useState(true);
   const [lookupFailed, setLookupFailed] = useState(false);
@@ -71,30 +72,32 @@ function Explore() {
   };
   const lookup = lookupPlaces(places, search);
   const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
-  const shown = view === 'map' && selected ? [selected] : response?.results ?? [];
+  const shown = response?.results ?? [];
   return <><ExploreLayout
-    map={view === 'map' && <PlaceMap results={response?.results ?? []} origin={query.origin}
-      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={setSelectedId} onFallback={() => setView('list')} />}
+    mapSlot={<PlaceMap results={response?.results ?? []} origin={query.origin}
+      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={setSelectedId} onFallback={() => setSheetPosition('expanded')} />}
     search={{value: search, onChangeText: (value) => setSearch(value.slice(0, 120)),
       onSubmit: () => Keyboard.dismiss(), placeholder: 'Find a place by name', accessibilityLabel: 'Find a place in this dataset'}}
     filters={{options: [{id: 'study', label: 'Study'}, {id: 'friends', label: 'Meet Friends'}],
       selectedId: query.intent === 'study' || query.intent === 'friends' ? query.intent : null,
       onSelect: chooseIntent, filterCount: activeFilterCount(query), onOpenFilters: () => setDraft(QuerySchema.parse(query))}}
-    mode={view} onModeChange={setView}
+    sheetPosition={sheetPosition} onSheetPositionChange={setSheetPosition}
+    timeLabel={timeMode === 'now' ? 'Now' : `Later · ${venueTime(query.departAt, city.timezone).label}`}
+    onTimePress={() => {setTimeOpen((value) => !value); setOriginOpen(false); setSheetPosition('expanded');}}
+    originLabel={query.origin.source === 'manual' ? 'UT Austin' : 'Device location'}
+    onOriginPress={() => {setOriginOpen((value) => !value); setTimeOpen(false); setSheetPosition('expanded');}}
+    onAvatarPress={() => {location.cancel(); router.push('/profile');}}
     title=""
-    subtitle={loading ? 'Finding matches…' : error ? 'Places unavailable' : `${response?.results.length ?? 0} places · ${query.maxWalkMinutes} min estimated walk · ${priceLabel(query.maxPriceLevel)}`}
     dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL : `Dataset ${city.datasetVersion}`}}
     topAccessory={<>
-      <Button label={originOpen ? 'Hide origin controls' : query.origin.source === 'manual' ? 'UT Austin · Change origin' : 'Device location · Change origin'}
-        variant="outline" onPress={() => setOriginOpen((value) => !value)} />
       {(originOpen || location.busy || location.error) && <OriginCard origin={query.origin} busy={location.busy}
         error={location.error} accuracyMeters={location.accuracyMeters}
         onDevice={() => {void location.useDevice();}} onManual={location.useManual} />}
-      <NowLaterControl mode={timeMode} onModeChange={(mode) => changeTime(mode === 'now' ? 0 : offset || 60)}
+      {timeOpen && <NowLaterControl mode={timeMode} onModeChange={(mode) => changeTime(mode === 'now' ? 0 : offset || 60)}
         presets={[{id: '60', label: 'In 1 hour'}, {id: '120', label: 'In 2 hours'}]}
         selectedPresetId={offset ? String(offset) : null} onSelectPreset={(id) => changeTime(id === '120' ? 120 : 60)}
         timeLabel={`${city.mode === 'demo' ? 'Demo clock · ' : ''}${venueTime(query.departAt, city.timezone).label}`}
-        timezoneLabel={city.timezone} />
+        timezoneLabel={city.timezone} />}
     </>}>
     <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
     {search.trim().length > 0 && <View style={s.panel}>

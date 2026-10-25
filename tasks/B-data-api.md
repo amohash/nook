@@ -408,3 +408,189 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   placeholders remain available on image failure. Render Free cold starts remain.
 - Rollback: restore `DATASET_PATH=../fixtures/data/austin-20261025-muse-v1.json`
   on the same service and manually deploy reviewed main. Old artifacts are retained.
+
+## B1 cache-only time reconstruction — candidate prepared, not published
+
+- Isolated worktree `/Users/andrewsun/Desktop/nook-cached-time`, branch
+  `feat/cached-time-dataset`, based on remote main `7e67622`. Existing root
+  `package-lock.json` work preserved. Fetch reported a broken T3 checkpoint ref;
+  received main objects were verified against `git ls-remote` and fast-forwarded
+  by exact SHA without altering checkpoint refs or teammates' branches.
+- NEW candidate: `fixtures/data/austin-20261025-muse-photos-time-v1.json`, plus
+  `.diff.json` and `.report.json`. Existing photo artifact remains byte-for-byte
+  unchanged. New candidate is **not published, deployed, merged or phone-verified**.
+- Replay boundary: `reconstructCachedTime(dataset, rows, {version, now})` in
+  `server/src/jobs/reconstruct-cached-time.ts`, returning `{dataset, diff, report}`.
+  Rows contain `request_hash`, `payload`, `fetched_at`. Exact provider place identity
+  required; conflicting supplied secondary identity rejected. ProviderPlaceSchema
+  validates each capture; only normalizeTimeEvidence parses time facts.
+- Replay is pure and never constructs SerpApi/Muse transports or uses seed-austin.
+  Private cache reads use GET-only pagination, including expired rows. Future
+  captures are excluded; stale captures retain original times. Missing/unsupported
+  fields abstain. Conflicting supported fields become unknown; agreeing captures
+  use the oldest original timestamp. Hours resolve as one atomic schedule group;
+  crowd/live resolve independently. No schedule/crowd gaps become zero/closed.
+- Actual dry run at `2026-10-25T06:58:45.067Z`: 15 existing private cache rows,
+  41 exact matched captures, 69 unmatched places ignored; zero invalid rows,
+  identity conflicts, future rows or supported-field conflicts. Known hours 28/30;
+  remaining two unknown. Historical records 0, live text 0, numeric live 0. B1 made
+  zero acquisition/model calls and zero DB writes. Supported capture times range
+  `2026-10-25T02:49:06.296+00:00` through `2026-10-25T02:51:29.056+00:00`;
+  these are original capture times, not refreshed by replay.
+- Only six time fields and city/snapshot/spot dataset-version identities change in
+  both snapshot/detail copies. Independent recursive allowlist rejects every other
+  change. Photos, ten Muse summaries, all citations/evidence, IDs and unrelated
+  source facts/timestamps are preserved. Report contains cache hashes/timestamps,
+  field selections/conflicts and coverage; no raw provider payload/review text.
+- Dry-run usage from `server/` (private env configured locally):
+  `../node_modules/.bin/tsx src/jobs/add-cached-time.ts --source=../fixtures/data/austin-20261025-muse-photos-v1.json --version=austin-20261025-muse-photos-time-v1`
+  Add `--cache-file=/private/path/captures.json` for offline replay without DB;
+  add `--now=<offset-instant>` for repeatable freshness reports and `--output=<new-path>`
+  for a separate candidate. Outputs use exclusive creation and never overwrite.
+- After review and **separate publication authorization**, explicit publication uses
+  the exact reviewed artifact, never a new replay:
+  `../node_modules/.bin/tsx src/jobs/add-cached-time.ts --source=../fixtures/data/austin-20261025-muse-photos-v1.json --version=austin-20261025-muse-photos-time-v1 --publish-reviewed=../fixtures/data/austin-20261025-muse-photos-time-v1.json --review-report=../fixtures/data/austin-20261025-muse-photos-time-v1.json.report.json --confirm-version=austin-20261025-muse-photos-time-v1`
+  Publication checks source/candidate hashes, field allowlist and absence of the
+  target version before the existing immutable publishDataset RPC, with no inference
+  callback. No publication was run. Existing versions remain available; rollback
+  keeps/restores the previously approved photo artifact in DATASET_PATH through a
+  separately authorized deployment. No migration or deployment is needed here.
+- Actual checks: 54 focused replay/parser tests; full suite 346/346 across 30 files;
+  root workspace typecheck, lint, build:server and diff whitespace check passed.
+  Tests cover gaps/zero/null, missing detail evidence, exact/secondary identity,
+  stale/future captures, field conflicts, stable capture order, original offsets,
+  overnight/DST, future live isolation, zero network acquisition, read pagination,
+  preservation allowlist and explicit immutable publication without live writes.
+- Next: D reviews/merges the small PR; B2 may layer coverage on this reviewed B1
+  candidate without changing time/photo/Muse/review projections. B3 owns separately
+  authorized publication/deployment. D still needs physical presenter-phone checks:
+  source/fetch labels, strict-hours eligibility, unknown gaps, Now/Later, overnight,
+  photos/Muse details and recovery. This is a prepared P0 time-evidence correction,
+  not a claim of current crowd/seat availability or shipped phone acceptance.
+
+## B2 — Austin coverage candidate, prepared for review (2026-10-25)
+
+- Branch `feat/austin-data-coverage`, fresh isolated worktree
+  `/Users/andrewsun/Desktop/nook-austin-data-coverage`, based on reviewed remote
+  main `7e6762294a4df89809cd67775bbdfd8beba18c2e`. Root lockfile edit, other
+  worktrees and T3 checkpoint refs preserved. No shared contracts, scorer,
+  normalization, root manifests, bootstrap or mobile files changed. Coordination
+  recorded in issue #3; C/D field admission and D merge remain review gates.
+- B1 boundary agreed: new `austin-20261025-muse-photos-time-v1` candidate from
+  PR #30 (`d9b9b44`). Independently checked its actual artifact against photos-v1:
+  all non-time facts, 30 photos, ten Muse summaries and citations preserved.
+  B2 layers this exact candidate, retaining every existing time field and unrelated
+  enrichment. B1 source SHA-256 is recorded in B2's report; old artifacts untouched.
+- Private-cache audit before acquisition: 12 rows, 39 unique provider identities,
+  cafe-origin only; no supported prices or positive amenities/access. Existing
+  provider category arrays independently establish two secondary restaurant
+  categories and a secondary cafe category; those were previously discarded.
+- Authorized acquisition used the existing SerpApi adapter/cache and persistent
+  `reserveAttempt('austin-20261025-v1')`, not a new budget version. Exactly three
+  first attempts at 06:57:56–59Z searched libraries, parks and restaurants near the
+  named manual UT Austin origin. Each returned 20 records. Original ledger13 ->16
+  of18; zero retries/failures/model calls. No further acquisition was performed.
+- New immutable candidate: `fixtures/data/austin-20261025-muse-coverage-v1.json`.
+  New coverage/provenance/strict-query report: same basename `.report.json`.
+  53 places: original30 plus8 libraries,7 parks and8 restaurants. Existing explicit
+  secondary types bring category membership to30 cafes,8 libraries,7 parks and10
+  restaurants (categories overlap). New candidates are bounded to8 per supported
+  category and a30-minute estimated walk within the central Austin window, with
+  exact provider identity/data-ID deduplication. No category-derived amenity facts.
+- 49 known-hours/4 unknown-hours,53 photos,ten retained Muse summaries; historical
+  activity and live observations remain unknown for all53. All53 prices, Wi-Fi,
+  outlets and public-access values remain unknown. No free-entry/access inference
+  from library/park category, name, accessibility, rating or review count.
+- Report uses the explicit manual app-default origin30.2862,-97.7394 and its
+  recorded measurement clock. At15-minute walk:18 all-category matches,6 libraries,
+  1 park,8 restaurants. Strict free/price<=1/Wi-Fi/outlets/public-only each return0.
+  Open-session queries yield1 now and8 twelve hours later at the report's clock;
+  these are hours-based estimates, not live opening/seat guarantees. No GPS stored.
+- New `austin-coverage.ts` pure builder and `build-austin-coverage.ts` operator
+  dry run read private cache only. CLI requires source/version/output/report;
+  optional `--now` injects time. It rejects unknown flags/published target versions
+  and writes output with exclusive creation. It has no acquisition/model transport,
+  publication/deployment path or public spending endpoint. Cache reads paginate
+  with a2000-row cap. Provenance reports expose selected normalized facts, safe
+  Maps links, cache digests and original capture times; no raw provider/reviewer data.
+- Verification:14 new coverage tests,347 full tests across30 files, workspace
+  typecheck, lint, server build and whitespace checks passed. Tests cover mapping,
+  unknown facts, conflicting prices/identities, aliases/duplicates, bounds, future
+  captures, error envelopes, immutable source enrichment, privacy, honest strict
+  queries and zero construction transport calls. Independent rebuild at the same
+  clock produced byte-identical candidate output. Local actual-app HTTP smoke
+  matched the full53-place snapshot and all53 details;7 recommendation requests
+  passed schemas with externalCalls=0. Browser decoded53/53 photos, zero failures.
+- Publication/deployment explicitly handed to B3 after B1/B2 review and D merges.
+  No dataset publication, migration, deployment or active-data overwrite in B2.
+  Existing Muse projections retained verbatim: C's separate outdoor/provenance
+  semantic hold remains open, not resolved or silently approved by this change.
+- Presenter-phone checks still needed from D: selected artifact/version, library/
+  park/restaurant filters and marker/detail parity, source/unknown labels, Now/Later
+  and overnight behavior, photos, strict empty states and API recovery/reconnect at
+  `https://nook-api-demo.onrender.com`. Warm health before rehearsal; HTTP/browser
+  checks are not native acceptance. Keep photos-time-v1/photos-v1 for rollback.
+## B3 backend release verification — October 25, 2026
+
+- Isolated `chore/backend-demo-release` from updated main `7e67622`; preserved root
+  lockfile edits and both active B1/B2 worktrees. No shared contract/scorer/root edits.
+- Added read-only `server/src/jobs/verify-demo-release.ts`, raw baseline/local
+  measurements and `server/RELEASE-HANDOFF.md`. Full live snapshot/all30 details,
+  source timestamps,30 image responses,10Muse summaries and9 reranks verified.
+  Strict unsupported price/amenity/access/hours queries empty; shared scorer parity
+  and externalCalls/cacheHits=0 on every rerank. No provider/model calls by B3.
+- Public health still `cc8f7aa` at07:08UTC; no final deployment claimed. Warm health
+  80.21ms, snapshot105.74ms; initial idle state unknown. Local process startup/
+  stopped-API/reconnect measured separately; neither establishes native recovery
+  or Render cold wake. Raw reports preserve exact scopes and identities.
+- Existing Supabase RLS/privilege SQL passed; additional rolled-back anon and
+  authenticated SELECT/no-op DELETE tests denied all28operations across7tables.
+  No rows exposed, writes, migrations, resets or new infrastructure.
+- Actual checks:333tests/29files, workspace typecheck, lint, server build and diff
+  check passed. HTTP image responses are not phone/browser rendering acceptance.
+- Pending: D review/main merge and final artifact selection after B1#30/B2#31;
+  C legacy outdoor/provenance gate on issue3; B3 deploy reviewed main on existing
+  Render service and repeat audit. Keep all prior artifacts/configuration for rollback.
+  D must verify physical-phone filters/parity/source labels/warmup/outage/reconnect.
+- This section is B3-only; preserve B1/B2 appended sections during D's main merge.
+
+## Runtime nearby discovery — implemented, live configuration pending
+
+- Isolated `/private/tmp/nook-runtime-nearby-api`, runtime branch
+  `feat/runtime-nearby-server`; clean main/teammate work preserved. Shared contracts
+  published first as PR#37 (`f075304`,`01d9011`), merged by D as`18b4293`.
+  C's assistant implementation cherry-picked only for B's agreed mount integration;
+  D merges C#39 first. No competing scorer, endpoint, schema or root edits.
+- Implemented `/v1/tester-sessions`, bounded `/v1/discovery`, immutable scoped
+  snapshot/detail reads, session-gated recommendation lookup and C assistant mount.
+  Private api_cache and existing durable budget RPC reused; no migration/service.
+  Fixed all4 supported categories, central Austin box, quantized0.01-degree centers,
+  3000m candidate radius, max4listings+4details, max3 concurrent provider requests,
+  shared durable18 account ceiling and adapter18 acquisition ceiling, no retries.
+  Warm repeat/60s refresh cooldown, persistent leases, stale fallback and measured
+  source freshness/error states implemented; no precise device coordinates retained.
+- Reviews feed C's existing extraction pipeline using validated cache-only inference.
+  Missing AI preserves source places and labels unknown inference. Assistant uses
+  C's bounded transport only if configured; B made0Muse calls.
+- Exact configuration, reproduction, boundaries and existing Render release workflow:
+  `server/NEARBY-OPERATIONS.md`. Operator verification job writes two named public-
+  origin normalized snapshots plus measured cold/warm report for C; no fake live data.
+- Automatically verified checkpoint:418tests/35files, root workspace typecheck,
+  lint, build:server and diff check passed before the final operator-job/documentation
+  additions. Final complete-check results are reported in PR/handoff below.
+- Live command actually attempted with the existing private main server/.env:
+  blocked before network; missing SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,
+  SERPAPI_API_KEY,NEARBY_TESTER_ACCESS_CODE,NEARBY_ACCOUNT_BUDGET_KEY. All were empty/
+  absent; exact names only emitted. User will configure after code. SerpApi attempts0,
+  retries0; Muse attempts0. No live area artifacts, deployment, migration or physical-
+  phone acceptance claimed. Existing public Render release unchanged by this work.
+- Final post-C-main-sync code `edf6dbb`:426tests across36files passed, including
+  18new focused acquisition/access/persistence tests; full workspace typecheck,
+  lint, server build and whitespace check passed. Runtime PR#41 is reviewable;
+  shared contracts PR#37 is merged. New tests preserve sparse listing facts and
+  validate atomic lease expiration/owner release plus service-wide concurrency.
+- Existing Render dashboard access was actually checked through T3 preview:
+  redirected to login; no authenticated deployment session or RENDER environment
+  credential is available here. No deployment was attempted. User sign-in to the
+  existing service and private runtime configuration are the exact release blockers.
+  No new deployed commit, live-provider result or physical-phone acceptance claimed.

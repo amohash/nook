@@ -5,7 +5,7 @@ import { rankSpots, type Clock } from '@space/core';
 
 export type RecommendationDependencies = {
   /** Cached normalized data only: no SerpApi or Muse calls on filter changes. */
-  loadSnapshot: (cityId: string) => Promise<Snapshot | null>;
+  loadSnapshot: (cityId: string, snapshotId?: string) => Promise<Snapshot | null>;
   /** Supply the labeled fixture clock for demo and current server clock for real data. */
   clock: (snapshot: Snapshot) => Clock;
 };
@@ -21,10 +21,11 @@ export function createRecommendationRouter({ loadSnapshot, clock }: Recommendati
     const query = QuerySchema.safeParse(req.body);
     if (!query.success) { error(400, 'invalid_query', 'Query does not match contract version 1'); return; }
     try {
-      const raw = await loadSnapshot(query.data.cityId);
+      const raw = await loadSnapshot(query.data.cityId, query.data.snapshotId);
       if (!raw) { error(404, 'not_found', 'City not found'); return; }
       const snapshot = SnapshotSchema.parse(raw);
-      if (snapshot.cityId !== query.data.cityId || snapshot.spots.some((s) => s.cityId !== snapshot.cityId ||
+      if ((query.data.snapshotId && snapshot.datasetVersion !== query.data.snapshotId) ||
+        snapshot.cityId !== query.data.cityId || snapshot.spots.some((s) => s.cityId !== snapshot.cityId ||
         s.datasetMode !== snapshot.mode || s.datasetVersion !== snapshot.datasetVersion) ||
         new Set(snapshot.spots.map((s) => s.id)).size !== snapshot.spots.length) {
         error(409, 'incompatible_snapshot', 'Snapshot identity or dataset metadata is inconsistent'); return;

@@ -1,6 +1,6 @@
 # C ranking and AI assignment
 
-Status: implemented and locally verified on feat/ranking-ai; live Muse access/extraction/cache validation passed; B/D integration remains pending. Not merged or phone-verified.
+Status: focused assistant implemented on feat/place-assistant-evaluation, PR #39; current automatic checks passed. Current live Muse smoke blocked by empty META_API_KEY (0 attempts). Recorded real-data evaluation passed; new B live captures, mounted integration, merge and presenter-phone verification remain pending. Historical extraction verification below is not current assistant access.
 
 > Read AGENTS.md, docs/ALGORITHM.md and docs/CONTRACTS.md. I am person C on feat/ranking-ai. Verify branch and inspect any existing search source before reusing it. Own the pure TypeScript scorer, golden fixtures, Muse evidence extraction and recommendation route. Implement strict filters first, then normalized scoring, uncertainty treatment, stable ties, evidence-backed reasons and explicit relaxation proposals. Inject clock and use city timezones. Unknown facts must not satisfy strict constraints. Use the same scorer for demo and real data. Test budget/walk limits, unknown amenities/price, midnight/overnight hours, no results, bounds and scenario ordering. Next validate one real Muse request from the server, bounded JSON extraction and source-hash caching with one retry. Do not edit B's bootstrap/migrations or create another API server. Return a route export for B to mount. Report measured performance only. Defer H3 optimization and group compromise until baseline P0 passes.
 
@@ -115,3 +115,125 @@ Please record B's schema/normalization confirmation and D's consumer/fixture con
 - Actual automated checks: focused AI/cache/review/evidence/publication **71 tests / 6 files passed**; final synced root **369 tests / 31 files**, workspace typecheck, lint, server build and diff whitespace passed. Tests use synthetic evidence and mocked completions only; no paid calls. Added coverage includes shared-Zod composition, extra-field injection, semantic-vs-citation distinction, malformed cache provenance, delayed-timer deadline/retry/late-output cases, structural fact precedence including zero/negative values, and audit source/review/citation/URL/projection drift. All 50 source evidence IDs recompute from place/text/URL/observed time. Two audit runs produced identical JSON; both deliberately returned 1 for the unresolved holds.
 - A/D wording: “Ten cached Muse summaries describe review-supported atmosphere; ordinary code ranks known candidates without model calls on filter changes. Numeric noise and Wi-Fi/outlet facts are unknown; only one place has inferred group suitability, not available seats.” Do not claim all tags supported, fully anonymous citations, quietness, free prices, working amenities, available seats, differing real intent winners, or phone acceptance. Exact per-place manifest and caveats are in the report.
 - Still needed on presenter phone: real summary/citation/source-label review, unknown atmosphere/amenity/group labels, strict required-amenity no-match behavior, missing summaries on default top three, no extraction requests on filters/Now/Later, cache/unavailable fallback and explicit real/demo distinction. D owns review/merge; B owns publication/privacy remediation. Preserve this append-only section alongside `Group-compromise gate — October 25, 2026` (PR #29) and `Real-data evaluation` (PR #32) when D integrates their separate C task additions. No P1 work added; feature freeze remains 03:00 America/Chicago, afterward release blockers only.
+## Group-compromise gate — October 25, 2026
+
+- **Status: deferred; not implemented, not phone-verified.** At approximately 02:02 CDT on October 25, the required D-recorded passing real-data P0 journey on the presenter phone is absent. `tasks/D-mobile-integration.md:263` explicitly records phone acceptance pending, and `docs/DECISIONS.md:14` leaves SDK/phone versions pending. The coordinating root thread independently confirmed that no device/OS/Expo Go/tested-commit acceptance record is available and is relaying the request through GitHub issue #3. Automated success below is not a substitute for this gate. Feature freeze is October 25, 2026 at 03:00 America/Chicago (CDT); afterward, release blockers only.
+- Preserved the clean main checkout at `74c731a` without updating or discarding anyone's work. Fetched main and created a new isolated worktree at `/Users/jeffjone/.t3/scratch/nook-person-c-group-compromise`, branch `feat/group-compromise`, from `origin/main` `7e6762294a4df89809cd67775bbdfd8beba18c2e`. No existing active worktree was reused. Read AGENTS, PRD, CONTRACTS, ALGORITHM and this assignment before work.
+- Scope is this task-file section only. No core, shared contract, API, mobile, root manifest, lockfile, GPS persistence or secret changes. Friends remains the existing unavailable placeholder; no optional feature is exposed. No second scorer, service, model calls, accounts or simulated joined users were added.
+- Coordination: sent the gate request to the coordinating root thread and notified the parallel C real-data evaluation owner. That owner confirmed no new gate evidence and agreed on separate, uniquely headed C task sections to preserve at integration. Current approved/deployed artifact is `photos-v1` per the coordinator; the parallel evaluation/Muse audits own its current evidence assessment. Historical handoffs above do not establish current P0 blockers. No shared-file edits were attempted; no B/D typed group handoff is agreed or claimed.
+- P0 assistance actually run against unchanged `7e67622`: installed the committed dependencies with `npm ci --ignore-scripts --no-audit --no-fund`; `npx vitest run packages/core server/src/routes/recommend.test.ts` passed **39 tests / 3 files**; root `npm run typecheck`, `npm test` (**333 tests / 29 files**), `npm run lint`, `npm run build:server` and `git diff --check` all passed. No failing automated release blocker was reproduced. These are local checks, not deployed-data or native-device acceptance.
+- Phone checks still needed, owned by D: record presenter phone model/OS/Expo Go version, tested integrated commit, real dataset version and pass time; exercise real-data onboarding/manual origin and denied GPS, map/list/detail consistency, filters and Now/Later, source/unknown labels, save/relaunch, native sharing/cancel, no-match/error/retry, offline recovery and reset. No physical phone was exercised by this task.
+- Deferred implementation checklist, not an agreed API or executable consumer example: obtain B/D approval of a core-only typed handoff and D's Friends consumer example; use two explicitly entered/labeled profiles with one shared city/origin/time/session, intersect every member's strict eligibility over the complete supplied snapshot before applying any result limit, reuse the single scorer for each member, and calculate `0.6 * mean(memberScores) + 0.4 * min(memberScores)` with deterministic ties. Explain actual tradeoffs and identify conflicting requirements for a valid empty intersection without altering inputs. Test vetoes, different ordering, ties, unknown required facts, unchanged constraints and compromise candidates outside individual top threes or `Query.limit`. None of these optional-feature tests or a phone integration pass is claimed.
+- Next smallest step: D closes and records the real-data P0 phone gate. Only an explicit recorded pass before 03:00 CDT permits reconsidering F13; otherwise carry this deferral through freeze, keep UI unavailable and address confirmed P0 release blockers only. D alone reviews/merges; this branch does not merge main.
+## Real-data evaluation — October 25, 2026
+
+Status: implemented and locally verified before the 03:00 America/Chicago freeze;
+not merged, not presenter-phone verified. Isolated branch `feat/real-data-evaluation`
+starts at updated `origin/main` `7e67622`; the existing checkout/worktrees and all
+prior work are preserved. Only new files under `packages/core/measurements` and
+this uniquely headed task section change. No scorer, weights, shared contracts,
+API implementation, mobile code, root manifest/lockfile, dataset or provider edits.
+Preserve the separate group-compromise deferral and evidence-quality sections when
+D integrates the concurrent C task-file append-only PRs.
+
+### Artifact and coordination
+
+- Selected with the evidence-quality peer and B/D relay: committed
+  `fixtures/data/austin-20261025-muse-photos-v1.json`, version
+  `austin-20261025-muse-photos-v1`, cached, 30 candidates, 10 Muse summaries.
+  Raw-byte SHA-256:
+  `bae26a4d32597262f8f8cbfa4740535505b732f5a30684a921781f3c7ab1b731`.
+  B's final task/operations record identifies this as the deployed artifact;
+  deployment is not semantic or phone acceptance. No newer approved artifact was
+  confirmed for this baseline. Pending B1 `feat/cached-time-dataset` / PR #30 is
+  not silently substituted; evaluate it separately if D/B approve it.
+- Original coordination relay tagged B @drewsun461 and D @amohash in issue #3
+  comment `6394670950`. Tested preliminary inputs and defensible limitations were
+  relayed to A @zgaudin, B and D in comment `6394700193`. Final checked results are
+  handed back with this PR. No shared-file edits were needed; shared decisions
+  remain with their owner. No acquisition, paid calls or publication performed.
+- Later evidence-quality fixes (Zod composition/deadline guards) and withheld
+  inference claims are a separate PR/workstream. They do not change this pinned
+  scorer/router/cached-adapter baseline or establish semantic approval.
+
+### Reproduction and recorded scope
+
+```sh
+npx tsx packages/core/measurements/evaluate-real.ts \
+  fixtures/data/austin-20261025-muse-photos-v1.json \
+  packages/core/measurements/real-inputs.json > /tmp/nook-real-evaluation.json
+```
+
+`real-baseline.json` records dataset/snapshot/input hashes, retrieval ages, exact
+resolved queries, ranking scores/reasons/warnings/exclusions and raw timing arrays
+with OS/CPU/Node/V8/ICU metadata. The baseline was measured at
+`2026-10-25T07:08:23.375Z` on local Node `v26.12.0`, Apple M4 Pro. Snapshot retrieval
+is `2026-10-25T02:51:29.146Z`, age 3.3919 hours relative to the explicit evaluation
+clock, not relative to measurement wall time. All individual evidence retrieval
+ages remain recorded; retrieval is not observation time.
+
+Every case has 21 sequential samples. All **147 iterations** agree across direct
+`rankSpots`, the production recommendation router through loopback HTTP and the
+actual mobile recovery cached adapter with the same snapshot/query/clock. This is
+441 scorer invocations, not 147 total invocations. No competing scorer or API was
+added. Separate timing arrays distinguish direct rank, API-reported rank, loopback
+round trip, cached-reported rank and cached adapter total. All run in local Node;
+none measure a phone, deployed network, cold process/server, battery or savings.
+Manual public demo origins only; device GPS inputs fail before report generation.
+The cache bundle is memory-only and any attempted storage write fails closed.
+
+### Tested scenarios and truthful claims
+
+- Clock `2026-10-25T01:15:00-05:00`; Study and Meet Friends depart
+  `2026-10-25T13:00:00-05:00` for 60 minutes; Later departs
+  `2026-10-25T19:00:00-05:00` for 120 minutes, all on October 25 in Chicago time.
+  These are labeled future what-if sessions, not now/live observations.
+- Campus manual origin `(30.2862, -97.7394)`, estimated walk cap 15 minutes:
+  3 qualify, 27 distance exclusions. Study/Friends/Later all return Trippy Buck
+  Coffee Truck, St Benedict Coffee Company, Lucky Lab Coffee Co. in that order.
+  Do not pitch this as different real Study/Friends winners or open-later proof.
+- Downtown manual origin `(30.2672, -97.7431)`, otherwise the same Study query:
+  5 qualify, 25 distance exclusions; Cielito Lindo Cafe, Trippy Buck Coffee,
+  Black Fox Coffee are returned. This and campus are truthful origin-dependent
+  shortlist scenarios, not claims of measured routes or complete city coverage.
+- All 30 records have unknown numeric noise, price, hours, Wi-Fi and outlets;
+  just one has inferred group friendliness. Strict campus price <=1, full-session
+  opening, and required Wi-Fi each yield zero, with 27 distance exclusions plus
+  3 unknown-price / unknown-hours / amenity exclusions respectively. No constraints
+  are relaxed automatically. The quiet/cheap/open-later real-data story is not
+  established. Existing inference holds remain held regardless of deployment.
+- Separately labeled **fictional** goldens retain unchanged Study demo 1/3/5 and
+  Friends demo 2/10/6. Neither fictional facts nor hard-coded real winners are
+  substituted into the dataset. No production scorer failure was reproduced;
+  regressions cover real outcomes, unknown strict constraints, stable synthetic
+  ties, GPS/clock/query validation and an API-warning parity negative control.
+
+### Actual checks and remaining phone gate
+
+- Focused measurement/core/router/recovery tests: **61 passed / 5 files**.
+- Root `npm test`: **339 passed / 30 files**.
+- Root `npm run typecheck`, `npm run lint`, `npm run build:server`, dedicated
+  `npx tsc --noEmit -p packages/core/measurements/tsconfig.json`, and
+  `git diff --check`: passed. The first dedicated typecheck needed JSX configured
+  for the transitive mobile types; initial lint found one unused import. Both
+  evaluator-only issues were corrected and their checks rerun successfully.
+- Existing root dependency manifests/lockfile are unchanged. Physical phone,
+  native storage, public-network parity/latency and provider/model acquisition
+  were not tested or claimed by this command.
+- D owns merge and still needs presenter-phone API/downloaded-cache comparison
+  for these exact manual queries/version, source/unknown labels, Later local
+  time, strict empty-state recovery, save/restart/share and network loss. Any
+  phone or deployed-network performance claim needs its own measurement. After
+  03:00 only release-blocking fixes, not unfinished P1 work, should continue.
+
+
+## 2026-10-25 focused place assistant and evaluation expansion (C)
+
+- Isolated branch/worktree: `feat/place-assistant-evaluation`, `/private/tmp/nook-c-assistant`, from clean main `b9cbc11`. Preserved all teammate work. B authored shared schemas (PR #37); C did not edit shared contracts or root manifests/lockfile. D alone merges.
+- PR: https://github.com/amohash/nook/pull/39. `server/src/ai/assistant.ts` exports a mountable router/service over B's authorized session snapshot resolver. Muse selects trusted server fact IDs and optional preference patches; deterministic server rendering excludes unsupported free prose. IDs/facts/schema/strict constraints are validated. Only explicit UI Apply reranks. Currency budgets cannot be converted to price levels. No coordinates/history/raw reviews in model context, and no conversation persistence/logging.
+- Runtime bounds: one attempt/submission, 768 model output tokens, 8-second total deadline, 2 concurrent, 8 calls/session/30min, 100 calls/process. Explicit quota/unavailable/out-of-scope/empty responses. Existing extraction source-hash/model/prompt cache is unchanged. Snapshot recommendation lookup forwards optional snapshotId and rejects version mismatch.
+- `rankSpots` remains the only scorer; optional diagnostics expose its exact normalized components without changing ranks. Recorded real30-place artifact, 8 public-manual-origin scenarios, 21 samples each: 168 scorer/API/cached comparisons pass. Campus Study/Friends/Later retain the same three winners; downtown changes selection. Strict unknown price/hours/Wi-Fi cases return0. These are cached recorded data, not newly acquired multi-origin snapshots.
+- Reproduction/results/limitations: `packages/core/measurements/ASSISTANT-EVALUATION.md`, `assistant-eval-inputs.json`, `assistant-eval-results.json`; blinded human relevance packet plus separate coordinator key generated by `human-rubric.ts`. Human judgments collected:0; all rating fields null. No optimal-weight, real usefulness, phone-speed, coverage or cost-saving claim.
+- Integration examples and smoke command: `server/src/ai/ASSISTANT.md`. Explicit dotenv load of absolute main `server/.env` found META_API_KEY empty. Approved live budget2 total remains unspent; `assistant-live-smoke.json` records blocked/externalAttempts0. No other credentials supplied. Existing historical extraction result is not reused as current model access evidence.
+- Current checks: root tests408 passed/34 files; root typecheck, lint, server build, dedicated measurement typecheck and git diff --check passed. Assistant35 focused tests. No physical presenter-device test, production deployment or current real model access claimed.
+- Next smallest steps: D merges #39, B mounts the router/session resolver and captures real nearby snapshots if credentials become available, C reruns on those immutable artifacts and the bounded Muse smoke, D verifies the actual foreground-location/explain/compare/proposal Apply flow on the presenter phone. Do not mark phone acceptance before that test.

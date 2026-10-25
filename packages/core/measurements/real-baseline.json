@@ -1,0 +1,2743 @@
+{
+  "reportVersion": 1,
+  "measuredAt": "2026-10-25T07:08:23.375Z",
+  "clock": "2026-10-25T01:15:00-05:00",
+  "measurementScope": "Local Node only. Loopback HTTP is not deployed network latency. Mobile adapter runs in Node, not on a phone.",
+  "samplePolicy": "21 sequential samples per case/path; index 0 is first in this process, not a cold process/cache. No latency or savings claims.",
+  "runtime": {
+    "node": "v26.12.0",
+    "versions": {
+      "node": "26.12.0",
+      "acorn": "8.19.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.3",
+      "libffi": "3.8.0",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "147",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "4.0.3",
+      "simdjson": "5.0.5",
+      "simdutf": "9.3.0",
+      "sqlite": "3.54.0",
+      "tz": "2026a",
+      "undici": "8.11.2",
+      "unicode": "17.0",
+      "uv": "1.53.0",
+      "uvwasi": "0.0.23",
+      "v8": "14.6.202.34-node.39",
+      "zlib": "1.2.12",
+      "zstd": "1.5.7"
+    },
+    "platform": "darwin",
+    "release": "27.0.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4 Pro",
+    "logicalCpuCount": 12
+  },
+  "dataset": {
+    "cityId": "us-tx-austin",
+    "mode": "cached",
+    "version": "austin-20261025-muse-photos-v1",
+    "sha256": "bae26a4d32597262f8f8cbfa4740535505b732f5a30684a921781f3c7ab1b731",
+    "byteLength": 311151,
+    "snapshotSha256": "37f389bffe7a16e57f211a34cb3f537ea0b49ef3d42e17e8c10785f6a3e184a0",
+    "evidenceCounts": {
+      "price": 0,
+      "numericNoise": 0,
+      "groupFriendly": 1,
+      "wifi": 0,
+      "outlets": 0,
+      "hours": 0,
+      "summaries": 10
+    },
+    "sourceAges": [
+      {
+        "field": "snapshot",
+        "fetchedAt": "2026-10-25T02:51:29.146Z",
+        "ageMs": 12210854,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 12296335,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 12296335,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 12296335,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 12296335,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 12296335,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 7331599,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 12252540,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 12252540,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 12252540,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 12252540,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 12252540,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 7332072,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 12251795,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 12251795,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 12251795,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 12251795,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 12251795,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 7322050,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 12249898,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 12249898,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 12249898,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 12249898,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 12249898,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 7321158,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 12216136,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 12216136,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 12216136,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 12216136,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 12216136,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 7311451,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 12215078,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 12215078,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 12215078,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 12215078,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 12215078,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 7309823,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 12213838,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 12213838,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 12213838,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 12213838,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 12213838,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 7303260,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 12212417,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 12212417,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 12212417,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 12212417,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 12212417,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 7299993,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 7292747,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 7292747,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 7292747,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 12211546,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 7292747,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 7292747,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 12210944,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 12210944,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 12210944,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 12210944,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 12210944,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 7291495,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 12297389,
+        "count": 10
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 12353704,
+        "count": 10
+      }
+    ]
+  },
+  "inputSha256": "67d1442d6100574d84a428bffce9ed5c228f5ee6c191191888ee30d7627e32cc",
+  "records": [
+    {
+      "label": "campus-study",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 50.622988505747145,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-25T18:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 48.58620689655172,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 48.576154992548446,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          1.8642500000000268,
+          1.2703339999999912,
+          1.1513330000000224,
+          1.014665999999977,
+          0.9292090000000144,
+          1.09212500000001,
+          0.9093750000000114,
+          1.1389580000000024,
+          0.90300000000002,
+          0.9507919999999785,
+          0.9920000000000186,
+          1.04608300000001,
+          0.9904170000000363,
+          0.9215830000000551,
+          1.050166000000047,
+          0.8687090000000239,
+          1.1135000000000446,
+          0.8564999999999827,
+          0.9384579999999687,
+          1.014708999999982,
+          0.9237499999999841
+        ],
+        "apiLoopbackRoundTripNode": [
+          37.571207999999956,
+          4.841166000000044,
+          5.197124999999971,
+          3.8385829999999714,
+          3.3698330000000283,
+          4.74958300000003,
+          2.9514580000000024,
+          3.275082999999995,
+          5.220582999999976,
+          6.299249999999972,
+          2.8705000000000496,
+          3.4638330000000224,
+          4.3339579999999955,
+          3.022625000000005,
+          2.713374999999985,
+          3.628250000000037,
+          4.479499999999973,
+          4.438125000000014,
+          2.8036669999999617,
+          4.2057909999999765,
+          4.273124999999993
+        ],
+        "apiReportedRankNode": [
+          3.229582999999991,
+          1.476791999999989,
+          1.161875000000009,
+          1.155208000000016,
+          0.9474579999999833,
+          1.0238750000000323,
+          0.9257499999999936,
+          0.9530829999999924,
+          2.394625000000019,
+          0.9469579999999951,
+          0.8718330000000378,
+          1.047834000000023,
+          0.9000409999999874,
+          0.8919169999999781,
+          0.8600000000000136,
+          1.1022500000000264,
+          1.0123749999999632,
+          2.4878340000000208,
+          0.8639999999999759,
+          0.8595420000000331,
+          1.7769170000000258
+        ],
+        "cachedMobileAdapterInNode": [
+          3.075125000000014,
+          2.5919999999999845,
+          2.268624999999986,
+          2.0602079999999887,
+          2.3217089999999985,
+          1.8942910000000097,
+          2.082375000000013,
+          2.1938749999999914,
+          2.3572090000000117,
+          2.0879170000000045,
+          1.8915420000000154,
+          2.020208000000025,
+          1.935624999999959,
+          2.2212499999999977,
+          2.1393340000000194,
+          2.027667000000008,
+          1.8029999999999973,
+          2.5498329999999783,
+          2.0015829999999823,
+          1.8619170000000054,
+          1.8209579999999619
+        ],
+        "cachedReportedRankNode": [
+          1.6946249999999736,
+          1.2210000000000036,
+          1.0397909999999797,
+          0.9938750000000027,
+          1.0590419999999767,
+          0.8964170000000422,
+          1.041750000000036,
+          1.0481249999999704,
+          1.130708000000027,
+          0.9923749999999814,
+          0.9108329999999683,
+          0.9512090000000057,
+          0.9603749999999991,
+          1.1489589999999907,
+          0.9940829999999892,
+          0.9690829999999551,
+          0.8641660000000115,
+          1.4293749999999932,
+          1.000500000000045,
+          0.9032919999999649,
+          0.8747500000000059
+        ]
+      }
+    },
+    {
+      "label": "campus-meet-friends",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "friends",
+        "groupSize": 4,
+        "targetNoise": 0.7,
+        "targetCrowd": 0.6,
+        "tagWeights": {
+          "lively": 1,
+          "group_friendly": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 49.2896551724138,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-25T18:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 47.58620689655172,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 47.57615499254844,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.9414580000000115,
+          1.0272919999999885,
+          0.9143329999999992,
+          0.8536250000000223,
+          1.0187500000000114,
+          0.9595829999999523,
+          0.8745000000000118,
+          0.9080830000000333,
+          0.8778750000000173,
+          1.002375000000029,
+          0.8865420000000768,
+          0.8765419999999722,
+          1.0272919999999885,
+          1.7862499999999955,
+          0.9397920000000113,
+          0.8943330000000742,
+          1.0849170000000186,
+          1.014291000000071,
+          0.9379999999999882,
+          0.9696669999999585,
+          1.0369170000000167
+        ],
+        "apiLoopbackRoundTripNode": [
+          3.3755840000000035,
+          3.263666999999998,
+          4.284417000000019,
+          2.7511670000000095,
+          2.560541999999998,
+          4.563958000000071,
+          2.764499999999998,
+          2.8914589999999407,
+          3.3628330000000233,
+          4.544041000000107,
+          2.816249999999968,
+          2.682542000000012,
+          4.3131249999999,
+          3.3850419999999986,
+          2.646208999999999,
+          2.814208000000008,
+          3.961750000000052,
+          2.921957999999904,
+          2.6157499999999345,
+          4.1001249999999345,
+          2.7256250000000364
+        ],
+        "apiReportedRankNode": [
+          0.9331250000000182,
+          0.957917000000009,
+          1.0138749999999845,
+          0.9639999999999986,
+          0.8497920000000363,
+          0.9664999999999964,
+          0.903583000000026,
+          0.9474999999999909,
+          0.8997079999999187,
+          1.0413330000000087,
+          0.9200829999999769,
+          0.9180410000000165,
+          0.9291249999999991,
+          0.8758340000000544,
+          0.8848749999999654,
+          0.8264169999999922,
+          0.8783750000000055,
+          0.9497920000000022,
+          0.9082919999999604,
+          0.9073329999999942,
+          0.885915999999952
+        ],
+        "cachedMobileAdapterInNode": [
+          2.104582999999991,
+          1.7937919999999963,
+          2.065832999999998,
+          2.0968750000000114,
+          1.892084000000068,
+          1.891458000000057,
+          1.8649159999999938,
+          1.8226659999999129,
+          1.8916249999999764,
+          1.8788339999999835,
+          2.1420420000000604,
+          1.901124999999979,
+          1.8495839999999362,
+          1.8265830000000278,
+          1.9669999999999845,
+          1.9835409999999456,
+          2.00491599999998,
+          1.8547079999999596,
+          1.9877500000000055,
+          1.9940410000000384,
+          1.884999999999991
+        ],
+        "cachedReportedRankNode": [
+          0.9413749999999936,
+          0.8662079999999719,
+          0.8541670000000181,
+          1.0435830000000124,
+          0.9110000000000582,
+          0.906833000000006,
+          0.8984169999999949,
+          0.8287920000000213,
+          0.8893750000000864,
+          0.884166999999934,
+          1.0439589999999725,
+          0.9197920000000295,
+          0.9104170000000522,
+          0.8645000000000209,
+          0.8975830000000542,
+          0.9695829999999432,
+          0.971541000000002,
+          0.886792000000014,
+          0.8810419999999795,
+          1.025166000000013,
+          0.9193750000000591
+        ]
+      }
+    },
+    {
+      "label": "campus-later-session",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T19:00:00-05:00",
+        "sessionMinutes": 120,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 50.622988505747145,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-26T00:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 48.58620689655172,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-26T00:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 48.576154992548446,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-26T00:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.9252920000000131,
+          0.89224999999999,
+          0.9670419999999922,
+          0.9301250000000891,
+          1.0195420000000013,
+          0.8594590000000153,
+          1.1709580000000415,
+          1.0462089999999762,
+          0.9220410000000356,
+          0.8996660000000247,
+          0.8940830000000233,
+          0.8985420000000204,
+          0.94724999999994,
+          1.182166000000052,
+          0.9152500000000146,
+          0.8922910000000002,
+          0.8764169999999467,
+          1.0096250000000282,
+          0.8763340000000426,
+          0.967708000000016,
+          0.9956670000000258
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.96875,
+          2.5878340000000435,
+          4.538915999999972,
+          2.8152500000001055,
+          2.8727499999999964,
+          2.60125000000005,
+          4.286333000000013,
+          2.549709000000007,
+          2.5875409999999874,
+          2.361499999999978,
+          4.219542000000047,
+          2.934582999999975,
+          2.6027090000000044,
+          2.4221659999999474,
+          4.825417000000016,
+          2.559541999999965,
+          2.302041000000031,
+          2.5822500000000446,
+          4.409334000000058,
+          3.217999999999961,
+          2.456209000000058
+        ],
+        "apiReportedRankNode": [
+          0.9754999999998972,
+          0.8485000000000582,
+          0.9968340000000353,
+          0.9617080000000442,
+          1.059041000000093,
+          0.8983329999999796,
+          0.8875000000000455,
+          0.9097919999999249,
+          0.8824999999999363,
+          0.8202499999999873,
+          0.871291000000042,
+          0.9513329999999769,
+          0.8802080000000387,
+          0.8574590000000626,
+          0.9122499999999718,
+          0.8975840000000517,
+          0.8203750000000127,
+          1.0294580000000906,
+          0.8229169999999613,
+          1.1276670000000877,
+          0.8401669999999513
+        ],
+        "cachedMobileAdapterInNode": [
+          1.8385829999999714,
+          1.8374999999999773,
+          1.8137499999999136,
+          1.817542000000003,
+          1.9183329999999614,
+          1.9661660000000438,
+          1.9407079999999723,
+          1.8419999999999845,
+          2.206540999999902,
+          1.893624999999929,
+          1.952874999999949,
+          1.8424589999999625,
+          1.9477500000000418,
+          1.8539999999999281,
+          1.735416999999984,
+          1.9773330000000442,
+          1.8748330000000806,
+          1.8065000000000282,
+          1.8210840000000417,
+          2.318083999999999,
+          1.8832079999999678
+        ],
+        "cachedReportedRankNode": [
+          0.8927499999999782,
+          0.8702079999999341,
+          0.8924579999999196,
+          0.8654999999999973,
+          0.8691669999999476,
+          0.9962920000000395,
+          0.9181249999999181,
+          0.88637499999993,
+          1.1499170000000731,
+          0.8921669999999722,
+          1.015916000000061,
+          0.880333999999948,
+          0.9777080000000069,
+          0.9110000000000582,
+          0.8268749999999727,
+          0.9926249999999754,
+          0.8868750000000318,
+          0.8616250000000036,
+          0.8732079999999769,
+          1.0545420000000831,
+          0.9134160000000975
+        ]
+      }
+    },
+    {
+      "label": "strict-budget-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": 1,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_price": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Remove the price cap",
+            "patch": {
+              "maxPriceLevel": null,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          1.0672910000000684,
+          0.8355830000000424,
+          0.8919580000000451,
+          1.034750000000031,
+          0.9184159999999792,
+          0.8602079999999432,
+          0.9188329999999496,
+          0.9014170000000377,
+          0.8379580000000715,
+          1.063874999999939,
+          0.9142919999999322,
+          0.8388330000000224,
+          0.9674999999999727,
+          0.8669579999999542,
+          0.8356659999999465,
+          0.8466250000000173,
+          1.0662920000000895,
+          0.8886670000000549,
+          1.2269589999999653,
+          0.9004160000000638,
+          0.8422499999999218
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.8732499999999845,
+          4.509333999999967,
+          2.4752079999999523,
+          2.4867080000000215,
+          2.2714579999999387,
+          3.976541999999995,
+          2.269042000000013,
+          2.3571249999999964,
+          2.142125000000078,
+          4.12012500000003,
+          2.4460410000000365,
+          2.140041999999994,
+          2.54845899999998,
+          4.060124999999971,
+          2.2270839999999907,
+          2.0809580000000096,
+          2.397250000000099,
+          4.240291999999954,
+          2.207834000000048,
+          2.3261249999999336,
+          2.0394589999999653
+        ],
+        "apiReportedRankNode": [
+          1.3437920000000076,
+          0.8815000000000737,
+          0.9278329999999642,
+          0.8391669999999749,
+          0.9945840000000317,
+          0.82162500000004,
+          0.9426660000000311,
+          0.9917500000000246,
+          0.8214580000000069,
+          0.8677500000000009,
+          0.9475830000000087,
+          0.8704999999999927,
+          0.8832080000000815,
+          0.8801660000000311,
+          0.8940410000000156,
+          0.8642090000000735,
+          0.88250000000005,
+          0.9920410000000857,
+          0.8295000000000528,
+          0.9207499999999982,
+          0.8181250000000091
+        ],
+        "cachedMobileAdapterInNode": [
+          1.7145000000000437,
+          1.8142500000000155,
+          1.8664999999999736,
+          1.718458000000055,
+          2.094249999999988,
+          1.7853749999999309,
+          1.7982500000000528,
+          2.067875000000072,
+          1.776207999999997,
+          1.768000000000029,
+          2.0402500000000146,
+          1.7972080000000688,
+          1.7064169999999876,
+          1.9323750000000928,
+          1.7097499999999854,
+          1.8334999999999582,
+          2.2525829999999587,
+          1.9405829999999469,
+          1.7406250000000227,
+          1.8269169999999804,
+          1.8260000000000218
+        ],
+        "cachedReportedRankNode": [
+          0.8579999999999472,
+          0.8155000000000427,
+          0.9737499999999955,
+          0.8702079999999341,
+          1.1509589999999434,
+          0.8561670000000277,
+          0.9186249999999063,
+          0.8565830000000005,
+          0.8672910000000229,
+          0.8978749999999991,
+          0.8323749999999563,
+          0.9097080000000233,
+          0.8413749999999709,
+          0.8257499999999709,
+          0.8703329999999596,
+          0.8958750000000464,
+          1.2524999999999409,
+          0.9377500000000509,
+          0.8822909999998956,
+          0.9370830000000296,
+          0.9356659999999692
+        ]
+      }
+    },
+    {
+      "label": "strict-hours-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": true,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_hours": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Include places without verified full-session opening hours",
+            "patch": {
+              "requireOpenForSession": false,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.9857500000000528,
+          0.9172499999999673,
+          0.85287500000004,
+          0.8214580000000069,
+          1.1278330000000096,
+          0.8297919999999976,
+          1.2441659999999501,
+          0.9344169999999394,
+          0.8486250000000837,
+          1.3100420000000668,
+          0.8784160000000156,
+          0.8347499999999854,
+          0.9869579999999587,
+          0.9333329999999478,
+          0.918292000000065,
+          1.1584169999999858,
+          0.8882499999999709,
+          0.875,
+          1.1248329999999669,
+          0.8644580000000133,
+          0.9266659999999547
+        ],
+        "apiLoopbackRoundTripNode": [
+          4.248667000000069,
+          2.4209999999999354,
+          2.409667000000013,
+          2.1147079999999505,
+          4.4039169999999785,
+          2.2087080000000014,
+          2.2041249999999764,
+          2.274208000000044,
+          3.866624999999999,
+          2.1165419999999813,
+          2.3185419999999795,
+          2.1357920000000377,
+          3.805417000000034,
+          2.9152500000000146,
+          2.2670839999999544,
+          2.203666999999996,
+          4.452040999999895,
+          2.2812920000000076,
+          2.2210420000000113,
+          2.596667000000025,
+          4.195999999999913
+        ],
+        "apiReportedRankNode": [
+          0.8435000000000628,
+          0.9287499999999227,
+          0.8787920000000895,
+          0.8389580000000478,
+          0.96387500000003,
+          0.8647500000000719,
+          0.921875,
+          0.9830000000000609,
+          0.8740829999999278,
+          0.8062079999999696,
+          0.9565830000000233,
+          0.9101249999999936,
+          0.8670419999999694,
+          1.2506670000000213,
+          0.8034999999999854,
+          0.8170829999999114,
+          0.9270420000000286,
+          0.8842499999999518,
+          0.8057919999999967,
+          0.9087079999999332,
+          1.0060419999999795
+        ],
+        "cachedMobileAdapterInNode": [
+          1.7659999999999627,
+          2.1480000000000246,
+          1.9364590000000135,
+          1.8755419999999958,
+          1.82224999999994,
+          1.8533750000000282,
+          1.743333000000007,
+          2.07062499999995,
+          1.956666000000041,
+          1.7138329999999087,
+          2.021250000000009,
+          2.06675000000007,
+          1.7666249999999764,
+          2.0326669999999467,
+          2.031708999999978,
+          1.7309169999999767,
+          1.7136669999999867,
+          1.8424580000000788,
+          1.8759999999999764,
+          1.793957999999975,
+          1.728749999999991
+        ],
+        "cachedReportedRankNode": [
+          0.9032089999999471,
+          0.8779999999999291,
+          0.8556669999999258,
+          0.955167000000074,
+          0.8245419999999513,
+          0.9455829999999423,
+          0.8972079999999778,
+          0.899332999999956,
+          0.9255409999999529,
+          0.8927499999999782,
+          0.8416669999999158,
+          0.9117499999999836,
+          0.8592499999999745,
+          0.8852500000000418,
+          1.0054999999999836,
+          0.8731669999999667,
+          0.8117919999999685,
+          0.9358330000000024,
+          0.9976659999999811,
+          0.86162499999989,
+          0.8359169999999949
+        ]
+      }
+    },
+    {
+      "label": "strict-wifi-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "require",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "amenity": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Prefer Wi-Fi instead of requiring it",
+            "patch": {
+              "amenities": {
+                "wifi": "prefer",
+                "outlets": "prefer"
+              },
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          1.007959000000028,
+          0.9495829999999614,
+          0.8591249999999491,
+          1.248625000000061,
+          0.8302500000000919,
+          1.116624999999999,
+          1.010958999999957,
+          1.0267920000000004,
+          0.9313329999999951,
+          0.8976250000000618,
+          0.9742089999999735,
+          0.89712499999996,
+          0.8765410000000884,
+          1.1410000000000764,
+          0.8952500000000327,
+          0.8582920000001195,
+          1.2407080000000406,
+          0.8698750000000928,
+          0.9094159999999647,
+          0.9700840000000426,
+          1.1090829999998277
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.2885410000000093,
+          2.6783340000000635,
+          2.3941670000000386,
+          4.474124999999958,
+          2.471125000000029,
+          2.543374999999969,
+          2.227374999999938,
+          4.281917000000021,
+          2.2916250000000673,
+          2.1317079999998896,
+          2.319708000000219,
+          4.204291000000012,
+          2.395667000000003,
+          2.117415999999821,
+          2.3150409999998374,
+          3.833750000000009,
+          2.122041999999965,
+          2.122708999999986,
+          2.0789169999998194,
+          4.006582999999864,
+          2.6236670000000686
+        ],
+        "apiReportedRankNode": [
+          0.8653749999999718,
+          1.079040999999961,
+          0.9052500000000236,
+          0.8463329999999587,
+          0.8471660000000156,
+          1.0073750000000246,
+          0.8923749999999018,
+          1.0129579999999123,
+          0.9052500000000236,
+          0.8368330000000697,
+          0.8215830000001461,
+          0.984375,
+          0.8774169999999231,
+          0.8165830000000369,
+          0.9879170000001523,
+          0.8528329999999187,
+          0.8197909999998956,
+          0.8347909999999956,
+          0.8732910000001084,
+          0.9080000000001291,
+          0.95699999999988
+        ],
+        "cachedMobileAdapterInNode": [
+          1.84375,
+          1.665208000000007,
+          2.1295000000000073,
+          1.7912089999999807,
+          1.7559999999999718,
+          2.045500000000061,
+          1.9862909999999374,
+          1.8360000000000127,
+          1.8459170000000995,
+          1.9108330000001388,
+          1.7235000000000582,
+          1.8147079999998823,
+          1.9609579999998914,
+          1.721625000000131,
+          2.125750000000153,
+          1.993541999999934,
+          1.7200420000001486,
+          1.6889579999999569,
+          1.7552089999999225,
+          1.6895419999998467,
+          2.061000000000149
+        ],
+        "cachedReportedRankNode": [
+          0.8582910000000084,
+          0.7941250000000082,
+          1.1227499999999964,
+          0.8204170000000204,
+          0.8662919999999303,
+          0.8827919999999949,
+          0.9934170000000222,
+          0.9069999999999254,
+          0.8914159999999356,
+          0.9907920000000559,
+          0.8639169999999012,
+          0.8718750000000455,
+          0.9690419999999449,
+          0.8931670000001759,
+          0.9178750000000946,
+          0.9474589999999807,
+          0.89712499999996,
+          0.8635830000000624,
+          0.8961249999999836,
+          0.8427090000000135,
+          0.830167000000074
+        ]
+      }
+    },
+    {
+      "label": "downtown-study-manual-origin",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2672,
+          "lng": -97.7431,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+            "score": 52.994936708860784,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 3,
+            "arrivalAt": "2026-10-25T18:03:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 3 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:beeb8c5a1379778198621bc63122e147",
+            "score": 49.054545454545455,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:469628681071309095718b65891e9efc",
+            "score": 42.314705882352946,
+            "evidenceCoverage": 0.385,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 25
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 5
+      },
+      "names": [
+        {
+          "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+          "name": "Cielito Lindo Cafe"
+        },
+        {
+          "spotId": "google:beeb8c5a1379778198621bc63122e147",
+          "name": "Trippy Buck Coffee"
+        },
+        {
+          "spotId": "google:469628681071309095718b65891e9efc",
+          "name": "Black Fox Coffee"
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.9851659999999356,
+          1.1871249999999236,
+          0.8923330000000078,
+          0.8392910000000029,
+          0.9194159999999556,
+          0.880542000000105,
+          1.1046249999999418,
+          1.015625,
+          0.8789170000000013,
+          1.0137090000000626,
+          0.9266660000000684,
+          0.8764579999999569,
+          0.9793329999999969,
+          0.954915999999912,
+          0.9142500000000382,
+          0.911916999999903,
+          0.9807919999998376,
+          0.8988749999998618,
+          0.8975000000000364,
+          1.3536659999999756,
+          0.9151249999999891
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.5456249999999727,
+          2.5820830000000115,
+          4.8431250000001,
+          2.705791999999974,
+          2.6580830000000333,
+          2.3964579999999387,
+          4.7725410000000466,
+          2.5173339999998916,
+          2.2845420000001013,
+          2.984375,
+          3.8824580000000424,
+          2.449333000000024,
+          2.6938339999999243,
+          3.8989590000001044,
+          2.673999999999978,
+          2.5461669999999685,
+          3.0012920000001486,
+          4.192749999999933,
+          2.4028749999999945,
+          2.2705419999999776,
+          2.4783330000000205
+        ],
+        "apiReportedRankNode": [
+          0.9590410000000702,
+          0.8627910000000156,
+          1.1219169999999394,
+          0.9621660000000247,
+          0.9140829999998914,
+          0.8910419999999704,
+          0.9675000000002001,
+          0.8784170000001268,
+          0.8609999999998763,
+          1.2060829999998077,
+          0.9202499999998963,
+          0.9317909999999756,
+          0.8571249999999964,
+          0.8265000000001237,
+          0.8707500000000437,
+          0.8544170000000122,
+          1.0757089999999607,
+          0.8608329999999569,
+          0.9418749999999818,
+          0.8103330000001279,
+          0.9590840000000753
+        ],
+        "cachedMobileAdapterInNode": [
+          2.007916000000023,
+          1.8229999999998654,
+          1.7849160000000666,
+          2.2154169999998885,
+          1.8064589999999043,
+          1.9832499999999982,
+          1.8740839999998116,
+          2.216042000000016,
+          1.877875000000131,
+          1.77274999999986,
+          2.0437500000000455,
+          1.94137499999988,
+          1.878208000000086,
+          1.8365409999998974,
+          2.272583000000168,
+          1.9163330000001224,
+          1.7604999999998654,
+          1.937750000000051,
+          2.063625000000002,
+          1.81574999999998,
+          2.1203750000001946
+        ],
+        "cachedReportedRankNode": [
+          1.0560829999999441,
+          0.8946249999999054,
+          0.8593329999998787,
+          0.9189169999999649,
+          0.859958000000006,
+          0.9322500000000673,
+          0.9105419999998503,
+          1.178083000000015,
+          0.8907090000000153,
+          0.8687910000001011,
+          0.9486669999998867,
+          0.9892919999999776,
+          0.929290999999921,
+          0.9179999999998927,
+          1.2018339999999625,
+          0.9247909999999138,
+          0.8497909999998683,
+          0.8710419999999885,
+          1.0689159999999447,
+          0.9087910000000647,
+          0.8743750000001
+        ]
+      }
+    }
+  ],
+  "fictionalGoldens": [
+    {
+      "label": "FICTIONAL study",
+      "datasetVersion": "fictional-austin-v1",
+      "clock": "2026-10-24T18:00:00-05:00",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "demo-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-24T18:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "demo:spot-1",
+            "score": 81.56666666666665,
+            "evidenceCoverage": 0.78,
+            "estimatedWalkMinutes": 1,
+            "arrivalAt": "2026-10-24T23:01:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 1 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-3",
+            "score": 76.50000000000001,
+            "evidenceCoverage": 0.7300000000000001,
+            "estimatedWalkMinutes": 3,
+            "arrivalAt": "2026-10-24T23:03:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 3 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-5",
+            "score": 61.56666666666667,
+            "evidenceCoverage": 0.6300000000000001,
+            "estimatedWalkMinutes": 4,
+            "arrivalAt": "2026-10-24T23:04:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 4 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Price unknown",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          }
+        ],
+        "excludedCounts": {},
+        "relaxations": [],
+        "candidateCount": 10,
+        "qualifyingCount": 10
+      }
+    },
+    {
+      "label": "FICTIONAL friends",
+      "datasetVersion": "fictional-austin-v1",
+      "clock": "2026-10-24T18:00:00-05:00",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "demo-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-24T18:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "friends",
+        "groupSize": 4,
+        "targetNoise": 0.7,
+        "targetCrowd": 0.6,
+        "tagWeights": {
+          "lively": 1,
+          "group_friendly": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "demo:spot-2",
+            "score": 85.45000000000002,
+            "evidenceCoverage": 0.7900000000000003,
+            "estimatedWalkMinutes": 2,
+            "arrivalAt": "2026-10-24T23:02:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 2 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-10",
+            "score": 70.50000000000001,
+            "evidenceCoverage": 0.8400000000000001,
+            "estimatedWalkMinutes": 7,
+            "arrivalAt": "2026-10-24T23:07:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 7 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-6",
+            "score": 70.15,
+            "evidenceCoverage": 0.7900000000000003,
+            "estimatedWalkMinutes": 4,
+            "arrivalAt": "2026-10-24T23:04:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 4 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          }
+        ],
+        "excludedCounts": {},
+        "relaxations": [],
+        "candidateCount": 10,
+        "qualifyingCount": 10
+      }
+    }
+  ],
+  "limitations": [
+    "Manual public demo origins only; device GPS inputs are rejected and never recorded.",
+    "Artifact acquisition timestamps are not observation times; negative source age means a source is after the explicit clock.",
+    "No provider/model acquisition. Cache hits in the mobile response mean a loaded local bundle, not avoided paid requests.",
+    "Scores are heuristic fit scores, not calibrated quality or factual proof. Unknown facts remain unknown.",
+    "Deployment approval is not semantic evidence approval. The separate Muse evidence audit may withhold claims.",
+    "Phone performance, deployed network/cold-start latency, battery and savings have not been measured."
+  ]
+}

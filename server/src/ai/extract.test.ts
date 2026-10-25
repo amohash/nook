@@ -95,6 +95,15 @@ describe('bounded evidence extraction', () => {
 });
 
 describe('server Muse transport', () => {
+  it('honors a smaller assistant completion cap and rejects invalid budgets before fetch', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ choices: [{ message: { content: '{}' } }] })));
+    const provider = createMuseProvider({ apiKey: 'test-only', fetchImpl });
+    const request = { model: 'm', system: '', user: '', signal: new AbortController().signal };
+    await provider({ ...request, maxTokens: 768 });
+    expect(JSON.parse(fetchImpl.mock.calls[0]![1]!.body as string).max_tokens).toBe(768);
+    await expect(provider({ ...request, maxTokens: 4097 })).rejects.toThrow('Invalid Muse token budget');
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
   it('sends the documented endpoint, JSON contract and bounded completion request', async () => {
     const fetchImpl = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(valid()) } }] })));
     const provider = createMuseProvider({ apiKey: 'test-only', fetchImpl });
