@@ -28,21 +28,34 @@ if (!key) {
     targetCrowd: 0.25, tagWeights: { study: 1, quiet: 1 }, amenities: { wifi: 'prefer', outlets: 'prefer' },
     access: 'any', limit: 3 });
   let externalAttempts = 0;
+  let providerFailure: string | null = null;
   const transport = createMuseProvider({ apiKey: key });
-  const assist = createPlaceAssistant({ complete: (request) => { externalAttempts++; return transport(request); },
+  const assist = createPlaceAssistant({ complete: async (request) => {
+    externalAttempts++;
+    try { return await transport(request); }
+    catch (error) {
+      // Only transport-owned error categories; never print upstream bodies or prompts.
+      const message = error instanceof Error ? error.message : '';
+      providerFailure = /^Muse request failed \(\d{3}\)$/.test(message) ? message :
+        message === 'Muse completion exceeded token budget' ? 'completion_token_limit' :
+        request.signal.aborted ? 'timeout' : 'provider_response_unavailable';
+      throw error;
+    }
+  },
     authorizeSession: async () => true, resolveContext: async () => ({ snapshot: dataset.snapshot, details: dataset.details }),
-    clock: () => ({ now }), maxTotalCalls: 2, maxSessionCalls: 2, budgetMs: 30_000 });
+    clock: () => ({ now }), maxTotalCalls: 2, maxSessionCalls: 2 });
   const records = [];
   for (const [scenario, message] of [
     ['explain', 'Why this place? Explain its fit and uncertainty.'],
     ['preferences', 'Find a quiet cafe under $15 within 10 minutes.'],
   ]) {
     const started = performance.now(), before = externalAttempts;
+    providerFailure = null;
     const result = await assist({ sessionId: 'fixed-public-origin-live-smoke-session', snapshotId: dataset.snapshot.datasetVersion,
       query, placeIds: [], message });
     records.push({ scenario, httpStatus: result.httpStatus, status: result.body.status,
       references: result.body.references, proposedQueryPatch: result.body.proposedQueryPatch ?? null,
-      externalAttempts: externalAttempts - before, durationMs: performance.now() - started });
+      providerFailure, externalAttempts: externalAttempts - before, durationMs: performance.now() - started });
   }
   console.log(JSON.stringify({ measuredAt: now, model: MUSE_MODEL, evidenceMode: 'normalized-real-place-facts',
     datasetVersion: dataset.snapshot.datasetVersion, hardAttemptBudget: 2, externalAttempts, retries: 0,

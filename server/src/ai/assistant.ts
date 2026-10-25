@@ -49,7 +49,7 @@ function tightening(query: Query, patch: AssistantQueryPatch, message: string): 
 }
 
 export function createPlaceAssistant({ complete, authorizeSession, resolveContext, clock,
-  budgetMs = 8000, maxSessionCalls = 8, maxTotalCalls = 100, maxConcurrent = 2 }: AssistantDependencies) {
+  budgetMs = 18_000, maxSessionCalls = 8, maxTotalCalls = 100, maxConcurrent = 2 }: AssistantDependencies) {
   for (const [value, max] of [[budgetMs, 30_000], [maxSessionCalls, 100], [maxTotalCalls, 10_000], [maxConcurrent, 10]]) {
     if (!Number.isInteger(value) || value! < 1 || value! > max!) throw new Error('Invalid assistant limit');
   }
@@ -128,7 +128,8 @@ export function createPlaceAssistant({ complete, authorizeSession, resolveContex
       sessions.set(input.sessionId, { calls: (current?.calls ?? 0) + 1, expires: current?.expires ?? now + 30 * 60_000 });
       total++;
       const { origin: _origin, cityId: _city, snapshotId: _snapshot, departAt: _time, ...preferences } = input.query;
-      const text = await Promise.race([complete({ model: MUSE_MODEL, system: SYSTEM, maxTokens: 768,
+      // Muse's completion allowance includes reasoning; retain the separate 8 KiB JSON limit.
+      const text = await Promise.race([complete({ model: MUSE_MODEL, system: SYSTEM, maxTokens: 4096,
         user: JSON.stringify({ message: input.message, preferences, candidates }), signal: controller.signal }), deadline]);
       if (Buffer.byteLength(text) > 8192) throw new Error('output limit');
       const selection = SelectionSchema.parse(JSON.parse(text));
