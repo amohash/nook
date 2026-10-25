@@ -49,10 +49,12 @@ function vibe(spot: Spot, query: Query): Feature {
 }
 function crowdAt(spot: Spot, arrivalMs: number, now: number): Feature {
   if (!spot.typicalCrowd || !fresh(spot.typicalCrowd.fetchedAt, now, 7)) return unknown();
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: spot.timezone,
-    weekday: 'short', hour: 'numeric', hourCycle: 'h23' }).formatToParts(arrivalMs);
-  const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.find((p) => p.type === 'weekday')?.value ?? '');
-  const hour = Number(parts.find((p) => p.type === 'hour')?.value);
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: spot.timezone,
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', hourCycle: 'h23' })
+    .formatToParts(arrivalMs).map((part) => [part.type, part.value]));
+  // Hermes can label weekday text as a literal; use the venue-local calendar date.
+  const weekday = new Date(`${parts.year}-${parts.month}-${parts.day}T00:00:00Z`).getUTCDay();
+  const hour = Number(parts.hour);
   const entry = spot.typicalCrowd.entries.find((e) => e.weekday === weekday && e.hour === hour);
   return entry?.value === undefined || entry.value === null ? unknown() : known(entry.value, 0.9);
 }

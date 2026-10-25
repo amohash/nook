@@ -5,9 +5,10 @@ import type { OpenStatus } from '../../components';
 export function venueTime(instant: string, timezone: string): {weekday: number; hour: number; label: string} {
   try {
     const date = new Date(instant);
-    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone: timezone,
-      weekday: 'short', hour: '2-digit', hourCycle: 'h23'}).formatToParts(date).map((p) => [p.type, p.value]));
-    const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday ?? '');
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {timeZone: timezone,
+      year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hourCycle: 'h23'}).formatToParts(date).map((p) => [p.type, p.value]));
+    // Hermes can label weekday text as a literal. Derive it from the venue's local date.
+    const weekday = new Date(`${parts.year}-${parts.month}-${parts.day}T00:00:00Z`).getUTCDay();
     const label = new Intl.DateTimeFormat('en-US', {timeZone: timezone, month: 'short', day: 'numeric',
       hour: 'numeric', minute: '2-digit', timeZoneName: 'short'}).format(date);
     return {weekday, hour: Number(parts.hour), label};
