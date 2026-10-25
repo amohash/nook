@@ -1,3 +1,50 @@
+# Austin-area runtime update — October 25, 2026
+
+The user approved a 250-request account ceiling and automatic guest access for
+this demo. `POST /v1/guest-sessions` accepts `{}` and returns a short-lived opaque
+session, with no code/account/provider credentials. The mobile app enables it after
+onboarding and renews before expiry; a failed session after an API restart triggers
+one automatic renewal, then an explicit Retry. The old tester endpoint remains for
+operator compatibility but is not used by the app. Guest exchanges are capped at
+60 per direct address per ten minutes and 200 active sessions; shared NAT/tunnel
+addresses no longer hit the five-attempt tester-code bucket. Per-session discovery,
+refresh and global durable spending limits still apply. The guest route exists only
+when NEARBY_ENABLED=1. NEARBY_TESTER_ACCESS_CODE is now optional and server-only.
+
+The user approved a 250-request account ceiling for this demo. Set
+`NEARBY_ACCOUNT_REQUEST_LIMIT=250` server-side with the existing fixed budget key.
+The existing private `api_cache` stores a persistent compare-and-set counter;
+all 18 legacy slots are conservatively reserved up front, leaving at most 232
+additional runtime attempts. Concurrent instances cannot exceed the configured
+ceiling. Invalid/corrupt accounting fails closed. Do not delete this budget row,
+rotate its key, or treat it as ordinary expiring provider data. Its 2100 expiry
+keeps it outside routine short-lived cache cleanup. No schema/migration change.
+The original ingestion RPC and its 18-call cap remain unchanged.
+
+Policy `austin-area-v2` accepts origins in latitude 30.05..30.56 and longitude
+-97.98..-97.55 inclusive. Coordinates round to 0.01 degrees; candidates must be
+within the service rectangle and 4500m of the coarse center. That radius covers
+the supported 60-minute straight-line walking estimate plus quantization offset.
+This rectangle includes surrounding neighborhoods; it is not a city boundary.
+Mobile accepts the legacy coverage response during rolling updates. Area cache
+keys use v2, so narrower v1 results cannot masquerade as expanded coverage.
+
+Acquisition reads four category listings, one extra page for each full 20-result
+first page, then up to four detail requests: at most 12 planned attempts, no retry,
+three concurrent calls and the unchanged 18-attempt per-acquisition hard ceiling.
+Up to 160 deduplicated candidates are ranked by the same shared deterministic
+scorer. Pagination/detail failures retain valid listing facts and report partial
+results. Refresh is explicit, throttled and charged to the same account budget.
+
+The local server and its existing HTTPS tunnel were exercised for north, south,
+east and west Austin. See `measurements/austin-area-public-smoke-20261025.json`
+for actual candidate counts, partial failures, cache and scoring/detail parity.
+No deployment to Render or physical-phone acceptance is established by this run.
+The historical verifier below still uses the original 18-slot ingestion ledger;
+do not use it to measure the expanded runtime account counter.
+
+---
+
 # Runtime nearby verification and deployment (B)
 
 Implemented; live-provider verification and deployment pending private configuration.
@@ -124,3 +171,21 @@ D must test foreground permission/denial/manual fallback, changed origin, warm r
 scoped detail/recommendations, explicit refresh, Muse unavailable/quota and recovery
 on the physical presenter phone. Rollback disables NEARBY_ENABLED on the same service;
 the pinned dataset and ordinary API remain intact. No new service/schema reset.
+
+## Reproduce automatic guest / Austin-area verification
+
+From the repository root, with the backend and its public HTTPS tunnel running:
+
+```sh
+node --import tsx server/src/jobs/verify-austin-area.ts \
+  --authorize-spend --api-base=https://YOUR_PUBLIC_API_HOST \
+  --output=/tmp/new-austin-verification.json
+```
+
+Uses no access code or provider credentials. Four public named origins are tested,
+with at most 48 planned provider attempts (cache can reduce this to zero) charged
+to the existing shared ceiling. Reports actual calls, partial failures, warm cache,
+strict café/library eligibility, shared scorer parity and top-card detail parity.
+A new output path is required. The measured guest run is in
+`measurements/austin-guest-public-smoke-20261025.json`; all four warm repeats made
+zero provider attempts. The campus mobile-adapter smoke returned 134 candidates.

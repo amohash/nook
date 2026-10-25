@@ -26,7 +26,9 @@
     "build": "npm run build:server",
     "build:server": "npm run build --workspace @space/server",
     "start:server": "npm run start --workspace @space/server",
-    "export:mobile": "npm run export --workspace @space/mobile --"
+    "export:mobile": "npm run export --workspace @space/mobile --",
+    "check:phone": "node scripts/check-phone.mjs",
+    "dev:phone": "node scripts/check-phone.mjs --start"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

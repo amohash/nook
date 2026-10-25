@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { DiscoveryRequestSchema, DiscoveryResponseSchema, z, type DiscoveryResponse, type Spot } from '@space/contracts';
+import { DiscoveryCoverageSchema, DiscoveryRequestSchema, DiscoveryResponseSchema, z, type DiscoveryResponse, type Spot } from '@space/contracts';
 import { cacheKey, type ProviderCache } from '../cache/provider-cache';
 import { DatasetSchema, type Dataset } from '../data/dataset';
 import { deduplicatePlaces, normalizePlace } from '../data/normalize';
@@ -8,11 +8,12 @@ import { prepareDataset, type IngestionEvidence } from '../jobs/publish-dataset'
 import { ServiceError } from '../providers/http';
 import { ProviderPlaceSchema, SerpApi } from '../providers/serpapi';
 
-export const COVERAGE_BOUNDS = { south: 30.24, north: 30.34, west: -97.78, east: -97.70 } as const;
+// Austin and nearby neighborhoods, including north/south Austin and the airport.
+// A service rectangle, not a claim about municipal boundaries or exhaustive coverage.
+export const COVERAGE_BOUNDS = { south: 30.05, north: 30.56, west: -97.98, east: -97.55 } as const;
 const TTL = 86_400_000;
 const StoredSchema = z.strictObject({ dataset: DatasetSchema,
-  coverage: z.strictObject({ policy: z.literal('central-austin-v1'),
-    center: z.strictObject({ lat: z.number(), lng: z.number() }), radiusMeters: z.literal(3000) }),
+  coverage: DiscoveryCoverageSchema,
   warnings: z.array(z.string()), partialFailures: z.number().int().nonnegative(),
 });
 type Stored = z.infer<typeof StoredSchema>;
@@ -23,9 +24,9 @@ export interface DiscoveryStore extends ProviderCache {
 }
 export function coverageFor(origin: { lat: number; lng: number }) {
   const b = COVERAGE_BOUNDS;
-  if (origin.lat < b.south || origin.lat > b.north || origin.lng < b.west || origin.lng > b.east) return null;
-  return { policy: 'central-austin-v1' as const,
-    center: { lat: Math.round(origin.lat * 100) / 100, lng: Math.round(origin.lng * 100) / 100 }, radiusMeters: 3000 as const };
+  if (!Number.isFinite(origin.lat) || !Number.isFinite(origin.lng) || origin.lat < b.south || origin.lat > b.north || origin.lng < b.west || origin.lng > b.east) return null;
+  return { policy: 'austin-area-v2' as const,
+    center: { lat: Math.round(origin.lat * 100) / 100, lng: Math.round(origin.lng * 100) / 100 }, radiusMeters: 4500 as const };
 }
 function distance(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
   const r = Math.PI / 180;
@@ -95,7 +96,7 @@ export function createDiscoveryService(options: { store: DiscoveryStore; apiKey:
     const coverage = coverageFor(request.origin);
     if (!coverage) return response('unsupported_area', null);
     // Only coarse public area centers enter persistent data or provider requests.
-    const areaKey = cacheKey({ kind: 'nearby-area-v1', lat: String(coverage.center.lat), lng: String(coverage.center.lng) });
+    const areaKey = cacheKey({ kind: 'nearby-area-v2', lat: String(coverage.center.lat), lng: String(coverage.center.lng) });
     const existing = flights.get(areaKey);
     if (existing) {
       const result = await existing;
@@ -134,20 +135,30 @@ export function createDiscoveryService(options: { store: DiscoveryStore; apiKey:
         if (!parsed.success) { invalid++; return null; }
         const spot = normalizePlace(parsed.data, fetchedAt, version);
         const b = COVERAGE_BOUNDS;
-        if (spot.lat < b.south || spot.lat > b.north || spot.lng < b.west || spot.lng > b.east || distance(coverage.center, spot) > 3000) return null;
+        if (spot.lat < b.south || spot.lat > b.north || spot.lng < b.west || spot.lng > b.east || distance(coverage.center, spot) > coverage.radiusMeters) return null;
         return spot;
       };
       const listings = await bounded(['cafes', 'libraries', 'parks', 'restaurants'], async (category) => {
         const result = await providerSlot(() => api.request({ type: 'search', q: `${category} near Austin Texas`,
           ll: `@${coverage.center.lat.toFixed(2)},${coverage.center.lng.toFixed(2)},15z`, start: '0' }, { refresh }));
-        return (result.payload.local_results ?? []).flatMap((raw) => { const s = accept(raw, result.fetchedAt); return s ? [s] : []; });
+        const records = (result.payload.local_results ?? []).flatMap((raw) => { const s = accept(raw, result.fetchedAt); return s ? [s] : []; });
+        // One extra page for a full first page, still at most 8 listings + 4 details.
+        // Preserve first-page results if pagination fails.
+        if ((result.payload.local_results?.length ?? 0) >= 20) {
+          try {
+            const next = await providerSlot(() => api.request({ type: 'search', q: `${category} near Austin Texas`,
+              ll: `@${coverage.center.lat.toFixed(2)},${coverage.center.lng.toFixed(2)},15z`, start: '20' }, { refresh }));
+            records.push(...(next.payload.local_results ?? []).flatMap((raw) => { const s = accept(raw, next.fetchedAt); return s ? [s] : []; }));
+          } catch (error) { failures.push(error instanceof ServiceError ? error.code : 'provider_unavailable'); }
+        }
+        return records;
       });
       let spots: Spot[] = [];
       for (const result of listings) {
         if (result.status === 'fulfilled') spots.push(...result.value);
         else failures.push(result.reason instanceof ServiceError ? result.reason.code : 'provider_unavailable');
       }
-      spots = deduplicatePlaces(spots).slice(0, 80);
+      spots = deduplicatePlaces(spots).slice(0, 160);
       const reviews = new Map<string, ReviewEvidence>();
       // Four details maximum, selected geometrically across supported categories.
       const chosen: Spot[] = [];

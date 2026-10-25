@@ -91,6 +91,11 @@ export function createApiProvider(baseUrl: string, requestedTimeoutMs?: number):
     } finally { clearTimeout(timeout); }
   }
   return {
+    async createGuestSession() {
+      const result = TesterSessionResponseSchema.parse(await request('/v1/guest-sessions', {}));
+      sessionId = result.sessionId;
+      return result;
+    },
     async createTesterSession(input) {
       const result = TesterSessionResponseSchema.parse(await request('/v1/tester-sessions', TesterSessionRequestSchema.parse(input)));
       sessionId = result.sessionId;

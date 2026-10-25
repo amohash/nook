@@ -21,7 +21,7 @@ import { PlaceMap } from '../../src/features/explore/PlaceMap';
 import { departureAt, lookupPlaces, venueTime } from '../../src/features/explore/presentation';
 
 function Explore() {
-  const {session, setQuery, nearby} = useSession();
+  const {session, setQuery, nearby, testerSession} = useSession();
   const query = session!.query;
   const city = session!.city;
   const router = useRouter();
@@ -45,13 +45,13 @@ function Explore() {
   const [lookupAttempt, setLookupAttempt] = useState(0);
   const selectOrigin = useCallback((origin: Query['origin']) => setQuery((current) => QuerySchema.parse({...current, origin})), [setQuery]);
   const location = useOrigin(selectOrigin);
-  useEffect(() => {if (location.busy || location.error) setSheetPosition('expanded');}, [location.busy, location.error]);
+  useEffect(() => {if (location.busy || location.error || (nearby.enabled && !testerSession)) setSheetPosition('expanded');}, [location.busy, location.error, nearby.enabled, testerSession]);
   const canRank = !nearby.enabled || (!!query.snapshotId && nearby.result?.snapshotId === query.snapshotId && !nearby.busy);
   useEffect(() => {
     let active = true;
     if (!canRank) {setLoaded(null); setLoading(false); setError(false); return;}
     setLoading(true); setError(false); setLoaded(null); setSelectedId(null);
-    provider.recommend(query).then((data) => {if (active) setLoaded({query, data});})
+    provider.recommend(QuerySchema.parse({...query, limit: 200})).then((data) => {if (active) setLoaded({query, data});})
       .catch(() => {if (active) setError(true);})
       .finally(() => {if (active) setLoading(false);});
     return () => {active = false;};
@@ -81,7 +81,7 @@ function Explore() {
   const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
   const shown = response?.results ?? [];
   const statusTitle = !canRank ? 'Nearby discovery required' : loading ? 'Finding matches…' : error ? 'Places unavailable'
-    : `${response?.results.length ?? 0} places · ${query.maxWalkMinutes} min estimated walk · ${priceLabel(query.maxPriceLevel)}`;
+    : `${response?.results.length ?? 0} matches · ${query.maxWalkMinutes} min estimated walk · ${priceLabel(query.maxPriceLevel)}`;
   return <><ExploreLayout
     mapSlot={<PlaceMap results={response?.results ?? []} origin={query.origin}
       departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={(id) => {setSelectedId(id); setSheetPosition('expanded');}} onFallback={() => setSheetPosition('expanded')} />}
@@ -139,11 +139,11 @@ function Explore() {
       {query.origin.source === 'device' && <Button label="Explore from UT Austin" onPress={location.useManual} variant="outline" />}
       <Button label="Reset filters" variant="outline" onPress={() => setQuery(resetExploreFilters(query))} />
     </View>}
-    {shown.map((result) => <Link key={result.spotId} href={{pathname: '/spot/[id]', params: {id: result.spotId, arrivalAt: result.arrivalAt}}} asChild>
-      <SpotCard variant="compact" result={result} rank={(response?.results.findIndex((r) => r.spotId === result.spotId) ?? 0) + 1}
+    {shown.map((result, index) => <Link key={result.spotId} href={{pathname: '/spot/[id]', params: {id: result.spotId, arrivalAt: result.arrivalAt}}} asChild>
+      <SpotCard variant="compact" result={result} rank={index + 1}
         accessibilityRole="link" onPress={location.cancel} />
     </Link>)}
-    <Text style={s.small}>{response && `Ranked among ${response.metrics.candidateCount} known candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
+    <Text style={s.small}>{response && `Showing all ${response.metrics.qualifyingCount} matches from ${response.metrics.candidateCount} nearby candidates, best fit first. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
   </ScrollView></ExploreLayout>
     {draft && <FiltersSheet query={draft} onChange={setDraft} onClose={() => setDraft(null)}
       onApply={() => {setQuery((current) => applyExploreFilters(current, draft)); setDraft(null);}} />}

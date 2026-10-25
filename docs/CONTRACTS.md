@@ -78,7 +78,7 @@ type Query = {
     outlets: 'ignore' | 'prefer' | 'require';
   };
   access: 'any' | 'public_only';
-  limit: number; // 1..10, default 3
+  limit: number; // 1..200, default 3; Explore requests 200 to show all eligible snapshot candidates
 };
 type RankingResult = {
   spotId: string;

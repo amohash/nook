@@ -100,6 +100,10 @@ export function createRecoveryProvider(options: {
     catch (error) {assertCurrent(revision); throw error;}
   }
   const provider: DataProvider = {
+    createGuestSession: () => guarded(async (choice) => {
+      if (choice !== 'api' || !options.api.createGuestSession) throw new Error('Nearby access requires the API provider.');
+      return options.api.createGuestSession();
+    }),
     createTesterSession: (input) => guarded(async (choice) => {
       if (choice !== 'api' || !options.api.createTesterSession) throw new Error('Tester access requires the API provider.');
       return options.api.createTesterSession(input);
