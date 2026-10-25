@@ -4,13 +4,23 @@ import { rankSpots } from '@space/core';
 import { cities, DEMO_NOW, getDemoDetail, snapshot } from '@space/fixtures';
 
 let fixtureRequest = 0;
+export class PlaceNotFoundError extends Error {
+  constructor() {
+    super('Place not found');
+    this.name = 'PlaceNotFoundError';
+  }
+}
+
 export const fixtureProvider: DataProvider = {
   async listCities() { return cities; },
   async listSpots(cityId) {
     if (cityId !== snapshot.cityId) throw new Error('City not found');
     return SnapshotSchema.parse(snapshot);
   },
-  async getSpot(id) { return SpotDetailSchema.parse(getDemoDetail(id)); },
+  async getSpot(id) {
+    if (!snapshot.spots.some((spot) => spot.id === id)) throw new PlaceNotFoundError();
+    return SpotDetailSchema.parse(getDemoDetail(id));
+  },
   async recommend(input: Query) {
     const query = QuerySchema.parse(input);
     if (query.cityId !== snapshot.cityId) throw new Error('City not found');
@@ -35,6 +45,7 @@ export function createApiProvider(baseUrl: string): DataProvider {
     try {
       const response = await fetch(`${base}${path}`, { signal: controller.signal,
         ...(query ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(QuerySchema.parse(query)) } : {}) });
+      if (response.status === 404 && path.startsWith('/v1/spots/')) throw new PlaceNotFoundError();
       const body: unknown = await response.json();
       if (!response.ok) {
         const parsed = ApiErrorSchema.safeParse(body);

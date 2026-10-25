@@ -1,16 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
-import type { Query, Recommendation } from '@space/contracts';
+import { QuerySchema, type Query, type Recommendation } from '@space/contracts';
 import { createDemoQuery, DEMO_LABEL } from '@space/fixtures';
 import { provider } from '../src/data';
+import { FiltersSheet } from '../src/features/explore/FiltersSheet';
+import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../src/features/explore/filters';
+import { OriginControls } from '../src/features/explore/OriginControls';
+import { useOrigin } from '../src/features/explore/useOrigin';
 
 export default function Explore() {
   const [query, setQuery] = useState<Query>(() => createDemoQuery());
+  const [draft, setDraft] = useState<Query | null>(null);
   const [response, setResponse] = useState<Recommendation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
+  const selectOrigin = useCallback((origin: Query['origin']) => {
+    setQuery((current) => QuerySchema.parse({ ...current, origin }));
+  }, []);
+  const location = useOrigin(selectOrigin);
   useEffect(() => {
     let active = true;
     setLoading(true); setError(null); setResponse(null);
@@ -19,37 +28,42 @@ export default function Explore() {
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; }; // Ignore stale requests after a filter change or unmount.
   }, [query, attempt]);
-  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => ({ ...current, intent,
-    groupSize: intent === 'study' ? 1 : 4, targetNoise: intent === 'study' ? 0.15 : 0.65,
-    tagWeights: intent === 'study' ? { study: 1, quiet: 1 } : { lively: 1, group_friendly: 1 } }));
-  return <ScrollView contentContainerStyle={s.page}>
+  const chooseIntent = (intent: 'study' | 'friends') => setQuery((current) => applyIntentPreset(current, intent));
+  const resultCount = response?.results.length ?? 0;
+  return <><ScrollView contentContainerStyle={s.page}>
     <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
     <Text style={s.title}>A place for{ '\n' }this moment.</Text>
-    <Text style={s.body}>Manual origin · UT Austin campus{ '\n' }Demo clock · Oct 24, 2026, 6:00 PM America/Chicago</Text>
-    <View style={s.banner}><Text style={s.badge}>{response?.mode === 'demo' || !response ? DEMO_LABEL : `${response.mode} dataset`}</Text>
-      <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text></View>
+    <OriginControls origin={query.origin} busy={location.busy} error={location.error} accuracyMeters={location.accuracyMeters}
+      onDevice={() => { void location.useDevice(); }} onManual={location.useManual} />
+    <Text style={s.body}>Demo clock · Oct 24, 2026, 6:00 PM America/Chicago</Text>
+    <View style={s.banner}><Text style={s.badge}>{response ? response.mode === 'demo' ? DEMO_LABEL : `${response.mode} dataset` : loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
+      {response?.mode === 'demo' && <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text>}</View>
     <View style={s.row}>
       {(['study', 'friends'] as const).map((intent) => <Pressable key={intent} accessibilityRole="button"
-        accessibilityState={{ selected: query.intent === intent }} onPress={() => chooseIntent(intent)}
-        style={[s.chip, query.intent === intent && s.selected]}><Text style={s.chipText}>{intent === 'study' ? 'Solo study' : 'Meet friends'}</Text></Pressable>)}
+        accessibilityState={{ selected: query.intent === intent }} aria-pressed={query.intent === intent} onPress={() => chooseIntent(intent)}
+        style={[s.chip, query.intent === intent && s.selected]}><Text style={s.chipText}>{intent === 'study' ? 'Study' : 'Meet Friends'}</Text></Pressable>)}
     </View>
     <View style={s.row}>
-      <Pressable accessibilityRole="button" accessibilityState={{ selected: query.maxPriceLevel === 0 }}
-        style={[s.chip, query.maxPriceLevel === 0 && s.selected]}
-        onPress={() => setQuery((q) => ({ ...q, maxPriceLevel: q.maxPriceLevel === 0 ? null : 0 }))}>
-        <Text style={s.chipText}>Free only</Text>
+      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}>
+        <Text style={s.chipText}>Filters ({activeFilterCount(query)})</Text>
       </Pressable>
-      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(createDemoQuery())}><Text style={s.chipText}>Reset</Text></Pressable>
     </View>
-    <Text style={s.section}>{loading ? 'Finding matches…' : `${response?.results.length ?? 0} places for you`}</Text>
-    <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {query.maxPriceLevel === 0 ? 'strict free-only cap' : 'no price cap'}</Text>
+    <Text style={s.section}>{loading ? 'Finding matches…' : error ? 'Places unavailable' : `${resultCount} ${resultCount === 1 ? 'place' : 'places'} for you`}</Text>
+    <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {priceLabel(query.maxPriceLevel)}{ '\n' }
+      Categories: {query.categories.length ? query.categories.join(', ') : 'any'} · {query.intent === 'study' ? 'Solo study' : 'Meeting friends'}
+    </Text>
     {loading && <ActivityIndicator color="#bbef91" accessibilityLabel="Loading places" style={s.loader} />}
     {error && <View style={s.card}><Text role="alert" style={s.body}>{error}</Text>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable></View>}
     {!loading && response?.results.length === 0 && <View style={s.card}><Text style={s.cardTitle}>No matching places</Text>
-      <Text style={s.body}>Your strict constraints stay in place. Change a filter or reset to explore again.</Text></View>}
+      <Text style={s.body}>No known places meet the selected origin, category, price and estimated walk limits. Your constraints stay in place; edit filters or reset to Study defaults.</Text>
+      {query.origin.source === 'device' && <><Text style={s.body}>Your location may be outside this campus dataset's walking range. Explore the demo from UT Austin without changing your filters.</Text>
+        <Pressable accessibilityRole="button" style={s.chip} onPress={location.useManual}><Text style={s.chipText}>Explore from UT Austin</Text></Pressable></>}
+      <Text style={s.small}>{Object.entries(response.excludedCounts).map(([code, count]) => `${code.replaceAll('_', ' ')}: ${count}`).join(' · ')}</Text>
+      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}><Text style={s.chipText}>Edit filters</Text></Pressable>
+      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(resetExploreFilters(query))}><Text style={s.chipText}>Reset filters</Text></Pressable></View>}
     {response?.results.map((result, index) => <Link key={result.spotId} href={{ pathname: '/spot/[id]', params: { id: result.spotId } }} asChild>
-      <Pressable accessibilityRole="link" style={s.card}>
+      <Pressable accessibilityRole="link" style={s.card} onPress={location.cancel}>
         <View style={s.topline}><Text style={s.rank}>0{index + 1}</Text><Text style={s.score}>Fit score {Math.round(result.score)}/100</Text></View>
         <Text style={s.cardTitle}>{result.spot.name}</Text>
         <Text style={s.small}>{result.spot.categories.join(' · ')} · {result.estimatedWalkMinutes} min estimated walk</Text>
@@ -57,8 +71,11 @@ export default function Explore() {
         <Text style={s.action}>Explore this place →</Text>
       </Pressable>
     </Link>)}
-    <Text style={s.footer}>Ranked among ten known fictional candidates. Walking estimates use straight-line distance with a detour heuristic.</Text>
-  </ScrollView>;
+    <Text style={s.footer}>{response && `Ranked among ${response.metrics.candidateCount} known ${response.mode === 'demo' ? 'fictional ' : ''}candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
+  </ScrollView>
+    {draft && <FiltersSheet query={draft} onChange={setDraft} onClose={() => setDraft(null)}
+      onApply={() => { setQuery((current) => applyExploreFilters(current, draft)); setDraft(null); }} />}
+  </>;
 }
 
 const s = StyleSheet.create({
