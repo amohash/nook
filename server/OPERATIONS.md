@@ -6,8 +6,7 @@ Implementation on `feat/data-api` preserves contract version 1. No remote deploy
 real SerpApi capture or Supabase migration application has occurred.
 Coordination is now recorded in [GitHub issue #3](https://github.com/amohash/nook/issues/3),
 **Contract v1: docs/CONTRACTS.md**, tagging C (@Jeffjone) and D (@amohash).
-The user reports that C/D approval is complete; the original review record remains
-in issue #3. No additional contract-dependent implementation is included in this handoff.
+C and D explicitly approved contract v1 in issue #3 (verified during PR preparation). No additional contract-dependent implementation is included in this handoff.
 The earlier local implementation remains provisional. C now supplies a recommendation router on main; mounting it remains an integration task. The schema review and adapter/fixture plan are in
 [CONTRACT-V1-REVIEW.md](CONTRACT-V1-REVIEW.md).
 
@@ -21,7 +20,7 @@ capture/scenario time `2026-10-24T18:00:00-05:00`. Its ten venues are fictional.
 There is no real Austin dataset artifact yet. Do not present the mock provider tests as
 real captures, measured quota savings, or a deployed API.
 
-## Contract coordination for C and D — proposal, not sign-off
+## Contract coordination — approved v1, integration pending
 
 - Keep the existing v1 JSON fields, tag vocabulary and null semantics unchanged.
 - Real Austin canonical city ID: `us-tx-austin`; real snapshot mode: `cached`.
@@ -30,11 +29,12 @@ real captures, measured quota savings, or a deployed API.
   complete provider ID separately and use it in public Maps links.
 - B's dataset envelope is `{city, snapshot, details}`. Only normalized, validated
   public fields enter this artifact; the private provider response never does.
-- Proposed C export from `server/src/routes/recommend.ts`:
-  `createRecommendationHandler({snapshot, getDetail, now}): RequestHandler`.
-  B will mount it through `createApp({dataset, recommendationHandler})` after C agrees
-  and supplies the module. `RecommendationData` describes the data dependency.
-  `now` is an injected clock; use the demo clock only for demo mode.
+- C's merged export is `createRecommendationRouter({loadSnapshot, clock})` from
+  `server/src/routes/recommend.ts`, mounted at `/v1/recommendations`. The earlier
+  `createRecommendationHandler` proposal is superseded. Mounting C's router is the
+  next bootstrap integration step; the optional handler injection remains available.
+  The loader returns the pinned snapshot for its city, null for unknown cities, and
+  throws on storage failure. Demo uses the fixed clock; cached real data uses current time.
 - The existing foundation handler still uses `@space/core` and has not been replaced
   with a new scorer. C's actual route is **not yet mounted**.
 - D can keep current mobile v1 parsers. Selecting a real dataset must be explicit;
@@ -46,9 +46,8 @@ real captures, measured quota savings, or a deployed API.
 ## Operator workflow (B alone)
 
 This workflow is for after C/D approval and infrastructure handoff. The user configures
-`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SERPAPI_API_KEY` privately in the
-host/Supabase dashboards. Never request their values in chat. Run ingestion in the
-configured host operator environment; local credentials are not a prerequisite.
+`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SERPAPI_API_KEY` privately in ignored `server/.env` for the current laptop setup. Never request
+their values in chat. Run ingestion from the configured server directory.
 Do not apply migrations until the user provides the project ref/region and authorizes
 application. The steps below are instructions, not authorization to execute them now.
 

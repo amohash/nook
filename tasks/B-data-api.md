@@ -1,6 +1,6 @@
 # B data and infrastructure assignment
 
-Status: user reports C/D contract approval and presenter-phone/API access complete.
+Status: C/D contract approval verified in issue #3; user reports presenter-phone/API access complete.
 Earlier local provider/cache work is ready for D's PR review. Local laptop hosting
 uses a temporary HTTPS tunnel. Supabase setup and credentials are pending;
 migrations remain unapplied and real SerpApi capture is not verified.
@@ -44,6 +44,18 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
 
 - Local team-access update: API running on port 3001 with Cloudflare Quick Tunnel.
   Current URL and restart instructions are in `server/OPERATIONS.md`. Four concurrent
-  HTTPS health requests and cities/list/detail passed from B's laptop; each teammate
-  confirmed phone access in this conversation after the tunnel restart. No paid service
+  HTTPS health requests and cities/list/detail passed from B's laptop. The user reports
+  phone access confirmed after the tunnel restart. No paid service
   or database was created by this agent.
+
+## PR preparation checkpoint
+
+- Synced `origin/main` at `04b2b7c` into `feat/data-api` without conflicts.
+- Verified C/D explicit contract approvals in closed issue #3. C's merged router
+  export is available; mounting it remains a follow-up integration task.
+- Installed the committed lockfile with `npm ci --ignore-scripts` (no dependency edits).
+- Current checks: workspace typecheck, 136 tests across 11 files, lint, server build,
+  and `git diff --check` all pass. Eight existing dependency advisories remain.
+- Ignored `server/.env` prepared with owner-only permissions; credentials are pending.
+  No migration applied or paid provider request made. Phone results are user-reported.
+- D owns PR review/main merge and integrated presenter-phone acceptance.
