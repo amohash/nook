@@ -241,3 +241,31 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
 - Next: C/D review and D main merge, then B selects the new artifact in the existing
   Render service, manually deploys main and validates public responses. Current
   public server remains on v1 until the merge. Only D may merge main per AGENTS.md.
+
+
+## Reviewed Muse snapshot — live Render verification
+
+- PR #13 merged as a8946ad; manually deployed current reviewed main
+  f969326afcfd6f611bab163af5f33aa5ca6472b0 on the existing Free service
+  srv-dbenp18ae00c73doen00. Successful deploy: dep-dbeosi7avr4c73bkh4f0.
+- DATASET_PATH=../fixtures/data/austin-20261025-muse-v1.json. Public base remains
+  https://nook-api-demo.onrender.com . No runtime provider/model/DB credentials,
+  new services, acquisitions, model calls, or migrations were needed.
+- Verified 2026-10-25T05:08:11Z: /health reports the exact deployed main SHA;
+  cities and 30-place cached snapshot match the committed artifact exactly.
+  All ten enriched detail endpoints return 200, pass shared schemas and match
+  the artifact. Their 34 anonymous review citations resolve from Muse evidence IDs,
+  retain HTTPS source URLs and stay within 500 characters. They also retain ten
+  original provider-detail evidence entries (44 total entries across ten details).
+- Verified Wi-Fi/outlets remain unknown and both reviewed claims remain withheld.
+  Recommendations return three results, current server time and externalCalls=0;
+  slash/no-slash routes agree. Empty-category and strict unknown-amenity queries
+  return zero results; invalid query returns 400, unknown city returns 404.
+- Current-main checks: 188/188 tests across 22 files, workspace typecheck, lint,
+  server build and diff check pass. Render install/build/start and health gate pass.
+- Limits: the default campus shortlist still has no Muse summaries; the ten other
+  enriched details are verified over public HTTPS. D must verify the new version,
+  an enriched detail, source labels and recovery on the physical presenter phone.
+  Warm /health before testing because Free-tier idle/cold-start behavior remains.
+- Rollback: restore DATASET_PATH=../fixtures/data/austin-20261025-v1.json and
+  manually redeploy reviewed main. Both immutable artifacts remain available.
