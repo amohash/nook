@@ -54,6 +54,9 @@ export default function Explore() {
   </View>;
   const resultCount = response?.results.length ?? 0;
   return <><ScrollView contentContainerStyle={s.page}>
+    {__DEV__ && <Link href="/design-preview" asChild>
+      <Pressable accessibilityRole="link" style={s.chip}><Text style={s.chipText}>Preview A’s design</Text></Pressable>
+    </Link>}
     <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
     <Text style={s.title}>A place for{ '\n' }this moment.</Text>
     <OriginControls origin={query.origin} busy={location.busy} error={location.error} accuracyMeters={location.accuracyMeters}
