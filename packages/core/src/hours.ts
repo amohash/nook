@@ -6,6 +6,7 @@ const DAY_MS = 86_400_000;
  * Hours are minute-resolution; the session end is exclusive. No device timezone is used.
  */
 export function coversSession(spot: Spot, arrivalMs: number, endMs: number): boolean {
+  if (!Number.isFinite(arrivalMs) || !Number.isFinite(endMs) || endMs <= arrivalMs) return false;
   const format = new Intl.DateTimeFormat('en-CA', {
     timeZone: spot.timezone, year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
@@ -15,6 +16,9 @@ export function coversSession(spot: Spot, arrivalMs: number, endMs: number): boo
     const date = `${parts.year}-${parts.month}-${parts.day}`;
     const dateMs = Date.parse(`${date}T00:00:00Z`);
     const minute = Number(parts.hour) * 60 + Number(parts.minute);
+    // A dated exception overrides this entire local date, including weekly spillover.
+    const currentException = spot.hoursExceptions[date];
+    if (currentException) return currentException.some((h) => h.startMinute <= minute && minute < h.endMinute);
     return [0, 1].some((daysBack) => {
       const day = new Date(dateMs - daysBack * DAY_MS);
       const key = day.toISOString().slice(0, 10);
