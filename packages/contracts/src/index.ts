@@ -136,6 +136,7 @@ export interface DataProvider {
   discover?(request: DiscoveryRequest): Promise<DiscoveryResponse>;
   assist?(request: AssistantRequest): Promise<AssistantResponse>;
   createTesterSession?(request: TesterSessionRequest): Promise<TesterSessionResponse>;
+  createGuestSession?(): Promise<TesterSessionResponse>;
 }
 
 // Runtime operations are opt-in and require a short-lived tester session. Tokens
@@ -151,8 +152,9 @@ export const DiscoveryRequestSchema = z.strictObject({
   refresh: z.boolean().default(false),
 });
 export const DiscoveryCoverageSchema = z.strictObject({
-  policy: z.literal('central-austin-v1'), center: CoordinatesSchema,
-  radiusMeters: z.literal(3000),
+  // Accept the prior server policy during a rolling mobile/server update.
+  policy: z.enum(['central-austin-v1', 'austin-area-v2']), center: CoordinatesSchema,
+  radiusMeters: z.union([z.literal(3000), z.literal(4500)]),
 });
 export const DiscoveryResponseSchema = z.strictObject({
   schemaVersion: z.literal(1), requestId: IdSchema,

@@ -10,9 +10,27 @@ export function createTesterAccess({ accessCode, now = Date.now }: { accessCode:
   const expected = digest(accessCode);
   const sessions = new Map<string, { expires: number; calls: number; window: number; refreshes: number }>();
   const attempts = new Map<string, { count: number; expires: number }>();
+  const guestAttempts = new Map<string, { count: number; expires: number }>();
   function prune() {
     for (const [id, entry] of sessions) if (entry.expires <= now()) sessions.delete(id);
     for (const [id, entry] of attempts) if (entry.expires <= now()) attempts.delete(id);
+    for (const [id, entry] of guestAttempts) if (entry.expires <= now()) guestAttempts.delete(id);
+  }
+  function issueSession() {
+    const sessionId = randomBytes(32).toString('hex');
+    const expires = now() + 1_800_000;
+    sessions.set(sessionId, { expires, calls: 0, window: now(), refreshes: 0 });
+    return TesterSessionResponseSchema.parse({ schemaVersion: 1, sessionId, expiresAt: new Date(expires).toISOString() });
+  }
+  function guest(address: string) {
+    prune();
+    const key = digest(address).toString('hex');
+    const entry = guestAttempts.get(key) ?? { count: 0, expires: now() + 600_000 };
+    // NAT and API tunnels can put several demo phones behind one direct address.
+    // Paid requests still share the durable 250 ceiling, per-session and concurrency caps.
+    if (entry.count >= 60 || guestAttempts.size >= 1000 || sessions.size >= 200) return null;
+    entry.count++; guestAttempts.set(key, entry);
+    return issueSession();
   }
   function exchange(code: string, address: string) {
     prune();
@@ -21,10 +39,7 @@ export function createTesterAccess({ accessCode, now = Date.now }: { accessCode:
     if (entry.count >= 5 || attempts.size >= 1000 || sessions.size >= 200) return null;
     entry.count++; attempts.set(key, entry);
     if (!timingSafeEqual(digest(code), expected)) return null;
-    const sessionId = randomBytes(32).toString('hex');
-    const expires = now() + 1_800_000;
-    sessions.set(sessionId, { expires, calls: 0, window: now(), refreshes: 0 });
-    return TesterSessionResponseSchema.parse({ schemaVersion: 1, sessionId, expiresAt: new Date(expires).toISOString() });
+    return issueSession();
   }
   async function authorizeSession(id: string) { prune(); return sessions.has(id); }
   async function allowDiscovery(id: string, refresh: boolean) {
@@ -36,12 +51,20 @@ export function createTesterAccess({ accessCode, now = Date.now }: { accessCode:
     if (refresh) session.refreshes++;
     return true;
   }
-  return { exchange, authorizeSession, allowDiscovery };
+  return { exchange, guest, authorizeSession, allowDiscovery };
 }
 export type TesterAccess = ReturnType<typeof createTesterAccess>;
 export function createDiscoveryRouter(service: DiscoveryService, access: TesterAccess) {
   const router = Router();
   const error = (code: string, message: string, requestId: string, retryable = false) => ({ error: { code, message, retryable }, requestId });
+  router.post('/guest-sessions', (req, res) => {
+    if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body) || Object.keys(req.body).length) {
+      res.status(400).json(error('invalid_body', 'Expected an empty object', res.locals.requestId)); return;
+    }
+    const session = access.guest(req.ip ?? 'unknown');
+    if (!session) { res.status(429).json(error('session_limit', 'Nearby access is busy; retry shortly', res.locals.requestId, true)); return; }
+    res.setHeader('Cache-Control', 'no-store'); res.json(session);
+  });
   router.post('/tester-sessions', (req, res) => {
     const input = TesterSessionRequestSchema.safeParse(req.body);
     if (!input.success) { res.status(400).json(error('invalid_body', 'Expected an access code of 8..128 characters', res.locals.requestId)); return; }

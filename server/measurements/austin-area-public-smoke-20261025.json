@@ -1,0 +1,171 @@
+{
+  "measuredAt": "2026-10-25T10:11:02.287Z",
+  "scope": "Actual public HTTPS API tunnel to local development server; named public test origins, not device GPS",
+  "phoneVerified": false,
+  "records": [
+    {
+      "area": "north Austin",
+      "origin": {
+        "lat": 30.4021,
+        "lng": -97.7253,
+        "source": "manual"
+      },
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 79,
+      "metrics": {
+        "externalAttempts": 0,
+        "cacheHits": 1,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:08:35.377Z",
+        "sourceNewestAt": "2026-10-25T10:08:42.916Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 66,
+      "top": [
+        {
+          "name": "Sweet Paris Crêperie & Cafe",
+          "walk": 2,
+          "score": 55.922666666666686
+        },
+        {
+          "name": "North Italia",
+          "walk": 2,
+          "score": 55.729505582137186
+        },
+        {
+          "name": "True Food Kitchen",
+          "walk": 2,
+          "score": 55.7279809693726
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "south Austin",
+      "origin": {
+        "lat": 30.165,
+        "lng": -97.823,
+        "source": "manual"
+      },
+      "policy": "austin-area-v2",
+      "status": "partial",
+      "candidates": 45,
+      "metrics": {
+        "externalAttempts": 11,
+        "cacheHits": 0,
+        "coalesced": 0,
+        "partialFailures": 1,
+        "sourceOldestAt": "2026-10-25T10:10:25.103Z",
+        "sourceNewestAt": "2026-10-25T10:10:32.164Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 37,
+      "top": [
+        {
+          "name": "Bouldin Acres",
+          "walk": 9,
+          "score": 53.50361445783134
+        },
+        {
+          "name": "Armadillo Den",
+          "walk": 11,
+          "score": 53.31697341513294
+        },
+        {
+          "name": "The Hive",
+          "walk": 11,
+          "score": 53.1096646942801
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "east Austin",
+      "origin": {
+        "lat": 30.285,
+        "lng": -97.65,
+        "source": "manual"
+      },
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 16,
+      "metrics": {
+        "externalAttempts": 12,
+        "cacheHits": 0,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:10:37.970Z",
+        "sourceNewestAt": "2026-10-25T10:10:47.137Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 10,
+      "top": [
+        {
+          "name": "Davis/White Northeast Neighborhood Park",
+          "walk": 34,
+          "score": 45.0305220883534
+        },
+        {
+          "name": "Colony Park District Park",
+          "walk": 35,
+          "score": 44.88087431693988
+        },
+        {
+          "name": "Little Walnut Creek Greenbelt",
+          "walk": 37,
+          "score": 43.46666666666666
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "west Austin",
+      "origin": {
+        "lat": 30.34,
+        "lng": -97.86,
+        "source": "manual"
+      },
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 14,
+      "metrics": {
+        "externalAttempts": 12,
+        "cacheHits": 0,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:10:51.784Z",
+        "sourceNewestAt": "2026-10-25T10:10:59.511Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 12,
+      "top": [
+        {
+          "name": "Patrizi's",
+          "walk": 5,
+          "score": 55.09774614472125
+        },
+        {
+          "name": "Little Free Library",
+          "walk": 7,
+          "score": 52.666666666666686
+        },
+        {
+          "name": "JoJo's Bakery",
+          "walk": 14,
+          "score": 52.51856823266221
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    }
+  ]
+}

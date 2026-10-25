@@ -45,9 +45,44 @@ function setup() {
   return { store, count, service, opts, advance: (ms: number) => { time += ms; } };
 }
 describe('bounded runtime acquisition (synthetic provider responses)', () => {
+  it.each([
+    ['north Austin', 30.4021, -97.7253], ['south Austin', 30.165, -97.823],
+    ['east Austin', 30.285, -97.65], ['west Austin', 30.34, -97.86],
+    ['airport area', 30.202, -97.668],
+  ])('discovers and ranks near %s instead of restricting results to campus', async (_name, lat, lng) => {
+    const {service} = setup();
+    const selected = {lat: Number(lat), lng: Number(lng), source: 'device' as const};
+    const result = await service.discover({sessionId, origin: selected});
+    expect(result.status).toBe('ready');
+    expect(result.coverage?.policy).toBe('austin-area-v2');
+    expect(result.snapshot?.spots).toHaveLength(4);
+    expect(result.snapshot?.spots.every((s) => Math.abs(s.lat - selected.lat) < 0.006 && Math.abs(s.lng - selected.lng) < 0.006)).toBe(true);
+  });
+  it('rejects nonfinite/outside coordinates before spending', () => {
+    for (const point of [{lat: NaN, lng: -97.7}, {lat: 30.3, lng: Infinity}, {lat: 29.9, lng: -97.7}, {lat: 30.3, lng: -98.1}]) {
+      expect(coverageFor(point)).toBeNull();
+    }
+  });
+  it('fetches a second full-results page and retains first-page candidates when pagination fails', async () => {
+    const {opts} = setup();
+    let pageTwo = 0;
+    const transport: typeof fetch = async (input, init) => {
+      const url = new URL(String(input));
+      if (url.searchParams.get('start') === '20') { pageTwo++; return Response.json({error: 'test'}, {status: 500}); }
+      const result = await opts.transport(input, init);
+      const data = await result.json();
+      if (data.local_results) data.local_results = Array.from({length: 20}, () => data.local_results[0]);
+      return Response.json(data);
+    };
+    const result = await createDiscoveryService({...opts, transport}).discover({sessionId, origin});
+    expect(pageTwo).toBe(4); expect(result.status).toBe('partial');
+    expect(result.snapshot?.spots).toHaveLength(4);
+    expect(result.metrics.externalAttempts).toBe(12);
+  });
+
   it('validates coverage, finite coordinates and prohibited filter/assistant identity patches', async () => {
     expect(coverageFor({ lat: 30.34, lng: -97.70 })).not.toBeNull();
-    expect(coverageFor({ lat: 30.341, lng: -97.70 })).toBeNull();
+    expect(coverageFor({ lat: 30.561, lng: -97.70 })).toBeNull();
     const { service, count } = setup();
     expect((await service.discover({ sessionId, origin: { ...origin, lat: 40 } })).status).toBe('unsupported_area');
     await expect(service.discover({ sessionId, origin: { ...origin, lat: NaN } })).rejects.toThrow();
@@ -229,4 +264,33 @@ describe('runtime HTTP integration and access', () => {
     for (let i = 0; i < 5; i++) expect(access.exchange('bad-code', 'bad-ip')).toBeNull();
     expect(access.exchange('test-code', 'bad-ip')).toBeNull();
   });
+});
+
+it('automatically issues bounded guest sessions without a code or any provider spend', async () => {
+  const {post, count} = await http();
+  const response = await post('/v1/guest-sessions', {});
+  expect(response.status).toBe(200);
+  expect(response.headers.get('cache-control')).toBe('no-store');
+  const guest = await response.json();
+  expect(guest.sessionId).toHaveLength(64);
+  expect(count.calls).toBe(0);
+  expect((await post('/v1/guest-sessions', {accessCode: 'not-accepted'})).status).toBe(400);
+  const discovered = DiscoveryResponseSchema.parse(await (await post('/v1/discovery', {sessionId: guest.sessionId, origin})).json());
+  expect(discovered.status).toBe('ready');
+  expect(discovered.metrics.externalAttempts).toBe(8);
+});
+
+it('guest sessions enforce acquisition and refresh limits, expire and do not share failed tester-code buckets', async () => {
+  let now = 0;
+  const access = createTesterAccess({accessCode: 'test-code', now: () => now});
+  for (let i=0; i<5; i++) access.exchange('incorrect-code', 'shared-tunnel');
+  const guest = access.guest('shared-tunnel')!;
+  expect(await access.authorizeSession(guest.sessionId)).toBe(true);
+  for (let i=0; i<10; i++) expect(await access.allowDiscovery(guest.sessionId, false)).toBe(true);
+  expect(await access.allowDiscovery(guest.sessionId, false)).toBe(false);
+  for (let i=1; i<60; i++) expect(access.guest('shared-tunnel')).not.toBeNull();
+  expect(access.guest('shared-tunnel')).toBeNull();
+  now = 1_800_001;
+  expect(await access.authorizeSession(guest.sessionId)).toBe(false);
+  expect(access.guest('shared-tunnel')).not.toBeNull();
 });

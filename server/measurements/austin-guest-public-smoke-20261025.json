@@ -1,0 +1,188 @@
+{
+  "measuredAt": "2026-10-25T10:19:28.129Z",
+  "scope": "Actual public HTTPS API tunnel to local development server; named public test origins, not device GPS",
+  "phoneVerified": false,
+  "guestAccess": true,
+  "records": [
+    {
+      "area": "north Austin",
+      "origin": {
+        "lat": 30.4021,
+        "lng": -97.7253,
+        "source": "manual"
+      },
+      "categories": [
+        "cafe",
+        "library"
+      ],
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 79,
+      "metrics": {
+        "externalAttempts": 0,
+        "cacheHits": 1,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:08:35.377Z",
+        "sourceNewestAt": "2026-10-25T10:08:42.916Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 22,
+      "top": [
+        {
+          "name": "Sweet Paris Crêperie & Cafe",
+          "walk": 2,
+          "score": 55.922666666666686
+        },
+        {
+          "name": "Houndstooth Coffee",
+          "walk": 5,
+          "score": 54.520734908136504
+        },
+        {
+          "name": "The COACH Coffee Shop",
+          "walk": 3,
+          "score": 54.08743169398909
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "south Austin",
+      "origin": {
+        "lat": 30.165,
+        "lng": -97.823,
+        "source": "manual"
+      },
+      "categories": [
+        "cafe",
+        "library"
+      ],
+      "policy": "austin-area-v2",
+      "status": "partial",
+      "candidates": 45,
+      "metrics": {
+        "externalAttempts": 0,
+        "cacheHits": 11,
+        "coalesced": 0,
+        "partialFailures": 1,
+        "sourceOldestAt": "2026-10-25T10:10:25.103Z",
+        "sourceNewestAt": "2026-10-25T10:10:32.164Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 8,
+      "top": [
+        {
+          "name": "The Hive",
+          "walk": 11,
+          "score": 53.1096646942801
+        },
+        {
+          "name": "Puente Coffee Co.",
+          "walk": 14,
+          "score": 52.82325581395351
+        },
+        {
+          "name": "Dame Café",
+          "walk": 14,
+          "score": 51.704761904761924
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "east Austin",
+      "origin": {
+        "lat": 30.285,
+        "lng": -97.65,
+        "source": "manual"
+      },
+      "categories": [
+        "cafe",
+        "library"
+      ],
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 16,
+      "metrics": {
+        "externalAttempts": 0,
+        "cacheHits": 1,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:10:37.970Z",
+        "sourceNewestAt": "2026-10-25T10:10:47.137Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 4,
+      "top": [
+        {
+          "name": "University Hills Branch, Austin Public Library",
+          "walk": 51,
+          "score": 39.25365853658537
+        },
+        {
+          "name": "Little Free Library",
+          "walk": 54,
+          "score": 37.89523809523809
+        },
+        {
+          "name": "Talisman Coffee Co.",
+          "walk": 60,
+          "score": 37.26206896551724
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    },
+    {
+      "area": "west Austin",
+      "origin": {
+        "lat": 30.34,
+        "lng": -97.86,
+        "source": "manual"
+      },
+      "categories": [
+        "cafe",
+        "library"
+      ],
+      "policy": "austin-area-v2",
+      "status": "ready",
+      "candidates": 14,
+      "metrics": {
+        "externalAttempts": 0,
+        "cacheHits": 1,
+        "coalesced": 0,
+        "partialFailures": 0,
+        "sourceOldestAt": "2026-10-25T10:10:51.784Z",
+        "sourceNewestAt": "2026-10-25T10:10:59.511Z",
+        "stale": false
+      },
+      "warmAttempts": 0,
+      "qualifying": 5,
+      "top": [
+        {
+          "name": "Little Free Library",
+          "walk": 7,
+          "score": 52.666666666666686
+        },
+        {
+          "name": "JoJo's Bakery",
+          "walk": 14,
+          "score": 52.51856823266221
+        },
+        {
+          "name": "Civil Goat",
+          "walk": 21,
+          "score": 49.75180722891567
+        }
+      ],
+      "scorerParity": true,
+      "detailParity": true
+    }
+  ]
+}

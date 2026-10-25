@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { randomBytes } from 'node:crypto';
 import { createApp } from './app';
 import { loadDataset } from './data/dataset';
 import { createDiscoveryService } from './discovery/service';
@@ -14,17 +15,18 @@ const dataset = await loadDataset(process.env.DATASET_PATH);
 let nearby: NonNullable<Parameters<typeof createApp>[0]>['nearby'];
 if (process.env.NEARBY_ENABLED === '1') {
   const required = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'SERPAPI_API_KEY',
-    'NEARBY_TESTER_ACCESS_CODE', 'NEARBY_ACCOUNT_BUDGET_KEY'] as const;
+    'NEARBY_ACCOUNT_BUDGET_KEY'] as const;
   const missing = required.filter((name) => !process.env[name]?.trim());
   if (missing.length) throw new Error(`Nearby configuration missing: ${missing.join(', ')}`);
-  const db = new SupabaseStore(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const db = new SupabaseStore(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { nearbyLimit: Number(process.env.NEARBY_ACCOUNT_REQUEST_LIMIT ?? 18) });
   // Review extraction is cache-only during the bounded verification. It still
   // runs C's validated pipeline; a miss is labeled unavailable without model spend.
   const extract = createEvidenceExtractor({ cache: new SupabaseEvidenceCache(db), budgetMs: 1000,
     complete: async () => { throw new Error('Runtime extraction is cache-only'); } });
   nearby = { service: createDiscoveryService({ store: db, apiKey: process.env.SERPAPI_API_KEY!,
     accountBudgetKey: process.env.NEARBY_ACCOUNT_BUDGET_KEY!, extract }),
-  access: createTesterAccess({ accessCode: process.env.NEARBY_TESTER_ACCESS_CODE! }),
+  access: createTesterAccess({ accessCode: process.env.NEARBY_TESTER_ACCESS_CODE || randomBytes(32).toString('hex') }),
   assistant: { complete: process.env.META_API_KEY?.trim() ? createMuseProvider({ apiKey: process.env.META_API_KEY }) : undefined,
     maxTotalCalls: 2 } };
 }
