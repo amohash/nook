@@ -55,6 +55,8 @@ function Detail() {
     return () => {active = false;};
   }, [id, attempt, detailSnapshotId, archived]);
   const spot = detail?.spot;
+  const teamFact = (label: string) => detail?.evidence.find((item) => item.id.startsWith('team:') && item.text.startsWith(`${label}: `))?.text.slice(label.length + 2);
+  const teamHours = teamFact('Team-provided hours');
   const result = spot ? matchingRecommendation(spot, query, context) : null;
   const reasons = spot ? supportedReasons(spot, result) : [];
   const selectedTime = result?.arrivalAt ?? query.departAt;
@@ -95,24 +97,26 @@ function Detail() {
     name={spot.name} photoUrl={spot.image?.url} photoAttribution={spot.image?.attribution}
     category={spot.categories.join(' · ')} walkMinutes={result?.estimatedWalkMinutes ?? null}
     rating={spot.rating.value} reviewCount={spot.reviewCount.value} fitScore={result?.score ?? null}
-    openStatus={status}
+    openStatus={teamHours ? {...status, label: `${teamHours} · team-provided hours`} : status}
     dataset={{mode: spot.datasetMode, fetchedAt: spot.fetchedAt,
-      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : archived ? 'Saved public place snapshot; current conditions unverified.' : undefined}}
+      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : archived ? 'Saved public place snapshot; current conditions unverified.'
+        : spot.datasetVersion.startsWith('ut-austin-study-') ? 'Cached place data · study notes provided by the team.' : undefined}}
     typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour}
     liveObservation={spot.liveObservation}
     vibe={{summary: spot.summary, tags: Object.keys(spot.tags.value ?? {}).map((tag) => tag.replaceAll('_', ' '))}}
     facts={{
-      wifi: spot.wifi.value === null || spot.wifi.value === 'unknown' ? null : spot.wifi.value === 'yes' ? 'Yes' : 'No',
-      outlets: spot.outlets.value === null || spot.outlets.value === 'unknown' ? null : spot.outlets.value === 'yes' ? 'Yes' : 'No',
-      noise: spot.noise.value === null ? null : `${Math.round(spot.noise.value * 100)}/100 · sourced atmosphere estimate`,
-      price: spot.priceLevel.value === null ? null : priceLabel(spot.priceLevel.value),
+      wifi: teamFact('Wi-Fi') ?? (spot.wifi.value === null || spot.wifi.value === 'unknown' ? null : spot.wifi.value === 'yes' ? 'Yes' : 'No'),
+      outlets: teamFact('Outlets') ?? (spot.outlets.value === null || spot.outlets.value === 'unknown' ? null : spot.outlets.value === 'yes' ? 'Yes' : 'No'),
+      noise: teamFact('Noise') ?? (spot.noise.value === null ? null : `${Math.round(spot.noise.value * 100)}/100 · sourced atmosphere estimate`),
+      price: teamFact('Price') ?? (spot.priceLevel.value === null ? null : priceLabel(spot.priceLevel.value)),
       hours: spot.hoursStatus === 'known' ? 'Weekly schedule available; source times apply' : null,
-      publicAccess: spot.publicAccess.value === null || spot.publicAccess.value === 'unknown' ? null : publicAccessLabel(spot),
+      publicAccess: teamFact('Public access') ?? (spot.publicAccess.value === null || spot.publicAccess.value === 'unknown' ? null : publicAccessLabel(spot)),
     }}
     actionError={actionError}
     actions={{saved: session!.settings.savedIds.includes(id), saving, mapsDisabled: !url,
       onSave: () => {void save();}, onShare: () => {void share();}, onOpenMaps: () => {void openLink(url);}}}
     footnote={<>
+      {teamFact('Typical activity') && <Text style={s.body}>Typical activity: {teamFact('Typical activity')}</Text>}
       <PlaceAssistant placeIds={[spot.id]} />
       <Text style={s.body}>{spot.address}</Text>
       <Text style={s.small}>{result ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {query.sessionMinutes} min session</Text>

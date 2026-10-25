@@ -1,7 +1,7 @@
 import { useState, useSyncExternalStore } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { recovery } from '.';
+import { bundledDatasetLabel, bundledRealPlaces, recovery } from '.';
 import type { ProviderChoice } from './recovery';
 import { Button } from '../components';
 import { theme } from '../theme';
@@ -22,19 +22,21 @@ export function RecoveryControls({expanded = false}: {expanded?: boolean}) {
     finally {setBusy(false);}
   };
   return <View style={s.panel}>
-    <Text style={s.title}>Dataset: {state.choice === 'api' ? 'API connection' : state.choice === 'cached' ? 'Offline cached real places' : 'Fictional demo'}</Text>
+    <Text style={s.title}>Dataset: {state.choice === 'api' ? 'API connection' : state.choice === 'cached' ? 'Offline cached real places' : bundledDatasetLabel}</Text>
     <Button label={open ? 'Hide dataset controls' : 'Data & recovery'} variant="outline" onPress={() => setOpen((value) => !value)} />
     {open && <>
     <Text style={s.text}>Switching clears place selection, search, drafts and GPS origin. Applied filters stay strict. Saved places stay scoped to each dataset.</Text>
     {state.cached && <Text style={s.text}>Offline copy: {state.cached.city.name} · {state.cached.city.datasetVersion}{'\n'}Source snapshot fetched: {state.cached.fetchedAt}</Text>}
     {!state.cached && <Text style={s.text}>No validated real offline copy available. Connect to the API once to save one.</Text>}
     {state.choice === 'cached' && <Text style={s.text}>No network refresh. Facts retain original source timestamps. Additional detail source snippets are unavailable offline; images and maps may need a connection.</Text>}
-    {state.choice === 'demo' && <Text style={s.text}>Bundled fictional venues and synthetic facts · fixed demo clock. No real venue facts are included.</Text>}
+    {state.choice === 'demo' && <Text style={s.text}>{bundledRealPlaces
+      ? 'Five real UT Austin study places. Cached SerpApi photos and facts; additional study notes are team-provided. Confirm access and hours before visiting.'
+      : 'Bundled fictional venues and synthetic facts · fixed demo clock. No real venue facts are included.'}</Text>}
     {state.cacheWarning && <Text role="alert" style={s.text}>{state.cacheWarning}</Text>}
     {error && <Text role="alert" style={s.text}>{error}</Text>}
     <Button label={state.choice === 'api' ? 'Reconnect API dataset' : 'Use API dataset'} variant="outline" disabled={busy} onPress={() => {void choose('api');}} />
     {state.choice !== 'cached' && <Button label="Use cached real dataset" variant="outline" disabled={busy || !state.cached} onPress={() => {void choose('cached');}} />}
-    {state.choice !== 'demo' && <Button label="Use fictional demo data" variant="outline" disabled={busy} onPress={() => {void choose('demo');}} />}
+    {state.choice !== 'demo' && <Button label={bundledRealPlaces ? 'Use UT Austin study collection' : 'Use fictional demo data'} variant="outline" disabled={busy} onPress={() => {void choose('demo');}} />}
     </>}
   </View>;
 }

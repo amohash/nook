@@ -105,7 +105,8 @@ function Explore() {
     onAvatarPress={() => {location.cancel(); router.push('/(tabs)/profile');}}
     title={activeTab === 'muse' ? 'Your place assistant' : statusTitle}
     subtitle={activeTab === 'muse' ? undefined : topPickLine}
-    dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL : `Dataset ${city.datasetVersion}`}}
+    dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL
+      : city.datasetVersion.startsWith('ut-austin-study-') ? 'UT Austin study collection · team-provided notes' : `Dataset ${city.datasetVersion}`}}
     topAccessory={activeTab === 'places' ? <>
       {(originOpen || location.busy || location.error) && <OriginCard origin={query.origin} busy={location.busy}
         error={location.error} accuracyMeters={location.accuracyMeters}
