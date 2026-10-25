@@ -17,7 +17,7 @@ describe('strict eligibility', () => {
     const query = createDemoQuery({ maxPriceLevel: 0 });
     const result = rankSpots([base()], query, clock);
     expect(result.results).toEqual([]); expect(result.excludedCounts).toEqual({ price: 1 });
-    expect(result.relaxations[0]?.patch).toEqual({ maxPriceLevel: null });
+    expect(result.relaxations[0]?.patch).toEqual({ maxPriceLevel: null, limit: 3 });
     expect(query.maxPriceLevel).toBe(0);
   });
   it.each([null, 'unknown', 'no'] as const)('required Wi-Fi excludes %s', (value) => {
