@@ -4,8 +4,8 @@ Status: contract v1 approved; C's router integrated. Supabase migration applied 
 private-role checks passed on project `nntbhzrhvqgvmwrmorhe` (`us-east-1`). Real cached
 Austin snapshot captured: 30 places, ten details, 13 total external attempts under
 the 18-attempt ceiling. Real dataset API smoke passed locally. Presenter-phone
-acceptance of this real snapshot and a hosted/restarted server remain pending.
-PR #7 is merged. Anonymous-review/cache follow-up is ready for D/C review; D owns main merge.
+acceptance of the hosted real snapshot remains pending; public Render API checks pass.
+PRs #7 and #10 are merged. Free Render hosting is live; D owns main merge and phone acceptance.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -184,3 +184,36 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   checks: 164/164 tests across 18 files, workspace typecheck, lint, server build and
   diff check pass. Evidence/cache implementation commit: `b3b9fe2`; follow-up PR
   will contain that code and this updated integration record.
+
+## Stable public API — Render Free deployment
+
+- User chose free hosted service with cold starts and signed into Render. Created one
+  Node web service `nook-api-demo`, ID `srv-dbenp18ae00c73doen00`, Free ($0/month),
+  Virginia, main branch, no paid resources. Existing unrelated workspace services
+  were untouched. Public Git source requires no added GitHub integration credentials.
+- Permanent base URL: https://nook-api-demo.onrender.com
+- Live commit: `74c731a0b8f320127161a1990dd9432136cd6a81`; deploy ID
+  `dep-dbenp1oae00c73doeoig`. Render reports live and successful build.
+- Build: npm ci --include=dev && npm run build:server. Start passes Render's commit
+  through COMMIT_SHA. Node 24.11.1 read from .nvmrc; health path /health; native port
+  10000 assigned by Render. Auto-deploy and previews Off.
+- Pinned DATASET_PATH serves austin-20261025-v1, cached, us-tx-austin, 30 places.
+  No private provider/DB/Muse keys supplied to this serving process. Operator
+  evidence/capture/cache access remains in private local/server configuration.
+- Public HTTPS contract checks: exact health/commit 200, list 200 with 30 spots,
+  detail 200, recommendation 200 with three results and externalCalls 0, empty query
+  200 with zero matches, invalid query 400. Shared schemas validated each response.
+- Local lockfile install/build passed; Render install/build also passed. No code,
+  root manifest, contract, migration or provider-acquisition change was required.
+- Updated only B's ignored local mobile transport settings to the stable URL.
+  Each teammate must update their own env/restart Metro; D owns device verification.
+- Earlier failure: local API stayed healthy while QUIC tunnel lost its network.
+  Restarted tunnel with HTTP/2 and verified temporary fallback health/recommendation
+  200 at https://atm-sunset-phentermine-entrepreneur.trycloudflare.com . Both local
+  processes remain running; hosted API no longer depends on them.
+- Limits: Free service sleeps after 15 idle minutes; cold wake can take ~1 minute,
+  longer than the current mobile eight-second timeout. Warm /health before the demo,
+  then retry. Expo Go development bundle still needs Metro. No new real Muse outputs
+  were generated or claimed; snapshot values remain as captured.
+- Next: D sets EXPO_PUBLIC_API_BASE_URL to the Render URL and verifies the complete
+  phone flow plus cold-start Retry. B manually deploys only reviewed main changes.

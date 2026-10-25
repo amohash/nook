@@ -22,16 +22,66 @@ The single-place smoke artifact is separate and not published.
 
 The actual app locally served this artifact with list/detail/recommendation 200,
 three qualifying recommendations, zero external calls during reranking, honest
-empty results and missing detail 404. This does not verify presenter-phone behavior
-or a public deployment using real data. Hours/amenities/atmosphere and real Muse
+empty results and missing detail 404. Hosted API verification is recorded below;
+presenter-phone acceptance remains separate. Hours/amenities/atmosphere and real Muse
 summaries remain unknown; detail evidence contains provider identity/address facts.
 
-Current hosting choice is B's laptop plus a temporary Cloudflare tunnel. No paid
-host was created by B. B restarted the server on user request with the reviewed real snapshot. To reproduce,
-start the server with
-`DATASET_PATH=../fixtures/data/austin-20261025-v1.json` (server working directory),
-then explicitly select `us-tx-austin` in the mobile query. Do not reuse demo city IDs
-or a demo clock for the real snapshot. D owns the mobile selection and phone check.
+Current primary API: **https://nook-api-demo.onrender.com**, running on Render Free
+in Virginia. Created with the user's explicit free-host preference. No paid instance,
+database, disk or extra provider acquisition was provisioned. Laptop/tunnel hosting
+is now a fallback. This URL survives laptop disconnection; the Free service itself
+sleeps after idle periods and must wake on the next request.
+
+Service: `nook-api-demo` / `srv-dbenp18ae00c73doen00`.
+Dashboard: https://dashboard.render.com/web/srv-dbenp18ae00c73doen00
+Initial live deploy: `dep-dbenp1oae00c73doeoig`, code commit
+`74c731a0b8f320127161a1990dd9432136cd6a81` on `main`.
+
+Native Node setup (no Docker or runtime provider credentials required):
+
+- Node 24.11.1 from the existing root `.nvmrc`; root directory unset.
+- Build: `npm ci --include=dev && npm run build:server`.
+- Start: `COMMIT_SHA=$RENDER_GIT_COMMIT npm run start:server`.
+- Environment: `DATASET_PATH=../fixtures/data/austin-20261025-v1.json`.
+- Health path: `/health`; port comes from Render's `PORT` (10000 on this deployment).
+- Compute: Free, $0/month selected and verified. Auto-Deploy: Off; previews: Off.
+- Public Git source: https://github.com/amohash/nook, branch `main`.
+
+Published verification: health 200 with exact deployed commit; cities/list/detail 200;
+30 cached real places; recommendations 200 with three matches and externalCalls 0;
+no-match 200 with zero results; invalid query 400 with the shared error contract.
+Responses were validated through shared Zod schemas, not only HTTP status codes.
+No runtime Supabase, SerpApi or Muse secrets were added to Render; it serves the
+committed normalized artifact. Private evidence/cache operations stay in B/C's
+configured operator environment.
+
+Mobile configuration (per teammate, ignored `apps/mobile/.env.local`):
+
+```dotenv
+EXPO_PUBLIC_DATA_PROVIDER=api
+EXPO_PUBLIC_API_BASE_URL=https://nook-api-demo.onrender.com
+```
+
+Restart Metro after setting public environment values: `npm run dev:mobile -- --clear`.
+Use city `us-tx-austin`, dataset `austin-20261025-v1`, mode `cached`, and actual current
+query time. The latest merged mobile code initializes query city from API metadata.
+Only the public transport values in B's local mobile env were updated; D still owns
+shared mobile code and physical-phone acceptance. Expo Go still needs Metro to load
+its development bundle even though this backend is hosted.
+
+Render Free sleeps after 15 minutes without inbound traffic and can take roughly a
+minute to wake. The mobile HTTP provider has an eight-second request timeout; after
+a long idle period, warm `https://nook-api-demo.onrender.com/health` in a browser until
+JSON appears, then retry the app. This is a cold-start limitation, not a live crowd
+or progress signal. No uptime/performance claim beyond observed checks is made.
+References: https://render.com/docs/free and https://render.com/docs/deploy-node-express-app .
+
+To update the reviewed artifact/code later, B uses the service's Manual Deploy after
+D merges the change to main. Auto-deploy remains off so a UI merge cannot silently
+change the stage backend. Change DATASET_PATH only for an explicitly reviewed,
+versioned snapshot, verify the deployed commit and endpoint contracts again, and
+keep the old immutable artifact for rollback. Do not rerun ingestion or migrations
+as a deploy command.
 
 ## Contract coordination — approved v1, router integrated
 
@@ -165,7 +215,7 @@ and ten real details, migration execution and actual role-denial checks, host/co
 validation, remote health/data smoke, C's handler mount, and phone acceptance. Preserve
 unknowns rather than filling these gaps with fictional facts.
 
-## Previous Render proposal — superseded by local tunnel hosting
+## Previous paid Render proposal — superseded by Render Free
 
 Select a paid always-running Node web service in the prod environment. Choose a region
 near the Supabase region once known. Use the repository root as the build directory,
@@ -199,7 +249,7 @@ matching commit; record the public URL. The existing demo routes are also expose
 References: https://www.koyeb.com/docs/faqs/pricing and
 https://www.koyeb.com/docs/reference/instances .
 
-## Current local team access
+## Laptop fallback — superseded by hosted API
 
 Started on 2026-10-25 UTC from code commit
 `d2a6ccaf0be287eee471238b7ed0075af4e25595`.
@@ -207,11 +257,11 @@ The server is running on `0.0.0.0:3001`, with `caffeinate -i` preventing idle sl
 while the server command runs. Keep the laptop powered, online and its lid open.
 Cloudflared was installed via Homebrew; no login, hosting account or payment was needed.
 
-Current temporary base URL:
-`https://jewel-graduated-dealtime-representations.trycloudflare.com`
+Temporary fallback base URL (primary API is the Render URL above):
+`https://atm-sunset-phentermine-entrepreneur.trycloudflare.com`
 
 Health URL:
-`https://jewel-graduated-dealtime-representations.trycloudflare.com/health`
+`https://atm-sunset-phentermine-entrepreneur.trycloudflare.com/health`
 
 LAN alternative (same Wi-Fi; network may block peer access):
 `http://10.150.227.120:3001`
@@ -229,13 +279,13 @@ Each teammate can set these public values in their own `apps/mobile/.env.local`
 
 ```dotenv
 EXPO_PUBLIC_DATA_PROVIDER=api
-EXPO_PUBLIC_API_BASE_URL=https://jewel-graduated-dealtime-representations.trycloudflare.com
+EXPO_PUBLIC_API_BASE_URL=https://nook-api-demo.onrender.com
 ```
 
 Restart Expo after editing: `npm run dev:mobile -- --clear` from the repo root.
 Do not use localhost for a phone accessing B's backend. The tunnel exposes only the
 API port, not Expo/Metro; each teammate still runs their own mobile development setup.
-Anyone with the URL can access the public demo API. Provider cache and paid operations
+Anyone with the URL can access the public read-only API. Provider cache and paid operations
 are not exposed. No provider credentials belong in these Expo variables.
 
 To restart after the current processes stop, use two terminals from the repo root:
@@ -248,7 +298,7 @@ DATASET_PATH=../fixtures/data/austin-20261025-v1.json COMMIT_SHA="$(git rev-pars
 
 ```sh
 # Terminal 2
-cloudflared tunnel --url http://127.0.0.1:3001 --no-autoupdate
+cloudflared tunnel --protocol http2 --url http://127.0.0.1:3001 --no-autoupdate
 ```
 
 The active processes are detached from command sessions and remain running for phone
