@@ -18,9 +18,12 @@ export function EvidenceLabel(props: EvidenceLabelProps) {
   return <Text style={styles.evidence}>{label ? `${label} · ` : ''}{evidenceLabel(evidence)}</Text>;
 }
 
-export type DatasetLabelProps = { mode: DatasetMode; description?: string; fetchedAt?: string };
+export type DatasetLabelProps = { mode: DatasetMode; description?: string; fetchedAt?: string; variant?: 'banner' | 'caption' };
 
-export function DatasetLabel({ mode, description, fetchedAt }: DatasetLabelProps) {
+export function DatasetLabel({ mode, description, fetchedAt, variant = 'banner' }: DatasetLabelProps) {
+  if (variant === 'caption') return <Text style={[styles.evidence, styles.source]}>
+    {datasetLabel(mode)}{description ? ` · ${description}` : ''}{fetchedAt ? ` · Dataset fetched: ${fetchedAt}` : ''}
+  </Text>;
   return <View style={styles.banner}>
     <Text style={styles.title}>{datasetLabel(mode)}</Text>
     {description && <Text style={styles.evidence}>{description}</Text>}
