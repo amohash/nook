@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/contracts';
 import { DEMO_LABEL, DEMO_NOW } from '@space/fixtures';
@@ -32,7 +32,7 @@ function Explore() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [sheetPosition, setSheetPosition] = useState<ExploreSheetPosition>('peek');
+  const [sheetPosition, setSheetPosition] = useState<ExploreSheetPosition>(Platform.OS === 'web' ? 'expanded' : 'peek');
   const [activeTab, setActiveTab] = useState<'places' | 'muse'>('places');
   const [mapInsets, setMapInsets] = useState({top: 160, bottom: 180});
   const [timeOpen, setTimeOpen] = useState(false);
