@@ -20,6 +20,21 @@ export function CameraIcon({ color = theme.colors.textMuted }: { color?: string 
   </View>;
 }
 
+export function LockIcon({ color = theme.colors.textMuted }: { color?: string }) {
+  return <View {...hidden} style={styles.lock}>
+    <View style={[styles.shackle, { borderColor: color }]} />
+    <View style={[styles.lockBody, { borderColor: color }]} />
+  </View>;
+}
+
+/** Filled bookmark (saved). */
+export function BookmarkIcon({ color = theme.colors.text }: { color?: string }) {
+  return <View {...hidden} style={styles.bookmark}>
+    <View style={[styles.bookmarkBody, { backgroundColor: color }]} />
+    <View style={[styles.bookmarkNotch, { borderBottomColor: theme.colors.background }]} />
+  </View>;
+}
+
 export function BackChevron() {
   return <View {...hidden} style={styles.chevron} />;
 }
@@ -35,6 +50,14 @@ const styles = StyleSheet.create({
     borderWidth: theme.borders.icon, borderBottomWidth: 0 },
   cameraBody: { width: 40, height: 28, borderRadius: 8, borderWidth: theme.borders.icon },
   lens: { position: 'absolute', bottom: 7, width: 14, height: 14, borderRadius: theme.radii.pill, borderWidth: theme.borders.icon },
+  lock: { width: 28, height: 32, alignItems: 'center' },
+  shackle: { width: 16, height: 14, borderTopLeftRadius: 8, borderTopRightRadius: 8, borderWidth: theme.borders.icon,
+    borderBottomWidth: 0 },
+  lockBody: { width: 26, height: 18, borderRadius: 5, borderWidth: theme.borders.icon },
+  bookmark: { width: 18, height: 22, alignItems: 'center' },
+  bookmarkBody: { width: 18, height: 22 },
+  bookmarkNotch: { position: 'absolute', bottom: 0, width: 0, height: 0, borderLeftWidth: 9, borderRightWidth: 9,
+    borderBottomWidth: 7, borderLeftColor: 'transparent', borderRightColor: 'transparent' },
   chevron: { width: theme.sizes.backChevron + 2, height: theme.sizes.backChevron + 2, marginLeft: theme.spacing.xxs,
     borderLeftWidth: theme.borders.icon, borderBottomWidth: theme.borders.icon, borderColor: theme.colors.text,
     transform: [{ rotate: '45deg' }] },

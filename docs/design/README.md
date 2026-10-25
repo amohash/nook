@@ -6,9 +6,9 @@ Reference designs for the nook-social screens. Text in `[brackets]` is placehold
 |---|---|---|---|
 | `social-sign-in.png` | Sign in / create account | `apps/mobile/src/social/SignInScreen.tsx` | Implemented |
 | `social-create-profile.png` | Create profile | `apps/mobile/src/social/CreateProfileScreen.tsx` | Implemented |
-| `social-profile-own.png` | Your profile | Step 4 | Planned |
-| `social-friends.png` | Friends (search, contacts, following) | Steps 4–5 | Planned; contacts matching is Step 5 behind its own flag |
-| `social-profile-other.png` | Someone else's profile | Step 4 | Planned |
+| `social-profile-own.png` | Your profile | `apps/mobile/src/social/ProfileScreen.tsx` (+ `EditProfileScreen.tsx`) | Implemented (Step 4) |
+| `social-friends.png` | Friends (search, contacts, following) | Row layout in `FollowListScreen.tsx` (Step 4) | Search and contacts matching planned (Step 5, own flag) |
+| `social-profile-other.png` | Someone else's profile | `apps/mobile/src/social/UserProfileScreen.tsx` | Implemented (Step 4) |
 
 ## Privacy wording (use exactly)
 

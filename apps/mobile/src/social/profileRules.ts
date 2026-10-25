@@ -56,3 +56,52 @@ export function vibeLineFrom(tags: readonly string[]): string | null {
   const top = tags.filter((tag) => !INTENT_LABELS.has(tag)).slice(0, 3);
   return top.length ? `${top.join(' · ')} studier` : null;
 }
+
+/** One display initial from the name, else the username. */
+export function initialFor(displayName: string | null | undefined, username: string | null | undefined): string {
+  const source = (displayName?.trim() || username?.trim() || '?').replace(/^@/, '');
+  return [...source][0]!.toUpperCase();
+}
+
+/** Stable index into the avatar palette, so a person keeps the same colour everywhere. */
+export function avatarToneIndex(id: string, tones: number): number {
+  let hash = 0;
+  for (const char of id) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  return hash % tones;
+}
+
+/** Their tags that I also have (case-insensitive), in their order. */
+export function tagsInCommon(theirs: readonly string[], mine: readonly string[]): string[] {
+  const own = new Set(mine.map((tag) => tag.toLowerCase()));
+  return theirs.filter((tag) => own.has(tag.toLowerCase()));
+}
+
+/** "Library · 5 min walk"; parts that are unknown are left out rather than guessed. */
+export function savedSpotMeta(category: string | null | undefined, walkMinutes: number | null | undefined): string {
+  const label = category ? category.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase()) : null;
+  const walk = walkMinutes == null || !Number.isFinite(walkMinutes) ? null : `${Math.max(1, Math.round(walkMinutes))} min walk`;
+  return [label, walk].filter(Boolean).join(' · ');
+}
+
+/** Row for saved_spots; name/category are a display snapshot of the place when saved. */
+export function savedRow(userId: string, spotId: string, spot: { name: string; categories: readonly string[] }) {
+  return { user_id: userId, spot_id: spotId, name: spot.name.slice(0, 200), category: spot.categories[0]?.slice(0, 80) ?? null };
+}
+
+export type PhoneAction = 'keep' | 'replace' | 'clear';
+
+/** Edit profile: a newly entered (valid) number replaces the saved hash; "Remove" clears it; otherwise keep. */
+export function phoneAction({ hasSaved, enteredE164, removed }: { hasSaved: boolean; enteredE164: string | null; removed: boolean }): PhoneAction {
+  if (enteredE164) return 'replace';
+  return removed && hasSaved ? 'clear' : 'keep';
+}
+
+/** Discoverable only when a hash will exist after the edit. */
+export function discoverableAfter(action: PhoneAction, hasSaved: boolean, wanted: boolean): boolean {
+  return wanted && (action === 'replace' || (action === 'keep' && hasSaved));
+}
+
+/** "@maya · Silent · Solo": username plus up to two non-intent tags, as in the Friends design. */
+export function personSubtitle(username: string, tags: readonly string[]): string {
+  return [`@${username}`, ...tags.filter((tag) => !INTENT_LABELS.has(tag)).slice(0, 2)].join(' · ');
+}

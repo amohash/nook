@@ -7,6 +7,7 @@ import { AUTH_ERROR_TEXT, authErrorKind, credentialProblem, type AuthErrorKind }
 import { getSupabase } from './client';
 import { fetchOwnProfile, updateVibe, type Profile } from './profileApi';
 import { vibeLineFrom, vibeTagsFrom } from './profileRules';
+import { backfillSavedSpots } from './savedSync';
 
 export type AuthResult = { ok: true } | { ok: false; kind: AuthErrorKind; message: string };
 /** off: social disabled (guest mode). needsProfile: signed in without a profiles row.
@@ -90,6 +91,7 @@ function SignedInCapableProvider({ children }: { children: ReactNode }) {
   }, [userId, loadProfile]);
 
   useVibeSync(client, profile ?? null, setProfile);
+  useSavedBackfill(userId);
 
   const signUp = useCallback(async (email: string, password: string): Promise<AuthResult> => {
     const problem = credentialProblem(email, password, 'signUp');
@@ -132,6 +134,18 @@ function SignedInCapableProvider({ children }: { children: ReactNode }) {
     signUp, signIn, signOut, refreshProfile,
   }), [status, session, profile, loading, profileError, signUp, signIn, signOut, refreshProfile]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+/** First sign-in on this device (per user and dataset): upload existing local saves once. */
+function useSavedBackfill(userId: string | null) {
+  const { session } = useSession();
+  const scope = session ? `${session.city.mode}:${session.city.id}:${session.city.datasetVersion}` : null;
+  const places = session?.settings.savedPlaces;
+  const savedIds = session?.settings.savedIds;
+  useEffect(() => {
+    if (!userId || !scope || !savedIds) return;
+    void backfillSavedSpots(userId, scope, (places ?? []).filter(({ spot }) => savedIds.includes(spot.id)));
+  }, [userId, scope, places, savedIds]);
 }
 
 /** Keeps profiles.vibe_tags/vibe_line in step with this device's saved study preferences. */

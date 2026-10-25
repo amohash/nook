@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { authErrorKind, credentialProblem } from './authErrors';
 import { isSecretKey, resolveSocialConfig } from './config';
-import { normalizeUsernameInput, toE164, usernameProblem, vibeLineFrom, vibeTagsFrom } from './profileRules';
+import { avatarToneIndex, discoverableAfter, initialFor, personSubtitle, phoneAction, normalizeUsernameInput, savedRow, savedSpotMeta, tagsInCommon, toE164, usernameProblem, vibeLineFrom,
+  vibeTagsFrom } from './profileRules';
 
 const jwt = (payload: object) => `x.${btoa(JSON.stringify(payload)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')}.y`;
 const sha256Hex = async (text: string) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))]
@@ -82,5 +83,50 @@ describe('profile rules', () => {
     expect(vibeLineFrom(['Study', 'Silent', 'Outlets', 'Open late', 'Solo'])).toBe('Silent · Outlets · Open late studier');
     expect(vibeLineFrom(['Study', 'Silent'])).toBe('Silent studier');
     expect(vibeLineFrom(['Study'])).toBeNull();
+  });
+});
+
+describe('profile display helpers', () => {
+  it('derives initials and a stable avatar tone', () => {
+    expect(initialFor('maya lopez', 'maya')).toBe('M');
+    expect(initialFor('  ', 'zachg')).toBe('Z');
+    expect(initialFor(null, null)).toBe('?');
+    expect(avatarToneIndex('user-1', 4)).toBe(avatarToneIndex('user-1', 4));
+    expect(avatarToneIndex('user-1', 4)).toBeGreaterThanOrEqual(0);
+  });
+
+  it('finds tags in common and formats saved rows without inventing unknowns', () => {
+    expect(tagsInCommon(['Study', 'Silent', 'Solo', 'Coffee nearby'], ['study', 'Silent', 'Outlets'])).toEqual(['Study', 'Silent']);
+    expect(savedSpotMeta('library', 4.6)).toBe('Library · 5 min walk');
+    expect(savedSpotMeta('coffee_shop', null)).toBe('Coffee shop');
+    expect(savedSpotMeta(null, 0.2)).toBe('1 min walk');
+    expect(savedSpotMeta(null, null)).toBe('');
+  });
+});
+
+describe('saved spots sync rows', () => {
+  it('snapshots name and first category for saved_spots', () => {
+    expect(savedRow('u1', 's1', { name: 'Pocket Library', categories: ['library', 'cafe'] }))
+      .toEqual({ user_id: 'u1', spot_id: 's1', name: 'Pocket Library', category: 'library' });
+    expect(savedRow('u1', 's2', { name: 'X', categories: [] }).category).toBeNull();
+  });
+});
+
+describe('edit profile phone rules', () => {
+  it('replaces, clears or keeps the stored hash and never leaves discovery on without one', () => {
+    expect(phoneAction({ hasSaved: true, enteredE164: '+15125550123', removed: false })).toBe('replace');
+    expect(phoneAction({ hasSaved: true, enteredE164: null, removed: true })).toBe('clear');
+    expect(phoneAction({ hasSaved: false, enteredE164: null, removed: true })).toBe('keep');
+    expect(phoneAction({ hasSaved: true, enteredE164: null, removed: false })).toBe('keep');
+    expect(discoverableAfter('keep', true, true)).toBe(true);
+    expect(discoverableAfter('keep', false, true)).toBe(false);
+    expect(discoverableAfter('clear', true, true)).toBe(false);
+    expect(discoverableAfter('replace', false, true)).toBe(true);
+    expect(discoverableAfter('replace', false, false)).toBe(false);
+  });
+
+  it('builds person subtitles like the Friends design', () => {
+    expect(personSubtitle('maya', ['Study', 'Silent', 'Solo', 'Coffee nearby'])).toBe('@maya · Silent · Solo');
+    expect(personSubtitle('d', [])).toBe('@d');
   });
 });
