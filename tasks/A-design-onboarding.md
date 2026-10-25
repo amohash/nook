@@ -272,3 +272,45 @@ export { FiltersDesignPreview } from './FiltersDesignPreview';
 - Verified by direct JSON counts: photo artifact has 30 real places, ten summaries, 30 images, zero typical-crowd/known-hours/live-observation records and no known Wi-Fi/outlets. Public health returned cc8f7aa and cached photo version; GitHub open-PR list was empty at audit time. Read-only actual-scorer smoke confirms real default order stays the same while scores change; fictional Study/Friends orders differ. Documentation uses the fictional scenario explicitly, not forced real winners.
 - Docs scope/whitespace checked for handoff; no new app test/build or device pass claimed. Native presenter-phone acceptance, timed rehearsal, final screenshots and backup video capture remain pending. `docs/demo-assets/nook-demo-final.mp4` is a planned destination, not an existing recording.
 - Next smallest step: D reviews/merges the docs PR and performs the phone rehearsal with A; A captures the labeled final screenshots/video by 06:00. No merge/deploy by this task.
+
+## Focused Muse assistant presentation — October 25, 2026
+
+Status: implemented on `feat/muse-assistant-ui` in `/private/tmp/nook-a-muse-ui`, based on main `b9cbc11`; automatically/browser verified, not merged or phone verified. User explicitly expanded the original no-chat scope. D confirmed the controlled props API; B/C published authoritative transport contracts on `feat/runtime-nearby-api` (f075304/01d9011). These components define presentation models only, not competing transport contracts.
+
+Changed files:
+- `apps/mobile/src/components/MuseAssistantEntry.tsx`: accessible Explore/detail entry; controlled disabled/busy/reason props.
+- `apps/mobile/src/components/MuseAssistantPanel.tsx`: controlled input, six statuses, starters, up to 12 displayed messages, three referenced places per message, fact/interpretation/unknown/source labels and explicit proposal before/after Apply/Cancel. No networking, storage, location, scorer or session state. Source IDs and place IDs go back to D; URLs are not opened directly from model text. Default input cap 1000; D passes the shared request maximum.
+- `apps/mobile/src/components/MuseAssistantDesignPreview.tsx`: clearly labeled sample-only specimen; no requests or simulated generation. All controls only report callbacks. Never mount this as production assistant.
+- `apps/mobile/src/components/OriginCard.tsx`: device accuracy >=100m says “Approximate location”; errors offer “Retry my location” and manual fallback.
+- This task status only. No barrel, routes, dependency/lock, contracts, migrations or shared decisions edits.
+
+D integration (direct imports, no barrel change):
+```tsx
+import { MuseAssistantEntry } from '../src/components/MuseAssistantEntry';
+import { MuseAssistantPanel, type MuseAssistantPanelProps } from '../src/components/MuseAssistantPanel';
+// Entry: onPress, disabled?, busy?, unavailableReason?.
+// Panel: input/onInputChange/onSubmit/onRetry/onClose, status, messages, canSubmit,
+// onPlacePress(placeId), onSourcePress(sourceId), onApply(proposalId), onCancel(proposalId).
+// Optional disabledReason/statusMessage/retryable/inputMaxLength/proposal/keyboardVerticalOffset.
+```
+D maps validated shared schemas to the exported presentation types, resolves references against the same snapshot and maps source IDs to validated evidence URLs. Status out_of_scope maps to an answer/empty explanation; timeout maps to error + statusMessage + retryable. Set canSubmit=false with a reason for absent snapshot/unsupported area. Quota/unavailable/waiting disable submission. A proposal contains id/explanation and rows `{label,before,after}`; applying/canceling invokes only the callback. D owns stale proposal validation against the current query and removes applied/canceled proposals. No automatic filter changes.
+
+Exact visual reproduction:
+1. In D's development-only host under `SafeAreaProvider`, mount `MuseAssistantDesignPreview` from its direct file in a bounded `flex:1` container. Use `npm run dev:mobile` and open with the supported Expo Go version.
+2. Tap each status: idle, waiting, empty, error, quota, unavailable. Empty/error expose Retry. Waiting disables input/starters/send; absent snapshot disables submission and displays a reason. Empty/whitespace input cannot submit.
+3. Tap a starter: it fills input only. Send invokes callback only. Toggle sample answer; scroll through interpretation, sourced facts, unknowns, referenced place/source buttons and before/after proposal. Apply and Cancel each invoke their own callback; neither changes filters in this preview. Close reports its callback.
+4. For production, D places Entry on Explore/detail and mounts Panel in the existing modal/sheet; D owns visibility, modal focus/restore, Android Back and session/data handling. Use a bounded container; the panel handles keyboard avoidance, scrollable conversation/composer and safe area edges. No navigation tab is added.
+5. Verify OriginCard with device accuracy 99m vs 100m, an error, busy lookup and manual fallback. Presenter-phone/native GPS verification remains D's task.
+
+Actual verification:
+- `npm ci --ignore-scripts` from existing lockfile: passed. Initial reused node_modules symlink produced a Zod v3/v4 type mismatch; removed it and used the isolated install. No manifest/lock changes.
+- `npm run typecheck`: passed across all workspaces after isolated install and after final code edits.
+- `npm run lint`: passed after final code edits.
+- `git diff --check`: passed.
+- Actual React Native Web components bundled in ignored `.expo/muse-qa` using existing esbuild with web extensions. T3 collaborative browser rendered them. Browser assertions passed starter fill/submit, busy gate, empty/error retry, quota/unavailable copy, missing snapshot gate, place/source/close callbacks, before/after preview and separate Apply/Cancel. Every tested button >=44px. No broad unit suite claimed for this visual change.
+- Narrow layout review: 320x568 container with doubled rendered text (browser simulation, not native font scaling), no horizontal overflow, conversation retained 221px scroll height, composer stayed inside panel, all visible buttons >=44px. Review caught/fixed header shrink overlap and an oversized large-text header. Safe insets are zero in this browser harness.
+- Visual states reviewed in actual browser: idle, waiting, empty, error, quota, unavailable, missing snapshot, answer/evidence/unknown/reference/source, filter proposal, narrow/doubled-text. The preview labels all sample content; no fixture conversation ships in production components.
+- Live-provider verified by this A task: none. Provider attempts/retries: 0/0; no credential access or request budget spent. B/C own live provider work.
+- Physical-device verified: none. Native keyboard visibility/avoidance, hardware Back, modal focus/VoiceOver/TalkBack, native text scaling and nonzero safe insets remain pending. No phone acceptance claimed.
+
+Self-evaluation (ECC agent-self-evaluation): accuracy 4 (browser passed; native behavior unverified), completeness 4 (requested presentation states provided; device acceptance pending), clarity 4 (direct typed API; D still maps response facts), actionability 4 (preview/reproduction supplied; D integrates), conciseness 4 (one focused panel; handoff necessarily detailed), overall 4.0/5. Highest-impact next step: D integrate the real response and run the presenter phone checks, then merge the small PR as owner.
