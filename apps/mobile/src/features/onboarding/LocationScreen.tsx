@@ -39,7 +39,7 @@ export function LocationScreen({ options, selectedId, onSelect, onUseLocation, o
     <ScrollView style={s.scroll} contentContainerStyle={s.page}>
       <OnboardingHeader step={3} onBack={onBack} />
       <View style={s.introduction}>
-        <Text accessibilityRole="header" style={s.title}>Where do you study from?</Text>
+        <Text accessibilityRole="header" style={s.title}>Where are you starting from?</Text>
         <Text style={s.helper}>We use your location to sort spots by distance. You can pick a starting point without sharing GPS.</Text>
       </View>
       <View style={styles.choices}>
@@ -59,7 +59,7 @@ export function LocationScreen({ options, selectedId, onSelect, onUseLocation, o
         {options.length === 0 && <Text style={s.helper}>No supported starting points are available. Go back or try your location.</Text>}
       </View>
       <View style={s.footer}>
-        <Text style={s.helper}>You can change this anytime in Preferences.</Text>
+        <Text style={s.helper}>Default: manual UT Austin. GPS is optional and kept in memory only; restarting returns to campus. Change origin anytime on Map.</Text>
         <OnboardingProgress step={3} />
         <Button label="Start exploring" disabled={!hasOrigin || status === 'requesting'} onPress={onContinue} />
       </View>
