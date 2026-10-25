@@ -1,0 +1,110 @@
+{
+  "doNotShareBeforeJudgmentsLocked": true,
+  "key": [
+    {
+      "caseId": "case-1",
+      "option": "A",
+      "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+      "originalRank": 3,
+      "label": "campus-study"
+    },
+    {
+      "caseId": "case-1",
+      "option": "B",
+      "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+      "originalRank": 2,
+      "label": "campus-study"
+    },
+    {
+      "caseId": "case-1",
+      "option": "C",
+      "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+      "originalRank": 1,
+      "label": "campus-study"
+    },
+    {
+      "caseId": "case-2",
+      "option": "A",
+      "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+      "originalRank": 2,
+      "label": "campus-study-10-minute-cap"
+    },
+    {
+      "caseId": "case-2",
+      "option": "B",
+      "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+      "originalRank": 1,
+      "label": "campus-study-10-minute-cap"
+    },
+    {
+      "caseId": "case-2",
+      "option": "C",
+      "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+      "originalRank": 3,
+      "label": "campus-study-10-minute-cap"
+    },
+    {
+      "caseId": "case-3",
+      "option": "A",
+      "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+      "originalRank": 3,
+      "label": "campus-meet-friends"
+    },
+    {
+      "caseId": "case-3",
+      "option": "B",
+      "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+      "originalRank": 1,
+      "label": "campus-meet-friends"
+    },
+    {
+      "caseId": "case-3",
+      "option": "C",
+      "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+      "originalRank": 2,
+      "label": "campus-meet-friends"
+    },
+    {
+      "caseId": "case-4",
+      "option": "A",
+      "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+      "originalRank": 1,
+      "label": "campus-later-session"
+    },
+    {
+      "caseId": "case-4",
+      "option": "B",
+      "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+      "originalRank": 2,
+      "label": "campus-later-session"
+    },
+    {
+      "caseId": "case-4",
+      "option": "C",
+      "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+      "originalRank": 3,
+      "label": "campus-later-session"
+    },
+    {
+      "caseId": "case-5",
+      "option": "A",
+      "spotId": "google:beeb8c5a1379778198621bc63122e147",
+      "originalRank": 2,
+      "label": "downtown-study-manual-origin"
+    },
+    {
+      "caseId": "case-5",
+      "option": "B",
+      "spotId": "google:469628681071309095718b65891e9efc",
+      "originalRank": 3,
+      "label": "downtown-study-manual-origin"
+    },
+    {
+      "caseId": "case-5",
+      "option": "C",
+      "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+      "originalRank": 1,
+      "label": "downtown-study-manual-origin"
+    }
+  ]
+}

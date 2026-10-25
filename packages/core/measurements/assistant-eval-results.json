@@ -1,0 +1,3882 @@
+{
+  "reportVersion": 1,
+  "measuredAt": "2026-10-25T07:38:54.051Z",
+  "clock": "2026-10-25T02:40:00-05:00",
+  "measurementScope": "Local Node only. Loopback HTTP is not deployed network latency. Mobile adapter runs in Node, not on a phone.",
+  "samplePolicy": "21 sequential samples per case/path; index 0 is first in this process, not a cold process/cache. No latency or savings claims.",
+  "runtime": {
+    "node": "v24.11.1",
+    "versions": {
+      "node": "24.11.1",
+      "acorn": "8.15.0",
+      "ada": "3.3.0",
+      "amaro": "1.1.4",
+      "ares": "1.34.5",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "47.0",
+      "icu": "77.1",
+      "llhttp": "9.3.0",
+      "modules": "137",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.66.0",
+      "openssl": "3.5.4",
+      "simdjson": "4.0.7",
+      "simdutf": "6.4.0",
+      "sqlite": "3.50.4",
+      "tz": "2025b",
+      "undici": "7.16.0",
+      "unicode": "16.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "13.6.233.10-node.28",
+      "zlib": "1.3.1-470d3a2",
+      "zstd": "1.5.7"
+    },
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M5",
+    "logicalCpuCount": 10
+  },
+  "dataset": {
+    "cityId": "us-tx-austin",
+    "mode": "cached",
+    "version": "austin-20261025-muse-photos-v1",
+    "sha256": "bae26a4d32597262f8f8cbfa4740535505b732f5a30684a921781f3c7ab1b731",
+    "byteLength": 311151,
+    "snapshotSha256": "37f389bffe7a16e57f211a34cb3f537ea0b49ef3d42e17e8c10785f6a3e184a0",
+    "evidenceCounts": {
+      "price": 0,
+      "numericNoise": 0,
+      "groupFriendly": 1,
+      "wifi": 0,
+      "outlets": 0,
+      "hours": 0,
+      "summaries": 10
+    },
+    "sourceAges": [
+      {
+        "field": "snapshot",
+        "fetchedAt": "2026-10-25T02:51:29.146Z",
+        "ageMs": 17310854,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 17396335,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 17396335,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 17396335,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 17396335,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+        "ageMs": 17396335,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:48.401Z",
+        "ageMs": 12431599,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 17352540,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 17352540,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 17352540,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 17352540,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+        "ageMs": 17352540,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:47.928Z",
+        "ageMs": 12432072,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 17351795,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 17351795,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 17351795,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 17351795,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+        "ageMs": 17351795,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:57.950Z",
+        "ageMs": 12422050,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 17349898,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 17349898,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 17349898,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 17349898,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+        "ageMs": 17349898,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:12:58.842Z",
+        "ageMs": 12421158,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 17316136,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 17316136,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 17316136,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 17316136,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:23.864Z",
+        "ageMs": 17316136,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:08.549Z",
+        "ageMs": 12411451,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 17315078,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 17315078,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 17315078,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 17315078,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:24.922Z",
+        "ageMs": 17315078,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:10.177Z",
+        "ageMs": 12409823,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 17313838,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 17313838,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 17313838,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 17313838,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:26.162Z",
+        "ageMs": 17313838,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:16.740Z",
+        "ageMs": 12403260,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 17312417,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 17312417,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 17312417,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 17312417,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:27.583Z",
+        "ageMs": 17312417,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:20.007Z",
+        "ageMs": 12399993,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 12392747,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 12392747,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 12392747,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:28.454Z",
+        "ageMs": 17311546,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 12392747,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:27.253Z",
+        "ageMs": 12392747,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 17310944,
+        "count": 1
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 17310944,
+        "count": 1
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 17310944,
+        "count": 1
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 17310944,
+        "count": 1
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:51:29.056Z",
+        "ageMs": 17310944,
+        "count": 1
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T04:13:28.505Z",
+        "ageMs": 12391495,
+        "count": 1
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+        "ageMs": 17397389,
+        "count": 10
+      },
+      {
+        "field": "spot",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "priceLevel",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "rating",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "reviewCount",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "noise",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "groupFriendly",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "wifi",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "outlets",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "publicAccess",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "tags",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      },
+      {
+        "field": "summary",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "ageMs": 17453704,
+        "count": 10
+      }
+    ]
+  },
+  "inputSha256": "b397e6872560af100dcc0c6553c7590b21e914b156f345ac55dcf3e5601a7e1b",
+  "records": [
+    {
+      "label": "campus-study",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 50.622988505747145,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-25T18:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 48.58620689655172,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 48.576154992548446,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "scoreComponents": [
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "base": 0.5577615499254844,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 48.576154992548446,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8776154992548435,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08776154992548435
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "base": 0.5578620689655173,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 48.58620689655172,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8786206896551724,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08786206896551724
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "base": 0.5782298850574714,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 50.622988505747145,
+          "components": {
+            "P": {
+              "value": 0.6666666666666667,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.13333333333333336
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9489655172413795,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.09489655172413795
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          2.4047919999999863,
+          1.0128750000000082,
+          1.1767500000000268,
+          0.9308330000000069,
+          0.9299159999999915,
+          0.9858749999999645,
+          0.7975000000000136,
+          0.7973329999999805,
+          0.8695839999999748,
+          0.9794590000000198,
+          0.7523330000000215,
+          0.7570410000000152,
+          0.7750409999999874,
+          0.7638749999999845,
+          0.783916999999974,
+          0.7279169999999908,
+          0.7831659999999943,
+          0.741375000000005,
+          0.7360419999999976,
+          0.7499580000000492,
+          0.75
+        ],
+        "apiLoopbackRoundTripNode": [
+          22.708334000000036,
+          3.9057919999999626,
+          5.585499999999968,
+          2.9384170000000154,
+          2.8735829999999964,
+          4.572666999999967,
+          2.460374999999999,
+          2.3421659999999633,
+          3.04849999999999,
+          4.0268330000000105,
+          2.2142499999999927,
+          2.1835420000000454,
+          3.6420420000000036,
+          2.2509580000000255,
+          2.1086250000000177,
+          2.3172079999999937,
+          3.424542000000031,
+          2.2652500000000373,
+          2.073582999999985,
+          3.6359170000000063,
+          2.082917000000009
+        ],
+        "apiReportedRankNode": [
+          0.9358330000000024,
+          0.9965410000000361,
+          0.9016669999999749,
+          0.8471670000000131,
+          0.876041999999984,
+          0.8941249999999741,
+          0.7941670000000158,
+          0.7669999999999959,
+          0.8547090000000139,
+          0.8273340000000076,
+          0.7350830000000315,
+          0.7438329999999951,
+          0.7028339999999957,
+          0.7460419999999885,
+          0.7527079999999842,
+          0.7172500000000355,
+          0.7220420000000445,
+          0.8470829999999978,
+          0.7481250000000159,
+          0.6952090000000339,
+          0.728541000000007
+        ],
+        "cachedMobileAdapterInNode": [
+          3.0110410000000343,
+          3.0305420000000254,
+          2.0207920000000286,
+          1.9506660000000124,
+          2.0427080000000046,
+          1.6986670000000004,
+          1.7687499999999545,
+          1.772291999999993,
+          1.9807500000000005,
+          1.5674589999999853,
+          1.5977080000000115,
+          1.6837919999999826,
+          1.677915999999982,
+          1.5963330000000155,
+          1.6916249999999877,
+          1.5242920000000026,
+          1.5842499999999973,
+          1.6490420000000086,
+          1.5919580000000337,
+          1.5285000000000082,
+          1.598415999999986
+        ],
+        "cachedReportedRankNode": [
+          1.725750000000005,
+          1.5970829999999978,
+          0.9524160000000279,
+          0.9757920000000126,
+          0.9943329999999833,
+          0.8157080000000292,
+          0.8102910000000065,
+          0.8672500000000127,
+          0.9364170000000058,
+          0.7632919999999785,
+          0.7729579999999601,
+          0.8168750000000387,
+          0.7627079999999751,
+          0.7821670000000154,
+          0.7739159999999856,
+          0.7263329999999542,
+          0.7668750000000273,
+          0.8397079999999733,
+          0.7541249999999877,
+          0.73599999999999,
+          0.7472500000000082
+        ]
+      }
+    },
+    {
+      "label": "campus-study-10-minute-cap",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 10,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 47.289655172413795,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-25T18:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 44.58620689655172,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 44.576154992548425,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 15-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 15,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "scoreComponents": [
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "base": 0.5177615499254843,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 44.576154992548425,
+          "components": {
+            "P": {
+              "value": 0.4,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.08000000000000002
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8776154992548435,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08776154992548435
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "base": 0.5178620689655172,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 44.58620689655172,
+          "components": {
+            "P": {
+              "value": 0.4,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.08000000000000002
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8786206896551724,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08786206896551724
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "base": 0.544896551724138,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 47.289655172413795,
+          "components": {
+            "P": {
+              "value": 0.5,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.1
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9489655172413795,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.09489655172413795
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.7599169999999731,
+          0.7525410000000079,
+          0.778458999999998,
+          0.7730000000000246,
+          0.7314159999999674,
+          0.7689159999999902,
+          0.7481249999999591,
+          0.8451670000000036,
+          0.7393749999999955,
+          0.8094159999999988,
+          0.76075000000003,
+          0.7268329999999992,
+          0.7616250000000377,
+          0.7384169999999699,
+          0.7154580000000124,
+          0.7346249999999941,
+          0.7072079999999801,
+          0.7475000000000023,
+          0.7080830000000446,
+          0.7491249999999923,
+          0.7672919999999976
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.020959000000005,
+          2.21879100000001,
+          3.178875000000005,
+          2.178916000000015,
+          2.0507499999999936,
+          3.5475000000000136,
+          2.0395409999999856,
+          2.1234170000000177,
+          2.2008749999999964,
+          3.7007919999999785,
+          2.313000000000045,
+          2.0361669999999776,
+          3.5693749999999795,
+          2.020458000000019,
+          1.9612089999999966,
+          2.2053750000000036,
+          3.0998749999999973,
+          1.954499999999996,
+          1.978917000000024,
+          3.455957999999953,
+          2.0522920000000227
+        ],
+        "apiReportedRankNode": [
+          0.7379169999999817,
+          0.7386670000000208,
+          0.6996250000000259,
+          0.7550830000000133,
+          0.7247499999999718,
+          0.7611660000000029,
+          0.7353749999999764,
+          0.7478330000000142,
+          0.7240840000000048,
+          0.7507909999999924,
+          0.8602920000000154,
+          0.7244580000000269,
+          0.6872919999999567,
+          0.7329999999999472,
+          0.7089169999999854,
+          0.7406250000000227,
+          0.7144170000000258,
+          0.7632909999999811,
+          0.7158329999999751,
+          0.7173750000000041,
+          0.7165840000000117
+        ],
+        "cachedMobileAdapterInNode": [
+          1.5642909999999688,
+          1.5387920000000008,
+          1.6070420000000354,
+          1.597750000000019,
+          1.5731659999999579,
+          1.5092910000000188,
+          1.5620830000000296,
+          1.5018330000000333,
+          1.5428750000000377,
+          1.568583999999987,
+          1.545041000000026,
+          1.5558750000000146,
+          1.4974170000000413,
+          1.6319169999999872,
+          1.5185000000000173,
+          1.5355000000000132,
+          1.536625000000015,
+          1.528250000000014,
+          1.538708999999983,
+          1.5973749999999995,
+          1.5701249999999618
+        ],
+        "cachedReportedRankNode": [
+          0.7541659999999979,
+          0.7189589999999839,
+          0.7933750000000259,
+          0.735416999999984,
+          0.7486250000000041,
+          0.7297500000000241,
+          0.7496670000000449,
+          0.7363330000000019,
+          0.7362909999999943,
+          0.7358340000000112,
+          0.7237920000000031,
+          0.7449169999999867,
+          0.7324169999999981,
+          0.8190000000000168,
+          0.7229580000000055,
+          0.7068340000000148,
+          0.745666999999969,
+          0.7016249999999786,
+          0.7512499999999704,
+          0.7767910000000029,
+          0.7407499999999914
+        ]
+      }
+    },
+    {
+      "label": "campus-meet-friends",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "friends",
+        "groupSize": 4,
+        "targetNoise": 0.7,
+        "targetCrowd": 0.6,
+        "tagWeights": {
+          "lively": 1,
+          "group_friendly": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 49.2896551724138,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-25T18:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 47.58620689655172,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 47.57615499254844,
+            "evidenceCoverage": 0.23000000000000004,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "scoreComponents": [
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "base": 0.5527615499254844,
+          "evidenceCoverage": 0.23000000000000004,
+          "uncertaintyPenalty": 0.07700000000000001,
+          "score": 47.57615499254844,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.15000000000000002,
+              "contribution": 0.09000000000000001
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "Q": {
+              "value": 0.8776154992548435,
+              "confidence": 0.8,
+              "weight": 0.10000000000000002,
+              "contribution": 0.08776154992548436
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.25000000000000006,
+              "contribution": 0.12500000000000003
+            }
+          }
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "base": 0.5528620689655173,
+          "evidenceCoverage": 0.23000000000000004,
+          "uncertaintyPenalty": 0.07700000000000001,
+          "score": 47.58620689655172,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.15000000000000002,
+              "contribution": 0.09000000000000001
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "Q": {
+              "value": 0.8786206896551724,
+              "confidence": 0.8,
+              "weight": 0.10000000000000002,
+              "contribution": 0.08786206896551725
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.25000000000000006,
+              "contribution": 0.12500000000000003
+            }
+          }
+        },
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "base": 0.569896551724138,
+          "evidenceCoverage": 0.23000000000000004,
+          "uncertaintyPenalty": 0.07700000000000001,
+          "score": 49.2896551724138,
+          "components": {
+            "P": {
+              "value": 0.6666666666666667,
+              "confidence": 1,
+              "weight": 0.15000000000000002,
+              "contribution": 0.10000000000000002
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15000000000000002,
+              "contribution": 0.07500000000000001
+            },
+            "Q": {
+              "value": 0.9489655172413795,
+              "confidence": 0.8,
+              "weight": 0.10000000000000002,
+              "contribution": 0.09489655172413797
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.10000000000000002,
+              "contribution": 0.05000000000000001
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.25000000000000006,
+              "contribution": 0.12500000000000003
+            }
+          }
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.7770419999999945,
+          0.7367499999999723,
+          0.7153329999999869,
+          0.7512499999999136,
+          0.7694999999999936,
+          0.7639580000000024,
+          0.7351669999999331,
+          0.7371249999999918,
+          0.7378330000000233,
+          0.7590420000000222,
+          0.7537499999999682,
+          0.7449169999999867,
+          0.7483339999999998,
+          0.7450830000000224,
+          0.7351670000000468,
+          0.7310000000001082,
+          0.7436250000000655,
+          0.7305410000000165,
+          0.7101249999999482,
+          0.7100829999999405,
+          0.7271670000000086
+        ],
+        "apiLoopbackRoundTripNode": [
+          1.9348329999999692,
+          2.1867500000000746,
+          3.116209000000026,
+          2.0344159999999647,
+          2.0147499999999354,
+          3.5924580000000788,
+          2.0778750000000628,
+          1.91924999999992,
+          2.1158329999999523,
+          3.47524999999996,
+          2.0886669999999867,
+          1.951167000000055,
+          3.4888750000000073,
+          1.994542000000024,
+          1.9128749999999854,
+          2.150875000000042,
+          3.12237499999992,
+          1.999249999999961,
+          1.966083000000026,
+          3.6237500000000864,
+          1.964708000000087
+        ],
+        "apiReportedRankNode": [
+          0.7396249999999895,
+          0.7490839999999253,
+          0.7246660000000702,
+          0.7458750000000691,
+          0.7331669999999804,
+          0.7357919999999467,
+          0.7664580000000569,
+          0.7179999999999609,
+          0.7357909999999492,
+          0.7339170000000195,
+          0.7997910000000275,
+          0.7315830000000005,
+          0.73762499999998,
+          0.7314169999999649,
+          0.7163749999999709,
+          0.7184580000000551,
+          0.7208750000000919,
+          0.7345830000000433,
+          0.7297499999999673,
+          0.7305000000000064,
+          0.7169169999999667
+        ],
+        "cachedMobileAdapterInNode": [
+          1.5735840000000394,
+          1.554540999999972,
+          1.511082999999985,
+          1.6300410000000056,
+          1.516540999999961,
+          1.478917000000024,
+          1.6110419999999976,
+          1.5073340000000144,
+          1.527249999999981,
+          1.5164999999999509,
+          1.5410420000000613,
+          1.5548749999999245,
+          1.547790999999961,
+          1.488458000000037,
+          1.5163330000000315,
+          1.568290999999931,
+          1.524167000000034,
+          1.518583000000035,
+          1.4997500000000628,
+          1.4507089999999607,
+          1.5534999999999854
+        ],
+        "cachedReportedRankNode": [
+          0.7569169999999872,
+          0.776625000000081,
+          0.7286670000000868,
+          0.7415419999999813,
+          0.7421249999999873,
+          0.7086669999999913,
+          0.7859580000000506,
+          0.7335839999999507,
+          0.7607079999999087,
+          0.7197079999999687,
+          0.7457920000000513,
+          0.7535420000000386,
+          0.7459999999999809,
+          0.7100419999999303,
+          0.7289590000000317,
+          0.7709579999999505,
+          0.734833999999978,
+          0.7141669999999749,
+          0.7217500000000427,
+          0.6921250000000327,
+          0.742917000000034
+        ]
+      }
+    },
+    {
+      "label": "campus-later-session",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T19:00:00-05:00",
+        "sessionMinutes": 120,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+            "score": 50.622988505747145,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 5,
+            "arrivalAt": "2026-10-26T00:05:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 5 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+            "score": 48.58620689655172,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-26T00:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+            "score": 48.576154992548446,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-26T00:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 27
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 3
+      },
+      "names": [
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "name": "Trippy Buck Coffee Truck"
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "name": "St Benedict Coffee Company"
+        },
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "name": "Lucky Lab Coffee Co."
+        }
+      ],
+      "scoreComponents": [
+        {
+          "spotId": "google:931c7d46e9adfd462ac4108b80af9a7c",
+          "base": 0.5577615499254844,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 48.576154992548446,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8776154992548435,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08776154992548435
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:9d7721e9510e890db945df4d7c68fcbb",
+          "base": 0.5578620689655173,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 48.58620689655172,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8786206896551724,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08786206896551724
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:aec7f6ef01db0393b53d58c929d07180",
+          "base": 0.5782298850574714,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 50.622988505747145,
+          "components": {
+            "P": {
+              "value": 0.6666666666666667,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.13333333333333336
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9489655172413795,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.09489655172413795
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.7903330000000324,
+          0.7040000000000646,
+          0.7769170000000258,
+          0.7478330000000142,
+          0.6871250000000373,
+          0.7476669999999785,
+          0.7489160000000084,
+          0.8140840000000935,
+          0.7260420000000067,
+          0.8724580000000515,
+          0.7111670000000458,
+          0.7086669999999913,
+          0.7547920000000659,
+          0.721582999999896,
+          0.7032920000000331,
+          0.7059580000000096,
+          0.7341659999999592,
+          0.7376669999999876,
+          0.7076670000000149,
+          0.7277920000000222,
+          0.7330409999999574
+        ],
+        "apiLoopbackRoundTripNode": [
+          1.9691669999999704,
+          2.0709999999999127,
+          3.1722499999999627,
+          1.9320829999999205,
+          1.8857910000000402,
+          3.719249999999988,
+          1.991416000000072,
+          2.0294999999999845,
+          1.9342080000000124,
+          3.679042000000095,
+          1.933667000000014,
+          1.902749999999969,
+          2.1275829999999587,
+          3.202959000000078,
+          1.9809169999999767,
+          1.9425840000000107,
+          3.483041999999955,
+          2.022874999999999,
+          1.8764999999999645,
+          2.145582999999988,
+          3.087916000000064
+        ],
+        "apiReportedRankNode": [
+          0.7204580000000078,
+          0.7140829999999596,
+          0.7086669999999913,
+          0.7307080000000497,
+          0.724207999999976,
+          0.7400840000000244,
+          0.7255830000000287,
+          0.6997920000000022,
+          0.7267500000000382,
+          0.7227499999999054,
+          0.687458000000106,
+          0.7123750000000655,
+          0.7262080000000424,
+          0.7078330000000506,
+          0.7076250000000073,
+          0.702959000000078,
+          0.7176670000000058,
+          0.7362920000000486,
+          0.7051249999999527,
+          0.7439580000000205,
+          0.7211670000000368
+        ],
+        "cachedMobileAdapterInNode": [
+          1.4668329999999514,
+          1.5420830000000478,
+          1.5181669999999485,
+          1.563250000000039,
+          1.5476659999999356,
+          1.4875000000000682,
+          1.537834000000089,
+          1.49087499999996,
+          1.5698340000000144,
+          1.4187920000000531,
+          1.555417000000034,
+          1.5142079999999396,
+          1.6977920000000495,
+          1.4276670000000422,
+          1.4966249999999945,
+          1.5065829999999778,
+          1.490291999999954,
+          1.5837909999999056,
+          1.4756250000000364,
+          1.5798329999998941,
+          1.4674999999999727
+        ],
+        "cachedReportedRankNode": [
+          0.6952089999999771,
+          0.7316250000000082,
+          0.7267909999999347,
+          0.7122499999999263,
+          0.7452919999999494,
+          0.7139999999999418,
+          0.734833999999978,
+          0.7081249999999955,
+          0.7582499999999754,
+          0.6688329999999496,
+          0.7130839999999807,
+          0.7332920000000058,
+          0.7575410000000602,
+          0.6750410000000784,
+          0.7190830000000688,
+          0.7173750000000609,
+          0.7179579999999532,
+          0.7947080000000142,
+          0.7075829999999996,
+          0.7658329999999296,
+          0.7069999999999936
+        ]
+      }
+    },
+    {
+      "label": "strict-budget-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": 1,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_price": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Remove the price cap",
+            "patch": {
+              "maxPriceLevel": null,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "scoreComponents": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.7263749999999618,
+          0.6955410000000484,
+          0.7251669999999422,
+          0.7113329999999678,
+          0.69562499999995,
+          0.6879169999999704,
+          0.7098750000000109,
+          0.6915830000000369,
+          0.7217499999999291,
+          0.6925830000000133,
+          0.7276659999999993,
+          0.724207999999976,
+          0.7197079999999687,
+          0.730707999999936,
+          0.721416999999974,
+          0.6981250000000045,
+          0.7157920000000786,
+          0.7064159999999902,
+          0.7353340000000799,
+          0.72950000000003,
+          0.7217079999999214
+        ],
+        "apiLoopbackRoundTripNode": [
+          1.8248339999998962,
+          1.7312920000000531,
+          3.1872500000000628,
+          1.7143330000000105,
+          1.7764170000000377,
+          1.6405829999999924,
+          3.294334000000049,
+          1.6924589999999853,
+          1.8385409999999638,
+          1.647375000000011,
+          3.345207999999957,
+          1.7808749999999236,
+          1.882791999999995,
+          1.7649999999999864,
+          3.1631249999999227,
+          1.7039160000000493,
+          1.8452080000000706,
+          1.6628330000000915,
+          3.4728750000000446,
+          1.7826250000000528,
+          1.6986249999999927
+        ],
+        "apiReportedRankNode": [
+          0.7611250000001064,
+          0.7053750000000036,
+          0.6675420000000258,
+          0.7118749999999636,
+          0.7982500000000528,
+          0.68587500000001,
+          0.7265419999999949,
+          0.7036669999999958,
+          0.8220000000000027,
+          0.6884159999999611,
+          0.69237499999997,
+          0.7434579999999187,
+          0.7480000000000473,
+          0.7121250000000146,
+          0.6774589999999989,
+          0.7257500000000618,
+          0.7518749999999272,
+          0.7022090000000389,
+          0.7137920000000122,
+          0.7269579999999678,
+          0.6775409999999056
+        ],
+        "cachedMobileAdapterInNode": [
+          1.3632499999999936,
+          1.43587500000001,
+          1.3830000000000382,
+          1.4270840000000362,
+          1.3583750000000236,
+          1.3965829999999642,
+          1.4337500000000318,
+          1.4576669999999012,
+          1.420708999999988,
+          1.4156670000000986,
+          1.410333000000037,
+          1.5504170000000386,
+          1.5206249999999955,
+          1.4770409999999856,
+          1.3992080000000442,
+          1.4050840000001017,
+          1.3764580000000706,
+          1.4551250000000664,
+          1.4669170000000804,
+          1.528709000000049,
+          1.3964579999999387
+        ],
+        "cachedReportedRankNode": [
+          0.6771249999999327,
+          0.7185409999999592,
+          0.6760830000000624,
+          0.715958999999998,
+          0.6737500000000409,
+          0.6986249999999927,
+          0.7247080000000778,
+          0.7500830000000178,
+          0.6707920000000058,
+          0.7164589999999862,
+          0.6962500000000773,
+          0.8068329999999833,
+          0.7582920000000968,
+          0.758707999999956,
+          0.6904999999999291,
+          0.7045420000000604,
+          0.6840420000000904,
+          0.7301250000000437,
+          0.7198750000000018,
+          0.8037089999999125,
+          0.7007919999999785
+        ]
+      }
+    },
+    {
+      "label": "strict-hours-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": true,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_hours": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Include places without verified full-session opening hours",
+            "patch": {
+              "requireOpenForSession": false,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "scoreComponents": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.7376250000000937,
+          0.7987080000000333,
+          0.6902920000001131,
+          0.699292000000014,
+          0.7792910000000575,
+          0.8637079999999742,
+          0.7887080000000424,
+          0.733167000000094,
+          0.7588749999999891,
+          0.7401660000000447,
+          0.80662499999994,
+          0.7458749999999554,
+          0.840082999999936,
+          0.7530420000000504,
+          0.7545420000000149,
+          0.7985829999998941,
+          0.7500840000000153,
+          0.8239169999999376,
+          0.7430000000000518,
+          0.8384170000000495,
+          0.8379159999999501
+        ],
+        "apiLoopbackRoundTripNode": [
+          1.6792920000000322,
+          3.0385420000000067,
+          1.7212500000000546,
+          1.6510829999999714,
+          1.858665999999971,
+          3.7617910000000165,
+          1.9948750000000928,
+          1.7917080000000851,
+          1.987166000000002,
+          3.7214589999999816,
+          1.9795839999999316,
+          1.8570829999999887,
+          1.9787919999999986,
+          3.4220000000000255,
+          1.8172910000000684,
+          1.833250000000021,
+          1.7597089999999298,
+          3.660250000000019,
+          1.9244579999999587,
+          1.980792000000065,
+          1.8239999999999554
+        ],
+        "apiReportedRankNode": [
+          0.7024589999999762,
+          0.6521660000000793,
+          0.6968329999999696,
+          0.6963339999999789,
+          0.7909170000000358,
+          0.7407080000000406,
+          0.6997920000000022,
+          0.715082999999936,
+          0.77475000000004,
+          0.7638329999999769,
+          0.7806659999999965,
+          0.7345830000000433,
+          0.75262500000008,
+          0.7481669999999667,
+          0.7385830000000624,
+          0.7706249999999955,
+          0.740415999999982,
+          0.8657080000000406,
+          0.7612500000000182,
+          0.8197499999999991,
+          0.7334169999999176
+        ],
+        "cachedMobileAdapterInNode": [
+          1.471208000000047,
+          1.3702500000000555,
+          1.480583999999908,
+          1.4219170000000076,
+          1.610416999999984,
+          1.507833000000005,
+          1.4648750000000064,
+          1.5709580000000187,
+          1.5139169999999922,
+          1.7596670000000358,
+          1.4689170000000331,
+          1.6719580000000178,
+          1.441791999999964,
+          1.434665999999993,
+          1.5152089999999134,
+          1.4227079999999432,
+          1.4375420000000076,
+          1.6869159999999965,
+          1.5876670000000104,
+          1.6703750000000355,
+          1.6156670000000304
+        ],
+        "cachedReportedRankNode": [
+          0.7269999999999754,
+          0.6901249999999663,
+          0.7779590000000098,
+          0.7160000000000082,
+          0.8296249999999645,
+          0.7260420000000067,
+          0.7312920000000531,
+          0.8301669999999604,
+          0.7301669999999376,
+          0.9460000000000264,
+          0.740415999999982,
+          0.8396670000000768,
+          0.7214580000000979,
+          0.7061249999999291,
+          0.7430000000000518,
+          0.7158749999999827,
+          0.723374999999919,
+          0.9275420000000167,
+          0.8451670000000604,
+          0.8358330000000933,
+          0.8120000000000118
+        ]
+      }
+    },
+    {
+      "label": "strict-wifi-no-match",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "require",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [],
+        "excludedCounts": {
+          "distance": 27,
+          "amenity": 3
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          },
+          {
+            "label": "Prefer Wi-Fi instead of requiring it",
+            "patch": {
+              "amenities": {
+                "wifi": "prefer",
+                "outlets": "prefer"
+              },
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 0
+      },
+      "names": [],
+      "scoreComponents": [],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          1.0734999999999673,
+          0.7070830000000115,
+          0.7267920000000458,
+          0.7427500000000009,
+          0.6966670000000477,
+          0.7328329999999141,
+          0.6926249999999072,
+          0.7178750000000491,
+          0.7163329999999632,
+          0.7799580000000788,
+          0.6873339999999644,
+          0.7043330000000196,
+          0.7121250000000146,
+          0.8205419999999322,
+          0.70049999999992,
+          0.7112500000000637,
+          0.6904579999999214,
+          0.841666000000032,
+          0.7234999999999445,
+          0.7718330000000151,
+          0.7219579999999723
+        ],
+        "apiLoopbackRoundTripNode": [
+          3.500958999999966,
+          1.938541999999984,
+          1.8975830000000542,
+          1.8253750000000082,
+          3.154916999999955,
+          1.8374160000000757,
+          1.666708999999969,
+          1.7166670000000295,
+          3.461125000000038,
+          1.7870829999999387,
+          1.7769170000000258,
+          1.8208339999999907,
+          3.1169170000000577,
+          1.7870830000000524,
+          1.707540999999992,
+          1.7213339999999562,
+          3.459041999999954,
+          1.7847919999999249,
+          1.6917499999999563,
+          1.7136669999999867,
+          3.2611249999999927
+        ],
+        "apiReportedRankNode": [
+          0.6771669999999403,
+          0.7038330000000315,
+          0.6934580000000778,
+          0.7050830000000587,
+          0.6674589999998943,
+          0.7069169999999758,
+          0.6921250000000327,
+          0.7151249999999436,
+          0.712500000000091,
+          0.6660000000000537,
+          0.6940410000000838,
+          0.7213749999999663,
+          0.676584000000048,
+          0.6694999999999709,
+          0.70474999999999,
+          0.6675000000000182,
+          0.6621660000000702,
+          0.677791999999954,
+          0.7026670000000195,
+          0.7164999999999964,
+          0.7147499999999809
+        ],
+        "cachedMobileAdapterInNode": [
+          1.4242080000000215,
+          1.4785829999999578,
+          1.444749999999999,
+          1.3965839999999616,
+          1.3907500000000255,
+          1.3467920000000504,
+          1.3947500000000446,
+          1.41437499999995,
+          1.514915999999971,
+          1.3672920000000204,
+          1.45737500000007,
+          1.4974999999999454,
+          1.43425000000002,
+          1.3802080000000387,
+          1.4424579999999878,
+          1.371291000000042,
+          1.4700000000000273,
+          1.4128749999999854,
+          1.4934170000000222,
+          1.4482909999999265,
+          1.5173750000000155
+        ],
+        "cachedReportedRankNode": [
+          0.710042000000044,
+          0.7212079999999332,
+          0.7050410000000511,
+          0.6800409999999601,
+          0.6940419999999676,
+          0.6846669999999904,
+          0.6944999999999482,
+          0.7034580000000688,
+          0.7446249999999281,
+          0.6879999999999882,
+          0.7327080000000024,
+          0.7889169999999694,
+          0.7223750000000564,
+          0.690166999999974,
+          0.7187910000000102,
+          0.6955420000000458,
+          0.72950000000003,
+          0.7102909999999838,
+          0.7419999999999618,
+          0.7280830000000833,
+          0.7543329999999742
+        ]
+      }
+    },
+    {
+      "label": "downtown-study-manual-origin",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2672,
+          "lng": -97.7431,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "parity": {
+        "scorerApiCached": true,
+        "repeatedSamplesStable": true,
+        "checkedSamples": 21
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+            "score": 52.994936708860784,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 3,
+            "arrivalAt": "2026-10-25T18:03:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 3 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:beeb8c5a1379778198621bc63122e147",
+            "score": 49.054545454545455,
+            "evidenceCoverage": 0.28,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          },
+          {
+            "spotId": "google:469628681071309095718b65891e9efc",
+            "score": 42.314705882352946,
+            "evidenceCoverage": 0.385,
+            "estimatedWalkMinutes": 6,
+            "arrivalAt": "2026-10-25T18:06:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 6 min estimated walk",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Public access unknown",
+              "Wi-Fi unknown",
+              "Outlets unknown",
+              "Opening hours unknown or stale",
+              "Price unknown",
+              "Noise unknown",
+              "Typical activity unknown; no seat availability estimate",
+              "Operating status unknown"
+            ]
+          }
+        ],
+        "excludedCounts": {
+          "distance": 25
+        },
+        "relaxations": [
+          {
+            "label": "Try a 20-minute estimated walk",
+            "patch": {
+              "maxWalkMinutes": 20,
+              "limit": 3
+            }
+          }
+        ],
+        "candidateCount": 30,
+        "qualifyingCount": 5
+      },
+      "names": [
+        {
+          "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+          "name": "Cielito Lindo Cafe"
+        },
+        {
+          "spotId": "google:beeb8c5a1379778198621bc63122e147",
+          "name": "Trippy Buck Coffee"
+        },
+        {
+          "spotId": "google:469628681071309095718b65891e9efc",
+          "name": "Black Fox Coffee"
+        }
+      ],
+      "scoreComponents": [
+        {
+          "spotId": "google:469628681071309095718b65891e9efc",
+          "base": 0.48464705882352943,
+          "evidenceCoverage": 0.385,
+          "uncertaintyPenalty": 0.0615,
+          "score": 42.314705882352946,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0,
+              "confidence": 0.7,
+              "weight": 0.15,
+              "contribution": 0
+            },
+            "Q": {
+              "value": 0.8964705882352941,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08964705882352941
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:5e41d40d7f5e594816f53b91efe65443",
+          "base": 0.4565662100456621,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 38.45662100456621,
+          "components": {
+            "P": {
+              "value": 0.06666666666666665,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.01333333333333333
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9323287671232876,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.09323287671232877
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:6095ffad0fbfff16b2a7478e55e990b6",
+          "base": 0.4396710526315789,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 36.76710526315789,
+          "components": {
+            "P": {
+              "value": 0,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.8967105263157895,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.08967105263157896
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:792a3fa2fc6580e1f29858af57f74f55",
+          "base": 0.6019493670886078,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 52.994936708860784,
+          "components": {
+            "P": {
+              "value": 0.8,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.16000000000000003
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9194936708860759,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.0919493670886076
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        },
+        {
+          "spotId": "google:beeb8c5a1379778198621bc63122e147",
+          "base": 0.5625454545454546,
+          "evidenceCoverage": 0.28,
+          "uncertaintyPenalty": 0.072,
+          "score": 49.054545454545455,
+          "components": {
+            "P": {
+              "value": 0.6,
+              "confidence": 1,
+              "weight": 0.2,
+              "contribution": 0.12
+            },
+            "A": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.3,
+              "contribution": 0.15
+            },
+            "V": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.15,
+              "contribution": 0.075
+            },
+            "Q": {
+              "value": 0.9254545454545454,
+              "confidence": 0.8,
+              "weight": 0.1,
+              "contribution": 0.09254545454545454
+            },
+            "B": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "M": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.1,
+              "contribution": 0.05
+            },
+            "G": {
+              "value": 0.5,
+              "confidence": 0,
+              "weight": 0.05,
+              "contribution": 0.025
+            }
+          }
+        }
+      ],
+      "acquisition": {
+        "externalCalls": 0,
+        "providerOrModelConstructed": false
+      },
+      "rawMs": {
+        "scorerLocalNode": [
+          0.9030830000000378,
+          0.7414169999999558,
+          0.7812079999999924,
+          0.7168330000000651,
+          0.7498749999999745,
+          0.7417920000000322,
+          0.7514580000000706,
+          0.7659580000000688,
+          0.7228749999999309,
+          0.7128339999999298,
+          0.7531670000000759,
+          0.7164170000000922,
+          0.7470410000000811,
+          0.734375,
+          0.7326660000001084,
+          0.728708000000097,
+          0.7718750000001364,
+          0.7385830000000624,
+          0.7415409999998701,
+          0.7514169999999467,
+          0.7283750000001419
+        ],
+        "apiLoopbackRoundTripNode": [
+          2.062667000000033,
+          1.9471250000000282,
+          1.9191250000000082,
+          3.522250000000099,
+          1.9340419999999767,
+          1.989417000000003,
+          2.1340000000000146,
+          3.114082999999937,
+          1.8974580000000287,
+          1.8767500000001291,
+          3.611125000000129,
+          1.93425000000002,
+          1.9361669999998412,
+          2.1081669999998667,
+          3.2828749999998763,
+          1.976165999999921,
+          1.9312499999998636,
+          3.4188749999998436,
+          2.0944580000000315,
+          1.9930830000000697,
+          2.2649159999998574
+        ],
+        "apiReportedRankNode": [
+          0.739084000000048,
+          0.7198329999999942,
+          0.7295840000000453,
+          0.7247089999999616,
+          0.7223340000000462,
+          0.747208999999998,
+          0.72625000000005,
+          0.6956670000000713,
+          0.7231249999999818,
+          0.7288750000000164,
+          0.704584000000068,
+          0.711917000000085,
+          0.742334000000028,
+          0.7132910000000265,
+          0.7167919999999413,
+          0.7461659999999029,
+          0.7324590000000626,
+          0.728249999999889,
+          0.7421249999999873,
+          0.7818340000001172,
+          0.8058750000000146
+        ],
+        "cachedMobileAdapterInNode": [
+          1.5679999999999836,
+          1.5884169999999358,
+          1.4806670000000395,
+          1.4967080000000124,
+          1.5402090000000044,
+          1.5243330000000697,
+          1.5024170000000368,
+          1.4881249999999682,
+          1.5609580000000278,
+          1.5266249999999673,
+          1.4894580000000133,
+          1.4777500000000146,
+          1.49283400000013,
+          1.4546669999999722,
+          1.5042920000000777,
+          1.5455409999999574,
+          1.542833999999857,
+          1.5491250000000036,
+          1.6136659999999665,
+          1.481791999999814,
+          1.5254999999999654
+        ],
+        "cachedReportedRankNode": [
+          0.789333000000056,
+          0.7226670000000013,
+          0.7141669999999749,
+          0.7357919999999467,
+          0.7532089999999698,
+          0.7367500000000291,
+          0.7122499999999263,
+          0.7257919999999558,
+          0.7827500000000782,
+          0.7372080000000096,
+          0.6958329999999933,
+          0.7167919999999413,
+          0.7234170000001541,
+          0.6947089999998752,
+          0.7285420000000613,
+          0.7514159999998355,
+          0.7439999999999145,
+          0.7367080000001351,
+          0.7847919999999249,
+          0.7218330000000606,
+          0.7475420000000668
+        ]
+      }
+    }
+  ],
+  "fictionalGoldens": [
+    {
+      "label": "FICTIONAL study",
+      "datasetVersion": "fictional-austin-v1",
+      "clock": "2026-10-24T18:00:00-05:00",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "demo-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-24T18:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "demo:spot-1",
+            "score": 81.56666666666665,
+            "evidenceCoverage": 0.78,
+            "estimatedWalkMinutes": 1,
+            "arrivalAt": "2026-10-24T23:01:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 1 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-3",
+            "score": 76.50000000000001,
+            "evidenceCoverage": 0.7300000000000001,
+            "estimatedWalkMinutes": 3,
+            "arrivalAt": "2026-10-24T23:03:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 3 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-5",
+            "score": 61.56666666666667,
+            "evidenceCoverage": 0.6300000000000001,
+            "estimatedWalkMinutes": 4,
+            "arrivalAt": "2026-10-24T23:04:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 4 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Price unknown",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          }
+        ],
+        "excludedCounts": {},
+        "relaxations": [],
+        "candidateCount": 10,
+        "qualifyingCount": 10
+      }
+    },
+    {
+      "label": "FICTIONAL friends",
+      "datasetVersion": "fictional-austin-v1",
+      "clock": "2026-10-24T18:00:00-05:00",
+      "query": {
+        "schemaVersion": 1,
+        "cityId": "demo-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-24T18:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "friends",
+        "groupSize": 4,
+        "targetNoise": 0.7,
+        "targetCrowd": 0.6,
+        "tagWeights": {
+          "lively": 1,
+          "group_friendly": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "ranking": {
+        "results": [
+          {
+            "spotId": "demo:spot-2",
+            "score": 85.45000000000002,
+            "evidenceCoverage": 0.7900000000000003,
+            "estimatedWalkMinutes": 2,
+            "arrivalAt": "2026-10-24T23:02:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 2 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-10",
+            "score": 70.50000000000001,
+            "evidenceCoverage": 0.8400000000000001,
+            "estimatedWalkMinutes": 7,
+            "arrivalAt": "2026-10-24T23:07:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 7 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          },
+          {
+            "spotId": "demo:spot-6",
+            "score": 70.15,
+            "evidenceCoverage": 0.7900000000000003,
+            "estimatedWalkMinutes": 4,
+            "arrivalAt": "2026-10-24T23:04:00.000Z",
+            "reasons": [
+              {
+                "code": "walk",
+                "text": "About 4 min estimated walk",
+                "evidenceIds": []
+              },
+              {
+                "code": "atmosphere",
+                "text": "Demo atmosphere fits your preference",
+                "evidenceIds": []
+              },
+              {
+                "code": "wifi",
+                "text": "Wi-Fi supported by source evidence",
+                "evidenceIds": []
+              }
+            ],
+            "warnings": [
+              "Demo scenario: fictional venues and synthetic facts",
+              "Outlets unknown",
+              "Rating unknown; scoring uses a prior",
+              "Typical activity unknown; no seat availability estimate"
+            ]
+          }
+        ],
+        "excludedCounts": {},
+        "relaxations": [],
+        "candidateCount": 10,
+        "qualifyingCount": 10
+      }
+    }
+  ],
+  "limitations": [
+    "Manual public demo origins only; device GPS inputs are rejected and never recorded.",
+    "Artifact acquisition timestamps are not observation times; negative source age means a source is after the explicit clock.",
+    "No provider/model acquisition. Cache hits in the mobile response mean a loaded local bundle, not avoided paid requests.",
+    "Scores are heuristic fit scores, not calibrated quality or factual proof. Unknown facts remain unknown.",
+    "Deployment approval is not semantic evidence approval. The separate Muse evidence audit may withhold claims.",
+    "Phone performance, deployed network/cold-start latency, battery and savings have not been measured."
+  ]
+}
