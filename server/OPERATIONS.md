@@ -4,9 +4,17 @@
 
 Implementation on `feat/data-api` preserves contract version 1. No remote deployment,
 real SerpApi capture, Supabase migration application, or C/D sign-off has occurred.
-Only this thread is visible in the local T3 project. The remote currently exposes D's
-`feat/mobile-flow`, but no C ranking branch or agreed recommendation export was available.
-Contact details, existing hosting target, Supabase project and server credentials are pending.
+Coordination is now recorded in [GitHub issue #3](https://github.com/amohash/nook/issues/3),
+**Contract v1: docs/CONTRACTS.md**, tagging C (@Jeffjone) and D (@amohash).
+Both must explicitly approve before further implementation against the contract.
+The earlier local implementation remains provisional. No approval or agreed C export
+has been received. The schema review and adapter/fixture plan are in
+[CONTRACT-V1-REVIEW.md](CONTRACT-V1-REVIEW.md).
+
+There is no host or Supabase project yet. B recommends a paid always-running Render
+Node web service; the user will create the account/project and the Supabase project,
+then provide the project ref and region. Prod is the only environment. No resources
+will be created by B as part of this proposal; migrations remain files only.
 
 The active bundled dataset remains **`fictional-austin-v1`**, city `demo-austin`,
 capture/scenario time `2026-10-24T18:00:00-05:00`. Its ten venues are fictional.
@@ -37,13 +45,14 @@ real captures, measured quota savings, or a deployed API.
 
 ## Operator workflow (B alone)
 
-Use existing team infrastructure; do not create a second API or database. Configure
-server-only `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SERPAPI_API_KEY` in
-`server/.env` or the operator environment, never in chat or `EXPO_PUBLIC_*`.
-No secret-ref consumer for shell commands is available in this session; credentials
-must be provisioned through the team's local/host secret configuration.
+This workflow is for after C/D approval and infrastructure handoff. The user configures
+`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SERPAPI_API_KEY` privately in the
+host/Supabase dashboards. Never request their values in chat. Run ingestion in the
+configured host operator environment; local credentials are not a prerequisite.
+Do not apply migrations until the user provides the project ref/region and authorizes
+application. The steps below are instructions, not authorization to execute them now.
 
-1. Confirm the shared Supabase project and inspect migration history. Apply
+1. After project handoff and explicit application authorization, inspect migration history. Apply
    `supabase/migrations/202610250001_data_api.sql` once through the existing team
    migration workflow. Do not reset. Run `supabase/tests/private_access.sql` as the
    operator afterward. These SQL scripts are prepared, **not applied or DB-tested**.
@@ -139,7 +148,18 @@ response size limits, stable IDs, unknown evidence, duplicate/mixed datasets, AP
 validation, P1 absence and injection of C's future handler. Provider-shaped inputs
 are explicitly synthetic test cases, not real fixture captures.
 
-Still required: C/D agreement, real quota check and one-place capture, 20–30 real places
+Still required: approval from C and D in issue #3, user-created host and Supabase project, real quota check and one-place capture, 20–30 real places
 and ten real details, migration execution and actual role-denial checks, host/container
 validation, remote health/data smoke, C's handler mount, and phone acceptance. Preserve
 unknowns rather than filling these gaps with fictional facts.
+
+## Proposed Render setup — user creates the service
+
+Select a paid always-running Node web service in the prod environment. Choose a region
+near the Supabase region once known. Use the repository root as the build directory,
+Node 24, build command `npm ci --include=dev && npm run build:server`, start command
+`npm run start:server`, and health check path `/health`. Keep automatic deployment
+disabled so B controls deployments after D's main merges. The first health deployment
+can use the merged foundation; it needs no SerpApi or Supabase secret. Set the deployed
+commit identifier as `COMMIT_SHA`. Confirm the service URL and health response before
+enabling any provider integration. No Render service has been created.

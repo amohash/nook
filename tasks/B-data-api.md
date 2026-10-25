@@ -1,8 +1,11 @@
 # B data and infrastructure assignment
 
-Status: local implementation and tests complete for the provider/cache/snapshot foundation;
-external milestones blocked on C/D contacts, existing deployment/Supabase target and
-server credentials. Real data, deployed health and migration application are NOT verified.
+Status: contract review pending in [issue #3](https://github.com/amohash/nook/issues/3),
+with C (@Jeffjone) and D (@amohash) explicitly asked to approve. Earlier local provider/
+cache work is provisional; no further contract-dependent implementation until approval.
+The user creates the prod host and Supabase project and configures secrets in dashboards.
+B recommends paid always-running Render. Migrations are files only; do not apply yet.
+Real data, deployed health and migration application are NOT verified.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -34,7 +37,9 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   server local HTTP smoke returned 200 for health/cities/list/detail. The seed command
   without authorization exited 1 without a provider call. No Docker, DB role,
   remote host, real provider or physical-phone verification has occurred.
-- Next: obtain C/D coordination links and existing host/project identifiers; configure
-  credentials privately; B applies migration and deploys health, then captures one
-  place and the bounded full snapshot. C must agree and provide the route export;
-  until then the existing shared scorer remains the only implementation.
+- Current coordination draft: [server/CONTRACT-V1-REVIEW.md](../server/CONTRACT-V1-REVIEW.md).
+  Existing Zod schemas were reviewed, not duplicated or extended with new API fields.
+  Focused validation: 16 contract tests pass; contracts typecheck passes.
+- Next: C/D explicitly approve issue #3; user creates Render and Supabase and supplies
+  only service/project identifiers and region. Deploy health first after host handoff.
+  Migrations remain unapplied until project handoff and authorization. No secrets requested.
