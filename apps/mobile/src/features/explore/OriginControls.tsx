@@ -9,7 +9,7 @@ export function OriginControls({ origin, busy, error, accuracyMeters, onDevice, 
   return <View style={s.panel}>
     <Text style={s.label}>{origin.source === 'manual' ? 'Manual origin · UT Austin campus' : 'Device location · one-time reading'}</Text>
     {origin.source === 'device' && <Text style={s.body}>{accuracyMeters === null ? 'Location accuracy unknown.' : `Reported accuracy: ±${Math.ceil(accuracyMeters)} m.`} Walking times are estimates.</Text>}
-    <Text style={s.body}>This dataset covers the UT Austin area. Use UT Austin to explore without location permission.</Text>
+    <Text style={s.body}>Use your location to find nearby Austin places, or explore from UT Austin without location permission.</Text>
     <View style={s.row}>
       <Pressable accessibilityRole="button" accessibilityState={{ disabled: busy, busy }} disabled={busy}
         onPress={onDevice} style={s.button}><Text style={s.buttonText}>{busy ? 'Finding location…' : 'Use my location'}</Text></Pressable>

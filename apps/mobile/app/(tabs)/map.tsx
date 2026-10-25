@@ -21,7 +21,7 @@ import { PlaceMap } from '../../src/features/explore/PlaceMap';
 import { departureAt, lookupPlaces, venueTime } from '../../src/features/explore/presentation';
 
 function Explore() {
-  const {session, setQuery, nearby} = useSession();
+  const {session, setQuery, nearby, testerSession} = useSession();
   const query = session!.query;
   const city = session!.city;
   const router = useRouter();
@@ -45,7 +45,7 @@ function Explore() {
   const [lookupAttempt, setLookupAttempt] = useState(0);
   const selectOrigin = useCallback((origin: Query['origin']) => setQuery((current) => QuerySchema.parse({...current, origin})), [setQuery]);
   const location = useOrigin(selectOrigin);
-  useEffect(() => {if (location.busy || location.error) setSheetPosition('expanded');}, [location.busy, location.error]);
+  useEffect(() => {if (location.busy || location.error || (nearby.enabled && !testerSession)) setSheetPosition('expanded');}, [location.busy, location.error, nearby.enabled, testerSession]);
   const canRank = !nearby.enabled || (!!query.snapshotId && nearby.result?.snapshotId === query.snapshotId && !nearby.busy);
   useEffect(() => {
     let active = true;

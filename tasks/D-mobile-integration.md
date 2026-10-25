@@ -308,3 +308,39 @@ Next smallest step: run the above on the presenter phone, record acceptance, the
 - The AppEntry ../../App error comes from treating the repository root as the Expo project. The actual app remains apps/mobile with expo-router/entry. A root config guard gives the correct startup/install command, and root npm start now forwards to the mobile workspace. STARTER.md describes SDK 58 and launching the simulator.
 - Existing root-local partial upgrade changes were backed up before integration. Bundle identifier and ios/android run-script edits are retained; no teammate source changes are discarded. The generated root tsconfig remains local.
 - Upgrade owner reports simulator startup in Expo Go 58.0.7 on iPhone 17 Pro, onboarding/tab rendering/route-selected states and detail, plus 475 tests, typecheck/lint/server build, native exports and expo-doctor 20/20. Integrating thread reruns the repository checks and iOS bundling before handoff. Native tab taps, map/filter behavior and physical phone remain acceptance checks; no claim of complete native verification.
+
+## Austin-area discovery and automatic guest access — October 25, 2026
+
+- User requested Austin-wide nearby discovery and physical-phone Expo tunnel access;
+  explicitly approved a 250-provider-request demo ceiling and removal of the tester
+  code step. No other active T3 worker was running at inspection. Integrated narrow
+  B-owned API/contract changes with D mobile wiring; shared scorer untouched, no
+  migrations, resets, new service or native projects. Existing app.json, mobile
+  run-script and ngrok-header edits preserved.
+- Branch `fix/austin-discovery-tunnel`: server discovery now supports the Austin-area
+  service rectangle (30.05..30.56, -97.98..-97.55), 4.5km coarse-center radius, up to
+  two listing pages/category and four details. Existing filters still apply before
+  shared deterministic ranking. Search is bounded, not exhaustive or a seat guarantee.
+- Real mobile initialization visibly selects cafes/libraries. Nearby access starts
+  automatically after onboarding, uses an opaque guest session and renews on expiry
+  or once after a restart failure. Removed access-code form and technical counters.
+  Specific errors distinguish connection/version/timeouts; explicit recovery retained.
+- Durable private-cache CAS accounting includes all 18 legacy slots within the
+  approved 250 ceiling. Concurrent-store tests prove the cap; no automatic reset or
+  budget-key rotation. Local server env configured to 250; keys remain private.
+- `scripts/check-phone.mjs`, root check:phone/dev:phone, env examples and STARTER.md
+  document public HTTPS API requirements and the real `apps/mobile` Expo directory.
+  Actual existing API tunnel and Expo tunnel remain running. Public Expo manifest
+  and iOS bundle both returned HTTP 200 (SDK58). No new hosted Render deployment.
+- Actual checks: 495 tests/39 files passed; workspace typecheck, lint, server build,
+  and phone preflight passed. Public live north/south/east/west discovery returned
+  79/45/16/14 candidates respectively; south retained partial results. Warm repeats
+  made zero provider attempts, strict cafe/library rankings matched core, top details
+  matched scoped snapshots. Reports live in server/measurements/austin-*-20261025.json;
+  reproducible operator script server/src/jobs/verify-austin-area.ts uses guest access.
+  Actual mobile API+recovery adapter also loaded 134 campus candidates with no code.
+- Phone user reported the old tester-code rejection; reproduced the shared five-
+  attempt code bucket failure and replaced that flow per explicit user instruction.
+  Final physical-phone confirmation after reload is pending. Browser preview snapshot
+  timed out twice, so no browser/native visual acceptance claimed. Remaining gate:
+  confirm automatic nearby cards, foreground GPS, map, detail and reload on the phone.

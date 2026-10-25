@@ -95,3 +95,17 @@ describe('runtime provider boundary', () => {
     });
   });
 });
+
+it('enables guest access without a code and uses the returned bearer token for scoped reads', async () => {
+  const token = 'g'.repeat(64);
+  const data = await fixtureProvider.listSpots('demo-austin');
+  const mock = vi.fn().mockResolvedValueOnce(Response.json({schemaVersion: 1, sessionId: token, expiresAt: '2026-10-25T12:00:00Z'}))
+    .mockResolvedValueOnce(Response.json(data));
+  vi.stubGlobal('fetch', mock);
+  const api = createApiProvider('https://example.test');
+  await api.createGuestSession!();
+  await api.listSpots('demo-austin', 'nearby-example');
+  expect(mock.mock.calls[0]![0]).toBe('https://example.test/v1/guest-sessions');
+  expect(mock.mock.calls[0]![1].body).toBe('{}');
+  expect(mock.mock.calls[1]![1].headers.Authorization).toBe(`Bearer ${token}`);
+});

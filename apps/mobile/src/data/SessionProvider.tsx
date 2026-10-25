@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, us
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QuerySchema, type DiscoveryResponse, type TesterSessionResponse, type City, type Query } from '@space/contracts';
 import { provider, recovery } from '.';
+import { ApiUnavailableError } from './providers';
 import { queryAfterSwitch } from './recovery';
 import { createInitialQuery } from './initialQuery';
 import { applyPreferences, applyStudyStyles, onboardingQuery, createSettingsStore, defaultSettings, PreferenceSchema, RankingPreferencesSchema,
@@ -20,7 +21,6 @@ type SessionValue = {
   reset(): Promise<void>;
   nearby: {enabled: boolean; busy: boolean; result: DiscoveryResponse | null; error: string | null};
   testerSession: TesterSessionResponse | null;
-  authorizeNearby(accessCode: string): Promise<void>;
   refreshNearby(): void;
   toggleSaved(id: string): Promise<void>;
 };
@@ -29,6 +29,10 @@ export function SessionProvider({children}: {children: ReactNode}) {
   const {revision} = useSyncExternalStore(recovery.subscribe, recovery.getState, recovery.getState);
   const [testerSession, setTesterSession] = useState<TesterSessionResponse | null>(null);
   const [nearbyAttempt, setNearbyAttempt] = useState(0);
+  const [guestAttempt, setGuestAttempt] = useState(0);
+  const [guestBusy, setGuestBusy] = useState(false);
+  const [guestError, setGuestError] = useState<string | null>(null);
+  const automaticRenewals = useRef(0);
   const [nearbyState, setNearbyState] = useState<{key: string; busy: boolean; result: DiscoveryResponse | null; error: string | null} | null>(null);
   const [session, commitSession] = useState<Session | null>(null);
   const [loadedRevision, setLoadedRevision] = useState(-1);
@@ -69,14 +73,33 @@ export function SessionProvider({children}: {children: ReactNode}) {
     }).finally(() => {if (isCurrent()) setLoading(false);});
     return () => {active = false;};
   }, [attempt, revision, setSession]);
-  const nearbyEnabled = process.env.EXPO_PUBLIC_NEARBY_ENABLED === '1' && recovery.getState().choice === 'api' && session?.city.mode !== 'demo';
+  const nearbyEnabled = process.env.EXPO_PUBLIC_NEARBY_ENABLED === '1' && recovery.getState().choice === 'api' && !!session && session.city.mode !== 'demo';
+  const readyForNearby = nearbyEnabled && !!session?.settings.completed;
   const originKey = session ? JSON.stringify([revision, session.query.origin]) : '';
   const discoveryGeneration = useRef(0);
   const refreshRequested = useRef(false);
-  useEffect(() => {setTesterSession(null); setNearbyState(null);}, [revision]);
+  useEffect(() => {setTesterSession(null); setNearbyState(null); automaticRenewals.current = 0;}, [revision]);
+  useEffect(() => {
+    if (!readyForNearby) return;
+    let active = true;
+    setGuestBusy(true); setGuestError(null);
+    void provider.createGuestSession!().then((result) => {
+      if (active && revision === recovery.getState().revision) setTesterSession(result);
+    }).catch(() => {
+      if (active) setGuestError('Could not connect nearby search. Check your connection and tap Retry nearby discovery.');
+    }).finally(() => {if (active) setGuestBusy(false);});
+    return () => {active = false;};
+  }, [readyForNearby, guestAttempt, revision]);
+  useEffect(() => {
+    if (!testerSession || !readyForNearby) return;
+    const timer = setTimeout(() => {
+      setTesterSession(null); automaticRenewals.current = 0; setGuestAttempt((value) => value + 1);
+    }, Math.max(0, Date.parse(testerSession.expiresAt) - Date.now() - 5000));
+    return () => clearTimeout(timer);
+  }, [testerSession, readyForNearby]);
   useEffect(() => {
     const generation = ++discoveryGeneration.current;
-    if (!nearbyEnabled || !session || !testerSession) return;
+    if (!readyForNearby || !session || !testerSession) return;
     let active = true;
     const key = originKey;
     const origin = session.query.origin;
@@ -89,28 +112,36 @@ export function SessionProvider({children}: {children: ReactNode}) {
       setNearbyState({key, busy: false, result, error: null});
       setSession((value) => value && JSON.stringify(value.query.origin) === JSON.stringify(origin)
         ? {...value, query: QuerySchema.parse({...value.query, snapshotId: result.snapshotId ?? undefined})} : value);
-    }).catch(() => {if (current()) setNearbyState({key, busy: false, result: null,
-      error: 'Nearby discovery unavailable. Retry, renew tester access, or explicitly choose an offline dataset.'});});
+    }).catch((cause: unknown) => {
+      if (!current()) return;
+      const expired = cause instanceof ApiUnavailableError && ['session_expired', 'session_denied'].includes(cause.code);
+      if (expired) {
+        setTesterSession(null);
+        if (automaticRenewals.current++ < 1) setGuestAttempt((value) => value + 1);
+        else setGuestError('Nearby access could not reconnect. Tap Retry nearby discovery.');
+      }
+      setNearbyState({key, busy: false, result: null,
+        error: expired ? 'Reconnecting nearby search…'
+          : cause instanceof ApiUnavailableError ? `Nearby API unavailable (${cause.code}). Retry shortly.`
+            : cause instanceof Error && cause.name === 'ZodError' ? 'The app and API versions do not match. Reload Expo Go, then retry nearby search.'
+              : cause instanceof Error && /network|fetch/i.test(cause.message) ? 'The phone could not reach the API. Check internet access and that the API tunnel is still running.'
+                : cause instanceof Error && /timed out/i.test(cause.message) ? 'Nearby search timed out. Retry; completed results may already be cached.'
+                  : 'Nearby data could not be validated. Reload Expo Go and retry nearby search.'});
+    });
     return () => {active = false;};
     // Filters are deliberately excluded: only origin, access and explicit Refresh acquire candidates.
-  }, [originKey, nearbyEnabled, testerSession, nearbyAttempt, revision, setSession]);
-  const authorizeNearby = async (accessCode: string) => {
-    const result = await provider.createTesterSession!({accessCode});
-    if (revision !== recovery.getState().revision) return;
-    ++discoveryGeneration.current;
-    setNearbyState(null);
-    setSession((value) => value ? {...value, query: {...value.query, snapshotId: undefined}} : value);
-    setTesterSession(result);
-  };
+  }, [originKey, readyForNearby, testerSession, nearbyAttempt, revision, setSession]);
   const refreshNearby = () => {
+    automaticRenewals.current = 0;
+    if (!testerSession || guestError) {setGuestAttempt((value) => value + 1); return;}
     refreshRequested.current = true;
     ++discoveryGeneration.current;
     setSession((value) => value ? {...value, query: {...value.query, snapshotId: undefined}} : value);
     setNearbyState(null); setNearbyAttempt((value) => value + 1);
   };
   const currentNearby = nearbyState?.key === originKey ? nearbyState : null;
-  const nearby = {enabled: nearbyEnabled, busy: nearbyEnabled && !!testerSession && (!currentNearby || currentNearby.busy),
-    result: currentNearby?.result ?? null, error: currentNearby?.error ?? null};
+  const nearby = {enabled: nearbyEnabled, busy: readyForNearby && (guestBusy || (!!testerSession && (!currentNearby || currentNearby.busy))),
+    result: currentNearby?.result ?? null, error: guestError ?? currentNearby?.error ?? null};
   const setQuery = useCallback((update: SetStateAction<Query>) => {
     setSession((current) => {
       if (!current) return current;
@@ -171,7 +202,7 @@ export function SessionProvider({children}: {children: ReactNode}) {
     setAttempt((value) => value + 1);
   };
   return <Context.Provider value={{session: loadedRevision === revision ? session : null, loading: loading || (loadedRevision !== revision && !error), error, retry: () => setAttempt((value) => value + 1),
-    recoverStorage, setQuery, finishOnboarding, savePreferences, reset, toggleSaved, nearby, testerSession, authorizeNearby, refreshNearby}}>{children}</Context.Provider>;
+    recoverStorage, setQuery, finishOnboarding, savePreferences, reset, toggleSaved, nearby, testerSession, refreshNearby}}>{children}</Context.Provider>;
 }
 export function useSession() {
   const context = useContext(Context);

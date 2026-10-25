@@ -5,6 +5,58 @@ shared Zod v4 schemas, a pure ranker, ten fictional venues, and list/detail
 navigation. It uses one npm workspace and one root lockfile. Existing planning
 documents describe the larger demo; they are not a claim that all P0 is done.
 
+## Austin discovery on your physical phone
+
+From the repository root, use `npm run check:phone` to validate the effective
+mobile environment and public API. Then `npm run dev:phone` starts Expo Go in
+tunnel mode. The equivalent direct command is:
+
+```sh
+cd apps/mobile
+npx expo start --go --tunnel
+```
+
+Use Expo Go compatible with SDK 58 and scan Metro's QR code. Expo's tunnel serves
+Metro/the app bundle only. The Node API must also remain reachable over HTTPS:
+keep `npm run dev:server` and the existing API tunnel running, or use the deployed
+backend after updating it. `localhost` and a laptop LAN IP do not work over cellular.
+A temporary API tunnel's hostname changes when restarted; update
+`EXPO_PUBLIC_API_BASE_URL` and restart Metro. `.env.development.local` overrides
+`.env.local`, which overrides `.env`; `check:phone` uses that same precedence.
+
+Mobile settings (all public):
+
+```dotenv
+EXPO_PUBLIC_DATA_PROVIDER=api
+EXPO_PUBLIC_NEARBY_ENABLED=1
+EXPO_PUBLIC_API_BASE_URL=https://YOUR_PUBLIC_API_HOST
+```
+
+Nearby access starts automatically in Explore using a temporary guest session; no
+access code or account is needed. Tap the location chip → **Use my location**. GPS is requested only after tapping.
+UT Austin remains the manual fallback. Each location acquires nearby candidates;
+filters and Now/Later rerank that snapshot without buying more provider searches.
+Real-data launches start with Café and Library selected; Filters can explicitly
+include parks/restaurants. Unknown Wi-Fi, outlets and opening evidence stay unknown.
+The default 15-minute estimated walk can honestly produce no matches; increase it
+explicitly in Filters where needed. Cached/offline data covers only downloaded areas.
+
+The service rectangle spans 30.05–30.56 latitude and -97.98–-97.55 longitude,
+covering Austin and nearby neighborhoods. Searches use coarse centers, a 4.5 km
+candidate radius, at most two pages per category and four detail lookups. This is
+bounded provider discovery, not an exhaustive directory or proof of study amenities.
+The approved local runtime account ceiling is 250 provider reservations, including
+18 slots reserved for earlier accounting. It persists across restarts and does not
+reset per user, filter, refresh or area. See [runtime operations](server/NEARBY-OPERATIONS.md).
+
+Verified October 25: public Expo tunnel manifest and iOS bundle both returned HTTP
+200; public API tests found north/south/east/west Austin candidates, with cached
+repeat, scorer and detail parity. South Austin had a partial provider failure and
+retained usable results. These checks do not establish physical-phone GPS, map,
+or touch behavior; finish those checks on the presenter phone.
+
+The remaining sections retain historical foundation setup and verification.
+
 ## Install
 
 Use Node **24.11.1** (`nvm use` if you use nvm) and npm **11.6.2**. From the repo root:

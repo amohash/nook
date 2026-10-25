@@ -14,6 +14,7 @@ describe('provider city initialization', () => {
     expect(query.origin).toEqual({lat: city.lat, lng: city.lng, source: 'manual'});
     expect(query.departAt).toBe('2026-10-25T03:00:00Z');
     expect(query.maxWalkMinutes).toBe(15);
+    expect(query.categories).toEqual(['cafe', 'library']);
     expect(query.requireOpenForSession).toBe(false);
   });
 });
