@@ -43,7 +43,8 @@ export const theme = {
     fitHigh: '#4D6A51',
   },
   spacing: { none: 0, xxs: 4, xs: 8, sm: 10, md: 12, lg: 16, section: 20, xl: 24, xxl: 28, xxxl: 40, hero: 56 },
-  radii: { field: 12, card: 20, pill: 999 },
+  radii: { field: 12, card: 20, sheet: 24, pill: 999 },
+  layout: { exploreSheetRatio: 0.48, exploreControlsRatio: 0.55, exploreHeaderRatio: 0.5 },
   borders: { thin: 1, outline: 1.5, icon: 2 },
   typography: {
     bodyFamily: Platform.select({ ios: 'System', android: 'sans-serif', default: 'system-ui' }),
@@ -54,6 +55,7 @@ export const theme = {
   },
   sizes: {
     tapTarget: 44,
+    tabIcon: 24,
     buttonMinHeight: 52,
     chipMinHeight: 36,
     contentMaxWidth: 480,
