@@ -467,3 +467,66 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   source/fetch labels, strict-hours eligibility, unknown gaps, Now/Later, overnight,
   photos/Muse details and recovery. This is a prepared P0 time-evidence correction,
   not a claim of current crowd/seat availability or shipped phone acceptance.
+
+## B2 — Austin coverage candidate, prepared for review (2026-10-25)
+
+- Branch `feat/austin-data-coverage`, fresh isolated worktree
+  `/Users/andrewsun/Desktop/nook-austin-data-coverage`, based on reviewed remote
+  main `7e6762294a4df89809cd67775bbdfd8beba18c2e`. Root lockfile edit, other
+  worktrees and T3 checkpoint refs preserved. No shared contracts, scorer,
+  normalization, root manifests, bootstrap or mobile files changed. Coordination
+  recorded in issue #3; C/D field admission and D merge remain review gates.
+- B1 boundary agreed: new `austin-20261025-muse-photos-time-v1` candidate from
+  PR #30 (`d9b9b44`). Independently checked its actual artifact against photos-v1:
+  all non-time facts, 30 photos, ten Muse summaries and citations preserved.
+  B2 layers this exact candidate, retaining every existing time field and unrelated
+  enrichment. B1 source SHA-256 is recorded in B2's report; old artifacts untouched.
+- Private-cache audit before acquisition: 12 rows, 39 unique provider identities,
+  cafe-origin only; no supported prices or positive amenities/access. Existing
+  provider category arrays independently establish two secondary restaurant
+  categories and a secondary cafe category; those were previously discarded.
+- Authorized acquisition used the existing SerpApi adapter/cache and persistent
+  `reserveAttempt('austin-20261025-v1')`, not a new budget version. Exactly three
+  first attempts at 06:57:56–59Z searched libraries, parks and restaurants near the
+  named manual UT Austin origin. Each returned 20 records. Original ledger13 ->16
+  of18; zero retries/failures/model calls. No further acquisition was performed.
+- New immutable candidate: `fixtures/data/austin-20261025-muse-coverage-v1.json`.
+  New coverage/provenance/strict-query report: same basename `.report.json`.
+  53 places: original30 plus8 libraries,7 parks and8 restaurants. Existing explicit
+  secondary types bring category membership to30 cafes,8 libraries,7 parks and10
+  restaurants (categories overlap). New candidates are bounded to8 per supported
+  category and a30-minute estimated walk within the central Austin window, with
+  exact provider identity/data-ID deduplication. No category-derived amenity facts.
+- 49 known-hours/4 unknown-hours,53 photos,ten retained Muse summaries; historical
+  activity and live observations remain unknown for all53. All53 prices, Wi-Fi,
+  outlets and public-access values remain unknown. No free-entry/access inference
+  from library/park category, name, accessibility, rating or review count.
+- Report uses the explicit manual app-default origin30.2862,-97.7394 and its
+  recorded measurement clock. At15-minute walk:18 all-category matches,6 libraries,
+  1 park,8 restaurants. Strict free/price<=1/Wi-Fi/outlets/public-only each return0.
+  Open-session queries yield1 now and8 twelve hours later at the report's clock;
+  these are hours-based estimates, not live opening/seat guarantees. No GPS stored.
+- New `austin-coverage.ts` pure builder and `build-austin-coverage.ts` operator
+  dry run read private cache only. CLI requires source/version/output/report;
+  optional `--now` injects time. It rejects unknown flags/published target versions
+  and writes output with exclusive creation. It has no acquisition/model transport,
+  publication/deployment path or public spending endpoint. Cache reads paginate
+  with a2000-row cap. Provenance reports expose selected normalized facts, safe
+  Maps links, cache digests and original capture times; no raw provider/reviewer data.
+- Verification:14 new coverage tests,347 full tests across30 files, workspace
+  typecheck, lint, server build and whitespace checks passed. Tests cover mapping,
+  unknown facts, conflicting prices/identities, aliases/duplicates, bounds, future
+  captures, error envelopes, immutable source enrichment, privacy, honest strict
+  queries and zero construction transport calls. Independent rebuild at the same
+  clock produced byte-identical candidate output. Local actual-app HTTP smoke
+  matched the full53-place snapshot and all53 details;7 recommendation requests
+  passed schemas with externalCalls=0. Browser decoded53/53 photos, zero failures.
+- Publication/deployment explicitly handed to B3 after B1/B2 review and D merges.
+  No dataset publication, migration, deployment or active-data overwrite in B2.
+  Existing Muse projections retained verbatim: C's separate outdoor/provenance
+  semantic hold remains open, not resolved or silently approved by this change.
+- Presenter-phone checks still needed from D: selected artifact/version, library/
+  park/restaurant filters and marker/detail parity, source/unknown labels, Now/Later
+  and overnight behavior, photos, strict empty states and API recovery/reconnect at
+  `https://nook-api-demo.onrender.com`. Warm health before rehearsal; HTTP/browser
+  checks are not native acceptance. Keep photos-time-v1/photos-v1 for rollback.
