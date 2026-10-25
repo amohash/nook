@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createDemoQuery } from '@space/fixtures';
-import { createApiProvider, fixtureProvider, PlaceNotFoundError } from './providers';
+import { COLD_START_DEADLINE_MS, createApiProvider, fixtureProvider, PlaceNotFoundError } from './providers';
 
 afterEach(() => { vi.unstubAllGlobals(); });
 
@@ -59,5 +59,39 @@ describe('runtime provider boundary', () => {
       text: 'Change your origin', references: [], proposedQueryPatch: {origin: {lat: 0, lng: 0, source: 'manual'}}})));
     await expect(createApiProvider('https://example.test').assist!({sessionId: 't'.repeat(32), snapshotId: 'nearby-test',
       query: createDemoQuery(), message: 'Find a place', placeIds: []})).rejects.toThrow();
+  });
+
+  describe('cold-start tolerance', () => {
+    afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+    const slowFetch = (delayMs: number, body: unknown) => vi.fn().mockImplementation(() =>
+      new Promise<Response>((resolve) => setTimeout(() => resolve(Response.json(body)), delayMs)));
+
+    it('waits out a sleeping server on the first city lookup instead of failing at 8 seconds', async () => {
+      vi.useFakeTimers();
+      const cities = { schemaVersion: 1, cities: [{ id: 'us-tx-austin', name: 'Austin', lat: 30.2862, lng: -97.7394,
+        timezone: 'America/Chicago', mode: 'cached', datasetVersion: 'austin-v1' }] };
+      vi.stubGlobal('fetch', slowFetch(32_000, cities));
+      const result = createApiProvider('https://example.test').listCities();
+      await vi.advanceTimersByTimeAsync(32_000);
+      await expect(result).resolves.toHaveLength(1);
+    });
+
+    it('still gives up on a city lookup that never answers, within the cold-start allowance', async () => {
+      vi.useFakeTimers();
+      vi.stubGlobal('fetch', vi.fn().mockImplementation(() => new Promise<Response>(() => undefined)));
+      const result = createApiProvider('https://example.test').listCities();
+      const assertion = expect(result).rejects.toThrow('API timed out');
+      await vi.advanceTimersByTimeAsync(COLD_START_DEADLINE_MS + 1);
+      await assertion;
+    });
+
+    it('keeps every other request on the normal 8 second deadline', async () => {
+      vi.useFakeTimers();
+      vi.stubGlobal('fetch', vi.fn().mockImplementation(() => new Promise<Response>(() => undefined)));
+      const result = createApiProvider('https://example.test').listSpots('us-tx-austin');
+      const assertion = expect(result).rejects.toThrow('API timed out');
+      await vi.advanceTimersByTimeAsync(8_001);
+      await assertion;
+    });
   });
 });

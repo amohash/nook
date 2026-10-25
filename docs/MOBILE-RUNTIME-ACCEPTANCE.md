@@ -68,6 +68,18 @@ Record evidence and observed results, not just completion marks:
 - [ ] Backend outage exposes Retry and explicit cached-real/fictional choices. Each choice is clearly labeled; restored API does not silently change mode.
 - [ ] Rehearse on the intended HTTPS/LAN API with Expo Go and projector/mirroring; record the accepted version. No phone acceptance or deployment is currently claimed.
 
+## Hosted API cold start
+
+The hosted free-tier API sleeps after about 15 minutes idle. The first request then takes roughly 30 seconds (observed 32.5s for `/v1/cities`; warm requests take 0.2–0.4s). The app's first city lookup now waits up to 45 seconds and shows "Waking the server…" after 5 seconds; every other request keeps the normal 8-second deadline.
+
+Before any rehearsal or demo, with the phone's network and the Mac awake:
+
+- [ ] `scripts/keep-warm.sh` is running (it pings read-only dataset endpoints every 4 minutes; no provider or model calls). Check its log for `HTTP 200` and no `slow`/`FAILED` lines.
+- [ ] `curl -s -m 5 https://nook-api-demo.onrender.com/v1/cities` answers instantly from the demo network, not just on the laptop's Wi-Fi.
+- [ ] If the venue blocks the hosted URL, switch to the bundled fictional dataset explicitly (`EXPO_PUBLIC_DATA_PROVIDER=fixture`); do not rely on a slow cold start during a timed run.
+
+A paid always-on plan would remove the cold start; that is a deployment decision for B and is not claimed here.
+
 ## Live verification and measured evaluation
 
 See `server/NEARBY-OPERATIONS.md` for B's opt-in capture command and exact account ledger. C's two-attempt Muse CLI is in `server/src/ai/ASSISTANT.md`. Coordinate the two-attempt total: the operator smoke and phone submissions must not independently spend the same allowance. At handoff, new live SerpApi attempts = 0; new live Muse attempts = 0 because configured credentials were empty. No live performance/result claims are made.
