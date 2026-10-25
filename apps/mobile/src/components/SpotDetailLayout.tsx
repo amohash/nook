@@ -49,16 +49,10 @@ function BackButton({ onBack }: { onBack: () => void }) {
   </Pressable>;
 }
 
-function Hero({ photoUrl, name }: Pick<SpotDetailReadyProps, 'photoUrl' | 'name'>) {
-  const [failed, setFailed] = useState(false);
-  return photoUrl && !failed ? <Image source={{ uri: photoUrl }} style={StyleSheet.absoluteFill}
-    accessibilityLabel={`${name} photo`} resizeMode="cover" onError={() => setFailed(true)} />
-    : <View style={styles.fallback}><Text style={styles.caption}>Image unavailable</Text></View>;
-}
-
 /** Display only. D owns fetching, status/timezone/fit computation and all actions. */
 export function SpotDetailLayout(props: SpotDetailLayoutProps) {
   const insets = useSafeAreaInsets();
+  const [failedPhotoUrl, setFailedPhotoUrl] = useState<string | null>(null);
   if (props.state !== 'ready') return <SafeAreaView style={styles.page}>
     <ScrollView contentContainerStyle={styles.stateContent}>
       <BackButton onBack={props.onBack} />
@@ -70,10 +64,15 @@ export function SpotDetailLayout(props: SpotDetailLayoutProps) {
   const meta = detailMeta(props);
   const fit = normalizedFit(props.fitScore);
   const summary = props.vibe?.summary.value?.trim();
+  const failedPhoto = failedPhotoUrl !== null && failedPhotoUrl === props.photoUrl;
+  const hasPhoto = !!props.photoUrl && !failedPhoto;
+  // Without a photo, the hero collapses to a back-button row instead of an empty placeholder block.
+  const heroHeight = (hasPhoto ? theme.sizes.detailHero : theme.sizes.tapTarget + theme.spacing.lg) + insets.top;
   return <View style={styles.page}>
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll}>
-      <View style={[styles.hero, { height: theme.sizes.detailHero + insets.top }]}>
-        <Hero key={props.photoUrl ?? props.name} photoUrl={props.photoUrl} name={props.name} />
+      <View style={[styles.hero, !hasPhoto && styles.heroWithoutPhoto, { height: heroHeight }]}>
+        {hasPhoto && <Image source={{ uri: props.photoUrl! }} style={StyleSheet.absoluteFill}
+          accessibilityLabel={`${props.name} photo`} resizeMode="cover" onError={() => setFailedPhotoUrl(props.photoUrl ?? null)} />}
         <View style={[styles.floatingBack, { top: insets.top + theme.spacing.lg, left: insets.left + theme.spacing.lg }]}>
           <BackButton onBack={props.onBack} />
         </View>
@@ -123,10 +122,11 @@ const styles = StyleSheet.create({
   scroll: { paddingBottom: theme.spacing.xl },
   stateContent: { padding: theme.spacing.xl, gap: theme.spacing.xl },
   hero: { width: '100%', backgroundColor: theme.colors.placeholder },
-  fallback: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  heroWithoutPhoto: { backgroundColor: theme.colors.background },
   floatingBack: { position: 'absolute' },
   back: { width: theme.sizes.tapTarget, height: theme.sizes.tapTarget, borderRadius: theme.radii.pill,
-    backgroundColor: theme.colors.background, alignItems: 'center', justifyContent: 'center' },
+    backgroundColor: theme.colors.background, alignItems: 'center', justifyContent: 'center',
+    shadowColor: theme.colors.text, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.16, shadowRadius: 6, elevation: 3 },
   chevron: { width: theme.sizes.backChevron, height: theme.sizes.backChevron,
     borderLeftWidth: theme.borders.icon, borderBottomWidth: theme.borders.icon, borderColor: theme.colors.text,
     transform: [{ rotate: '45deg' }] },

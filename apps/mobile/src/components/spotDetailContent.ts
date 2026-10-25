@@ -1,5 +1,5 @@
 export const DETAIL_FACT_LABELS = {
-  wifi: 'Wi-Fi', outlets: 'outlets', noise: 'noise', price: 'price', hours: 'hours', publicAccess: 'public access',
+  wifi: 'Wi-Fi', outlets: 'Outlets', noise: 'Noise', price: 'Price', hours: 'Hours', publicAccess: 'Public access',
 } as const;
 
 /** D formats known values; null/empty/unknown remain unknown. No hours logic. */
@@ -11,7 +11,8 @@ export function detailFacts(facts: SpotDetailFacts) {
   for (const id of Object.keys(DETAIL_FACT_LABELS) as (keyof SpotDetailFacts)[]) {
     const value = facts[id]?.trim();
     const label = DETAIL_FACT_LABELS[id];
-    if (!value || value.toLowerCase() === 'unknown') unknown.push(label);
+    // Field labels are capitalized; the run-in caption keeps sentence case (Wi-Fi stays as written).
+    if (!value || value.toLowerCase() === 'unknown') unknown.push(id === 'wifi' ? label : label.toLowerCase());
     else known.push({ id, label, value });
   }
   return { known, unknownCaption: unknown.length ? `Not yet known: ${unknown.join(', ')}` : null };

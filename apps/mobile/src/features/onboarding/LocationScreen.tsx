@@ -40,10 +40,10 @@ export function LocationScreen({ options, selectedId, onSelect, onUseLocation, o
       <OnboardingHeader step={3} onBack={onBack} />
       <View style={s.introduction}>
         <Text accessibilityRole="header" style={s.title}>Where are you starting from?</Text>
-        <Text style={s.helper}>We use your location to sort spots by distance. You can pick a starting point without sharing GPS.</Text>
+        <Text style={s.helper}>We sort spots by walking distance from here.</Text>
       </View>
       <View style={styles.choices}>
-        <Button label="Use my location" onPress={onUseLocation} busy={status === 'requesting'} />
+        <Button label="Use my location" variant="outline" onPress={onUseLocation} busy={status === 'requesting'} />
         {statusMessages[status] && <Text accessibilityLiveRegion="polite" style={s.helper}>{statusMessages[status]}</Text>}
         {status === 'ready' && deviceOriginLabel && <Text accessibilityLiveRegion="polite" style={s.helper}>Selected area: {deviceOriginLabel}</Text>}
         {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
@@ -59,7 +59,7 @@ export function LocationScreen({ options, selectedId, onSelect, onUseLocation, o
         {options.length === 0 && <Text style={s.helper}>No supported starting points are available. Go back or try your location.</Text>}
       </View>
       <View style={s.footer}>
-        <Text style={s.helper}>Default: manual UT Austin. GPS is optional and kept in memory only; restarting returns to campus. Change origin anytime on Map.</Text>
+        <Text style={s.helper}>Your location is only kept until you close the app. Change it anytime on the map.</Text>
         <OnboardingProgress step={3} />
         <Button label="Start exploring" disabled={!hasOrigin || status === 'requesting'} onPress={onContinue} />
       </View>

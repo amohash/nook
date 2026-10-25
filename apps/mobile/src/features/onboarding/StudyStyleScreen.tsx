@@ -36,11 +36,10 @@ export function StudyStyleScreen({ initialSelected = [], onBack, onContinue, onS
 
       <View style={s.introduction}>
         <Text accessibilityRole="header" style={s.title}>What fits your plans?</Text>
-        <Text style={s.helper}>Choose your intent and preferences. Vibes are soft preferences; budget and estimated walk are limits.</Text>
+        <Text style={s.helper}>Pick what matters. You can change this anytime in Profile.</Text>
       </View>
 
       {preferences && onPreferencesChange && <View style={styles.sections}>
-        <Text style={s.helper}>Defaults: Study · Quiet · 15 min estimated walk · No price cap. Skip discards edits on this step. Unfinished onboarding starts again after restart.</Text>
         <Text style={styles.label}>What are you here for?</Text>
         <View accessibilityRole="radiogroup" accessibilityLabel="Intent" style={styles.choices}>
           {(['study', 'friends'] as const).map((intent) => <Chip key={intent}
@@ -50,27 +49,26 @@ export function StudyStyleScreen({ initialSelected = [], onBack, onContinue, onS
         <Text style={styles.label}>Budget</Text>
         <View accessibilityRole="radiogroup" accessibilityLabel="Budget" style={styles.choices}>
           {([null, 0, 1, 2, 3, 4] as const).map((price) => <Chip key={String(price)}
-            label={price === null ? 'No price cap' : price === 0 ? 'Free only' : `${'$'.repeat(price)} maximum`}
+            label={price === null ? 'Any price' : price === 0 ? 'Free only' : `Up to ${'$'.repeat(price)}`}
             selectionRole="radio" selected={preferences.maxPriceLevel === price}
             onPress={() => onPreferencesChange({...preferences, maxPriceLevel: price})} />)}
         </View>
-        <Text style={s.helper}>A price cap excludes places with unknown prices.</Text>
-        <Text style={styles.label}>Estimated walking limit</Text>
+        <Text style={s.helper}>With a budget set, places with unknown prices are hidden.</Text>
+        <Text style={styles.label}>How far will you walk?</Text>
         <View accessibilityRole="radiogroup" accessibilityLabel="Estimated walking limit" style={styles.choices}>
           {[5, 10, 15, 20, 30, 45, 60].map((minutes) => <Chip key={minutes} label={`${minutes} min`}
             selectionRole="radio" selected={preferences.maxWalkMinutes === minutes}
             onPress={() => onPreferencesChange({...preferences, maxWalkMinutes: minutes})} />)}
         </View>
       </View>}
-      <Text style={styles.label}>Vibe preferences</Text>
-      <Text style={s.helper}>Silent + Some chatter uses Balanced noise. Solo sets group size to one. Group tables does not promise seats. Wi-Fi and outlets are preferred, not required. Open late is a vibe, not verified hours.</Text>
+      <Text style={styles.label}>Nice to have</Text>
+      <Text style={s.helper}>Shown on your profile. Most also rank places higher; they never hide a place.</Text>
       <View style={styles.choices}>
-        {STUDY_STYLE_OPTIONS.map(({ id, label }) => <Chip key={id} label={id === 'coffee_nearby' || id === 'whiteboards' ? `${label} · saved only` : label}
+        {STUDY_STYLE_OPTIONS.map(({ id, label }) => <Chip key={id} label={id === 'coffee_nearby' || id === 'whiteboards' ? `${label} · profile only` : label}
           selected={selected.includes(id)}
           onPress={() => setSelected(toggleStudyStyle(selected, id))} />)}
       </View>
 
-      <Text style={s.helper}>Coffee nearby and Whiteboards are saved on this device only; they do not affect ranking.</Text>
       <View style={s.footer}>
         {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
         <OnboardingProgress step={2} />

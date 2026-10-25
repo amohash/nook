@@ -17,7 +17,7 @@ export function ActionRow({ saved, onSave, onShare, onOpenMaps, saving = false, 
       accessibilityLabel={saved ? 'Unsave place' : 'Save place'} accessibilityHint="Toggles your saved state"
       variant={saved ? 'primary' : 'outline'} busy={saving} onPress={onSave} /></View>
     <View style={styles.action}><Button label="Share" variant="outline" onPress={onShare} /></View>
-    <View style={styles.action}><Button label="Open in Maps" variant="outline" disabled={mapsDisabled} onPress={onOpenMaps} /></View>
+    <View style={styles.action}><Button label="Maps" accessibilityLabel="Open in Maps" variant="outline" disabled={mapsDisabled} onPress={onOpenMaps} /></View>
   </View>;
 }
 const styles = StyleSheet.create({

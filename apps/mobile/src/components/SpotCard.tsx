@@ -4,7 +4,7 @@ import type { HostInstance, PressableProps } from 'react-native';
 import type { Recommendation } from '@space/contracts';
 import { theme } from '../theme/theme';
 import { DatasetLabel, EvidenceLabel } from './EvidenceLabel';
-import { priceLabel, ratingLabel } from './content';
+import { cardNotes, priceLabel, ratingLabel } from './content';
 import { compactCardDetails } from './compactCardContent';
 import { normalizedFit, typicalLevel, typicalWording } from './exploreContent';
 
@@ -32,6 +32,7 @@ export const SpotCard = forwardRef<HostInstance, SpotCardProps>(function SpotCar
     const details = compactCardDetails(result);
     const fit = normalizedFit(result.score);
     const hasTypical = typicalLevel(typicalCrowdValue) !== 'unknown';
+    const notes = cardNotes(result.warnings);
     return <Pressable {...props} ref={ref} accessibilityRole={accessibilityRole}
       accessibilityHint="Opens place details" style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <View style={styles.topline}>
@@ -48,7 +49,7 @@ export const SpotCard = forwardRef<HostInstance, SpotCardProps>(function SpotCar
         </View>
       </View>
       {spot.image && <Text style={styles.caption}>Photo: {spot.image.attribution}</Text>}
-      {result.warnings.map((warning, index) => <Text key={index} style={styles.caption}>{warning}</Text>)}
+      {notes.first && <Text style={styles.caption}>{notes.first}{notes.more > 0 ? ` · ${notes.more} more ${notes.more === 1 ? 'note' : 'notes'} in details` : ''}</Text>}
       {hasTypical && spot.typicalCrowd
         ? <EvidenceLabel source={spot.typicalCrowd.source} fetchedAt={spot.typicalCrowd.fetchedAt} />
         : <EvidenceLabel variant="compact" evidence={spot.rating} />}

@@ -3,7 +3,7 @@ import { AccessibilityInfo, Animated, Image, PanResponder, Pressable, ScrollView
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../theme';
 import wordmark from '../../assets/nook-wordmark.png';
-import { datasetLabel } from './content';
+import { datasetCaption, filtersChipLabel } from './content';
 import type { DatasetLabelProps } from './EvidenceLabel';
 import type { FilterChipRowProps } from './FilterChipRow';
 import type { MapListToggleProps } from './MapListToggle';
@@ -86,6 +86,7 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
     onPanResponderTerminate: () => animateTo(position),
   }), [animateTo, position, settle, sheetHeight, sizes]);
   const count = Number.isFinite(filters.filterCount) ? Math.max(0, Math.floor(filters.filterCount)) : 0;
+  const filtersChip = filtersChipLabel(count);
   const toggleSheet = () => settle(position === 'peek' ? 'expanded' : 'peek');
   return <View style={styles.page} onLayout={(event) => setHeight(event.nativeEvent.layout.height)}>
     <View testID="explore-map-slot" style={StyleSheet.absoluteFill}>{mapSlot ?? map}</View>
@@ -112,7 +113,7 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
             <Text style={[styles.chipText, filters.selectedId === id && styles.selectedText]}>{label}</Text>
           </Pressable>)}
         </View>
-        <FloatingChip label={`Filters (${count})`} onPress={filters.onOpenFilters} />
+        <FloatingChip label={filtersChip.label} accessibilityLabel={filtersChip.accessibilityLabel} onPress={filters.onOpenFilters} />
         <FloatingChip label={timeLabel} accessibilityLabel={`Time: ${timeLabel}`} onPress={onTimePress} />
         <FloatingChip label={originLabel} accessibilityLabel={`Origin: ${originLabel}`} onPress={onOriginPress} />
       </ScrollView>
@@ -141,7 +142,7 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
         </View>
         <View style={styles.header}>
           <Text accessibilityRole="header" style={styles.title}>{title || 'Places for you'}</Text>
-          <Text style={styles.caption}>{datasetLabel(dataset.mode)}{dataset.description ? ` · ${dataset.description}` : ''}</Text>
+          <Text style={styles.caption}>{datasetCaption(dataset.mode, dataset.description)}</Text>
         </View>
       </View>
       <View style={[styles.body, position === 'peek' && {opacity: 0}]} pointerEvents={position === 'peek' ? 'none' : 'auto'} aria-hidden={position === 'peek'}

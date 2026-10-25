@@ -50,8 +50,9 @@ export const theme = {
   typography: {
     bodyFamily: Platform.select({ ios: 'System', android: 'sans-serif', default: 'system-ui' }),
     headingFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia' }),
-    size: { caption: 12, body: 14, button: 16, section: 20, title: 24, hero: 32 },
-    lineHeight: { caption: 18, body: 20, button: 24, section: 26, title: 30, hero: 40 },
+    // HIG body default is 17pt; 15pt keeps dense evidence readable without reflowing every layout.
+    size: { caption: 13, body: 15, button: 16, section: 20, title: 24, hero: 32 },
+    lineHeight: { caption: 18, body: 22, button: 24, section: 26, title: 30, hero: 40 },
     weight: { regular: '400', medium: '500', semibold: '600', bold: '700' },
   },
   sizes: {
