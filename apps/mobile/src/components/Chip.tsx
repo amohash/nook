@@ -9,9 +9,16 @@ export type ChipProps = Pick<PressableProps, 'accessibilityHint' | 'testID'> & {
   /** Use radio inside the caller's radiogroup; checkbox supports independent picks. */
   selectionRole?: 'checkbox' | 'radio';
   disabled?: boolean;
+  /** Informational tag: keeps the shared pill styling without checkbox semantics. */
+  displayOnly?: boolean;
 };
 
-export function Chip({ label, selected, selectionRole = 'checkbox', disabled = false, ...props }: ChipProps) {
+export function Chip({ label, selected, selectionRole = 'checkbox', disabled = false, displayOnly = false, ...props }: ChipProps) {
+  if (displayOnly) return <View accessible accessibilityRole="text" accessibilityLabel={label} style={styles.target}>
+    <View style={[styles.pill, selected && styles.selected]}>
+      <Text style={[styles.label, selected && styles.selectedLabel]}>{label}</Text>
+    </View>
+  </View>;
   // The visual pill is 36pt; its non-overlapping touch target is at least 44pt.
   return <Pressable {...props} accessibilityRole={selectionRole} accessibilityLabel={label} disabled={disabled}
     accessibilityState={{ checked: selected, selected, disabled }} aria-checked={selected}
