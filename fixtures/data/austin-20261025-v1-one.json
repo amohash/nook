@@ -1,0 +1,238 @@
+{
+  "city": {
+    "lat": 30.2862,
+    "lng": -97.7394,
+    "id": "us-tx-austin",
+    "name": "Austin",
+    "timezone": "America/Chicago",
+    "mode": "cached",
+    "datasetVersion": "austin-20261025-v1"
+  },
+  "snapshot": {
+    "schemaVersion": 1,
+    "cityId": "us-tx-austin",
+    "mode": "cached",
+    "datasetVersion": "austin-20261025-v1",
+    "fetchedAt": "2026-10-25T02:49:46.950Z",
+    "spots": [
+      {
+        "id": "google:015c68e0a915e02a9fdf8063cfdd51c7",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJ0S8AJAC1RIYRLIa71SkPRXc",
+        "providerDataId": "0x8644b50024002fd1:0x77450f29d5bb862c",
+        "name": "UFO Coffee & Tea",
+        "categories": [
+          "cafe"
+        ],
+        "lat": 30.2844171,
+        "lng": -97.71734699999999,
+        "timezone": "America/Chicago",
+        "address": "2307 1/2 Manor Rd, Austin, TX 78722",
+        "datasetMode": "cached",
+        "datasetVersion": "austin-20261025-v1",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "rating": {
+          "value": 4.9,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "reviewCount": {
+          "value": 50,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "image": null,
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc",
+        "hoursStatus": "unknown",
+        "hoursFetchedAt": null,
+        "weeklyHours": [],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      }
+    ]
+  },
+  "details": [
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:015c68e0a915e02a9fdf8063cfdd51c7",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJ0S8AJAC1RIYRLIa71SkPRXc",
+        "providerDataId": "0x8644b50024002fd1:0x77450f29d5bb862c",
+        "name": "UFO Coffee & Tea",
+        "categories": [
+          "cafe"
+        ],
+        "lat": 30.2844171,
+        "lng": -97.71734699999999,
+        "timezone": "America/Chicago",
+        "address": "2307 1/2 Manor Rd, Austin, TX 78722",
+        "datasetMode": "cached",
+        "datasetVersion": "austin-20261025-v1",
+        "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "rating": {
+          "value": 4.9,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "reviewCount": {
+          "value": 50,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc"
+        },
+        "image": null,
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=UFO%20Coffee%20%26%20Tea&query_place_id=ChIJ0S8AJAC1RIYRLIa71SkPRXc",
+        "hoursStatus": "unknown",
+        "hoursFetchedAt": null,
+        "weeklyHours": [],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": []
+    }
+  ]
+}

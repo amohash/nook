@@ -1,4 +1,6 @@
 import { z } from 'zod';
+// Keep consumers on the contracts package's Zod major without undeclared dependencies.
+export { z } from 'zod';
 
 export const CONTRACT_VERSION = 1 as const;
 export const InstantSchema = z.iso.datetime({ offset: true });
