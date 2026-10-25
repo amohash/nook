@@ -48,6 +48,7 @@ export function createApiProvider(baseUrl: string, timeoutMs = 8000): DataProvid
       const response = await fetch(`${base}${path}`, { signal: controller.signal,
         ...(query ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(QuerySchema.parse(query)) } : {}) });
       if (response.status === 404 && path.startsWith('/v1/spots/')) throw new PlaceNotFoundError();
+      if (response.status === 404 && (path.startsWith('/v1/cities/') || path === '/v1/recommendations')) throw new Error('City not found');
       const body: unknown = await response.json();
       if (!response.ok) throw new Error('API unavailable. Retry or choose an offline dataset.');
       return body;

@@ -6,6 +6,7 @@ import { DEMO_NOW } from '@space/fixtures';
 import { useSession } from '../../src/data/SessionProvider';
 import { hoursStatus, mapsUrl, venueTime } from '../../src/features/explore/presentation';
 import { provider } from '../../src/data';
+import { RecoveryControls } from '../../src/data/RecoveryControls';
 import { PlaceNotFoundError } from '../../src/data/providers';
 import { ActionRow, BusynessChart, DatasetLabel, EvidenceLabel, ErrorState, LiveObservationBadge, LoadingState, OpenStatusPill } from '../../src/components';
 import { priceLabel, ratingLabel } from '../../src/components/content';
@@ -64,6 +65,7 @@ function Detail() {
     {error && <ErrorState title={error === 'missing' ? 'Place not found' : 'Place unavailable'}
       message={error === 'missing' ? 'This place is not in the selected dataset. Return to the list.' : 'This place could not be loaded. Retry or return to the list.'}
       action={error === 'unavailable' ? {label: 'Retry', onPress: () => setAttempt((a) => a + 1)} : undefined} />}
+    {error && <RecoveryControls expanded />}
     {spot && <>
       {spot.image && !imageFailed ? <><Image source={{uri: spot.image.url}} accessibilityLabel={`${spot.name} photo`}
         style={s.image} onError={() => setImageFailed(true)} /><Text style={s.small}>Photo: {spot.image.attribution}</Text></>
@@ -98,6 +100,7 @@ function Detail() {
         <EvidenceLabel evidence={spot.summary} />
         <Text style={s.body}>{Object.keys(spot.tags.value ?? {}).join(' · ') || 'Vibe tags unknown'}</Text>
         <Text style={s.body}>Seat availability: unknown.</Text>
+        {detail.evidence.length === 0 && <Text style={s.small}>Additional source snippets are unavailable here. Fact source labels and timestamps are shown above.</Text>}
         {detail.evidence.map((evidence) => <Pressable key={evidence.id} accessibilityRole="link"
           disabled={!evidence.sourceUrl || !/^https?:\/\//.test(evidence.sourceUrl)} onPress={() => {void openLink(evidence.sourceUrl);}}>
           <Text style={s.small}>{evidence.text}</Text>{evidence.sourceUrl && <Text style={s.action}>View source →</Text>}

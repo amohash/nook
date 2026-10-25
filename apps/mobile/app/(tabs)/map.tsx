@@ -4,6 +4,7 @@ import { Link, useRouter } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/contracts';
 import { DEMO_LABEL, DEMO_NOW } from '@space/fixtures';
 import { provider } from '../../src/data';
+import { RecoveryControls } from '../../src/data/RecoveryControls';
 import { useSession } from '../../src/data/SessionProvider';
 import { Button, DatasetLabel, EmptyState, ErrorState, FilterChipRow, LoadingState, MapListToggle,
   NowLaterControl, SearchBar, SpotCard } from '../../src/components';
@@ -68,6 +69,7 @@ function Explore() {
       <Button label={`Saved places (${session!.settings.savedIds.length})`} variant="outline" onPress={() => {location.cancel(); router.push('/saved');}} />
       {__DEV__ && <Button label="Preview A’s design" variant="outline" onPress={() => {location.cancel(); router.push('/design-preview');}} />}
     </View>
+    <RecoveryControls />
     <Text style={s.eyebrow}>FIND YOUR NOOK</Text>
     <Text style={s.title}>A place for{'\n'}this moment.</Text>
     <SearchBar value={search} onChangeText={(value) => setSearch(value.slice(0, 120))}

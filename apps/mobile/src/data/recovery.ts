@@ -15,7 +15,7 @@ function hasSynthetic(value: unknown): boolean {
 export function validateRealBundle(input: unknown): Bundle {
   const bundle = BundleSchema.parse(input);
   const {city, snapshot} = bundle;
-  if (city.mode === 'demo' || snapshot.mode === 'demo' || city.id !== snapshot.cityId ||
+  if (city.mode === 'demo' || snapshot.mode === 'demo' || city.mode !== snapshot.mode || city.id !== snapshot.cityId ||
     city.datasetVersion !== snapshot.datasetVersion || new Set(snapshot.spots.map((s) => s.id)).size !== snapshot.spots.length ||
     snapshot.spots.some((s) => s.cityId !== city.id || s.datasetVersion !== city.datasetVersion ||
       s.datasetMode === 'demo' || s.datasetMode !== snapshot.mode) || hasSynthetic(snapshot)) {
@@ -105,6 +105,7 @@ export function createRecoveryProvider(options: {
         snapshot.cityId !== city.id || snapshot.spots.some((s) => s.datasetMode !== 'demo')) {
         throw new Error('API dataset identity mismatch.');
       }
+      assertCurrent(revision);
       apiCity = city;
       return [city];
     }),
@@ -161,8 +162,8 @@ export function createRecoveryProvider(options: {
   return {provider, ready, getState: () => state,
     subscribe(listener: () => void) {listeners.add(listener); return () => {listeners.delete(listener);};},
     async switchTo(choice: ProviderChoice) {
-      // All choices wait for the same bounded-size local read; no silent fallback.
-      await ready;
+      // A stalled device storage read must never block the bundled demo.
+      if (choice === 'cached') await ready;
       if (choice === 'cached' && !bundle) throw new Error('No validated real offline dataset is available. Choose API or the fictional demo.');
       selected = choice === 'cached' ? bundle : null;
       apiCity = null;
