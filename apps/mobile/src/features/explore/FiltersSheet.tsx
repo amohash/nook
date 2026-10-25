@@ -32,11 +32,43 @@ export function FiltersSheet({ query, onChange, onApply, onClose }: {
         <SheetContainer title="Filters" onCancel={onClose} onReset={() => onChange(resetExploreFilters(query))} onApply={onApply}>
           <Text style={s.body}>{activeFilterCount(query)} active filters · changed groups from Study defaults. Changes take effect on Apply.</Text>
           <Text style={s.heading}>Intent presets</Text>
-          <Text style={s.body}>Study is solo; Meet Friends uses a group of four. Presets keep your category, price and walk limits.</Text>
+          <Text style={s.body}>Study is solo; Meet Friends uses a group of four. Presets keep your strict constraints and session length. You can adjust group size below.</Text>
           <View accessibilityRole="radiogroup" accessibilityLabel="Intent presets" style={s.row}>
             <Choice label="Study" selected={query.intent === 'study'} onPress={() => onChange(applyIntentPreset(query, 'study'))} />
             <Choice label="Meet Friends" selected={query.intent === 'friends'} onPress={() => onChange(applyIntentPreset(query, 'friends'))} />
           </View>
+          <Text style={s.heading}>Group size</Text>
+          <Text style={s.body}>Group suitability is a ranking preference, not a seating guarantee.</Text>
+          <View accessibilityRole="radiogroup" accessibilityLabel="Group size" style={s.row}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => <Choice key={value} label={value === 1 ? '1 person · Solo' : `${value} people`}
+              selected={query.groupSize === value} onPress={() => onChange({ ...query, groupSize: value })} />)}
+          </View>
+          <Text style={s.heading}>Session duration</Text>
+          <Text style={s.body}>Selected: {query.sessionMinutes} minutes after estimated arrival.</Text>
+          <View accessibilityRole="radiogroup" accessibilityLabel="Session duration" style={s.row}>
+            {[15, 30, 45, 60, 90, 120, 180, 240].map((value) => <Choice key={value} label={`${value} min`}
+              selected={query.sessionMinutes === value} onPress={() => onChange({ ...query, sessionMinutes: value })} />)}
+          </View>
+          <Choice label="Open for my session" multiple selected={query.requireOpenForSession}
+            onPress={() => onChange({ ...query, requireOpenForSession: !query.requireOpenForSession })} />
+          <Text style={s.body}>When required, places must have verified hours covering arrival through session end. Unknown or stale hours are excluded.</Text>
+          {(['wifi', 'outlets'] as const).map((amenity) => <View key={amenity}>
+            <Text style={s.heading}>{amenity === 'wifi' ? 'Wi-Fi' : 'Outlets'}</Text>
+            <View accessibilityRole="radiogroup" accessibilityLabel={amenity === 'wifi' ? 'Wi-Fi preference' : 'Outlet preference'} style={s.row}>
+              {(['ignore', 'prefer', 'require'] as const).map((value) => <Choice key={value}
+                label={value === 'ignore' ? 'Ignore' : value === 'prefer' ? 'Prefer' : 'Require · strict'}
+                selected={query.amenities[amenity] === value}
+                onPress={() => onChange({ ...query, amenities: { ...query.amenities, [amenity]: value } })} />)}
+            </View>
+          </View>)}
+          <Text style={s.body}>Prefer affects ranking. Require excludes places with unknown, negative or insufficient evidence.</Text>
+          <Text style={s.heading}>Access</Text>
+          <View accessibilityRole="radiogroup" accessibilityLabel="Access" style={s.row}>
+            <Choice label="Any access" selected={query.access === 'any'} onPress={() => onChange({ ...query, access: 'any' })} />
+            <Choice label="Public only · strict" selected={query.access === 'public_only'} onPress={() => onChange({ ...query, access: 'public_only' })} />
+          </View>
+          <Text style={s.body}>Public only requires positive public-access evidence; unknown access is excluded.</Text>
+          <Text style={s.body}>Reset restores Study, 1 person, 60 minutes, open-session off, Wi-Fi/outlets preferred, any access, any category, no price cap, 15-minute walk and quiet study vibes. Reset takes effect on Apply.</Text>
           <Text style={s.heading}>Place category</Text>
           <Text style={s.body}>Select any combination. No selection means any category.</Text>
           <View style={s.row}>
