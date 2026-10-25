@@ -11,6 +11,8 @@ export const ProviderPlaceSchema = z.object({
     .transform((value) => typeof value === 'string' ? value : value[0]).optional(), rating: z.number().min(0).max(5).optional(),
   reviews: z.number().int().nonnegative().optional(), price: z.string().max(40).optional(),
   permanently_closed: z.boolean().optional(), temporarily_closed: z.boolean().optional(),
+  // An unusable optional photo must not discard an otherwise valid place.
+  thumbnail: z.unknown().optional(),
 });
 export const ProviderResponseSchema = z.object({
   local_results: z.array(z.unknown()).max(200).optional(),
