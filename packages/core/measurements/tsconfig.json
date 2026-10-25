@@ -1,5 +1,5 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": { "jsx": "react-jsx" },
-  "include": ["evaluate-real.ts", "evaluate-real.test.ts"]
+  "include": ["evaluate-real.ts", "evaluate-real.test.ts", "human-rubric.ts"]
 }

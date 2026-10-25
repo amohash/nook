@@ -1,0 +1,474 @@
+{
+  "packetVersion": 1,
+  "judgmentsCollected": 0,
+  "instructions": "Independent human review only. Options are shuffled; scores/ranks/weights are hidden. Do not open the coordinator key until responses are locked. Null means unmeasured. Do not infer unknown facts.",
+  "rubric": {
+    "relevance": "0 unsuitable, 1 weak, 2 plausible, 3 strong",
+    "confidence": "low/medium/high",
+    "shortlistSufficient": "yes/no/unknown",
+    "wouldChooseAny": "yes/no/unknown",
+    "missingEvidence": "List facts you need before choosing; never assume available seats or dollar prices."
+  },
+  "cases": [
+    {
+      "caseId": "case-1",
+      "scenario": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "options": [
+        {
+          "option": "A",
+          "name": "Lucky Lab Coffee Co.",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "B",
+          "name": "St Benedict Coffee Company",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=St%20Benedict%20Coffee%20Company&query_place_id=ChIJn1enljO1RIYR-nFUbkouyX8",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "C",
+          "name": "Trippy Buck Coffee Truck",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Trippy%20Buck%20Coffee%20Truck&query_place_id=ChIJo3ZWsUC1RIYRzyMc5QQR1uY",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        }
+      ],
+      "shortlistSufficient": null,
+      "wouldChooseAny": null,
+      "preferredOption": null,
+      "notes": null
+    },
+    {
+      "caseId": "case-2",
+      "scenario": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 10,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "options": [
+        {
+          "option": "A",
+          "name": "St Benedict Coffee Company",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=St%20Benedict%20Coffee%20Company&query_place_id=ChIJn1enljO1RIYR-nFUbkouyX8",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "B",
+          "name": "Trippy Buck Coffee Truck",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Trippy%20Buck%20Coffee%20Truck&query_place_id=ChIJo3ZWsUC1RIYRzyMc5QQR1uY",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "C",
+          "name": "Lucky Lab Coffee Co.",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        }
+      ],
+      "shortlistSufficient": null,
+      "wouldChooseAny": null,
+      "preferredOption": null,
+      "notes": null
+    },
+    {
+      "caseId": "case-3",
+      "scenario": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "friends",
+        "groupSize": 4,
+        "targetNoise": 0.7,
+        "targetCrowd": 0.6,
+        "tagWeights": {
+          "lively": 1,
+          "group_friendly": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "options": [
+        {
+          "option": "A",
+          "name": "Lucky Lab Coffee Co.",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "B",
+          "name": "Trippy Buck Coffee Truck",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Trippy%20Buck%20Coffee%20Truck&query_place_id=ChIJo3ZWsUC1RIYRzyMc5QQR1uY",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "C",
+          "name": "St Benedict Coffee Company",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=St%20Benedict%20Coffee%20Company&query_place_id=ChIJn1enljO1RIYR-nFUbkouyX8",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        }
+      ],
+      "shortlistSufficient": null,
+      "wouldChooseAny": null,
+      "preferredOption": null,
+      "notes": null
+    },
+    {
+      "caseId": "case-4",
+      "scenario": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2862,
+          "lng": -97.7394,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T19:00:00-05:00",
+        "sessionMinutes": 120,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "options": [
+        {
+          "option": "A",
+          "name": "Trippy Buck Coffee Truck",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Trippy%20Buck%20Coffee%20Truck&query_place_id=ChIJo3ZWsUC1RIYRzyMc5QQR1uY",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "B",
+          "name": "St Benedict Coffee Company",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=St%20Benedict%20Coffee%20Company&query_place_id=ChIJn1enljO1RIYR-nFUbkouyX8",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "C",
+          "name": "Lucky Lab Coffee Co.",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        }
+      ],
+      "shortlistSufficient": null,
+      "wouldChooseAny": null,
+      "preferredOption": null,
+      "notes": null
+    },
+    {
+      "caseId": "case-5",
+      "scenario": {
+        "schemaVersion": 1,
+        "cityId": "us-tx-austin",
+        "origin": {
+          "lat": 30.2672,
+          "lng": -97.7431,
+          "source": "manual"
+        },
+        "departAt": "2026-10-25T13:00:00-05:00",
+        "sessionMinutes": 60,
+        "categories": [],
+        "maxWalkMinutes": 15,
+        "maxPriceLevel": null,
+        "requireOpenForSession": false,
+        "intent": "study",
+        "groupSize": 1,
+        "targetNoise": 0.15,
+        "targetCrowd": 0.25,
+        "tagWeights": {
+          "study": 1,
+          "quiet": 1
+        },
+        "amenities": {
+          "wifi": "prefer",
+          "outlets": "prefer"
+        },
+        "access": "any",
+        "limit": 3
+      },
+      "options": [
+        {
+          "option": "A",
+          "name": "Trippy Buck Coffee",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Trippy%20Buck%20Coffee&query_place_id=ChIJbz4l-kK1RIYRElA6U66oEQg",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "B",
+          "name": "Black Fox Coffee",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Black%20Fox%20Coffee&query_place_id=ChIJKxa8FmW1RIYRnDlOJujvQjo",
+          "fetchedAt": "2026-10-25T02:51:28.454Z",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        },
+        {
+          "option": "C",
+          "name": "Cielito Lindo Cafe",
+          "categories": [
+            "cafe"
+          ],
+          "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Cielito%20Lindo%20Cafe&query_place_id=ChIJoc-uNwC1RIYRa-M22GaGstc",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "priceLevel": null,
+          "noise": null,
+          "wifi": "unknown",
+          "outlets": "unknown",
+          "hoursStatus": "unknown",
+          "relevance": null,
+          "confidence": null,
+          "missingEvidence": null,
+          "explanation": null
+        }
+      ],
+      "shortlistSufficient": null,
+      "wouldChooseAny": null,
+      "preferredOption": null,
+      "notes": null
+    }
+  ]
+}

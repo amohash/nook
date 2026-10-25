@@ -5,6 +5,11 @@ export { coversSession } from './hours';
 
 export type Clock = { now: string };
 type Feature = { value: number; confidence: number };
+export type ScoreDiagnostic = {
+  spotId: string;
+  components: Record<string, Feature & { weight: number; contribution: number }>;
+  base: number; evidenceCoverage: number; uncertaintyPenalty: number; score: number;
+};
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 const known = (value: number, confidence = 1): Feature => ({ value: clamp(value), confidence: clamp(confidence) });
 const unknown = (): Feature => known(0.5, 0);
@@ -52,7 +57,8 @@ function crowdAt(spot: Spot, arrivalMs: number, now: number): Feature {
   return entry?.value === undefined || entry.value === null ? unknown() : known(entry.value, 0.9);
 }
 
-export function rankSpots(input: readonly Spot[], inputQuery: Query, clock: Clock) {
+export function rankSpots(input: readonly Spot[], inputQuery: Query, clock: Clock,
+  onScored?: (diagnostic: ScoreDiagnostic) => void) {
   const query = QuerySchema.parse(inputQuery), now = Date.parse(InstantSchema.parse(clock.now));
   if (!Number.isFinite(now)) throw new Error('An explicit valid clock is required');
   // Invalid source candidates cannot establish eligibility; provider identity deduplicates snapshots.
@@ -110,6 +116,12 @@ export function rankSpots(input: readonly Spot[], inputQuery: Query, clock: Cloc
       const w = weights[key] / weightTotal;
       base += w * features[key].value; coverage += w * features[key].confidence;
     }
+    // Optional instrumentation uses this exact calculation; never a separate scorer.
+    onScored?.({ spotId: spot.id, base, evidenceCoverage: coverage,
+      uncertaintyPenalty: 0.10 * (1 - coverage), score: 100 * clamp(base - 0.10 * (1 - coverage)),
+      components: Object.fromEntries((Object.keys(weights) as (keyof typeof weights)[]).map((key) =>
+        [key, { ...features[key], weight: weights[key] / weightTotal,
+          contribution: weights[key] / weightTotal * features[key].value }])) });
     const reasons: RankingResult['reasons'] = [{ code: 'walk', text: `About ${walk} min estimated walk`, evidenceIds: [] }];
     if (query.maxPriceLevel !== null) reasons.push({ code: 'price', text: `Price level ${spot.priceLevel.value}/4 is within your cap of ${query.maxPriceLevel}/4`, evidenceIds: spot.priceLevel.evidenceIds ?? [] });
     if (spot.noise.value !== null && noise.confidence >= 0.7 && Math.abs(spot.noise.value - query.targetNoise) <= 0.2) {
