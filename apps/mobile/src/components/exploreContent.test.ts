@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { crowdHours, crowdSourceLabel, normalizedFit, observationTime, OPEN_STATUS_LABELS,
+import { crowdHours, crowdSourceLabel, proximityLevel, normalizedFit, observationTime, OPEN_STATUS_LABELS,
   typicalLevel, typicalWording, type TypicalCrowd } from './exploreContent';
 
 const fetchedAt = '2026-10-24T18:00:00-05:00';
@@ -68,3 +68,8 @@ describe('separate observation and display-only status inputs', () => {
     expect(normalizedFit(-10)).toBe(0);
   });
 });
+
+ it('uses absolute proximity bands and keeps missing/invalid walks unknown', () => {
+   expect([0, 10, 11, 20, 21, 60].map(proximityLevel)).toEqual(['near', 'near', 'medium', 'medium', 'far', 'far']);
+   expect([null, undefined, NaN, -1].map(proximityLevel)).toEqual(['unknown', 'unknown', 'unknown', 'unknown']);
+ });

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Linking, Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import type { SpotDetail } from '@space/contracts';
+import { QuerySchema, type SpotDetail } from '@space/contracts';
 import { DEMO_NOW } from '@space/fixtures';
 import { useSession } from '../../src/data/SessionProvider';
 import { hoursStatus, venueTime } from '../../src/features/explore/presentation';
@@ -28,7 +28,7 @@ function Detail() {
     let active = true;
     setContext(null); setFitLoading(true); setFitError(false);
     if (nearby.enabled && !query.snapshotId) {setFitLoading(false); return;}
-    provider.recommend(query).then((response) => {if (active) setContext({query, response});})
+    provider.recommend(QuerySchema.parse({...query, limit: 200})).then((response) => {if (active) setContext({query, response});})
       .catch(() => {if (active) setFitError(true);})
       .finally(() => {if (active) setFitLoading(false);});
     return () => {active = false;};

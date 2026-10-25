@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Modal } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { AssistantQueryPatchSchema, AssistantRequestSchema, AssistantResponseSchema,
   type AssistantQueryPatch, type Query } from '@space/contracts';
@@ -10,7 +10,7 @@ import { useSession } from '../../data/SessionProvider';
 import { applyAssistantProposal } from './assistantProposal';
 import { ApiUnavailableError } from '../../data/providers';
 
-export function PlaceAssistant({placeIds = []}: {placeIds?: string[]}) {
+export function PlaceAssistant({placeIds = [], inline = false, onClose}: {placeIds?: string[]; inline?: boolean; onClose?: () => void}) {
   const {session, setQuery, nearby, testerSession} = useSession();
   const query = session!.query;
   const router = useRouter();
@@ -31,7 +31,7 @@ export function PlaceAssistant({placeIds = []}: {placeIds?: string[]}) {
   const enabled = process.env.EXPO_PUBLIC_ASSISTANT_ENABLED === '1';
   const canSubmit = !!testerSession && !!query.snapshotId && !nearby.busy && nearby.result?.snapshotId === query.snapshotId;
   const disabledReason = !canSubmit ? 'Enable nearby access and load supported-area candidates before asking Muse.' : undefined;
-  const close = () => {++generation.current; busy.current = false; setOpen(false); setStatus('idle'); setProposal(null);};
+  const close = () => {++generation.current; busy.current = false; setOpen(false); setStatus('idle'); setProposal(null); onClose?.();};
   const submit = async () => {
     if (!canSubmit || busy.current || !input.trim()) return;
     const startedQuery = query;
@@ -60,11 +60,8 @@ export function PlaceAssistant({placeIds = []}: {placeIds?: string[]}) {
       if (active()) setStatus(cause instanceof ApiUnavailableError && /quota|limit/.test(cause.code) ? 'quota' : 'error');
     } finally {if (active()) busy.current = false;}
   };
-  if (!enabled) return null;
-  return <>
-    <MuseAssistantEntry onPress={() => setOpen(true)} unavailableReason={disabledReason} />
-    <Modal visible={open} animationType="slide" presentationStyle="pageSheet" onRequestClose={close}>
-      <MuseAssistantPanel input={input} onInputChange={(value) => setInput(value.slice(0, 800))}
+  if (!enabled) return inline ? <View style={{padding: 20}}><Text>Muse is unavailable right now. Browse Places to find your next study spot.</Text></View> : null;
+  const panel = <MuseAssistantPanel embedded={inline} input={input} onInputChange={(value) => setInput(value.slice(0, 800))}
         onSubmit={() => {void submit();}} onRetry={() => {void submit();}} onClose={close}
         messages={messages} status={status} retryable={status === 'error' || status === 'unavailable' || status === 'empty'}
         canSubmit={canSubmit} disabledReason={disabledReason} inputMaxLength={800}
@@ -80,7 +77,10 @@ export function PlaceAssistant({placeIds = []}: {placeIds?: string[]}) {
         onPlacePress={(id) => {
           if (!nearby.result?.snapshot?.spots.some((spot) => spot.id === id)) return;
           close(); router.push({pathname: '/spot/[id]', params: {id}});
-        }} onSourcePress={() => {}} />
-    </Modal>
+        }} onSourcePress={() => {}} />;
+  if (inline) return panel;
+  return <>
+    <MuseAssistantEntry onPress={() => setOpen(true)} unavailableReason={disabledReason} />
+    <Modal visible={open} animationType="slide" presentationStyle="pageSheet" onRequestClose={close}>{panel}</Modal>
   </>;
 }
