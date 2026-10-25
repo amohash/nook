@@ -530,3 +530,26 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   and overnight behavior, photos, strict empty states and API recovery/reconnect at
   `https://nook-api-demo.onrender.com`. Warm health before rehearsal; HTTP/browser
   checks are not native acceptance. Keep photos-time-v1/photos-v1 for rollback.
+## B3 backend release verification — October 25, 2026
+
+- Isolated `chore/backend-demo-release` from updated main `7e67622`; preserved root
+  lockfile edits and both active B1/B2 worktrees. No shared contract/scorer/root edits.
+- Added read-only `server/src/jobs/verify-demo-release.ts`, raw baseline/local
+  measurements and `server/RELEASE-HANDOFF.md`. Full live snapshot/all30 details,
+  source timestamps,30 image responses,10Muse summaries and9 reranks verified.
+  Strict unsupported price/amenity/access/hours queries empty; shared scorer parity
+  and externalCalls/cacheHits=0 on every rerank. No provider/model calls by B3.
+- Public health still `cc8f7aa` at07:08UTC; no final deployment claimed. Warm health
+  80.21ms, snapshot105.74ms; initial idle state unknown. Local process startup/
+  stopped-API/reconnect measured separately; neither establishes native recovery
+  or Render cold wake. Raw reports preserve exact scopes and identities.
+- Existing Supabase RLS/privilege SQL passed; additional rolled-back anon and
+  authenticated SELECT/no-op DELETE tests denied all28operations across7tables.
+  No rows exposed, writes, migrations, resets or new infrastructure.
+- Actual checks:333tests/29files, workspace typecheck, lint, server build and diff
+  check passed. HTTP image responses are not phone/browser rendering acceptance.
+- Pending: D review/main merge and final artifact selection after B1#30/B2#31;
+  C legacy outdoor/provenance gate on issue3; B3 deploy reviewed main on existing
+  Render service and repeat audit. Keep all prior artifacts/configuration for rollback.
+  D must verify physical-phone filters/parity/source labels/warmup/outage/reconnect.
+- This section is B3-only; preserve B1/B2 appended sections during D's main merge.

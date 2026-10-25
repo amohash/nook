@@ -1,0 +1,24 @@
+{
+  "measuredAt": "2026-10-25T07:12:01.802Z",
+  "scope": "Local built Node process, not Render idle wake or native recovery",
+  "commit": "7e6762294a4df89809cd67775bbdfd8beba18c2e",
+  "datasetVersion": "austin-20261025-muse-photos-v1",
+  "processBootMs": 189.282417,
+  "firstRequest": {
+    "status": 200,
+    "durationMs": 18.77770800000002
+  },
+  "warmRequest": {
+    "status": 200,
+    "durationMs": 1.4023329999999987
+  },
+  "stoppedApiRejected": true,
+  "reconnectBootMs": 110.31495800000002,
+  "reconnect": {
+    "status": 200,
+    "durationMs": 5.028750000000002
+  },
+  "providerCalls": 0,
+  "modelCalls": 0,
+  "nativeVerified": false
+}
