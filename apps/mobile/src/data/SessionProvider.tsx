@@ -17,6 +17,7 @@ type SessionValue = {
   finishOnboarding(styles: StudyStyleId[]): Promise<void>;
   savePreferences(values: PreferenceValues): Promise<void>;
   reset(): Promise<void>;
+  toggleSaved(id: string): Promise<void>;
 };
 const Context = createContext<SessionValue | null>(null);
 export function SessionProvider({children}: {children: ReactNode}) {
@@ -58,10 +59,19 @@ export function SessionProvider({children}: {children: ReactNode}) {
   const savePreferences = async (values: PreferenceValues) => {
     if (!session) throw new Error('Session unavailable');
     const preferences = PreferenceSchema.parse(values);
-    const settings = {...session.settings, preferences};
-    await store.save(settingsKey(session.city), settings);
+    const settings = await store.update(settingsKey(session.city), (current) => ({...(current ?? session.settings), preferences}));
     setSession((current) => current ? {...current, settings,
       query: applyPreferences(current.query, preferences)} : current);
+  };
+  const toggleSaved = async (id: string) => {
+    if (!session) throw new Error('Session unavailable');
+    const settings = await store.update(settingsKey(session.city), (current) => {
+      const value = current ?? session.settings;
+      const ids = value.savedIds;
+      return {...value, savedIds: ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]};
+    });
+    const savedIds = settings.savedIds;
+    setSession((current) => current ? {...current, settings: {...current.settings, savedIds}} : current);
   };
   const reset = async () => {
     if (!session) throw new Error('Session unavailable');
@@ -76,7 +86,7 @@ export function SessionProvider({children}: {children: ReactNode}) {
     setAttempt((value) => value + 1);
   };
   return <Context.Provider value={{session, loading, error, retry: () => setAttempt((value) => value + 1),
-    recoverStorage, setQuery, finishOnboarding, savePreferences, reset}}>{children}</Context.Provider>;
+    recoverStorage, setQuery, finishOnboarding, savePreferences, reset, toggleSaved}}>{children}</Context.Provider>;
 }
 export function useSession() {
   const context = useContext(Context);

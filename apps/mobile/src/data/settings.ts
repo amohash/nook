@@ -8,12 +8,13 @@ export const PreferenceSchema = QuerySchema.pick({intent: true, maxWalkMinutes: 
   maxPriceLevel: true, tagWeights: true, amenities: true}).strip();
 const StyleSchema = z.enum(STUDY_STYLE_OPTIONS.map(({id}) => id) as [StudyStyleId, ...StudyStyleId[]]);
 export const SettingsSchema = z.strictObject({version: z.literal(1), completed: z.boolean(),
+  savedIds: z.array(z.string().min(1).max(200)).max(200).default([]),
   styles: z.array(StyleSchema).max(STUDY_STYLE_OPTIONS.length), preferences: PreferenceSchema});
 export type Settings = z.infer<typeof SettingsSchema>;
 export type SettingsStorage = {getItem(key: string): Promise<string | null>; setItem(key: string, value: string): Promise<void>};
 export const settingsKey = (city: City) => `nook:settings:v1:${city.mode}:${city.id}:${city.datasetVersion}`;
 export function defaultSettings(query: Query): Settings {
-  return {version: 1, completed: false, styles: [], preferences: PreferenceSchema.parse(query)};
+  return {version: 1, completed: false, savedIds: [], styles: [], preferences: PreferenceSchema.parse(query)};
 }
 export function createSettingsStore(storage: SettingsStorage) {
   // Serialize writes so a reset cannot be overtaken by an earlier save.
@@ -22,6 +23,17 @@ export function createSettingsStore(storage: SettingsStorage) {
     async load(key: string): Promise<Settings | null> {
       const value = await storage.getItem(key);
       return value === null ? null : SettingsSchema.parse(JSON.parse(value));
+    },
+    update(key: string, change: (current: Settings | null) => Settings): Promise<Settings> {
+      const operation = queue.then(async () => {
+        const raw = await storage.getItem(key);
+        const current = raw === null ? null : SettingsSchema.parse(JSON.parse(raw));
+        const next = SettingsSchema.parse(change(current));
+        await storage.setItem(key, JSON.stringify(next));
+        return next;
+      });
+      queue = operation.catch(() => {});
+      return operation;
     },
     save(key: string, value: Settings): Promise<void> {
       const serialized = JSON.stringify(SettingsSchema.parse(value));

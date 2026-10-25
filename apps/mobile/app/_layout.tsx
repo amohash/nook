@@ -12,6 +12,7 @@ function Shell() {
       <Stack.Screen name="index" options={{title: 'Nook'}} />
       <Stack.Screen name="spot/[id]" options={{title: 'Place details'}} />
       <Stack.Screen name="onboarding" options={{headerShown: false, gestureEnabled: false}} />
+      <Stack.Screen name="saved" options={{title: 'Saved places'}} />
       <Stack.Screen name="preferences" options={{headerShown: false}} />
       <Stack.Screen name="design-preview" options={{headerShown: false}} />
     </Stack>

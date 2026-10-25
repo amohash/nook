@@ -1,16 +1,24 @@
-import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Image, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import type { SpotDetail } from '@space/contracts';
+import { InstantSchema, type SpotDetail } from '@space/contracts';
+import { DEMO_NOW } from '@space/fixtures';
+import { useSession } from '../../src/data/SessionProvider';
+import { hoursStatus, mapsUrl, venueTime } from '../../src/features/explore/presentation';
 import { provider } from '../../src/data';
 import { PlaceNotFoundError } from '../../src/data/providers';
-import { DatasetLabel, EvidenceLabel, ErrorState, LoadingState } from '../../src/components';
+import { ActionRow, BusynessChart, DatasetLabel, EvidenceLabel, ErrorState, LiveObservationBadge, LoadingState, OpenStatusPill } from '../../src/components';
 import { priceLabel, ratingLabel } from '../../src/components/content';
 import { SessionGate } from '../../src/features/session/SessionGate';
 import { theme } from '../../src/theme';
 
 function Detail() {
-  const {id} = useLocalSearchParams<{id: string}>();
+  const {id, arrivalAt} = useLocalSearchParams<{id: string; arrivalAt?: string}>();
+  const {session, toggleSaved} = useSession();
+  const [saving, setSaving] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => {mounted.current = true; return () => {mounted.current = false;};}, []);
   const router = useRouter();
   const [detail, setDetail] = useState<SpotDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,6 +33,31 @@ function Detail() {
     return () => {active = false;};
   }, [id, attempt]);
   const spot = detail?.spot;
+  const parsedArrival = InstantSchema.safeParse(arrivalAt);
+  const selectedTime = parsedArrival.success ? parsedArrival.data : session!.query.departAt;
+  const moment = venueTime(selectedTime, spot?.timezone ?? session!.city.timezone);
+  const now = session!.city.mode === 'demo' ? DEMO_NOW : new Date().toISOString();
+  const status = spot ? hoursStatus(spot, selectedTime, session!.query.sessionMinutes, now) : {status: 'unknown' as const};
+  const url = spot ? mapsUrl(spot) : null;
+  const save = async () => {
+    if (saving) return;
+    setSaving(true); setActionError(null);
+    try {await toggleSaved(id);}
+    catch {if (mounted.current) setActionError('This place could not be saved. Please try again.');}
+    finally {if (mounted.current) setSaving(false);}
+  };
+  const openLink = async (link: string | undefined | null) => {
+    if (!link || !/^https?:\/\//.test(link)) return;
+    setActionError(null);
+    try {await Linking.openURL(link);}
+    catch {if (mounted.current) setActionError('The link could not be opened. Please try again.');}
+  };
+  const share = async () => {
+    if (!spot) return;
+    setActionError(null);
+    try {await Share.share({message: `${spot.datasetMode === 'demo' ? '[Demo scenario] ' : ''}${spot.name}\n${spot.address}${url ? `\n${url}` : ''}`});}
+    catch {if (mounted.current) setActionError('Sharing is unavailable. Try again on your phone.');}
+  };
   const [imageFailed, setImageFailed] = useState(false);
   return <ScrollView contentContainerStyle={s.page}>
     {loading && <LoadingState message="Loading place details…" />}
@@ -39,6 +72,16 @@ function Detail() {
         description={spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : undefined} />
       <Text style={s.title}>{spot.name}</Text>
       <Text style={s.body}>{spot.categories.join(' · ')}{'\n'}{spot.address}</Text>
+      <OpenStatusPill status={status.status} label={status.label} />
+      <Text style={s.small}>{parsedArrival.success ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {session!.query.sessionMinutes} min session</Text>
+      <ActionRow saved={session!.settings.savedIds.includes(id)} saving={saving} mapsDisabled={!url}
+        onSave={() => {void save();}} onShare={() => {void share();}} onOpenMaps={() => {void openLink(url);}} />
+      {spot.datasetMode === 'demo' && <Text style={s.small}>Maps is unavailable for fictional demo places.</Text>}
+      {actionError && <Text role="alert" style={s.body}>{actionError}</Text>}
+      <BusynessChart typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour} />
+      <Text style={s.small}>Historical typical crowd at the selected time in {spot.timezone}. This is not seat availability.</Text>
+      <LiveObservationBadge liveObservation={spot.liveObservation} />
+      {!spot.liveObservation && <Text style={s.small}>Current observation unknown.</Text>}
       <View style={s.panel}><Text style={s.heading}>What we know</Text>
         <Text style={s.body}>Price: {priceLabel(spot.priceLevel.value)}</Text>
         <EvidenceLabel evidence={spot.priceLevel} />
@@ -55,7 +98,10 @@ function Detail() {
         <EvidenceLabel evidence={spot.summary} />
         <Text style={s.body}>{Object.keys(spot.tags.value ?? {}).join(' · ') || 'Vibe tags unknown'}</Text>
         <Text style={s.body}>Seat availability: unknown.</Text>
-        {detail.evidence.map((evidence) => <Text key={evidence.id} style={s.small}>{evidence.text}</Text>)}
+        {detail.evidence.map((evidence) => <Pressable key={evidence.id} accessibilityRole="link"
+          disabled={!evidence.sourceUrl || !/^https?:\/\//.test(evidence.sourceUrl)} onPress={() => {void openLink(evidence.sourceUrl);}}>
+          <Text style={s.small}>{evidence.text}</Text>{evidence.sourceUrl && <Text style={s.action}>View source →</Text>}
+        </Pressable>)}
       </View>
       <Text style={s.small}>Dataset: {spot.datasetVersion}</Text>
     </>}
