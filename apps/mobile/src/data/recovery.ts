@@ -163,7 +163,7 @@ export function createRecoveryProvider(options: {
     subscribe(listener: () => void) {listeners.add(listener); return () => {listeners.delete(listener);};},
     async switchTo(choice: ProviderChoice) {
       // A stalled device storage read must never block the bundled demo.
-      if (choice === 'cached') await ready;
+      if (choice === 'cached' && !bundle) await ready;
       if (choice === 'cached' && !bundle) throw new Error('No validated real offline dataset is available. Choose API or the fictional demo.');
       selected = choice === 'cached' ? bundle : null;
       apiCity = null;

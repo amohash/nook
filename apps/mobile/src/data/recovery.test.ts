@@ -56,6 +56,10 @@ describe('explicit offline recovery', () => {
       cacheKey: 'stalled', initialChoice: 'api'});
     await controller.switchTo('demo');
     expect((await controller.provider.recommend(createDemoQuery())).mode).toBe('demo');
+    await controller.switchTo('api');
+    await controller.provider.listCities();
+    await controller.switchTo('cached');
+    expect((await controller.provider.listCities())[0]?.mode).toBe('cached');
   });
 
   it('recovers a persisted dataset at cold offline startup without contacting the API', async () => {
