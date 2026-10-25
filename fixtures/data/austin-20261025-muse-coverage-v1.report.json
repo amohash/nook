@@ -1,0 +1,1585 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "austin-20261025-muse-photos-time-v1",
+  "candidateVersion": "austin-20261025-muse-coverage-v1",
+  "measuredAt": "2026-10-25T07:03:16.378Z",
+  "originLabel": "Manual UT Austin (app default); no device GPS stored",
+  "cacheRows": 15,
+  "addedPlaces": 23,
+  "changedExisting": 3,
+  "rejected": {
+    "invalidRows": 0,
+    "invalidPlaces": 0,
+    "futureCaptures": 0,
+    "outsideWindow": 4,
+    "identityConflicts": 0,
+    "duplicateAliases": 0
+  },
+  "before": {
+    "places": 30,
+    "categories": {
+      "cafe": 29,
+      "library": 0,
+      "park": 0,
+      "restaurant": 0
+    },
+    "facts": {
+      "priceLevel": {
+        "known": 0,
+        "unknown": 30,
+        "positive": null
+      },
+      "wifi": {
+        "known": 0,
+        "unknown": 30,
+        "positive": 0
+      },
+      "outlets": {
+        "known": 0,
+        "unknown": 30,
+        "positive": 0
+      },
+      "publicAccess": {
+        "known": 0,
+        "unknown": 30,
+        "positive": 0
+      }
+    },
+    "knownHours": 28,
+    "unknownHours": 2,
+    "typicalRecords": 0,
+    "unknownTypical": 30,
+    "liveRecords": 0,
+    "unknownLive": 30,
+    "photos": 30,
+    "museSummaries": 10,
+    "strictQueries": {
+      "default15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 3,
+        "resultIds": [
+          "google:aec7f6ef01db0393b53d58c929d07180",
+          "google:9d7721e9510e890db945df4d7c68fcbb",
+          "google:931c7d46e9adfd462ac4108b80af9a7c"
+        ],
+        "excludedCounts": {
+          "distance": 27
+        }
+      },
+      "nearby30": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 30,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 9,
+        "resultIds": [
+          "google:aec7f6ef01db0393b53d58c929d07180",
+          "google:9d7721e9510e890db945df4d7c68fcbb",
+          "google:931c7d46e9adfd462ac4108b80af9a7c"
+        ],
+        "excludedCounts": {
+          "distance": 21
+        }
+      },
+      "libraries15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "library"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "category": 30
+        }
+      },
+      "parks15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "park"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "category": 30
+        }
+      },
+      "restaurants15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "restaurant"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "category": 30
+        }
+      },
+      "free15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": 0,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_price": 3
+        }
+      },
+      "priceCap1": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": 1,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_price": 3
+        }
+      },
+      "wifiRequired": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "require",
+            "outlets": "ignore"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "amenity": 3
+        }
+      },
+      "outletsRequired": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "ignore",
+            "outlets": "require"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "amenity": 3
+        }
+      },
+      "publicOnly": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "public_only",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "access": 3
+        }
+      },
+      "openSessionNow": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": true,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 27,
+          "hours": 2,
+          "unknown_hours": 1
+        }
+      },
+      "openSessionLater": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T19:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": true,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 1,
+        "resultIds": [
+          "google:931c7d46e9adfd462ac4108b80af9a7c"
+        ],
+        "excludedCounts": {
+          "distance": 27,
+          "unknown_hours": 1,
+          "hours": 1
+        }
+      }
+    }
+  },
+  "after": {
+    "places": 53,
+    "categories": {
+      "cafe": 30,
+      "library": 8,
+      "park": 7,
+      "restaurant": 10
+    },
+    "facts": {
+      "priceLevel": {
+        "known": 0,
+        "unknown": 53,
+        "positive": null
+      },
+      "wifi": {
+        "known": 0,
+        "unknown": 53,
+        "positive": 0
+      },
+      "outlets": {
+        "known": 0,
+        "unknown": 53,
+        "positive": 0
+      },
+      "publicAccess": {
+        "known": 0,
+        "unknown": 53,
+        "positive": 0
+      }
+    },
+    "knownHours": 49,
+    "unknownHours": 4,
+    "typicalRecords": 0,
+    "unknownTypical": 53,
+    "liveRecords": 0,
+    "unknownLive": 53,
+    "photos": 53,
+    "museSummaries": 10,
+    "strictQueries": {
+      "default15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 18,
+        "resultIds": [
+          "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+          "google:f7ce0d9c162d571157e13fe54a6286fa",
+          "google:1806c9fc3f431c0c46b699f53a879397"
+        ],
+        "excludedCounts": {
+          "distance": 35
+        }
+      },
+      "nearby30": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 30,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 32,
+        "resultIds": [
+          "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+          "google:f7ce0d9c162d571157e13fe54a6286fa",
+          "google:aec7f6ef01db0393b53d58c929d07180"
+        ],
+        "excludedCounts": {
+          "distance": 21
+        }
+      },
+      "libraries15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "library"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 6,
+        "resultIds": [
+          "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+          "google:f7ce0d9c162d571157e13fe54a6286fa",
+          "google:1806c9fc3f431c0c46b699f53a879397"
+        ],
+        "excludedCounts": {
+          "category": 45,
+          "distance": 2
+        }
+      },
+      "parks15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "park"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 1,
+        "resultIds": [
+          "google:603463cb28c95e85ac6acbb4c21b3d3a"
+        ],
+        "excludedCounts": {
+          "category": 46,
+          "distance": 6
+        }
+      },
+      "restaurants15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [
+            "restaurant"
+          ],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 8,
+        "resultIds": [
+          "google:ae47201dd978563cfe9d6c7c0e9ffd6a",
+          "google:06eb58d3de17903f0f7ef5b69d7cd8c4",
+          "google:1d9fdd04a0d0a49a689d7aabbc8f758f"
+        ],
+        "excludedCounts": {
+          "category": 43,
+          "distance": 2
+        }
+      },
+      "free15": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": 0,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 35,
+          "unknown_price": 18
+        }
+      },
+      "priceCap1": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": 1,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 35,
+          "unknown_price": 18
+        }
+      },
+      "wifiRequired": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "require",
+            "outlets": "ignore"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 35,
+          "amenity": 18
+        }
+      },
+      "outletsRequired": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "ignore",
+            "outlets": "require"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 35,
+          "amenity": 18
+        }
+      },
+      "publicOnly": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": false,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "public_only",
+          "limit": 3
+        },
+        "qualifyingCount": 0,
+        "resultIds": [],
+        "excludedCounts": {
+          "distance": 35,
+          "access": 18
+        }
+      },
+      "openSessionNow": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T07:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": true,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 1,
+        "resultIds": [
+          "google:b9bb18ba8b86cb06fe845362284ff014"
+        ],
+        "excludedCounts": {
+          "distance": 35,
+          "hours": 15,
+          "unknown_hours": 2
+        }
+      },
+      "openSessionLater": {
+        "query": {
+          "schemaVersion": 1,
+          "cityId": "us-tx-austin",
+          "origin": {
+            "lat": 30.2862,
+            "lng": -97.7394,
+            "source": "manual"
+          },
+          "departAt": "2026-10-25T19:03:16.378Z",
+          "sessionMinutes": 60,
+          "categories": [],
+          "maxWalkMinutes": 15,
+          "maxPriceLevel": null,
+          "requireOpenForSession": true,
+          "intent": "study",
+          "groupSize": 1,
+          "targetNoise": 0.15,
+          "targetCrowd": 0.25,
+          "tagWeights": {
+            "study": 1,
+            "quiet": 1
+          },
+          "amenities": {
+            "wifi": "prefer",
+            "outlets": "prefer"
+          },
+          "access": "any",
+          "limit": 3
+        },
+        "qualifyingCount": 8,
+        "resultIds": [
+          "google:f7ce0d9c162d571157e13fe54a6286fa",
+          "google:b4cc5ec59c1efff5f7a3312669010df5",
+          "google:ae47201dd978563cfe9d6c7c0e9ffd6a"
+        ],
+        "excludedCounts": {
+          "distance": 35,
+          "unknown_hours": 2,
+          "hours": 8
+        }
+      }
+    }
+  },
+  "provenance": [
+    {
+      "spotId": "google:2731a1dbf4484583e67807f03a509138",
+      "added": false,
+      "fields": [
+        "categories"
+      ],
+      "sources": [
+        {
+          "cacheHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Kick%20Butt%20Coffee&query_place_id=ChIJlcsHDRbKRIYRRve-J-f_w5k",
+          "categories": [
+            "cafe"
+          ],
+          "priceLevel": null
+        },
+        {
+          "cacheHash": "a990d7ec780f52ed7da30a721e5e5da841fe1e25ec15827f4d1bb237a2ad7f28",
+          "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Kick%20Butt%20Coffee&query_place_id=ChIJlcsHDRbKRIYRRve-J-f_w5k",
+          "categories": [
+            "cafe",
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:354ff6de0271479fd386239af14a4b27",
+      "added": false,
+      "fields": [
+        "categories"
+      ],
+      "sources": [
+        {
+          "cacheHash": "17d04bce192009a9c5be85e424aba24b07e291f296bfa6f8139cf0a384323717",
+          "fetchedAt": "2026-10-25T02:51:23.864+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Violette%20Bakehouse&query_place_id=ChIJu7bSZU61RIYRddhLdzviqCo",
+          "categories": [
+            "cafe"
+          ],
+          "priceLevel": null
+        },
+        {
+          "cacheHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+          "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Violette%20Bakehouse&query_place_id=ChIJu7bSZU61RIYRddhLdzviqCo",
+          "categories": [
+            "cafe"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:3e26e91aae047f1b461b18c20f8e0f74",
+      "added": false,
+      "fields": [
+        "categories"
+      ],
+      "sources": [
+        {
+          "cacheHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+          "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Better%20Half%20Coffee%20%26%20Cocktails&query_place_id=ChIJAZKGeRS1RIYRebMjcJtuk9A",
+          "categories": [
+            "cafe"
+          ],
+          "priceLevel": null
+        },
+        {
+          "cacheHash": "c6c19914a8aaf7c7d5e7974594f9946125323e686335eafae1cbc17eb97abe6e",
+          "fetchedAt": "2026-10-25T02:51:26.162+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Better%20Half%20Coffee%20%26%20Cocktails&query_place_id=ChIJAZKGeRS1RIYRebMjcJtuk9A",
+          "categories": [
+            "cafe",
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:0519d527f44e431114c3126a802d5b4e",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Adams-Hemphill%20Neighborhood%20Park&query_place_id=ChIJC8C0TIC1RIYRkiGGccs1zYw",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:06eb58d3de17903f0f7ef5b69d7cd8c4",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Pinch&query_place_id=ChIJVc9UGXi1RIYRbLbCcAAKCow",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:1806c9fc3f431c0c46b699f53a879397",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Mallet%20Chemistry%20Library&query_place_id=ChIJ61fGbJy1RIYRIajDcEg9SWY",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:1c21ed913347fb6ccb19b37141555a1f",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=LBJ%20Presidential%20Library&query_place_id=ChIJ-WVL_5C1RIYRfDHlppbnLYE",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:1d9fdd04a0d0a49a689d7aabbc8f758f",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=1914%20Noodles%20and%20More&query_place_id=ChIJEUAQtiG1RIYRIzdHS1f3sss",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:34a31b444cb99442a0c979041c09560e",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=The%20Carillon&query_place_id=ChIJ31rWc561RIYRM6R7nHWtUDo",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:3c573f302457bcdb87d5c57c91b6c67e",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Pease%20District%20Park&query_place_id=ChIJva0k12-1RIYRWWvusUoiw_4",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:4e8c908e7ac619c3bc1427f802a7dbed",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Neko%20Yubu&query_place_id=ChIJ20K6U0i1RIYRFHCM57Xg3fM",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:603463cb28c95e85ac6acbb4c21b3d3a",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Eastwoods%20Neighborhood%20Park&query_place_id=ChIJlS3nc4W1RIYRwC3N1MiqOig",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:84120afebe30210aaa473b911df45c4b",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Acre%2041&query_place_id=ChIJ3e2rtqW1RIYRZTwAriI4gDg",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:946ba8f11b85138f8a2fb07447ba2a44",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Sparky%20Pocket%20Park&query_place_id=ChIJe9RSi4e1RIYR3Y9qGm_Di4U",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:9e72db87d1dc63aced0298d836292157",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Otopia%20Rooftop%20Lounge&query_place_id=ChIJQyqk37W1RIYRnCG26gFyqjc",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:ad02588c5f42975e1e2945e32a133ec8",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Swede%20Hill%20Pocket%20Park&query_place_id=ChIJxeiGIr21RIYRep8Gm22hGis",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:ae47201dd978563cfe9d6c7c0e9ffd6a",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Limegreen%20Southeast%20Asian%20Grill&query_place_id=ChIJN96qoge1RIYRfbcCfshWtx4",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:b1c289779afc400231e3247e58004a82",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Harrison%20Library&query_place_id=ChIJU3B_loW1RIYRZBi4DccjJ7g",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:b4cc5ec59c1efff5f7a3312669010df5",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Harry%20Ransom%20Center&query_place_id=ChIJn4-5g521RIYR1cD_b2nbbB0",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:b5cef205f7a572f487894473b4e3f15a",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Fine%20Arts%20Library&query_place_id=ChIJPTdwjpq1RIYRyxVb4LpptyM",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:b9bb18ba8b86cb06fe845362284ff014",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "8100617a8cd237d88ab160dec840cbf625c626a47d6d98b9d12fb76908d6f9bf",
+          "fetchedAt": "2026-10-25T06:57:59.539+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Suns%20Out%20Buns%20Out%20Burger%20Company%20Austin%20TX&query_place_id=ChIJEfixwAC1RIYRIWw9EhxaKK8",
+          "categories": [
+            "restaurant"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:beb0dd61f138de0f68e1b8af2d6a5651",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Wooldridge%20Square&query_place_id=ChIJnfovogu1RIYRr2MjBJIy1eo",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:d7f8ddca261959bba9cf715ad5d6e84d",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:ec91ea30a5f96da6575b34fc5c84f5f1",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "e19365a3d087735735b19d3cbc151135f451c441e9f43859fcc70838b5b04c7e",
+          "fetchedAt": "2026-10-25T06:57:58.398+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Waterloo%20Park&query_place_id=ChIJq6qqLqK1RIYRfiAnonnmouo",
+          "categories": [
+            "park"
+          ],
+          "priceLevel": null
+        }
+      ]
+    },
+    {
+      "spotId": "google:f7ce0d9c162d571157e13fe54a6286fa",
+      "added": true,
+      "fields": [
+        "new-provider-listing"
+      ],
+      "sources": [
+        {
+          "cacheHash": "aa346935d0743fe68718971381a4f1c6fec066b10904a5cbbd17b003a707f915",
+          "fetchedAt": "2026-10-25T06:57:56.932+00:00",
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=John%20S.%20Chase%20Architecture%20and%20Planning%20Library&query_place_id=ChIJWQMqE521RIYRoGwp1C1lZMU",
+          "categories": [
+            "library"
+          ],
+          "priceLevel": null
+        }
+      ]
+    }
+  ],
+  "acquisition": "Cache-only construction. Acquisition ledger is reported separately by the operator; no provider or model transport here.",
+  "limitations": [
+    "Bounded provider candidate coverage, not an exhaustive city directory.",
+    "Prices, amenities and public access remain unknown without explicit evidence; category does not prove free entry.",
+    "New places have provider listings only; no generated summary or live crowd claim.",
+    "Existing Muse projections are retained verbatim; separate C semantic/provenance review remains a release gate.",
+    "Review and B3 publication/deployment plus physical presenter-phone checks remain required."
+  ],
+  "sourceSha256": "f2b4e01c4c2e1e93293d0354cd0aa0dc200c3e89443dc0828dad135dcb71fccc",
+  "operator": {
+    "providerCallsDuringBuild": 0,
+    "modelCallsDuringBuild": 0,
+    "published": false,
+    "ledger": [
+      {
+        "dataset_version": "austin-20261025-v1",
+        "attempts": 16
+      }
+    ]
+  },
+  "acquisitionRecord": {
+    "budgetVersion": "austin-20261025-v1",
+    "beforeAttempts": 13,
+    "afterAttempts": 16,
+    "newFirstAttempts": 3,
+    "newRetryAttempts": 0,
+    "ceilingIncludingRetries": 18,
+    "modelCalls": 0,
+    "queries": [
+      "libraries near UT Austin",
+      "parks near UT Austin",
+      "restaurants near UT Austin"
+    ],
+    "capturedAt": [
+      "2026-10-25T06:57:56.932Z",
+      "2026-10-25T06:57:58.398Z",
+      "2026-10-25T06:57:59.539Z"
+    ],
+    "note": "Existing ledger reused; new candidate version is an artifact identity only, never a budget reset."
+  },
+  "verification": {
+    "fullTests": 347,
+    "testFiles": 30,
+    "focusedCoverageTests": 14,
+    "typecheck": "passed",
+    "lint": "passed",
+    "serverBuild": "passed",
+    "browserImages": {
+      "decoded": 53,
+      "failed": 0
+    },
+    "nativePhone": "pending D acceptance",
+    "b1SourceNonTimePreservation": "independently compared",
+    "b2ExistingTimeAndEnrichmentPreservation": "independently compared to exact B1 source"
+  }
+}

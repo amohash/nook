@@ -1,0 +1,331 @@
+{
+  "measuredAt": "2026-10-25T07:08:19.530Z",
+  "base": "https://nook-api-demo.onrender.com",
+  "commit": "cc8f7aabebd4d19cba2d5c3fad6bbc21272e02a8",
+  "datasetVersion": "austin-20261025-muse-photos-v1",
+  "cityId": "us-tx-austin",
+  "mode": "cached",
+  "artifactSha256": "bae26a4d32597262f8f8cbfa4740535505b732f5a30684a921781f3c7ab1b731",
+  "places": 30,
+  "detailParity": 30,
+  "imagesHttpVerified": 30,
+  "museSummaries": 10,
+  "measurements": [
+    {
+      "operation": "first-health-idle-state-unknown",
+      "status": 200,
+      "durationMs": 213.407833
+    },
+    {
+      "operation": "warm-health",
+      "status": 200,
+      "durationMs": 80.20754199999999
+    },
+    {
+      "operation": "cities",
+      "status": 200,
+      "durationMs": 55.11725000000007
+    },
+    {
+      "operation": "snapshot",
+      "status": 200,
+      "durationMs": 105.73587499999996
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 68.33212500000002
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 116.36395900000002
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 58.63495799999998
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 123.88962500000002
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 62.63758300000006
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 132.70862499999998
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 61.8125
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 59.86054100000001
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 62.465834000000086
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 151.919083
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 55.63995799999998
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 140.53541700000005
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 63.782416999999896
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 61.941082999999935
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 66.5697090000001
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 120.40266700000006
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 61.2556669999999
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 135.1270830000003
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 56.19462500000009
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 59.799167000000125
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 58.12970899999982
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 147.67995900000005
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 63.3506669999997
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 130.7749590000003
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 70.82187500000009
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 62.24258299999974
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 56.525666
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 62.90670799999998
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 60.443083000000115
+    },
+    {
+      "operation": "detail",
+      "status": 200,
+      "durationMs": 60.31224999999995
+    },
+    {
+      "operation": "rerank-0",
+      "status": 200,
+      "durationMs": 261.126041
+    },
+    {
+      "operation": "rerank-1",
+      "status": 200,
+      "durationMs": 81.38950000000023
+    },
+    {
+      "operation": "rerank-2",
+      "status": 200,
+      "durationMs": 97.16262499999993
+    },
+    {
+      "operation": "rerank-3",
+      "status": 200,
+      "durationMs": 93.3654590000001
+    },
+    {
+      "operation": "rerank-4",
+      "status": 200,
+      "durationMs": 71.29799999999977
+    },
+    {
+      "operation": "rerank-5",
+      "status": 200,
+      "durationMs": 68.21391600000015
+    },
+    {
+      "operation": "rerank-6",
+      "status": 200,
+      "durationMs": 75.69512499999973
+    },
+    {
+      "operation": "rerank-7",
+      "status": 200,
+      "durationMs": 73.26008300000012
+    },
+    {
+      "operation": "rerank-8",
+      "status": 200,
+      "durationMs": 84.03270799999973
+    }
+  ],
+  "reranks": [
+    {
+      "index": 0,
+      "qualifyingCount": 3,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 5.811055999976816,
+      "excludedCounts": {
+        "distance": 27
+      }
+    },
+    {
+      "index": 1,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 17.41933900001459,
+      "excludedCounts": {
+        "distance": 27,
+        "unknown_price": 3
+      }
+    },
+    {
+      "index": 2,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 29.428610000002664,
+      "excludedCounts": {
+        "distance": 27,
+        "amenity": 3
+      }
+    },
+    {
+      "index": 3,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 28.021802000002936,
+      "excludedCounts": {
+        "distance": 27,
+        "amenity": 3
+      }
+    },
+    {
+      "index": 4,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 4.676844000001438,
+      "excludedCounts": {
+        "distance": 27,
+        "access": 3
+      }
+    },
+    {
+      "index": 5,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 4.023251000005985,
+      "excludedCounts": {
+        "distance": 27,
+        "unknown_hours": 3
+      }
+    },
+    {
+      "index": 6,
+      "qualifyingCount": 0,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 4.807006000017282,
+      "excludedCounts": {
+        "category": 30
+      }
+    },
+    {
+      "index": 7,
+      "qualifyingCount": 3,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 4.985340000013821,
+      "excludedCounts": {
+        "distance": 27
+      }
+    },
+    {
+      "index": 8,
+      "qualifyingCount": 3,
+      "externalCalls": 0,
+      "cacheHits": 0,
+      "rankMs": 4.159692999994149,
+      "excludedCounts": {
+        "distance": 27
+      }
+    }
+  ],
+  "providerAttemptsDuringVerification": 0,
+  "modelAttemptsDuringVerification": 0,
+  "coldStart": "Not measured: initial idle state unknown. First request is not evidence of a cold wake.",
+  "nativeBehavior": "Not verified. Image HTTP checks do not establish native rendering or browser decode."
+}
