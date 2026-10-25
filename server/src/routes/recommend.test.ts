@@ -39,6 +39,10 @@ describe('mountable recommendation route', () => {
     const data = structuredClone(snapshot); data.spots[0]!.datasetMode = 'live';
     expect((await request(data)).status).toBe(409);
   });
+  it('forwards the snapshot identity and rejects a loader returning a different version', async () => {
+    const response = await request(snapshot, JSON.stringify(createDemoQuery({ snapshotId: 'different-snapshot' })));
+    expect(response.status).toBe(409);
+  });
   it('hides storage/provider errors', async () => {
     const response = await request(async () => { throw new Error('private upstream credential'); });
     expect(response.status).toBe(503); expect(await response.text()).not.toContain('credential');

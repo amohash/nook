@@ -1,5 +1,5 @@
 export const MUSE_MODEL = 'muse-spark-1.3';
-export type MuseRequest = { model: string; system: string; user: string; signal: AbortSignal };
+export type MuseRequest = { model: string; system: string; user: string; signal: AbortSignal; maxTokens?: number };
 export type MuseCompletion = (request: MuseRequest) => Promise<string>;
 
 /** Server-only transport. Never includes upstream bodies, headers or credentials in errors. */
@@ -7,12 +7,13 @@ export function createMuseProvider({ apiKey, fetchImpl = fetch }: {
   apiKey: string; fetchImpl?: typeof fetch;
 }): MuseCompletion {
   if (!apiKey.trim()) throw new Error('META_API_KEY is required on the server');
-  return async ({ model, system, user, signal }) => {
+  return async ({ model, system, user, signal, maxTokens = 4096 }) => {
+    if (!Number.isInteger(maxTokens) || maxTokens < 1 || maxTokens > 4096) throw new Error('Invalid Muse token budget');
     const response = await fetchImpl('https://api.meta.ai/v1/chat/completions', {
       method: 'POST', signal,
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
-        temperature: 0, max_tokens: 4096, response_format: { type: 'json_object' } }),
+        temperature: 0, max_tokens: maxTokens, response_format: { type: 'json_object' } }),
     });
     if (!response.ok) { await response.body?.cancel(); throw new Error(`Muse request failed (${response.status})`); }
     const reader = response.body?.getReader();
