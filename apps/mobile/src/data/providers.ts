@@ -43,12 +43,21 @@ export class ApiUnavailableError extends Error {
   }
 }
 
-export function createApiProvider(baseUrl: string, timeoutMs = 8000): DataProvider {
+/** A hosted free-tier API can take about 30s to wake. Only the first lookup, which every launch makes,
+ * gets this allowance, and only when the caller did not choose its own timeout. All other requests keep
+ * the normal deadline. */
+export const COLD_START_DEADLINE_MS = 45_000;
+
+const DEFAULT_DEADLINE_MS = 8000;
+
+export function createApiProvider(baseUrl: string, requestedTimeoutMs?: number): DataProvider {
+  const timeoutMs = requestedTimeoutMs ?? DEFAULT_DEADLINE_MS;
   const base = publicApiBase(baseUrl);
   let sessionId: string | null = null;
   async function request(path: string, body?: unknown): Promise<unknown> {
     if (!base) throw new Error('Set a valid API base URL before using the API provider.');
-    const deadlineMs = path === '/v1/discovery' ? Math.max(timeoutMs, 60_000) : path === '/v1/assistant' ? Math.max(timeoutMs, 20_000) : timeoutMs;
+    const deadlineMs = path === '/v1/discovery' ? Math.max(timeoutMs, 60_000) : path === '/v1/assistant' ? Math.max(timeoutMs, 20_000)
+      : path === '/v1/cities' && requestedTimeoutMs === undefined ? COLD_START_DEADLINE_MS : timeoutMs;
     const controller = new AbortController();
     let timeout: ReturnType<typeof setTimeout> | undefined;
     // Race the whole operation, including body reads. Abort alone is not a deadline
