@@ -217,3 +217,27 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   were generated or claimed; snapshot values remain as captured.
 - Next: D sets EXPO_PUBLIC_API_BASE_URL to the Render URL and verifies the complete
   phone flow plus cold-start Retry. B manually deploys only reviewed main changes.
+
+## Cached Muse publication checkpoint
+
+- Found C's ten real muse-spark-1.3 / space-evidence-v1 records already persisted in
+  ai_features. All matched current source hashes, identities and citation sets. No
+  local META_API_KEY was needed; no new paid/model/provider call was made.
+- Added B's cache-only enrichment job and a prepare-without-publish function. Full
+  C records stay unchanged. Reviewed omissions can only suppress two specific
+  unsupported public claims: no-outlets from few-outlets language, and date-night
+  from brunch-date evidence. Review policy is in server/muse-review-austin-v1.json.
+- Published austin-20261025-muse-v1 in Supabase and generated its normalized fixture:
+  30 original stable places, ten real cached summaries, 34 selected public anonymous
+  citations. Each run reuses ten cache records with zero model calls. Base v1 and
+  its source facts/timestamps remain unchanged. All Wi-Fi/outlet values remain unknown.
+- Checks: six focused review/publication tests; full suite 174/174 across 20 files,
+  workspace typecheck, lint, server build and diff checks pass. Actual app HTTP smoke
+  validated all ten summary details, three recommendations and zero reranking calls.
+- Default campus 15-minute top three remain outside the reviewed summary set. This
+  limitation is explicit; no winner IDs or constraints were altered to force Muse
+  cards into the shortlist. D should test enriched details by stable ID and rehearse
+  the actual chosen filter/origin flow.
+- Next: C/D review and D main merge, then B selects the new artifact in the existing
+  Render service, manually deploys main and validates public responses. Current
+  public server remains on v1 until the merge. Only D may merge main per AGENTS.md.

@@ -414,3 +414,62 @@ After syncing main `8517e69` (including merged PR #7 and D's later mobile fixes)
 the integrated suite passes 164/164 tests across 18 files, plus workspace typecheck,
 lint, server build and whitespace checks. Evidence/cache implementation commit is
 `b3b9fe2`; follow-up PR contains that code and the main sync. D retains main merge.
+
+## Reviewed Muse snapshot — published, awaiting main merge and deployment
+
+Prepared artifact: `fixtures/data/austin-20261025-muse-v1.json`, version
+`austin-20261025-muse-v1`, city `us-tx-austin`, mode `cached`. It contains the same
+30 stable places and ten real cached Muse summaries with 34 selected anonymous
+review citations. The original `austin-20261025-v1` artifact remains unchanged.
+Provider price/rating/count, hours, capture timestamps and crowd fields are unchanged.
+
+C's ten existing `muse-spark-1.3` / `space-evidence-v1` cache records matched the
+current sanitized review hashes, model, prompt and language and passed extraction
+and citation validation. No model credential was needed locally: the operator job
+is cache-only, blocks its model callback, and fails closed on a missing record.
+Each preparation pass produced ten persistent cache hits and zero new model calls;
+no additional SerpApi acquisition was performed.
+
+B reviewed all summaries and cited snippets. `server/muse-review-austin-v1.json`
+records two conservative omissions from the public projection: a report of few
+outlets does not establish no outlets, and brunch-date evidence does not establish
+a night-time tag. The full original extraction records remain untouched in the
+private cache. Every place's Wi-Fi/outlet value remains unknown in this artifact.
+The review can only withhold the listed claims; it cannot fabricate a replacement.
+
+Cache-only operator command (run from server/; do not repeat --publish after success):
+
+```sh
+../node_modules/.bin/tsx src/jobs/enrich-cached-austin.ts \
+  --source=../fixtures/data/austin-20261025-v1.json \
+  --version=austin-20261025-muse-v1 \
+  --review=muse-review-austin-v1.json
+# --publish explicitly publishes the reviewed artifact. This version is already published.
+```
+
+`prepareDataset` separates projection from publication so review runs before the
+immutable write. `publishDataset` remains the existing publication boundary. The
+new job validates ten matching cache records, rewrites only version identities,
+applies C's projector, checks the review omissions, and writes a complete artifact.
+Supabase access uses only SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY. Model and raw
+provider credentials are not accessed by this cache-only job.
+
+Checks: six focused projection/publication tests and all 174 repository tests across
+20 files, workspace typecheck, lint, server build and whitespace checks passed.
+Actual app smoke loaded all ten enriched details with valid contracts and returned
+three recommendations with zero external calls. Source facts and immutable base
+artifact were checked against v1; unsupported amenity values remain unknown.
+
+Important demo limitation: the default campus-origin 15-minute shortlist contains
+three places outside the ten reviewed sources, so those cards still have unknown
+summaries. The ten enriched details work by stable ID. Do not preselect winners,
+change strict filters silently, or claim every place has a summary. D should include
+an enriched detail explicitly in device QA and assess the actual demo path.
+
+The public Render service continues to serve v1 until D merges the reviewed artifact
+PR. Only D merges main. After that merge, B changes the existing service's DATASET_PATH
+to `../fixtures/data/austin-20261025-muse-v1.json`, manually deploys main, and verifies
+health's exact commit, dataset mode/version, all enriched details and recommendations.
+No new service, private runtime keys, new ingestion, or migration is needed. The
+old dataset path remains a rollback option. Do not update the service path before
+the deployed checkout contains the new file.

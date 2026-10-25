@@ -12,8 +12,8 @@ export type IngestionEvidence = {
   extract: (source: ExtractionSource) => Promise<ExtractionResult>;
 };
 
-/** Operator ingestion only. No provider is constructed here; callers authorize any model calls. */
-export async function publishDataset(candidate: Dataset, db: Pick<SupabaseStore, 'call'>, muse?: IngestionEvidence) {
+/** Prepare without publication so B can review the projection before an immutable write. */
+export async function prepareDataset(candidate: Dataset, muse?: IngestionEvidence) {
   const dataset = structuredClone(DatasetSchema.parse(candidate));
   const counts = { ready: 0, unavailable: 0, missingEvidence: 0 };
   if (muse) for (const detail of dataset.details) {
@@ -49,6 +49,12 @@ export async function publishDataset(candidate: Dataset, db: Pick<SupabaseStore,
       counts.ready++;
     } catch { counts.unavailable++; } // Keep unknowns and previous valid facts; never invent a fallback claim.
   }
-  await db.call('rpc/publish_dataset', { dataset: DatasetSchema.parse(dataset) });
   return { dataset, ...counts };
+}
+
+/** Operator ingestion only. No provider is constructed here; callers authorize any model calls. */
+export async function publishDataset(candidate: Dataset, db: Pick<SupabaseStore, 'call'>, muse?: IngestionEvidence) {
+  const prepared = await prepareDataset(candidate, muse);
+  await db.call('rpc/publish_dataset', { dataset: DatasetSchema.parse(prepared.dataset) });
+  return prepared;
 }
