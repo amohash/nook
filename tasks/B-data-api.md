@@ -635,3 +635,37 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
 - Trivial Windows test-path fix: convert the fixture URL with fileURLToPath instead
   of using URL.pathname, which incorrectly produces /C:/... on Windows. Focused
   replay tests13/13 pass on Mac; no Windows machine execution claimed.
+
+
+## User-supplied campus demo notes — October 25 morning
+
+- New explicit user request supplied Lucky Lab, FAC and Life Science Library
+  access/Wi-Fi/outlet/approximate-price/noise/activity/hours notes. Isolated
+  `fix/demo-place-notes` from integration/morning `1385d13`; existing morning
+  checkout preserved. Shared UI coordination posted to issue #3 comment6399053492;
+  A remains morning integration coordinator. No shared scorer/contracts changes.
+- `fixtures/src/demo-place-notes.ts` stores the exact qualitative presentation
+  values with visible team-provided/date/unverified attribution. Lucky Lab and
+  Life Science match captured stable provider identities. FAC matches only exact
+  campus titles within campus bounds; no provider ID/location is invented and FAC
+  is not added to the pinned snapshot. Notes appear when its real detail is loaded.
+- Detail displays supplied facts and neutral team-demo hours, qualitative activity
+  text instead of an invented chart, and restricted-access cautions for FAC/Life
+  Science. Repetitive covered unknown warnings are replaced by a verification
+  reminder. Known closure/full-session warnings remain. Other places unchanged.
+  Provider evidence is separately expandable for annotated places; original
+  facts/source timestamps, data artifacts, ranking and strict filters stay intact.
+  Approximate ~$0+ is not converted to verified free entry, university Wi-Fi is not
+  relabeled unrestricted public internet, and supplied times do not establish a
+  weekly schedule, a dated opening guarantee, numeric crowd or live observation.
+- Actual checks: five focused identity/access/warning/source-preservation cases,
+  full suite534/534 across45files, workspace typecheck, lint and server build pass.
+  Local real-data API+Expo web rendered Lucky Lab and Life Science with all supplied
+  values and attribution; expandable provider evidence worked and retained unknown
+  fields. Browser screenshot capture timed out twice; text/interaction checks passed,
+  so no screenshot/visual or native-phone acceptance claim. FAC mapping unit-tested;
+  a captured FAC detail is still needed for its end-to-end phone check.
+- New PR targets integration/morning for A review/integration. No merge to main,
+  provider/model calls, publication/deployment or stored GPS. Presenter phone must
+  reload updated bundle and verify all three details, notes/provider source boundary,
+  restricted-access warnings, price labels and provider-evidence expansion.

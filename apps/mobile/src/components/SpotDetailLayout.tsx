@@ -26,6 +26,7 @@ export type SpotDetailReadyProps = {
   openStatus: OpenStatusPillProps;
   dataset: DatasetLabelProps;
   typicalCrowd: Spot['typicalCrowd'];
+  activityNote?: { text: string; source: string };
   weekday: number;
   currentHour: number;
   liveObservation?: Spot['liveObservation'];
@@ -88,7 +89,11 @@ export function SpotDetailLayout(props: SpotDetailLayoutProps) {
           </View>
         </View>
         <View style={styles.section}>
-          <BusynessChart typicalCrowd={props.typicalCrowd} weekday={props.weekday} currentHour={props.currentHour} />
+          {props.activityNote ? <>
+            <Text accessibilityRole="header" style={styles.heading}>Typical activity</Text>
+            <Text style={styles.body}>{props.activityNote.text}</Text>
+            <Text style={styles.caption}>{props.activityNote.source} · qualitative note, not a live measurement or seat estimate.</Text>
+          </> : <BusynessChart typicalCrowd={props.typicalCrowd} weekday={props.weekday} currentHour={props.currentHour} />}
           <LiveObservationBadge liveObservation={props.liveObservation ?? null} />
         </View>
         {!!summary && props.vibe && <View style={styles.section}>
