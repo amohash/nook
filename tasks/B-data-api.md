@@ -386,3 +386,25 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
    old artifacts/versions. Deployment is a separate authorized B action after D's
    merge. D must verify source/fetched labels, strict hours, gaps, Now/Later and
    overnight behavior on the physical presenter phone before calling this shipped.
+
+## Place photos — deployed and publicly verified
+
+- PR #15 merged; deployed reviewed main `cc8f7aabebd4d19cba2d5c3fad6bbc21272e02a8`
+  on the existing Render Free service. Deploy `dep-dbeq1inavr4c73bo84u0` succeeded.
+- Saved setting verified after reload:
+  `DATASET_PATH=../fixtures/data/austin-20261025-muse-photos-v1.json`.
+- Public verification at 2026-10-25T06:27:05Z: health reports that exact SHA;
+  snapshot exactly matches the reviewed artifact, including all 30 images.
+  All 30 detail responses exactly match the artifact; all three default
+  recommendations include images and report externalCalls=0.
+- All 30 public image URLs decoded in the collaborative browser with nonzero
+  natural width, zero failures. Ten real Muse summaries remain present. Detail
+  evidence is unchanged (44 total entries, including the 34 review citations).
+- Current merged commit passes 207 tests across 24 files, workspace typecheck,
+  lint and server build. Render install/build/start and health gate passed.
+- No new provider acquisition, model calls, migrations, services or runtime secrets.
+  Phone rendering is still pending D's acceptance: reload Expo Go, open Explore
+  and a detail, and verify photos. Images require network access; existing
+  placeholders remain available on image failure. Render Free cold starts remain.
+- Rollback: restore `DATASET_PATH=../fixtures/data/austin-20261025-muse-v1.json`
+  on the same service and manually deploy reviewed main. Old artifacts are retained.
