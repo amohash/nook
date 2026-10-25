@@ -130,3 +130,12 @@ Next smallest step: record the physical-phone filter-sheet smoke above, then rev
 - Updated the ignored mobile .env.local endpoint and restarted Expo with --clear. No credentials were added to tracked files.
 - Verified: 132 tests, workspace typecheck, lint, server build and diff whitespace check pass. The actual new API returns three recommendations, a valid detail (Trippy Buck Coffee Truck), and zero results for a strict library/free query through the existing validated mobile DataProvider.
 - Browser visual verification was blocked by two snapshot timeouts (`Preview automation snapshot timed out after 15000ms`). Physical-phone reload, real-data list/detail/Back, filter/reset and API error/Retry remain pending. The new UI fix is not merged or phone-verified yet.
+
+
+## A design device preview — October 24, 2026
+
+- Prepared on feat/mobile-design-preview from the preserved API-city fix, in a separate worktree. A’s latest remote commit remains 807b81f, already merged through PR #6.
+- Added a development-only /design-preview route with a screen selector, explicit unsaved/GPS-preview label and return to Explore. It mounts A’s existing Welcome, StudyStyle, Location and Preferences exports without changing A-owned files. Explore has a development-only preview entry. Production redirects the preview route to Explore.
+- This is visual review, not completed onboarding/persistence/GPS integration. A’s preview controls show callback alerts; choices reset when switching preview screens.
+- Physical-phone visual review remains pending.
+- Actual checks: 132 tests, workspace TypeScript, lint, server build, and diff whitespace check passed. Metro returned HTTP 200 for the iOS Expo Router bundle (7.3 MB), including the new preview and A screens. Expo serves the isolated worktree on port 8083; the existing root checkout/server on port 8081 is preserved. Native visual verification remains pending.
