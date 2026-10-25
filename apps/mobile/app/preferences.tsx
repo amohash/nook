@@ -12,6 +12,9 @@ import { CAMPUS_ORIGIN } from '../src/features/explore/origin';
 import { useOrigin } from '../src/features/explore/useOrigin';
 import { theme } from '../src/theme';
 
+// Off by default: redo currently goes through reset(), which also clears saved places.
+const REDO_ONBOARDING_ENABLED = process.env.EXPO_PUBLIC_REDO_ONBOARDING === '1';
+
 function Preferences() {
   const {session, savePreferences, setQuery, reset} = useSession();
   const [draft, setDraft] = useState<PreferenceValues>(() => session!.settings.preferences);
@@ -71,7 +74,7 @@ function Preferences() {
       origin={{origin, busy: location.busy, error: location.error, accuracyMeters: location.accuracyMeters,
         onDevice: () => {void location.useDevice();}, onManual: location.useManual}}
       onSave={() => {void persist(draft, styles, origin);}} onCancel={back}
-      onReset={resetToDefaults} onRedoOnboarding={() => {void redoOnboarding();}}
+      onReset={resetToDefaults} onRedoOnboarding={REDO_ONBOARDING_ENABLED ? () => {void redoOnboarding();} : undefined}
       dirty={dirty} saved={saved} saving={saving} error={error} />
   </View>;
 }
