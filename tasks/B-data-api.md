@@ -117,3 +117,17 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
 - Next: D reviews PR #7 and explicitly selects real city `us-tx-austin` and dataset
   `austin-20261025-v1` in the mobile flow. B sets DATASET_PATH for a reviewed server
   restart and C receives the snapshot for evidence work. Keep demo mode separate.
+
+## Public real-snapshot restart — 2026-10-25 02:54 UTC
+
+- User reported HTTP 530 / Tunnel 1033. Neither API nor cloudflared was running.
+- Restarted built server at code commit `d2a6cca`, explicitly loading the captured
+  real dataset. Started API and tunnel detached from command sessions; caffeinate
+  prevents idle sleep. PID/log paths and active URL are in server/OPERATIONS.md.
+- New base URL: https://jewel-graduated-dealtime-representations.trycloudflare.com
+- Public HTTPS checks: health 200 with expected code commit, list 200 with 30 real
+  cached places, recommendations 200 with three results and zero external calls.
+- Mobile must request `cityId: us-tx-austin` and use actual departure time; the old
+  `demo-austin` query is not valid for this pinned real dataset. D owns mobile setup.
+- Both processes left running for device tests. Phone acceptance remains pending;
+  no extra provider capture, migration or paid operation ran during this restart.

@@ -27,8 +27,8 @@ or a public deployment using real data. Hours/amenities/atmosphere and real Muse
 summaries remain unknown; detail evidence contains provider identity/address facts.
 
 Current hosting choice is B's laptop plus a temporary Cloudflare tunnel. No paid
-host was created by B. The existing running server still serves the labeled demo;
-no automatic switch to real data was performed. After review, start the server with
+host was created by B. B restarted the server on user request with the reviewed real snapshot. To reproduce,
+start the server with
 `DATASET_PATH=../fixtures/data/austin-20261025-v1.json` (server working directory),
 then explicitly select `us-tx-austin` in the mobile query. Do not reuse demo city IDs
 or a demo clock for the real snapshot. D owns the mobile selection and phone check.
@@ -202,16 +202,16 @@ https://www.koyeb.com/docs/reference/instances .
 ## Current local team access
 
 Started on 2026-10-25 UTC from code commit
-`f33b0e61422b2ded58968f8a8cc73a69e0da9102`.
+`d2a6ccaf0be287eee471238b7ed0075af4e25595`.
 The server is running on `0.0.0.0:3001`, with `caffeinate -i` preventing idle sleep
 while the server command runs. Keep the laptop powered, online and its lid open.
 Cloudflared was installed via Homebrew; no login, hosting account or payment was needed.
 
 Current temporary base URL:
-`https://milwaukee-always-ecological-port.trycloudflare.com`
+`https://jewel-graduated-dealtime-representations.trycloudflare.com`
 
 Health URL:
-`https://milwaukee-always-ecological-port.trycloudflare.com/health`
+`https://jewel-graduated-dealtime-representations.trycloudflare.com/health`
 
 LAN alternative (same Wi-Fi; network may block peer access):
 `http://10.150.227.120:3001`
@@ -219,14 +219,17 @@ LAN alternative (same Wi-Fi; network may block peer access):
 Verified from B's laptop: loopback and LAN health; four simultaneous requests through
 public HTTPS all returned 200; HTTPS cities/list/detail returned 200. The user subsequently confirmed phone access after the tunnel restart. Individual
 phone models and Expo Go versions have not been recorded in this B handoff.
-The dataset remains the labeled fictional demo; no provider credits are spent.
+The running dataset is cached `austin-20261025-v1`: 30 real places. The public
+recommendation request uses `cityId: us-tx-austin`; demo-austin is not served by this
+real-data server. Health, list and recommendations returned 200 through the new
+tunnel; the valid recommendation query returned three matches and externalCalls 0.
 
 Each teammate can set these public values in their own `apps/mobile/.env.local`
 (preserve any existing settings; D owns the shared mobile code):
 
 ```dotenv
 EXPO_PUBLIC_DATA_PROVIDER=api
-EXPO_PUBLIC_API_BASE_URL=https://milwaukee-always-ecological-port.trycloudflare.com
+EXPO_PUBLIC_API_BASE_URL=https://jewel-graduated-dealtime-representations.trycloudflare.com
 ```
 
 Restart Expo after editing: `npm run dev:mobile -- --clear` from the repo root.
@@ -240,7 +243,7 @@ To restart after the current processes stop, use two terminals from the repo roo
 ```sh
 # Terminal 1
 npm run build:server
-COMMIT_SHA="$(git rev-parse HEAD)" caffeinate -i npm run start:server
+DATASET_PATH=../fixtures/data/austin-20261025-v1.json COMMIT_SHA="$(git rev-parse HEAD)" caffeinate -i npm run start:server
 ```
 
 ```sh
@@ -248,8 +251,11 @@ COMMIT_SHA="$(git rev-parse HEAD)" caffeinate -i npm run start:server
 cloudflared tunnel --url http://127.0.0.1:3001 --no-autoupdate
 ```
 
-Stop each with Ctrl+C in its owning terminal. The current processes were started in
-T3 command sessions; ask B's agent to stop them before launching duplicates.
+The active processes are detached from command sessions and remain running for phone
+testing. API PID is recorded in `/tmp/nook-api.pid`; tunnel PID is recorded in
+`/tmp/nook-tunnel.pid`. Logs are `/tmp/nook-api.log` and `/tmp/nook-tunnel.log`.
+Check the recorded processes and stop only those specific PIDs before launching
+replacements. Foreground restart commands above stop with Ctrl+C in their terminals.
 A new tunnel gets a new hostname: share it and update each app's base URL.
 Quick Tunnels have no uptime guarantee; they are for development and demo access.
 Reference: https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/ .
