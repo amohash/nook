@@ -1,0 +1,36 @@
+{
+  "clock": "2026-10-25T01:15:00-05:00",
+  "baseQuery": {
+    "schemaVersion": 1,
+    "cityId": "us-tx-austin",
+    "origin": { "lat": 30.2862, "lng": -97.7394, "source": "manual" },
+    "departAt": "2026-10-25T13:00:00-05:00",
+    "sessionMinutes": 60,
+    "categories": [],
+    "maxWalkMinutes": 15,
+    "maxPriceLevel": null,
+    "requireOpenForSession": false,
+    "intent": "study",
+    "groupSize": 1,
+    "targetNoise": 0.15,
+    "targetCrowd": 0.25,
+    "tagWeights": { "study": 1, "quiet": 1 },
+    "amenities": { "wifi": "prefer", "outlets": "prefer" },
+    "access": "any",
+    "limit": 3
+  },
+  "cases": [
+    { "label": "campus-study", "overrides": {} },
+    { "label": "campus-meet-friends", "overrides": {
+      "intent": "friends", "groupSize": 4, "targetNoise": 0.7, "targetCrowd": 0.6,
+      "tagWeights": { "lively": 1, "group_friendly": 1 }
+    } },
+    { "label": "campus-later-session", "overrides": { "departAt": "2026-10-25T19:00:00-05:00", "sessionMinutes": 120 } },
+    { "label": "strict-budget-no-match", "overrides": { "maxPriceLevel": 1 } },
+    { "label": "strict-hours-no-match", "overrides": { "requireOpenForSession": true } },
+    { "label": "strict-wifi-no-match", "overrides": { "amenities": { "wifi": "require", "outlets": "prefer" } } },
+    { "label": "downtown-study-manual-origin", "overrides": {
+      "origin": { "lat": 30.2672, "lng": -97.7431, "source": "manual" }
+    } }
+  ]
+}
