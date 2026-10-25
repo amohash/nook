@@ -1,0 +1,3088 @@
+[
+  {
+    "path": "/city/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/0/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/0/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/0/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/0/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/1/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/1/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/1/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/1/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 450,
+        "endMinute": 870
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 450,
+        "endMinute": 870
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/2/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/2/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/2/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/2/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 2,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 3,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 4,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 5,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/3/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/3/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/3/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/3/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/4/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/4/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/4/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/4/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1020
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/5/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/5/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/5/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/5/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/6/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/6/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/6/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/6/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1380
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1380
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/7/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/7/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/7/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/7/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/8/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/8/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/8/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/8/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/9/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/9/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/9/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/9/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1080
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/10/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/10/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/10/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/10/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/11/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/11/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/11/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/11/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 510,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 510,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/12/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/12/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/12/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/12/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1260
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/13/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/13/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/13/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/13/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 1,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 2,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 3,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 4,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 5,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/14/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/14/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/14/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/14/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1320
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/15/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/15/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/15/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/15/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/16/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/16/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/16/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/16/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/17/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/18/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/18/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/18/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/18/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 540,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/19/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/19/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/19/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/19/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1260
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/20/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/20/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/20/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/20/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 840
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/21/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/21/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/21/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/21/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 2,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 3,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 4,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 5,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/22/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/22/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/22/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/22/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 1,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 2,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 3,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 4,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 5,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 6,
+        "startMinute": 0,
+        "endMinute": 1440
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/23/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/23/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/23/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/23/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 1,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 2,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 3,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 4,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 5,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 6,
+        "startMinute": 0,
+        "endMinute": 1440
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/24/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/25/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/25/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/25/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/25/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 840
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/26/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/26/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/26/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/26/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1320
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/27/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/27/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/27/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/snapshot/spots/27/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 780
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/28/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/28/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/28/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/28/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/snapshot/spots/29/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/snapshot/spots/29/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/snapshot/spots/29/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/snapshot/spots/29/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1020
+      }
+    ]
+  },
+  {
+    "path": "/details/0/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/0/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/0/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/0/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/details/1/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/1/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/1/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/1/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 450,
+        "endMinute": 870
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 450,
+        "endMinute": 870
+      }
+    ]
+  },
+  {
+    "path": "/details/2/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/2/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/2/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/2/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 2,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 3,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 4,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 5,
+        "startMinute": 360,
+        "endMinute": 1110
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/details/3/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/3/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/3/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/3/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/4/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/4/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/4/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/4/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1020
+      }
+    ]
+  },
+  {
+    "path": "/details/5/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/5/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/5/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/5/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/6/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/6/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/6/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/6/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1380
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1380
+      }
+    ]
+  },
+  {
+    "path": "/details/7/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/7/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/7/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/7/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/8/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/8/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/8/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/8/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/details/9/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/9/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/9/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/9/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1080
+      }
+    ]
+  },
+  {
+    "path": "/details/10/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/10/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/10/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/10/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/11/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/11/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/11/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/11/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 510,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 450,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 510,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/12/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/12/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/12/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/12/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1260
+      }
+    ]
+  },
+  {
+    "path": "/details/13/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/13/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/13/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/13/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1080
+      },
+      {
+        "weekday": 1,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 2,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 3,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 4,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 5,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/details/14/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/14/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/14/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/14/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 1320
+      }
+    ]
+  },
+  {
+    "path": "/details/15/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/15/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/15/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/15/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 960
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 960
+      }
+    ]
+  },
+  {
+    "path": "/details/16/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/16/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/16/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/16/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 900
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/17/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/18/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/18/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/18/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/18/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 540,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 540,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/details/19/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/19/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/19/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/19/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1260
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 1260
+      }
+    ]
+  },
+  {
+    "path": "/details/20/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/20/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/20/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/20/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 480,
+        "endMinute": 840
+      }
+    ]
+  },
+  {
+    "path": "/details/21/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/21/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/21/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/21/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 2,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 3,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 4,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 5,
+        "startMinute": 390,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/details/22/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/22/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/22/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/22/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 1,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 2,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 3,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 4,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 5,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 6,
+        "startMinute": 0,
+        "endMinute": 1440
+      }
+    ]
+  },
+  {
+    "path": "/details/23/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/23/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/23/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/23/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 1,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 2,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 3,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 4,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 5,
+        "startMinute": 0,
+        "endMinute": 1440
+      },
+      {
+        "weekday": 6,
+        "startMinute": 0,
+        "endMinute": 1440
+      }
+    ]
+  },
+  {
+    "path": "/details/24/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/25/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/25/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/25/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/25/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 540,
+        "endMinute": 840
+      },
+      {
+        "weekday": 6,
+        "startMinute": 540,
+        "endMinute": 840
+      }
+    ]
+  },
+  {
+    "path": "/details/26/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/26/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/26/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/26/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1320
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1320
+      }
+    ]
+  },
+  {
+    "path": "/details/27/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/27/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/27/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:50:02.611+00:00"
+  },
+  {
+    "path": "/details/27/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 780
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 900
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 900
+      }
+    ]
+  },
+  {
+    "path": "/details/28/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/28/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/28/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/28/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 0,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 1,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 2,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 3,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 4,
+        "startMinute": 420,
+        "endMinute": 840
+      },
+      {
+        "weekday": 5,
+        "startMinute": 420,
+        "endMinute": 1140
+      },
+      {
+        "weekday": 6,
+        "startMinute": 420,
+        "endMinute": 1140
+      }
+    ]
+  },
+  {
+    "path": "/details/29/spot/datasetVersion",
+    "before": "austin-20261025-muse-photos-v1",
+    "after": "austin-20261025-muse-photos-time-v1"
+  },
+  {
+    "path": "/details/29/spot/hoursStatus",
+    "before": "unknown",
+    "after": "known"
+  },
+  {
+    "path": "/details/29/spot/hoursFetchedAt",
+    "before": null,
+    "after": "2026-10-25T02:49:06.296+00:00"
+  },
+  {
+    "path": "/details/29/spot/weeklyHours",
+    "before": [],
+    "after": [
+      {
+        "weekday": 1,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 2,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 3,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 4,
+        "startMinute": 480,
+        "endMinute": 1020
+      },
+      {
+        "weekday": 5,
+        "startMinute": 480,
+        "endMinute": 1020
+      }
+    ]
+  }
+]

@@ -408,3 +408,62 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   placeholders remain available on image failure. Render Free cold starts remain.
 - Rollback: restore `DATASET_PATH=../fixtures/data/austin-20261025-muse-v1.json`
   on the same service and manually deploy reviewed main. Old artifacts are retained.
+
+## B1 cache-only time reconstruction — candidate prepared, not published
+
+- Isolated worktree `/Users/andrewsun/Desktop/nook-cached-time`, branch
+  `feat/cached-time-dataset`, based on remote main `7e67622`. Existing root
+  `package-lock.json` work preserved. Fetch reported a broken T3 checkpoint ref;
+  received main objects were verified against `git ls-remote` and fast-forwarded
+  by exact SHA without altering checkpoint refs or teammates' branches.
+- NEW candidate: `fixtures/data/austin-20261025-muse-photos-time-v1.json`, plus
+  `.diff.json` and `.report.json`. Existing photo artifact remains byte-for-byte
+  unchanged. New candidate is **not published, deployed, merged or phone-verified**.
+- Replay boundary: `reconstructCachedTime(dataset, rows, {version, now})` in
+  `server/src/jobs/reconstruct-cached-time.ts`, returning `{dataset, diff, report}`.
+  Rows contain `request_hash`, `payload`, `fetched_at`. Exact provider place identity
+  required; conflicting supplied secondary identity rejected. ProviderPlaceSchema
+  validates each capture; only normalizeTimeEvidence parses time facts.
+- Replay is pure and never constructs SerpApi/Muse transports or uses seed-austin.
+  Private cache reads use GET-only pagination, including expired rows. Future
+  captures are excluded; stale captures retain original times. Missing/unsupported
+  fields abstain. Conflicting supported fields become unknown; agreeing captures
+  use the oldest original timestamp. Hours resolve as one atomic schedule group;
+  crowd/live resolve independently. No schedule/crowd gaps become zero/closed.
+- Actual dry run at `2026-10-25T06:58:45.067Z`: 15 existing private cache rows,
+  41 exact matched captures, 69 unmatched places ignored; zero invalid rows,
+  identity conflicts, future rows or supported-field conflicts. Known hours 28/30;
+  remaining two unknown. Historical records 0, live text 0, numeric live 0. B1 made
+  zero acquisition/model calls and zero DB writes. Supported capture times range
+  `2026-10-25T02:49:06.296+00:00` through `2026-10-25T02:51:29.056+00:00`;
+  these are original capture times, not refreshed by replay.
+- Only six time fields and city/snapshot/spot dataset-version identities change in
+  both snapshot/detail copies. Independent recursive allowlist rejects every other
+  change. Photos, ten Muse summaries, all citations/evidence, IDs and unrelated
+  source facts/timestamps are preserved. Report contains cache hashes/timestamps,
+  field selections/conflicts and coverage; no raw provider payload/review text.
+- Dry-run usage from `server/` (private env configured locally):
+  `../node_modules/.bin/tsx src/jobs/add-cached-time.ts --source=../fixtures/data/austin-20261025-muse-photos-v1.json --version=austin-20261025-muse-photos-time-v1`
+  Add `--cache-file=/private/path/captures.json` for offline replay without DB;
+  add `--now=<offset-instant>` for repeatable freshness reports and `--output=<new-path>`
+  for a separate candidate. Outputs use exclusive creation and never overwrite.
+- After review and **separate publication authorization**, explicit publication uses
+  the exact reviewed artifact, never a new replay:
+  `../node_modules/.bin/tsx src/jobs/add-cached-time.ts --source=../fixtures/data/austin-20261025-muse-photos-v1.json --version=austin-20261025-muse-photos-time-v1 --publish-reviewed=../fixtures/data/austin-20261025-muse-photos-time-v1.json --review-report=../fixtures/data/austin-20261025-muse-photos-time-v1.json.report.json --confirm-version=austin-20261025-muse-photos-time-v1`
+  Publication checks source/candidate hashes, field allowlist and absence of the
+  target version before the existing immutable publishDataset RPC, with no inference
+  callback. No publication was run. Existing versions remain available; rollback
+  keeps/restores the previously approved photo artifact in DATASET_PATH through a
+  separately authorized deployment. No migration or deployment is needed here.
+- Actual checks: 54 focused replay/parser tests; full suite 346/346 across 30 files;
+  root workspace typecheck, lint, build:server and diff whitespace check passed.
+  Tests cover gaps/zero/null, missing detail evidence, exact/secondary identity,
+  stale/future captures, field conflicts, stable capture order, original offsets,
+  overnight/DST, future live isolation, zero network acquisition, read pagination,
+  preservation allowlist and explicit immutable publication without live writes.
+- Next: D reviews/merges the small PR; B2 may layer coverage on this reviewed B1
+  candidate without changing time/photo/Muse/review projections. B3 owns separately
+  authorized publication/deployment. D still needs physical presenter-phone checks:
+  source/fetch labels, strict-hours eligibility, unknown gaps, Now/Later, overnight,
+  photos/Muse details and recovery. This is a prepared P0 time-evidence correction,
+  not a claim of current crowd/seat availability or shipped phone acceptance.

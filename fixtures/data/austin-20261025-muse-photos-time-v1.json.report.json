@@ -1,0 +1,1092 @@
+{
+  "sourceVersion": "austin-20261025-muse-photos-v1",
+  "version": "austin-20261025-muse-photos-time-v1",
+  "evaluatedAt": "2026-10-25T06:58:45.067Z",
+  "sourceSha256": "3906ec4625acff1aeab8554eb502797a8a69b8518d3e8c2704332ea31e58b0a8",
+  "candidateSha256": "6fadccabbdead78c7d9207c4dcde10ff9f5f4a2a1c376f1ca67ec6cf8df89edf",
+  "providerCalls": 0,
+  "modelCalls": 0,
+  "policy": "Unsupported fields abstain; conflicting supported fields become unknown; oldest agreeing capture retained; future captures excluded; expired captures retain original times.",
+  "counts": {
+    "rows": 15,
+    "invalidRows": 0,
+    "futureRows": 0,
+    "invalidPayloads": 0,
+    "invalidPlaces": 0,
+    "unmatchedPlaces": 69,
+    "identityConflicts": 0,
+    "matchedCaptures": 41
+  },
+  "coverage": {
+    "places": 30,
+    "knownHours": 28,
+    "unknownHours": 2,
+    "typicalRecords": 0,
+    "historicalHours": 0,
+    "historicalNullHours": 0,
+    "unknownTypical": 30,
+    "liveText": 0,
+    "numericLive": 0,
+    "unknownLive": 30,
+    "staleHours": 0,
+    "staleTypical": 0,
+    "staleLive": 0
+  },
+  "places": [
+    {
+      "id": "google:015c68e0a915e02a9fdf8063cfdd51c7",
+      "providerPlaceId": "ChIJ0S8AJAC1RIYRLIa71SkPRXc",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "34b7a4725285bd22c13b3f9d0eb2ade221b361cd6df6de000e0e7be5b7b5eee8",
+              "fetchedAt": "2026-10-25T02:50:03.665+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:1a16d52976d8558f998a3c70e43dda9b",
+      "providerPlaceId": "ChIJe183tCW1RIYRegUwl5jCcx0",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "e77c42e018a561c5df1d9f33a884236ddfb2c046933b2ad9c9f0c1a72b7bf415",
+              "fetchedAt": "2026-10-25T02:50:47.46+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:2731a1dbf4484583e67807f03a509138",
+      "providerPlaceId": "ChIJlcsHDRbKRIYRRve-J-f_w5k",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "a990d7ec780f52ed7da30a721e5e5da841fe1e25ec15827f4d1bb237a2ad7f28",
+              "fetchedAt": "2026-10-25T02:50:48.205+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:29fcab932b4e96d67f306420caf12fcc",
+      "providerPlaceId": "ChIJ_yThvCHLRIYR-tBenU6bNqI",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "45bf68b9dc67aab661eb1040ca55ffd24da1a7a6661649b17a80c9ed1acdfb76",
+              "fetchedAt": "2026-10-25T02:50:50.102+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:354ff6de0271479fd386239af14a4b27",
+      "providerPlaceId": "ChIJu7bSZU61RIYRddhLdzviqCo",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "17d04bce192009a9c5be85e424aba24b07e291f296bfa6f8139cf0a384323717",
+              "fetchedAt": "2026-10-25T02:51:23.864+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:3a52175673db43628a18ba7a2862feda",
+      "providerPlaceId": "ChIJRxLzEtC1RIYRzDQDgt57_1Q",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "538a493fc75b9607a9778621958e4e1f85a33b560e292f36c9d33a4729d4fd9f",
+              "fetchedAt": "2026-10-25T02:51:24.922+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:3e26e91aae047f1b461b18c20f8e0f74",
+      "providerPlaceId": "ChIJAZKGeRS1RIYRebMjcJtuk9A",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "c6c19914a8aaf7c7d5e7974594f9946125323e686335eafae1cbc17eb97abe6e",
+              "fetchedAt": "2026-10-25T02:51:26.162+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:46265cf661e6b0d32c7428170424e5a1",
+      "providerPlaceId": "ChIJe31sfgW1RIYR1xnIts_AVUI",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "50c38900f8cbe2d12c7b54f19e3edc2f8ffca0c83a91363244fcc6b871d8d539",
+              "fetchedAt": "2026-10-25T02:51:27.583+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:469628681071309095718b65891e9efc",
+      "providerPlaceId": "ChIJKxa8FmW1RIYRnDlOJujvQjo",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "743e9ca957d2aeb7c8117e72b6c5a09bb993829b3d557c130a13608506429ec2",
+              "fetchedAt": "2026-10-25T02:51:28.454+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:4d85167a15f92adfb5f1ebbb9d047da3",
+      "providerPlaceId": "ChIJYT7kOnO1RIYRmSNPwVvF1Sw",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "696bfe7f27e75c5dd232972efdab3a043b1d9ab40c298123ac3e427aae5cad99",
+              "fetchedAt": "2026-10-25T02:51:29.056+00:00",
+              "kind": "detail"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:4f9ddf1ff355fe62ed8ac1ac7b16714f",
+      "providerPlaceId": "ChIJ2aN7XRS1RIYRqdAzRUcn5cU",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:5de576b17aa83dc54bffa0421d52986c",
+      "providerPlaceId": "ChIJP8p2kJC1RIYR2qrGoXZtZCk",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:5e41d40d7f5e594816f53b91efe65443",
+      "providerPlaceId": "ChIJ0QbsjcW1RIYRJxQSKO9kl8A",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:6095ffad0fbfff16b2a7478e55e990b6",
+      "providerPlaceId": "ChIJLYzNJQ61RIYRpcqevnY5-gM",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:6db3f19c5f59ba9b447f5a642ba09a5d",
+      "providerPlaceId": "ChIJ92lEduy1RIYRRXWlV1r_mxg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:70181d4f50e20c770310e9e8e65fe794",
+      "providerPlaceId": "ChIJkTM4la61RIYRm51Cg7lRuLg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:702e8f4b0a3444bd56ba9571fb6ebda8",
+      "providerPlaceId": "ChIJCdXHd2G1RIYRvSFgygz_ceg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:792a3fa2fc6580e1f29858af57f74f55",
+      "providerPlaceId": "ChIJoc-uNwC1RIYRa-M22GaGstc",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:83c714a2a3a78c81aae68187cc51f858",
+      "providerPlaceId": "ChIJiX1agbu1RIYR0uhoDl21gJg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:8de76436657dc2fa647590585d3aca91",
+      "providerPlaceId": "ChIJm3f11RnLRIYRvuJG0P8_6bw",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:911ad4ec713d6148fd67234fd28e5bec",
+      "providerPlaceId": "ChIJJ1SOGrj5rlQR1yxHWhGcVzw",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:931c7d46e9adfd462ac4108b80af9a7c",
+      "providerPlaceId": "ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:9c36426b309dec6742b4d64383795498",
+      "providerPlaceId": "ChIJ7agecQG1RIYRmhih01aU_-A",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            },
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:9d007f5c543fd1fb28fe55ef31944e6a",
+      "providerPlaceId": "ChIJDbXf03G1RIYROhj9Cwwv600",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:9d7721e9510e890db945df4d7c68fcbb",
+      "providerPlaceId": "ChIJn1enljO1RIYR-nFUbkouyX8",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:9ece7f335b0f88d89ebb34bb0e518a6f",
+      "providerPlaceId": "ChIJm9iRHQC1RIYRc-11PCyGvRg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:a82571c284ea0ad68ed07f4fe60a2d0f",
+      "providerPlaceId": "ChIJE81a-OC1RIYRJ11PJBlCxNE",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:aec7f6ef01db0393b53d58c929d07180",
+      "providerPlaceId": "ChIJo3ZWsUC1RIYRzyMc5QQR1uY",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+            "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "e3c2ecca06ed30880d0299c718521c6be5c5c6857141a39c58e800a0e2331443",
+              "fetchedAt": "2026-10-25T02:50:02.611+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:baed6f0a977f8202866d8dcf458aba65",
+      "providerPlaceId": "ChIJ_UbNVbC1RIYRTavD-VMmvZA",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    },
+    {
+      "id": "google:beeb8c5a1379778198621bc63122e147",
+      "providerPlaceId": "ChIJbz4l-kK1RIYRElA6U66oEQg",
+      "fields": [
+        {
+          "field": "hours",
+          "status": "supported",
+          "selected": {
+            "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+            "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+            "kind": "listing"
+          },
+          "captures": [
+            {
+              "requestHash": "4b39878402ab66b8814b93ae00d8a98d81418b3843bfe7a503f20966e45773c7",
+              "fetchedAt": "2026-10-25T02:49:06.296+00:00",
+              "kind": "listing"
+            }
+          ]
+        },
+        {
+          "field": "typicalCrowd",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        },
+        {
+          "field": "liveObservation",
+          "status": "unknown",
+          "selected": null,
+          "captures": []
+        }
+      ]
+    }
+  ]
+}
