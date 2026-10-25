@@ -30,7 +30,7 @@ export type ProfileViewProps = {
   countsError?: boolean;
 };
 
-/** Presentational own profile; ProfileScreen supplies live data, SocialPreview supplies labelled test data. */
+/** Presentational own profile; ProfileScreen supplies live data. Previews can pass labelled test data. */
 export function ProfileView({ profile, counts, vibe, savedSpots, onEditProfile, onOpenFollowList, onEditPreferences,
   onOpenSpot, onSignOut, countsError }: ProfileViewProps) {
   const handle = [`@${profile.username}`, profile.major].filter(Boolean).join(' · ');

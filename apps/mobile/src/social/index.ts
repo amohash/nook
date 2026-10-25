@@ -12,6 +12,5 @@ export { FriendsScreen, FriendsView, type FriendsScreenProps, type FriendsViewPr
 export { contactsMatchingEnabled } from './config';
 export { syncSavedSpot } from './savedSync';
 export type { FollowKind, PublicProfile } from './socialApi';
-export { SocialPreview } from './SocialPreview';
 export type { Profile } from './profileApi';
 export { AUTH_ERROR_TEXT, type AuthErrorKind } from './authErrors';
