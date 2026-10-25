@@ -26,8 +26,8 @@ export default function Explore() {
     <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
     <Text style={s.title}>A place for{ '\n' }this moment.</Text>
     <Text style={s.body}>Manual origin · UT Austin campus{ '\n' }Demo clock · Oct 24, 2026, 6:00 PM America/Chicago</Text>
-    <View style={s.banner}><Text style={s.badge}>{response?.mode === 'demo' || !response ? DEMO_LABEL : `${response.mode} dataset`}</Text>
-      <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text></View>
+    <View style={s.banner}><Text style={s.badge}>{response ? response.mode === 'demo' ? DEMO_LABEL : `${response.mode} dataset` : loading ? 'Loading dataset…' : 'Dataset unavailable'}</Text>
+      {response?.mode === 'demo' && <Text style={s.small}>Illustrative locations. No real reviews, Muse output, or seat availability.</Text>}</View>
     <View style={s.row}>
       {(['study', 'friends'] as const).map((intent) => <Pressable key={intent} accessibilityRole="button"
         accessibilityState={{ selected: query.intent === intent }} onPress={() => chooseIntent(intent)}
@@ -39,15 +39,21 @@ export default function Explore() {
         onPress={() => setQuery((q) => ({ ...q, maxPriceLevel: q.maxPriceLevel === 0 ? null : 0 }))}>
         <Text style={s.chipText}>Free only</Text>
       </Pressable>
+      <Pressable accessibilityRole="button" accessibilityState={{ selected: query.categories.includes('cafe') }}
+        style={[s.chip, query.categories.includes('cafe') && s.selected]}
+        onPress={() => setQuery((q) => ({ ...q, categories: q.categories.includes('cafe') ? [] : ['cafe'] }))}>
+        <Text style={s.chipText}>Cafés only</Text>
+      </Pressable>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(createDemoQuery())}><Text style={s.chipText}>Reset</Text></Pressable>
     </View>
-    <Text style={s.section}>{loading ? 'Finding matches…' : `${response?.results.length ?? 0} places for you`}</Text>
+    <Text style={s.section}>{loading ? 'Finding matches…' : error ? 'Places unavailable' : `${response?.results.length ?? 0} places for you`}</Text>
     <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {query.maxPriceLevel === 0 ? 'strict free-only cap' : 'no price cap'}</Text>
     {loading && <ActivityIndicator color="#bbef91" accessibilityLabel="Loading places" style={s.loader} />}
     {error && <View style={s.card}><Text role="alert" style={s.body}>{error}</Text>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable></View>}
     {!loading && response?.results.length === 0 && <View style={s.card}><Text style={s.cardTitle}>No matching places</Text>
-      <Text style={s.body}>Your strict constraints stay in place. Change a filter or reset to explore again.</Text></View>}
+      <Text style={s.body}>Your strict constraints stay in place. Change a filter or reset to explore again.</Text>
+      <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(createDemoQuery())}><Text style={s.chipText}>Reset filters</Text></Pressable></View>}
     {response?.results.map((result, index) => <Link key={result.spotId} href={{ pathname: '/spot/[id]', params: { id: result.spotId } }} asChild>
       <Pressable accessibilityRole="link" style={s.card}>
         <View style={s.topline}><Text style={s.rank}>0{index + 1}</Text><Text style={s.score}>Fit score {Math.round(result.score)}/100</Text></View>
@@ -57,7 +63,7 @@ export default function Explore() {
         <Text style={s.action}>Explore this place →</Text>
       </Pressable>
     </Link>)}
-    <Text style={s.footer}>Ranked among ten known fictional candidates. Walking estimates use straight-line distance with a detour heuristic.</Text>
+    <Text style={s.footer}>{response && `Ranked among ${response.metrics.candidateCount} known ${response.mode === 'demo' ? 'fictional ' : ''}candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
   </ScrollView>;
 }
 

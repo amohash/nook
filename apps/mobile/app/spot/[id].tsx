@@ -1,27 +1,31 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import type { SpotDetail } from '@space/contracts';
 import { provider } from '../../src/data';
+import { PlaceNotFoundError } from '../../src/data/providers';
 
 export default function Detail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
   const [detail, setDetail] = useState<SpotDetail | null>(null);
-  const [loading, setLoading] = useState(true), [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<'missing' | 'unavailable' | null>(null);
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let active = true;
-    setLoading(true); setError(false); setDetail(null);
+    setLoading(true); setError(null); setDetail(null);
     provider.getSpot(id).then((data) => { if (active) setDetail(data); })
-      .catch(() => { if (active) setError(true); }).finally(() => { if (active) setLoading(false); });
+      .catch((cause: unknown) => { if (active) setError(cause instanceof PlaceNotFoundError ? 'missing' : 'unavailable'); })
+      .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [id, attempt]);
   const spot = detail?.spot;
   return <ScrollView contentContainerStyle={s.page}>
     {loading && <ActivityIndicator color="#bbef91" accessibilityLabel="Loading place details" />}
-    {error && <><Text role="alert" style={s.title}>Place unavailable</Text>
-      <Text style={s.body}>This place could not be loaded. Retry or return to the list.</Text>
-      <Pressable accessibilityRole="button" style={s.button} onPress={() => setAttempt((a) => a + 1)}><Text style={s.action}>Retry</Text></Pressable></>}
+    {error && <><Text role="alert" style={s.title}>{error === 'missing' ? 'Place not found' : 'Place unavailable'}</Text>
+      <Text style={s.body}>{error === 'missing' ? 'This place is not in the selected dataset. Return to the list to choose another place.' : 'This place could not be loaded. Retry or return to the list.'}</Text>
+      {error === 'unavailable' && <Pressable accessibilityRole="button" style={s.button} onPress={() => setAttempt((a) => a + 1)}><Text style={s.action}>Retry</Text></Pressable>}</>}
     {spot && <>
       <View style={s.placeholder}><Text style={s.illustration}>S P A C E</Text><Text style={s.body}>Image unavailable · illustrative venue</Text></View>
       <Text style={s.badge}>{spot.datasetMode === 'demo' ? 'DEMO SCENARIO · FICTIONAL VENUE' : `${spot.datasetMode.toUpperCase()} DATASET`}</Text>
@@ -29,6 +33,7 @@ export default function Detail() {
       <View style={s.panel}><Text style={s.heading}>What we know</Text>
         <Text style={s.body}>Price: {spot.priceLevel.value === null ? 'Unknown' : spot.priceLevel.value === 0 ? 'Free (synthetic)' : `${'$'.repeat(spot.priceLevel.value)} (synthetic)`}</Text>
         <Text style={s.body}>Rating: {spot.rating.value === null ? 'Unknown · no real reviews' : spot.rating.value}</Text>
+        <Text style={s.body}>Review count: {spot.reviewCount.value ?? 'Unknown'}</Text>
         <Text style={s.body}>Wi-Fi: {spot.wifi.value ?? 'unknown'} · Outlets: {spot.outlets.value ?? 'unknown'} (synthetic)</Text>
         <Text style={s.body}>Hours: {spot.hoursStatus === 'known' ? 'Synthetic weekly schedule; not verified venue hours' : 'Unknown'}</Text>
         <Text style={s.body}>Timezone: {spot.timezone}</Text>
@@ -40,7 +45,10 @@ export default function Detail() {
       </View>
       <Text style={s.small}>Source: {spot.summary.source}{ '\n' }Observation time: unknown{ '\n' }Fixture timestamp: {spot.fetchedAt}{ '\n' }Dataset: {spot.datasetVersion}</Text>
     </>}
-    <Link href="/" style={s.action}>← Back to places</Link>
+    <Pressable accessibilityRole="button" style={s.button}
+      onPress={() => { if (router.canGoBack()) router.back(); else router.replace('/'); }}>
+      <Text style={s.action}>← Back to places</Text>
+    </Pressable>
   </ScrollView>;
 }
 const s = StyleSheet.create({
