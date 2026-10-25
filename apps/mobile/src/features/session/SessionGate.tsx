@@ -1,11 +1,14 @@
-import { useState, type ReactNode } from 'react';
+import { Fragment, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Redirect, usePathname } from 'expo-router';
+import { recovery } from '../../data';
+import { RecoveryControls } from '../../data/RecoveryControls';
 import { useSession } from '../../data/SessionProvider';
 import { Button, ErrorState, LoadingState } from '../../components';
 import { theme } from '../../theme';
 
 export function SessionGate({children}: {children: ReactNode}) {
+  const {revision} = useSyncExternalStore(recovery.subscribe, recovery.getState, recovery.getState);
   const {session, loading, error, retry, recoverStorage} = useSession();
   const [recovering, setRecovering] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
@@ -14,6 +17,7 @@ export function SessionGate({children}: {children: ReactNode}) {
     {loading ? <LoadingState message="Loading dataset and local preferences…" /> : <>
       <ErrorState title="Dataset or preferences unavailable" message={resetError ?? error ?? 'Please retry.'}
         action={{label: 'Retry', onPress: retry}} />
+      <RecoveryControls expanded />
       <Button label="Reset local settings and retry" variant="outline" busy={recovering} onPress={() => {
         setRecovering(true); setResetError(null);
         void recoverStorage().catch(() => setResetError('Reset unavailable. Restore the API connection and retry.'))
@@ -23,6 +27,6 @@ export function SessionGate({children}: {children: ReactNode}) {
   </View>;
   if (!session.settings.completed && path !== '/onboarding') return <Redirect href="/onboarding" />;
   if (session.settings.completed && path === '/onboarding') return <Redirect href="/(tabs)/map" />;
-  return children;
+  return <Fragment key={revision}>{children}</Fragment>;
 }
 const s = StyleSheet.create({center: {flex: 1, backgroundColor: theme.colors.background, padding: 24, justifyContent: 'center', gap: 16}});
