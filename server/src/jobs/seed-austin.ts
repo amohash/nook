@@ -8,6 +8,7 @@ import { SupabaseStore } from '../data/supabase';
 import { ServiceError } from '../providers/http';
 import { AUSTIN_CITY_ID, deduplicatePlaces, normalizePlace } from '../data/normalize';
 import { DatasetSchema } from '../data/dataset';
+import { publishDataset } from './publish-dataset';
 
 // Operator-only command. Public GET/recommendation routes never instantiate providers.
 async function main() {
@@ -62,7 +63,7 @@ async function main() {
     lng: -97.7394, timezone: 'America/Chicago', mode: 'cached', datasetVersion: version },
   snapshot: { schemaVersion: 1, cityId: AUSTIN_CITY_ID, mode: 'cached', datasetVersion: version, fetchedAt, spots }, details });
   // One-place smoke is a local artifact only. Full snapshot is published atomically.
-  if (!one) await db.call('rpc/publish_dataset', { dataset });
+  if (!one) await publishDataset(dataset, db);
   const output = resolve(`../fixtures/data/${version}${one ? '-one' : ''}.json`);
   await mkdir(dirname(output), { recursive: true });
   await writeFile(`${output}.tmp`, JSON.stringify(dataset, null, 2) + '\n', { mode: 0o600 });

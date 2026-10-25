@@ -5,7 +5,7 @@ private-role checks passed on project `nntbhzrhvqgvmwrmorhe` (`us-east-1`). Real
 Austin snapshot captured: 30 places, ten details, 13 total external attempts under
 the 18-attempt ceiling. Real dataset API smoke passed locally. Presenter-phone
 acceptance of this real snapshot and a hosted/restarted server remain pending.
-GitHub reports PR #7 open; D owns main merge.
+PR #7 is merged. Anonymous-review/cache follow-up is ready for D/C review; D owns main merge.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -131,3 +131,56 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   `demo-austin` query is not valid for this pinned real dataset. D owns mobile setup.
 - Both processes left running for device tests. Phone acceptance remains pending;
   no extra provider capture, migration or paid operation ran during this restart.
+
+## C Muse prerequisites handoff — anonymous cached review evidence
+
+- Implemented only B-owned modules: `server/src/data/review-evidence.ts` and its
+  importer job, `server/src/cache/evidence-cache.ts`, and the pre-publication helper
+  `server/src/jobs/publish-dataset.ts`; seed uses the helper without inference by
+  default. C's extractor/schemas/provider and the recommendation router are unchanged.
+- Imported existing cached reviews into the private `place_evidence` table: ten real
+  places from `austin-20261025-v1`, five anonymous snippets each, 50 total. No paid
+  acquisition or Muse call was made; durable provider attempts remain 13.
+- Each source has snapshot place ID, actual primary category, language `en` (explicit
+  provider-request-locale basis), stable hashed snippet IDs and text <=500 chars.
+  Safe source URLs, all 50 available review timestamps, fetch timestamps and relative
+  date labels remain in the private bundle. No reviewer metadata or review text was
+  added to the repository, mobile bundle or public API in this change.
+- Privacy: author names/IDs removed across the whole batch, contacts redacted before
+  truncation, profile/credential URLs fall back to public Maps links. Live audit found
+  zero known reviewer identity matches. Missing/foreign/malformed source data produces
+  no review evidence; name/address records are never used as review input.
+- Loader: `new SupabaseReviewEvidenceStore(db).get(placeId, 'austin-20261025-v1')`;
+  `.source` matches C's SourceSchema, `.provenance` holds private source metadata.
+  Missing returns undefined. Iterate snapshot IDs to enumerate all ten available sources.
+- Cache: `new SupabaseEvidenceCache(db)` implements C's exact get/set interface,
+  retaining the complete ExtractionRecord and validating source/model/prompt/language
+  key identity. Uses existing private ai_features; no migration was needed. Live
+  persistence across two adapter instances passed with a temporary all-unknown test
+  record, which was deleted. This is adapter validation, not a generated Muse result.
+- Ingestion: `publishDataset(candidate, db, {loadEvidence, extract})` awaits C's
+  extraction, revalidates source identity/citations, applies C's projector to both spot
+  copies and selected public citations, then publishes. Missing evidence, failures or
+  cache-write failure preserve prior facts/unknowns. Default seed has no model callback.
+- Existing v1 snapshot remains immutable/unmodified. Enriched publication requires an
+  agreed new version and explicit authorization for model calls; no inference runs on
+  HTTP recommendation/filter requests.
+- Evidence availability: 20 other places have no cached reviews. No snippets explicitly
+  mention Wi-Fi; one mentions outlets/charging. These are text-availability counts,
+  not amenity assertions. C must abstain unless the full snippet supports a claim.
+- Checks: 12 focused tests; full suite 161/161 across 17 files, typecheck, lint, server
+  build and diff check passed. Live source/store tests and C-compatible adapter
+  round-trip passed. Running phone-test API/tunnel left untouched.
+- Configuration names only: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY; META_API_KEY
+  belongs to C's separately authorized extraction step. Full usage: server/OPERATIONS.md
+  section "Muse handoff". No secret values included.
+- Next smallest step: C loads these sources and supplies authorized validated model
+  extraction; B publishes a separately versioned enriched snapshot after review, and
+  D verifies source labels/claims on the presenter phone. P0 real Muse summaries are
+  not yet implemented/verified by this B handoff.
+
+- Follow-up sync: merged current main `8517e69` after PR #7 merged (`d31e3d3`).
+  D's API-city initialization and design-preview routes are preserved. Re-ran all
+  checks: 164/164 tests across 18 files, workspace typecheck, lint, server build and
+  diff check pass. Evidence/cache implementation commit: `b3b9fe2`; follow-up PR
+  will contain that code and this updated integration record.

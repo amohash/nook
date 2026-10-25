@@ -259,3 +259,108 @@ replacements. Foreground restart commands above stop with Ctrl+C in their termin
 A new tunnel gets a new hostname: share it and update each app's base URL.
 Quick Tunnels have no uptime guarantee; they are for development and demo access.
 Reference: https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/ .
+
+## Muse handoff — anonymous evidence and persistent extraction cache
+
+Dataset identity remains `austin-20261025-v1`, city `us-tx-austin`. Ten cached real
+place details supplied five anonymous review snippets each (50 total). Each has a
+stable hashed evidence ID, maximum 500 characters, a stable snapshot place ID and
+its actual primary category. All 50 review observation timestamps are available.
+Safe public Google review URLs and cache fetch timestamps remain in private
+provenance. Reviewer names/IDs are removed across the batch; emails, phone numbers,
+handles and URLs are redacted from model text before truncation. Unsafe profile or
+credential-bearing links fall back to the place's public Maps URL.
+
+Language is `en` with `languageBasis: provider_request_locale`: the acquisition used
+`hl=en`; these responses do not provide original-review language metadata. This is
+not a language-detection claim. There is no review evidence for the other 20 places.
+A keyword inventory found no explicit Wi-Fi mention and only one snippet mentioning
+outlets/charging. These are evidence-availability observations, not amenity claims;
+C must abstain wherever a snippet does not establish a requested fact.
+
+Private source location: existing `public.place_evidence` rows whose document has
+`kind: anonymous-reviews` and `datasetVersion: austin-20261025-v1`. Full bundles have
+`source` (C's exact SourceSchema) and `provenance` (IDs, safe URLs, observed/fetched
+instants and original date labels). No reviewer metadata or private review bundle
+was committed to the repository or added to public API routes.
+
+Loader (server only; requires configured `SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY`):
+
+```ts
+import { SupabaseStore } from './src/data/supabase';
+import { SupabaseReviewEvidenceStore } from './src/data/review-evidence';
+import { SupabaseEvidenceCache } from './src/cache/evidence-cache';
+
+const db = new SupabaseStore(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+const reviews = new SupabaseReviewEvidenceStore(db);
+const bundle = await reviews.get(placeId, 'austin-20261025-v1');
+// bundle?.source is directly accepted by C's createEvidenceExtractor.
+// Enumerate the snapshot's stable IDs and call get(id, version); undefined means no evidence.
+const cache = new SupabaseEvidenceCache(db); // implements C's EvidenceCache.get/set
+```
+
+`SupabaseEvidenceCache` uses the already-private `ai_features` table, storing C's
+complete ExtractionRecord unchanged in `document`: key, sourceHash, model,
+promptVersion, language, generatedAt and validated output. It validates key digests
+and column/document identity on reads and writes. C's sourceHash already includes
+source.language; the language also remains explicit in the record and cache key.
+It needs no additional schema migration. Tests cover source/model/prompt/language
+isolation and reuse by fresh adapter/extractor instances. A live Supabase round-trip
+using an explicitly test-only, all-unknown record passed; that test row was deleted.
+No real extraction record or Muse result was fabricated.
+
+Ingestion publication boundary: `server/src/jobs/publish-dataset.ts` exports
+`publishDataset(candidate, db, {loadEvidence, extract})`. The seed command uses this
+same publisher without a Muse argument, so default ingestion makes no model call.
+After explicit model-call authorization, C's operator workflow can use:
+
+```ts
+import { createEvidenceExtractor } from './src/ai/extract';
+import { createMuseProvider } from './src/providers/muse';
+import { publishDataset } from './src/jobs/publish-dataset';
+
+const extract = createEvidenceExtractor({
+  complete: createMuseProvider({ apiKey: process.env.META_API_KEY! }),
+  cache,
+});
+await publishDataset(candidate, db, {
+  loadEvidence: (id) => reviews.get(id, 'austin-20261025-v1'),
+  extract,
+});
+```
+
+This runs extraction and validates source hashes, identities, outputs and citations
+**before** publication, projects C's applyExtraction into both spot copies, and
+includes only cited anonymous snippets in public details. Missing evidence,
+validation/extraction failures and failed persistent cache writes preserve prior
+facts/unknowns. The existing v1 dataset is immutable: an enriched candidate needs a
+separately agreed new version across city/snapshot/spots. Do not overwrite v1 or
+rerun paid capture merely to enrich it. Recommendation handlers and filter changes
+never invoke this publisher or extractor.
+
+Reproducible review import (no SerpApi/Muse acquisition; existing private cache only):
+
+```sh
+# Run from server/. Checks the source file matches the published immutable dataset.
+npx tsx src/jobs/import-review-evidence.ts --dataset=../fixtures/data/austin-20261025-v1.json
+```
+
+Only configuration names are needed for handoff: `SUPABASE_URL`,
+`SUPABASE_SERVICE_ROLE_KEY`; C's separately authorized model step additionally uses
+`META_API_KEY`. Provider attempts remain 13; this handoff made zero paid acquisition
+or model calls. The published snapshot and running server were not replaced with
+inferences. Do not claim completed real Muse summaries before C runs and verifies
+the authorized extraction step.
+
+Validation for this handoff: 12 focused evidence/cache/publication tests; full suite
+161/161 across 17 files; workspace typecheck, lint, server build and whitespace check
+passed. Live private-store verification read ten bundles/50 bounded snippets and
+confirmed zero known reviewer-name/ID matches. Original observation times were
+present on all 50 snippets. The temporary extraction-cache test used an all-unknown,
+explicitly test-only record and was removed; it was not a real Muse extraction.
+
+After syncing main `8517e69` (including merged PR #7 and D's later mobile fixes),
+the integrated suite passes 164/164 tests across 18 files, plus workspace typecheck,
+lint, server build and whitespace checks. Evidence/cache implementation commit is
+`b3b9fe2`; follow-up PR contains that code and the main sync. D retains main merge.
