@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Redirect, usePathname } from 'expo-router';
 import { recovery } from '../../data';
 import { RecoveryControls } from '../../data/RecoveryControls';
@@ -21,7 +21,7 @@ export function SessionGate({children}: {children: ReactNode}) {
     const timer = setTimeout(() => setSlowLoad(true), SLOW_LOAD_NOTICE_MS);
     return () => clearTimeout(timer);
   }, [loading]);
-  if (loading || !session) return <View style={s.center}>
+  if (loading || !session) return <ScrollView contentContainerStyle={s.center} contentInsetAdjustmentBehavior="automatic">
     {loading ? <LoadingState message={slowLoad ? 'Waking the server… the first load can take up to a minute.' : 'Loading dataset and local preferences…'} /> : <>
       <ErrorState title="Dataset or preferences unavailable" message={resetError ?? error ?? 'Please retry.'}
         action={{label: 'Retry', onPress: retry}} />
@@ -32,9 +32,9 @@ export function SessionGate({children}: {children: ReactNode}) {
           .finally(() => setRecovering(false));
       }} />
     </>}
-  </View>;
+  </ScrollView>;
   if (!session.settings.completed && path !== '/onboarding') return <Redirect href="/onboarding" />;
   if (session.settings.completed && path === '/onboarding') return <Redirect href="/(tabs)/map" />;
   return <Fragment key={revision}>{children}</Fragment>;
 }
-const s = StyleSheet.create({center: {flex: 1, backgroundColor: theme.colors.background, padding: 24, justifyContent: 'center', gap: 16}});
+const s = StyleSheet.create({center: {flexGrow: 1, backgroundColor: theme.colors.background, padding: 24, justifyContent: 'center', gap: 16}});

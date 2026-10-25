@@ -1,0 +1,1415 @@
+{
+  "city": {
+    "lat": 30.2862,
+    "lng": -97.7394,
+    "id": "us-tx-austin",
+    "name": "UT Austin study collection",
+    "timezone": "America/Chicago",
+    "mode": "cached",
+    "datasetVersion": "ut-austin-study-20261025-v1"
+  },
+  "snapshot": {
+    "schemaVersion": 1,
+    "cityId": "us-tx-austin",
+    "mode": "cached",
+    "datasetVersion": "ut-austin-study-20261025-v1",
+    "fetchedAt": "2026-10-25T16:16:31.322Z",
+    "spots": [
+      {
+        "id": "google:5c506312cc47df678c362d392f4c8998",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJgQyLP521RIYRKHaSz5R-17Q",
+        "providerDataId": "0x8644b59d3f8b0c81:0xb4d77e94cf927628",
+        "name": "Peter T. Flawn Academic Center (FAC)",
+        "categories": [
+          "building"
+        ],
+        "lat": 30.2861439,
+        "lng": -97.7403259,
+        "timezone": "America/Chicago",
+        "address": "2304 Whitis Ave, Austin, TX 78705",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": 0,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "rating": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "reviewCount": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "noise": {
+          "value": 0.15,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "no",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1,
+            "quiet": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=zfyPCWNFXhrdHj-ePG9-3A&cb_client=search.gws-prod.grass&w=86&h=86&yaw=206.40523&pitch=0&thumbfov=100",
+          "attribution": "Google Street View via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 480,
+              "endMinute": 1080
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      {
+        "id": "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJgV2CQJ21RIYReuasCr8k6pE",
+        "providerDataId": "0x8644b59d40825d81:0x91ea24bf0aace67a",
+        "name": "Life Science Library",
+        "categories": [
+          "library"
+        ],
+        "lat": 30.2862667,
+        "lng": -97.7391068,
+        "timezone": "America/Chicago",
+        "address": "Main Building, 110 Inner Campus Drive, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": 0,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "rating": {
+          "value": 4.7,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "reviewCount": {
+          "value": 15,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "noise": {
+          "value": 0.15,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "no",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1,
+            "quiet": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcDyTQ_oNY51xBuJrvFob03uD8R6UCus606U6HuKM9REg7fMWLfhk72caeHr5oslKTsz3j8bdSH4IwWlc7Ez4sp5Vxb1XBNwKqrb8YOy132etOp2qRoKBqNXFl_F4Gr2pA8RrPp=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 540,
+              "endMinute": 1080
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      {
+        "id": "google:931c7d46e9adfd462ac4108b80af9a7c",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+        "providerDataId": "0x8644b5780be05b2b:0x4486f4e3f6b320b1",
+        "name": "Lucky Lab Coffee Co.",
+        "categories": [
+          "cafe"
+        ],
+        "lat": 30.2885615,
+        "lng": -97.7420686,
+        "timezone": "America/Chicago",
+        "address": "2421 San Antonio St, Austin, TX 78705",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0
+        },
+        "rating": {
+          "value": 4.4,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "reviewCount": {
+          "value": 651,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "noise": {
+          "value": 0.4,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfJY8yEx6u6wfE-w5pIPv-GG6XaxTiG9IHN445MKC5u_3syEegsSACVmATZQaADfApYZKegRTiSAdH_7u52QvU3ApW4G_pkGMIy0Lc-sIgOkwo7RCZE28DQQRgLMfLiuTRZqtsZNQ=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 390,
+              "endMinute": 1020
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      {
+        "id": "google:2025d164954e373d589e0adfea06fc40",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJvUZC33e1RIYR9vcE4x18F7c",
+        "providerDataId": "0x8644b577df4246bd:0xb7177c1de304f7f6",
+        "name": "Texas Union",
+        "categories": [
+          "student union"
+        ],
+        "lat": 30.2866608,
+        "lng": -97.7411635,
+        "timezone": "America/Chicago",
+        "address": "2308 Whitis Ave, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "rating": {
+          "value": 4.7,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "reviewCount": {
+          "value": 132,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdD0kNJIHTOgCoVvNi5WK9tY7ZxMczmBPxk95MyetlKYTJlTfAGEvxTNI8E76fOE_MYcSHGoJ_7HhY8LWyWG69NfGkUrE15BKDNFo2r-KmACXGKCEeJbrrfIQcK0WwYJHabQyf6ZA=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:13:53.02+00:00",
+        "weeklyHours": [
+          {
+            "weekday": 0,
+            "startMinute": 720,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 1,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 2,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 3,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 4,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 5,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 6,
+            "startMinute": 720,
+            "endMinute": 1380
+          }
+        ],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      {
+        "id": "google:d7f8ddca261959bba9cf715ad5d6e84d",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJf7vhapy1RIYRjjjR8husUdI",
+        "providerDataId": "0x8644b59c6ae1bb7f:0xd251ac1bf2d1388e",
+        "name": "Perry-Castañeda Library",
+        "categories": [
+          "library"
+        ],
+        "lat": 30.2826575,
+        "lng": -97.73820789999999,
+        "timezone": "America/Chicago",
+        "address": "101 E 21st St, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "rating": {
+          "value": 4.5,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "reviewCount": {
+          "value": 175,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLe5VXNT21dA-EOxoYLCDtfjWd3awEwTixguqG3DUnQJaUj__NqEKKNp0F0nJxV29DqxE74Qyirkly1pscFVSkfT9iV6yA1pFVATYPSNrMlFf1KWQCeBnFZgCzI6pGitAn3fNTI=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "weeklyHours": [
+          {
+            "weekday": 0,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 1,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 2,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 3,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 4,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 5,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 6,
+            "startMinute": 420,
+            "endMinute": 1200
+          }
+        ],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      }
+    ]
+  },
+  "details": [
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:5c506312cc47df678c362d392f4c8998",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJgQyLP521RIYRKHaSz5R-17Q",
+        "providerDataId": "0x8644b59d3f8b0c81:0xb4d77e94cf927628",
+        "name": "Peter T. Flawn Academic Center (FAC)",
+        "categories": [
+          "building"
+        ],
+        "lat": 30.2861439,
+        "lng": -97.7403259,
+        "timezone": "America/Chicago",
+        "address": "2304 Whitis Ave, Austin, TX 78705",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": 0,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "rating": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "reviewCount": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "noise": {
+          "value": 0.15,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:51.405+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "no",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1,
+            "quiet": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=zfyPCWNFXhrdHj-ePG9-3A&cb_client=search.gws-prod.grass&w=86&h=86&yaw=206.40523&pitch=0&thumbfov=100",
+          "attribution": "Google Street View via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Peter%20T.%20Flawn%20Academic%20Center&query_place_id=ChIJgQyLP521RIYRKHaSz5R-17Q",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 480,
+              "endMinute": 1080
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": [
+        {
+          "id": "team:public-access",
+          "text": "Public access: No",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:wi-fi",
+          "text": "Wi-Fi: University Wi-Fi available",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:outlets",
+          "text": "Outlets: Abundant",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:price",
+          "text": "Price: About $0+",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:noise",
+          "text": "Noise: Low",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:typical-activity",
+          "text": "Typical activity: Moderately busy · team estimate; no hourly measurements",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:team-provided-hours",
+          "text": "Team-provided hours: 8:00 am–6:00 pm",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:scope",
+          "text": "Team-provided notes for the October 25 demo; access and hours have not been independently verified. No recurring weekly schedule or numeric crowd history is inferred.",
+          "sourceUrl": null
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:2e196e9ceed9904a9c6e0a9ee6e0e20f",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJgV2CQJ21RIYReuasCr8k6pE",
+        "providerDataId": "0x8644b59d40825d81:0x91ea24bf0aace67a",
+        "name": "Life Science Library",
+        "categories": [
+          "library"
+        ],
+        "lat": 30.2862667,
+        "lng": -97.7391068,
+        "timezone": "America/Chicago",
+        "address": "Main Building, 110 Inner Campus Drive, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": 0,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "rating": {
+          "value": 4.7,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "reviewCount": {
+          "value": 15,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "noise": {
+          "value": 0.15,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "no",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1,
+            "quiet": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcDyTQ_oNY51xBuJrvFob03uD8R6UCus606U6HuKM9REg7fMWLfhk72caeHr5oslKTsz3j8bdSH4IwWlc7Ez4sp5Vxb1XBNwKqrb8YOy132etOp2qRoKBqNXFl_F4Gr2pA8RrPp=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Life%20Science%20Library&query_place_id=ChIJgV2CQJ21RIYReuasCr8k6pE",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 540,
+              "endMinute": 1080
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": [
+        {
+          "id": "team:public-access",
+          "text": "Public access: No",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:wi-fi",
+          "text": "Wi-Fi: University Wi-Fi available",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:outlets",
+          "text": "Outlets: Abundant",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:price",
+          "text": "Price: About $0+",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:noise",
+          "text": "Noise: Low",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:typical-activity",
+          "text": "Typical activity: Moderately busy · team estimate; no hourly measurements",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:team-provided-hours",
+          "text": "Team-provided hours: 9:00 am–6:00 pm",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:scope",
+          "text": "Team-provided notes for the October 25 demo; access and hours have not been independently verified. No recurring weekly schedule or numeric crowd history is inferred.",
+          "sourceUrl": null
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:931c7d46e9adfd462ac4108b80af9a7c",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+        "providerDataId": "0x8644b5780be05b2b:0x4486f4e3f6b320b1",
+        "name": "Lucky Lab Coffee Co.",
+        "categories": [
+          "cafe"
+        ],
+        "lat": 30.2885615,
+        "lng": -97.7420686,
+        "timezone": "America/Chicago",
+        "address": "2421 San Antonio St, Austin, TX 78705",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0
+        },
+        "rating": {
+          "value": 4.4,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "reviewCount": {
+          "value": 651,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "noise": {
+          "value": 0.4,
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:44.513+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ"
+        },
+        "wifi": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "outlets": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "publicAccess": {
+          "value": "yes",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "tags": {
+          "value": {
+            "study": 1
+          },
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "summary": {
+          "value": "Team-provided campus study notes. Typical activity: moderately busy (qualitative estimate, not live occupancy). Confirm access and hours before visiting.",
+          "source": "curated",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:16:31.322Z",
+          "confidence": 0.7
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfJY8yEx6u6wfE-w5pIPv-GG6XaxTiG9IHN445MKC5u_3syEegsSACVmATZQaADfApYZKegRTiSAdH_7u52QvU3ApW4G_pkGMIy0Lc-sIgOkwo7RCZE28DQQRgLMfLiuTRZqtsZNQ=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Lucky%20Lab%20Coffee%20Co.&query_place_id=ChIJK1vgC3i1RIYRsSCz9uP0hkQ",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:16:31.322Z",
+        "weeklyHours": [],
+        "hoursExceptions": {
+          "2026-10-25": [
+            {
+              "startMinute": 390,
+              "endMinute": 1020
+            }
+          ]
+        },
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": [
+        {
+          "id": "team:public-access",
+          "text": "Public access: Yes",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:wi-fi",
+          "text": "Wi-Fi: University Wi-Fi available",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:outlets",
+          "text": "Outlets: Sufficient",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:price",
+          "text": "Price: About $10+",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:noise",
+          "text": "Noise: Medium",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:typical-activity",
+          "text": "Typical activity: Moderately busy · team estimate; no hourly measurements",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:team-provided-hours",
+          "text": "Team-provided hours: 6:30 am–5:00 pm",
+          "sourceUrl": null
+        },
+        {
+          "id": "team:scope",
+          "text": "Team-provided notes for the October 25 demo; access and hours have not been independently verified. No recurring weekly schedule or numeric crowd history is inferred.",
+          "sourceUrl": null
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:2025d164954e373d589e0adfea06fc40",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJvUZC33e1RIYR9vcE4x18F7c",
+        "providerDataId": "0x8644b577df4246bd:0xb7177c1de304f7f6",
+        "name": "Texas Union",
+        "categories": [
+          "student union"
+        ],
+        "lat": 30.2866608,
+        "lng": -97.7411635,
+        "timezone": "America/Chicago",
+        "address": "2308 Whitis Ave, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "rating": {
+          "value": 4.7,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "reviewCount": {
+          "value": 132,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T16:13:53.02+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c"
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdD0kNJIHTOgCoVvNi5WK9tY7ZxMczmBPxk95MyetlKYTJlTfAGEvxTNI8E76fOE_MYcSHGoJ_7HhY8LWyWG69NfGkUrE15BKDNFo2r-KmACXGKCEeJbrrfIQcK0WwYJHabQyf6ZA=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Texas%20Union&query_place_id=ChIJvUZC33e1RIYR9vcE4x18F7c",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T16:13:53.02+00:00",
+        "weeklyHours": [
+          {
+            "weekday": 0,
+            "startMinute": 720,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 1,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 2,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 3,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 4,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 5,
+            "startMinute": 420,
+            "endMinute": 1380
+          },
+          {
+            "weekday": 6,
+            "startMinute": 720,
+            "endMinute": 1380
+          }
+        ],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": []
+    },
+    {
+      "schemaVersion": 1,
+      "spot": {
+        "id": "google:d7f8ddca261959bba9cf715ad5d6e84d",
+        "cityId": "us-tx-austin",
+        "providerPlaceId": "ChIJf7vhapy1RIYRjjjR8husUdI",
+        "providerDataId": "0x8644b59c6ae1bb7f:0xd251ac1bf2d1388e",
+        "name": "Perry-Castañeda Library",
+        "categories": [
+          "library"
+        ],
+        "lat": 30.2826575,
+        "lng": -97.73820789999999,
+        "timezone": "America/Chicago",
+        "address": "101 E 21st St, Austin, TX 78712",
+        "datasetMode": "cached",
+        "datasetVersion": "ut-austin-study-20261025-v1",
+        "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "status": "unknown",
+        "priceLevel": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "rating": {
+          "value": 4.5,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "reviewCount": {
+          "value": 175,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "noise": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "groupFriendly": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "wifi": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "outlets": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "publicAccess": {
+          "value": "unknown",
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0.8,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "tags": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "summary": {
+          "value": null,
+          "source": "serpapi",
+          "observedAt": null,
+          "fetchedAt": "2026-10-25T10:47:42.046+00:00",
+          "confidence": 0,
+          "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI"
+        },
+        "image": {
+          "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLe5VXNT21dA-EOxoYLCDtfjWd3awEwTixguqG3DUnQJaUj__NqEKKNp0F0nJxV29DqxE74Qyirkly1pscFVSkfT9iV6yA1pFVATYPSNrMlFf1KWQCeBnFZgCzI6pGitAn3fNTI=w1000-h1000-c-n",
+          "attribution": "Google Maps via SerpApi"
+        },
+        "publicPlaceUrl": "https://www.google.com/maps/search/?api=1&query=Perry-Casta%C3%B1eda%20Library&query_place_id=ChIJf7vhapy1RIYRjjjR8husUdI",
+        "hoursStatus": "known",
+        "hoursFetchedAt": "2026-10-25T10:47:42.046+00:00",
+        "weeklyHours": [
+          {
+            "weekday": 0,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 1,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 2,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 3,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 4,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 5,
+            "startMinute": 420,
+            "endMinute": 1200
+          },
+          {
+            "weekday": 6,
+            "startMinute": 420,
+            "endMinute": 1200
+          }
+        ],
+        "hoursExceptions": {},
+        "typicalCrowd": null,
+        "liveObservation": null
+      },
+      "evidence": []
+    }
+  ]
+}

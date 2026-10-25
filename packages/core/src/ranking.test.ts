@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createDemoQuery, DEMO_NOW, snapshot } from '@space/fixtures';
 import type { Query, Spot } from '@space/contracts';
 import { coversSession, rankSpots, type ScoreDiagnostic } from './index';
@@ -47,7 +47,7 @@ describe('strict eligibility', () => {
   });
   it('returns no matches honestly', () => {
     const result = rankSpots(snapshot.spots, createDemoQuery({ categories: ['nonexistent'] }), clock);
-    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(10);
+    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(snapshot.spots.length);
   });
 });
 
@@ -78,6 +78,17 @@ describe('timezones and opening intervals', () => {
 });
 
 describe('deterministic scoring', () => {
+  it('preserves arrival-hour crowd scoring when Hermes labels weekday text as literal', () => {
+    const spot = base();
+    spot.typicalCrowd = {source: 'synthetic', fetchedAt: DEMO_NOW, entries: [{weekday: 6, hour: 18, value: 0.2}]};
+    const expected = rank(spot).results;
+    const original = Intl.DateTimeFormat.prototype.formatToParts;
+    const parts = vi.spyOn(Intl.DateTimeFormat.prototype, 'formatToParts').mockImplementation(function (this: Intl.DateTimeFormat, date) {
+      return original.call(this, date).map((part) => part.type === 'weekday' ? {...part, type: 'literal' as const} : part);
+    });
+    try {expect(rank(spot).results).toEqual(expected);}
+    finally {parts.mockRestore();}
+  });
   it('reports exact normalized score components only for eligible candidates without changing results', () => {
     const diagnostics: ScoreDiagnostic[] = [];
     const query = createDemoQuery({ tagWeights: {}, amenities: { wifi: 'ignore', outlets: 'ignore' }, maxPriceLevel: 1 });

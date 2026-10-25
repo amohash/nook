@@ -9,7 +9,11 @@ import type { FilterChipRowProps } from './FilterChipRow';
 import type { MapListToggleProps } from './MapListToggle';
 import type { SearchBarProps } from './SearchBar';
 import { MapLegend } from './MapPin';
-import { sheetDestination, sheetHeights, type ExploreSheetPosition } from './exploreSheet';
+import { rubberBand, sheetDestination, sheetHeights, type ExploreSheetPosition } from './exploreSheet';
+
+const BODY_FADE_DISTANCE = 90;
+const BUTTON_FADE_DISTANCE = 48;
+const BUTTON_GAP = 12;
 
 export type ExploreLayoutProps = {
   /** Fill the screen with D's map. The parent must not inset this layout at the top. */
@@ -19,6 +23,8 @@ export type ExploreLayoutProps = {
   /** D supplies a bounded FlatList/ScrollView, including loading/error/empty states. */
   children: ReactNode;
   search: SearchBarProps;
+  activeTab?: 'places' | 'muse';
+  onTabChange?: (tab: 'places' | 'muse') => void;
   filters: FilterChipRowProps;
   title: string;
   dataset: DatasetLabelProps;
@@ -31,6 +37,8 @@ export type ExploreLayoutProps = {
   onRecenter?: () => void;
   sheetPosition?: ExploreSheetPosition;
   onSheetPositionChange?: (position: ExploreSheetPosition) => void;
+  /** Space the map should keep clear: the controls above it and the peeking sheet below it. */
+  onMapInsetsChange?: (insets: {top: number; bottom: number}) => void;
   /** Legacy props remain source-compatible; there is no Map/List toggle or timestamp line. */
   mode?: MapListToggleProps['value'];
   onModeChange?: MapListToggleProps['onChange'];
@@ -41,8 +49,8 @@ export type ExploreLayoutProps = {
 
 /** Presentation/gestures only: D owns map rendering, results, controls and navigation. */
 export function ExploreLayout({ mapSlot, map, children, search, filters, title, dataset,
-  timeLabel = 'Now', onTimePress, originLabel = 'UT Austin', onOriginPress, avatar, onAvatarPress,
-  onRecenter, sheetPosition, onSheetPositionChange, mode, topAccessory }: ExploreLayoutProps) {
+  activeTab = 'places', onTabChange, timeLabel = 'Now', onTimePress, originLabel = 'UT Austin', onOriginPress, avatar, onAvatarPress,
+  onRecenter, sheetPosition, onSheetPositionChange, onMapInsetsChange, mode, subtitle, topAccessory }: ExploreLayoutProps) {
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
   const [height, setHeight] = useState(window.height);
@@ -51,46 +59,65 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
   const position = sheetPosition ?? localPosition;
   const [legendOpen, setLegendOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const sizes = useMemo(() => sheetHeights(height, headerHeight, insets.bottom), [height, headerHeight, insets.bottom]);
-  const sheetHeight = useRef(new Animated.Value(sizes[position])).current;
-  const currentHeight = useRef(sizes[position]);
-  const dragStart = useRef(sizes[position]);
+  const [overlayHeight, setOverlayHeight] = useState(0);
+  // The sheet is one fixed-size layer; translateY slides it, so the drag never triggers layout.
+  const sizes = useMemo(() => sheetHeights(height, headerHeight, 0, overlayHeight > 0 ? overlayHeight : undefined),
+    [height, headerHeight, overlayHeight]);
+  const hiddenAt = useCallback((next: ExploreSheetPosition) => sizes.expanded - sizes[next], [sizes]);
+  const peekY = hiddenAt('peek');
+  const sheetY = useRef(new Animated.Value(hiddenAt(position))).current;
+  const currentY = useRef(hiddenAt(position));
+  const dragStart = useRef(hiddenAt(position));
+  const isMeasured = useRef(false);
   useEffect(() => {
-    const listener = sheetHeight.addListener(({value}) => {currentHeight.current = value;});
-    return () => sheetHeight.removeListener(listener);
-  }, [sheetHeight]);
+    const listener = sheetY.addListener(({value}) => {currentY.current = value;});
+    return () => sheetY.removeListener(listener);
+  }, [sheetY]);
   useEffect(() => {
     let active = true;
     void AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {if (active) setReduceMotion(enabled);});
     const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
     return () => {active = false; subscription.remove();};
   }, []);
-  const animateTo = useCallback((next: ExploreSheetPosition) => {
-    sheetHeight.stopAnimation();
-    if (reduceMotion) sheetHeight.setValue(sizes[next]);
-    else Animated.spring(sheetHeight, {toValue: sizes[next], useNativeDriver: false,
-      tension: 100, friction: 22, overshootClamping: true}).start();
-  }, [sheetHeight, sizes, reduceMotion]);
-  useEffect(() => {animateTo(position); return () => sheetHeight.stopAnimation();}, [animateTo, position, sheetHeight]);
-  const settle = useCallback((next: ExploreSheetPosition) => {
+  const animateTo = useCallback((next: ExploreSheetPosition, velocity = 0) => {
+    sheetY.stopAnimation();
+    if (reduceMotion) sheetY.setValue(hiddenAt(next));
+    else Animated.spring(sheetY, {toValue: hiddenAt(next), velocity, useNativeDriver: true,
+      stiffness: 260, damping: 30, mass: 1, overshootClamping: true}).start();
+  }, [sheetY, hiddenAt, reduceMotion]);
+  useEffect(() => {
+    const isReady = headerHeight > 0 && overlayHeight > 0;
+    // Layout measurements arrive after mount: snap to them silently, then animate real changes.
+    if (isReady && isMeasured.current) animateTo(position);
+    else {sheetY.stopAnimation(); sheetY.setValue(hiddenAt(position)); isMeasured.current = isReady;}
+    return () => sheetY.stopAnimation();
+  }, [animateTo, hiddenAt, headerHeight, overlayHeight, position, sheetY]);
+  useEffect(() => {
+    if (headerHeight > 0 && overlayHeight > 0) onMapInsetsChange?.({top: overlayHeight, bottom: sizes.peek});
+  }, [headerHeight, overlayHeight, onMapInsetsChange, sizes.peek]);
+  const settle = useCallback((next: ExploreSheetPosition, velocity = 0) => {
     if (sheetPosition === undefined) setLocalPosition(next);
     if (next !== position) onSheetPositionChange?.(next);
     // Controlled parents may decline a change; their prop stays authoritative.
-    animateTo(sheetPosition === undefined ? next : sheetPosition);
+    animateTo(next, velocity);
   }, [animateTo, onSheetPositionChange, position, sheetPosition]);
   const pan = useMemo(() => PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 6 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-    onPanResponderGrant: () => {sheetHeight.stopAnimation(); dragStart.current = currentHeight.current;},
-    onPanResponderMove: (_, gesture) => sheetHeight.setValue(Math.max(sizes.peek, Math.min(sizes.expanded, dragStart.current - gesture.dy))),
-    onPanResponderRelease: (_, gesture) => settle(sheetDestination(currentHeight.current, gesture.vy, sizes)),
+    onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 4 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
+    onPanResponderGrant: () => {sheetY.stopAnimation(); dragStart.current = currentY.current;},
+    onPanResponderMove: (_, gesture) => sheetY.setValue(rubberBand(dragStart.current + gesture.dy, 0, peekY)),
+    onPanResponderRelease: (_, gesture) => settle(sheetDestination(sizes.expanded - currentY.current, gesture.vy, sizes), gesture.vy),
     onPanResponderTerminate: () => animateTo(position),
-  }), [animateTo, position, settle, sheetHeight, sizes]);
+  }), [animateTo, peekY, position, settle, sheetY, sizes]);
+  const fadeStart = Math.max(0, peekY - BODY_FADE_DISTANCE);
+  const bodyOpacity = sheetY.interpolate({inputRange: [fadeStart, Math.max(peekY, fadeStart + 1)], outputRange: [1, 0], extrapolate: 'clamp'});
+  const buttonsY = Animated.add(sheetY, -(sizes.expanded + BUTTON_GAP));
+  const buttonsOpacity = sheetY.interpolate({inputRange: [0, BUTTON_FADE_DISTANCE], outputRange: [0, 1], extrapolate: 'clamp'});
   const count = Number.isFinite(filters.filterCount) ? Math.max(0, Math.floor(filters.filterCount)) : 0;
   const filtersChip = filtersChipLabel(count);
-  const toggleSheet = () => settle(position === 'peek' ? 'expanded' : 'peek');
   return <View style={styles.page} onLayout={(event) => setHeight(event.nativeEvent.layout.height)}>
     <View testID="explore-map-slot" style={StyleSheet.absoluteFill}>{mapSlot ?? map}</View>
-    <View pointerEvents="box-none" style={[styles.overlay, {paddingTop: insets.top + 8}]}>
+    <View pointerEvents="box-none" style={[styles.overlay, {paddingTop: insets.top + 8}]}
+      onLayout={(event) => setOverlayHeight(Math.ceil(event.nativeEvent.layout.height))}>
       <View style={[styles.searchPill, styles.shadow, {marginLeft: insets.left + 16, marginRight: insets.right + 16}]}>
         <Image source={wordmark} accessibilityLabel="Nook" resizeMode="contain" style={styles.mark} />
         <TextInput value={search.value} onChangeText={search.onChangeText}
@@ -104,6 +131,13 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
           {avatar ?? <View accessible={false} style={styles.avatar}><View style={styles.avatarHead} /><View style={styles.avatarBody} /></View>}
         </Pressable> : avatar ? <View style={styles.iconButton}>{avatar}</View> : null}
       </View>
+      {onTabChange && <View accessibilityRole="tablist" accessibilityLabel="Explore views" style={styles.tabs}>
+        {(['places', 'muse'] as const).map((tab) => <Pressable key={tab} accessibilityRole="tab"
+          accessibilityLabel={tab === 'places' ? 'Places' : 'Muse'} accessibilityState={{selected: activeTab === tab}}
+          onPress={() => onTabChange(tab)} style={[styles.tab, activeTab === tab && styles.selectedChip]}>
+          <Text style={[styles.chipText, activeTab === tab && styles.selectedText]}>{tab === 'places' ? 'Places' : '✦ Muse'}</Text>
+        </Pressable>)}
+      </View>}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled"
         style={styles.chipScroll} contentContainerStyle={[styles.chips, {paddingLeft: insets.left + 16, paddingRight: insets.right + 16}]}>
         <View accessibilityRole="radiogroup" accessibilityLabel="Intent" style={styles.intentRow}>
@@ -114,43 +148,53 @@ export function ExploreLayout({ mapSlot, map, children, search, filters, title, 
           </Pressable>)}
         </View>
         <FloatingChip label={filtersChip.label} accessibilityLabel={filtersChip.accessibilityLabel} onPress={filters.onOpenFilters} />
-        <FloatingChip label={timeLabel} accessibilityLabel={`Time: ${timeLabel}`} onPress={onTimePress} />
-        <FloatingChip label={originLabel} accessibilityLabel={`Origin: ${originLabel}`} onPress={onOriginPress} />
       </ScrollView>
-      <View pointerEvents="box-none" style={[styles.legendArea, {marginRight: insets.right + 16, marginLeft: insets.left + 16}]}>
-        <Pressable accessibilityRole="button" accessibilityLabel={legendOpen ? 'Hide map legend' : 'Show map legend'}
-          accessibilityState={{expanded: legendOpen}} onPress={() => setLegendOpen((value) => !value)}
-          style={[styles.roundButton, styles.shadow]}><Text style={styles.legendIcon}>ⓘ</Text></Pressable>
-        {legendOpen && <View style={[styles.legend, styles.shadow]}><MapLegend /></View>}
-      </View>
     </View>
-    {onRecenter && <Animated.View pointerEvents="box-none" style={[styles.recenter, {right: insets.right + 16, bottom: Animated.add(sheetHeight, 12)}]}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Recenter map" onPress={onRecenter}
-        style={[styles.roundButton, styles.shadow]}><Text style={styles.iconText}>⌖</Text></Pressable>
-    </Animated.View>}
-    <Animated.View testID="explore-bottom-sheet" style={[styles.sheet, styles.shadow, {height: sheetHeight,
-      paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right}]}>
-      <View onLayout={(event) => setHeaderHeight(event.nativeEvent.layout.height)}>
-        <View {...pan.panHandlers}>
-          <Pressable accessibilityRole="button" accessibilityLabel={position === 'peek' ? 'Expand places' : 'Collapse places'}
-            accessibilityHint="Tap or drag vertically to change the sheet height." accessibilityState={{expanded: position === 'expanded'}}
+    {/* Map buttons ride on the sheet's top edge, so they are never covered and fade out when it is fully open. */}
+    <Animated.View pointerEvents={position === 'expanded' ? 'none' : 'box-none'}
+      style={[styles.mapButtons, {right: insets.right + 16, opacity: buttonsOpacity, transform: [{translateY: buttonsY}]}]}>
+      {legendOpen && <View style={[styles.legend, styles.shadow]}><MapLegend /></View>}
+      <Pressable accessibilityRole="button" accessibilityLabel={legendOpen ? 'Hide map legend' : 'Show map legend'}
+        accessibilityState={{expanded: legendOpen}} onPress={() => setLegendOpen((value) => !value)}
+        style={[styles.roundButton, styles.shadow]}><Text style={styles.legendIcon}>ⓘ</Text></Pressable>
+      {onRecenter && <Pressable accessibilityRole="button" accessibilityLabel="Recenter map" onPress={onRecenter}
+        style={[styles.roundButton, styles.shadow]}><Text style={styles.iconText}>⌖</Text></Pressable>}
+    </Animated.View>
+    <Animated.View testID="explore-bottom-sheet" style={[styles.sheet, styles.shadow, {height: sizes.expanded,
+      paddingLeft: insets.left, paddingRight: insets.right, transform: [{translateY: sheetY}]}]}>
+      <View {...pan.panHandlers} onLayout={(event) => setHeaderHeight(event.nativeEvent.layout.height)}>
+        <View>
+          <View accessible accessibilityRole="adjustable" accessibilityLabel="Places sheet"
+            accessibilityHint="Drag up to see places. Drag down to return to the map." accessibilityState={{expanded: position === 'expanded'}}
             accessibilityActions={[{name: 'expand', label: 'Expand places'}, {name: 'collapse', label: 'Collapse places'}]}
             onAccessibilityAction={(event) => settle(event.nativeEvent.actionName === 'expand' ? 'expanded' : 'peek')}
-            onPress={toggleSheet} style={styles.handleTarget}>
+            style={styles.handleTarget}>
             <View accessible={false} style={styles.handle} />
-          </Pressable>
+          </View>
         </View>
         <View style={styles.header}>
           <Text accessibilityRole="header" style={styles.title}>{title || 'Places for you'}</Text>
+          {!!subtitle && <Text numberOfLines={1} style={styles.answer}>{subtitle}</Text>}
+          <View style={styles.contextRow}>
+            <Pressable accessibilityRole="button" accessibilityLabel={`Time: ${timeLabel}`} disabled={!onTimePress}
+              onPress={onTimePress} hitSlop={{top: 8, bottom: 8, left: 4, right: 4}} style={styles.contextButton}>
+              <Text style={styles.contextText}>{timeLabel} ▾</Text>
+            </Pressable>
+            <Text accessible={false} style={styles.caption}>·</Text>
+            <Pressable accessibilityRole="button" accessibilityLabel={`Origin: ${originLabel}`} disabled={!onOriginPress}
+              onPress={onOriginPress} hitSlop={{top: 8, bottom: 8, left: 4, right: 4}} style={styles.contextButton}>
+              <Text style={styles.contextText} numberOfLines={1}>{originLabel} ▾</Text>
+            </Pressable>
+          </View>
           <Text style={styles.caption}>{datasetCaption(dataset.mode, dataset.description)}</Text>
         </View>
       </View>
-      <View style={[styles.body, position === 'peek' && {opacity: 0}]} pointerEvents={position === 'peek' ? 'none' : 'auto'} aria-hidden={position === 'peek'}
+      <Animated.View style={[styles.body, {opacity: bodyOpacity}]} pointerEvents={position === 'peek' ? 'none' : 'auto'} aria-hidden={position === 'peek'}
         accessibilityElementsHidden={position === 'peek'} importantForAccessibility={position === 'peek' ? 'no-hide-descendants' : 'auto'}>
         {topAccessory && <ScrollView nestedScrollEnabled keyboardShouldPersistTaps="handled" style={styles.accessories}
           contentContainerStyle={styles.accessoryContent}>{topAccessory}</ScrollView>}
         <View style={styles.cards}>{children}</View>
-      </View>
+      </Animated.View>
     </Animated.View>
   </View>;
 }
@@ -175,6 +219,9 @@ const styles = StyleSheet.create({
   avatar: {width: 32, height: 32, borderRadius: 16, backgroundColor: theme.colors.chipSelectedBackground, alignItems: 'center', justifyContent: 'center'},
   avatarHead: {width: 8, height: 8, borderWidth: 1.5, borderRadius: 5, borderColor: theme.colors.sageText},
   avatarBody: {width: 16, height: 8, marginTop: 2, borderWidth: 1.5, borderTopLeftRadius: 8, borderTopRightRadius: 8, borderColor: theme.colors.sageText},
+  tabs: {flexDirection: 'row', marginHorizontal: 16, marginTop: 8, alignSelf: 'flex-start', borderRadius: 24, padding: 3, backgroundColor: theme.colors.background, gap: 4,
+    shadowColor: '#403620', shadowOffset: {width: 0, height: 2}, shadowOpacity: 0.1, shadowRadius: 8, elevation: 3},
+  tab: {minHeight: 44, paddingHorizontal: 22, justifyContent: 'center', borderRadius: 22},
   chipScroll: {flexGrow: 0, marginTop: 8},
   chips: {gap: 8, alignItems: 'center', paddingBottom: 8},
   intentRow: {flexDirection: 'row', gap: 8},
@@ -183,15 +230,18 @@ const styles = StyleSheet.create({
   selectedChip: {backgroundColor: theme.colors.chipSelectedBackground, borderColor: theme.colors.chipSelectedBorder},
   chipText: {color: theme.colors.text, fontSize: 14, lineHeight: 20, fontFamily: theme.typography.bodyFamily},
   selectedText: {color: theme.colors.sageText, fontWeight: '600'},
-  legendArea: {alignItems: 'flex-end', gap: 8},
+  mapButtons: {position: 'absolute', bottom: 0, alignItems: 'flex-end', gap: 8},
   roundButton: {width: 44, height: 44, borderRadius: 22, backgroundColor: theme.colors.background, alignItems: 'center', justifyContent: 'center'},
   legendIcon: {fontSize: 22, color: theme.colors.text},
   legend: {width: 240, maxWidth: '100%', borderRadius: 16, padding: 14, backgroundColor: theme.colors.background},
-  recenter: {position: 'absolute'},
   sheet: {position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: theme.colors.background,
     borderTopLeftRadius: 24, borderTopRightRadius: 24},
   handleTarget: {minHeight: 44, alignItems: 'center', justifyContent: 'center'},
-  handle: {width: 36, height: 4, borderRadius: 2, backgroundColor: theme.colors.chipBorder},
+  handle: {width: 40, height: 5, borderRadius: 3, backgroundColor: theme.colors.grey},
+  answer: {color: theme.colors.text, fontSize: 15, lineHeight: 22, fontWeight: '600', fontFamily: theme.typography.bodyFamily},
+  contextRow: {flexDirection: 'row', alignItems: 'center', gap: 8},
+  contextButton: {minHeight: 32, justifyContent: 'center', flexShrink: 1},
+  contextText: {color: theme.colors.sageText, fontSize: 14, lineHeight: 20, fontWeight: '600', fontFamily: theme.typography.bodyFamily},
   header: {paddingHorizontal: 20, paddingBottom: 12, gap: 4},
   title: {fontSize: 24, lineHeight: 30, fontFamily: theme.typography.headingFamily, fontWeight: '700', color: theme.colors.text},
   caption: {fontSize: 12, lineHeight: 18, color: theme.colors.secondaryText, fontFamily: theme.typography.bodyFamily},

@@ -314,3 +314,365 @@ Actual verification:
 - Physical-device verified: none. Native keyboard visibility/avoidance, hardware Back, modal focus/VoiceOver/TalkBack, native text scaling and nonzero safe insets remain pending. No phone acceptance claimed.
 
 Self-evaluation (ECC agent-self-evaluation): accuracy 4 (browser passed; native behavior unverified), completeness 4 (requested presentation states provided; device acceptance pending), clarity 4 (direct typed API; D still maps response facts), actionability 4 (preview/reproduction supplied; D integrates), conciseness 4 (one focused panel; handoff necessarily detailed), overall 4.0/5. Highest-impact next step: D integrate the real response and run the presenter phone checks, then merge the small PR as owner.
+
+
+## Social PR preparation before route wiring - October 25, 2026 (historical)
+
+Historical status at 1b1fda8, before the user authorized route integration below. The snippet in this historical section is superseded by the committed route files and the latest handoff at the end of this task record. Hosted-project setup verification, D merge and presenter-phone acceptance remain pending.
+
+Profiles, follows and friend search (A)
+
+Adds optional social accounts while preserving the guest onboarding, Explore, detail and local-save journey. Rebased feat/social onto origin/main 21ba7a0; PR #43 is merged and its merge commit a08da34 is an ancestor of main. Only rebase conflict: apps/mobile/.env.example; retained both main's discovery configuration and social configuration.
+
+Included
+- Email/password sign-up, sign-in and sign-out behind EXPO_PUBLIC_SOCIAL_ENABLED, with a lazy Supabase client and Continue as guest callback.
+- Create/edit profile, fixed unique username, optional avatar/major/phone, preference-derived vibe, own/other profiles, followers/following, follow/unfollow and debounced username/display-name friend search.
+- Local-save mirroring after successful local writes; one-time saved-place backfill per account/dataset. Local saves remain authoritative; cloud failures do not block them. No remote-to-local restore or continuous retry queue is promised.
+- Separately gated, explicit contacts matching, with loading/empty/error/permission handling. Contacts stay disabled pending phone checks.
+- Isolated supabase-social migrations/RLS checks, public env template, design references, social rule tests and a disabled-social regression.
+- Changes are in apps/mobile/src/social, the optional StudyPreferencesRow link variant, apps/mobile/.env.example, docs/design, supabase-social and A's task status. No root manifest/lockfile changes; dependencies/config plugins are already in main. D-owned route/data integration is supplied below, not committed in this PR.
+- /social-preview and SocialPreview.tsx are absent from the PR tree. The ignored local route was moved outside app/ for QA; no local harness, .env, credentials or preview artifacts are included.
+
+Supabase project setup (manual; not applied by this PR preparation)
+1. Use the separate nook-social project, never B's data/API project.
+2. Run supabase-social/migrations/001_social.sql, then 002_username_fixed.sql.
+3. Run supabase-social/tests/social_rls.sql; require the final "social RLS checks passed" result. It rolls back its throwaway accounts/data. The repository documents prior PGlite checks with Supabase stand-ins; a real hosted-project RLS pass is not established by this handoff.
+4. Enable the Email auth provider and turn Confirm email OFF: sign-up expects an immediate session.
+5. Copy only the project's public URL and anon/publishable key into apps/mobile/.env as below. Never use a service-role/secret key. Restart Metro after env changes.
+
+Privacy
+- Phone numbers are normalized to E.164 and SHA-256 hashed on the device. Only hashes are sent; raw phone numbers and contact names are not uploaded. Contacts matching runs only after an explicit tap/permission, with at most 200 hashes per RPC call.
+- Phone discoverability is opt-in, default off, and can be disabled/removed in Edit profile. Base profile phone fields are owner-only; public_profiles excludes phone_hash/discoverability.
+- Saved spots are readable by their owner and people who follow that owner; saves are not private from followers. Follows are one-way, visible to signed-in users and require no approval; there is no blocking/private-account mode. Avatars have public URLs.
+- Unsalted phone hashes are vulnerable to enumeration because the phone-number space is small. The per-call cap is not a rate limit; the RPC has no rate limiting. Hashing is not anonymity.
+
+Checks actually run
+- npm run typecheck: PASS, all workspaces, after removing the ignored local preview route from app/.
+- npm run lint: PASS.
+- npm test: 506 passed, 1 failed, 1 additional suite failed to load (41 passing / 2 failing files). Both failures reproduced independently against a clean git archive of origin/main 21ba7a0: reconstruct-cached-time.test.ts constructs C:\C:\... on Windows; evaluate-real.test.ts fails the approved fixture SHA-256 assertion (received 93646182..., expected bae26a4d...). Left B/C-owned tests/fixtures unchanged. Full suite is NOT green.
+- npm test -- apps/mobile/src/social: PASS, 23 tests / 4 files, including the new regression proving no client creation, fetch or sync-storage access when all social env variables are unset.
+- git diff --check: PASS. No tracked preview route/local-only files or D route/data changes in the branch diff.
+- Actual Expo web comparison, fixture mode: EXPO_NO_DOTENV=1; EXPO_PUBLIC_SOCIAL_ENABLED, every EXPO_PUBLIC_SUPABASE_* and EXPO_PUBLIC_CONTACTS_MATCHING removed from each Metro process environment. Branch ran with the two local D snippets (AuthProvider and syncSavedSpot) applied. Clean main archive ran separately with the same dependencies and fixture mode. Welcome -> Study/default preferences -> manual UT Austin -> Explore -> Paper Lantern detail -> Save: identical onboarding/location/Explore/detail/saved text, result order/scores and serialized local settings. Save survived reload. Browser network log: zero Supabase requests. The web map reports its existing list fallback; opening the result used its DOM link because the collapsed result sheet was not pointer-accessible to automation. This is browser functional parity, not native touch/map acceptance.
+
+Not verified
+- Native device photo picker/upload behavior, contacts permission/matching on a phone, native system large text/accessibility and presenter-phone Expo Go acceptance.
+- Real hosted nook-social migrations/RLS result, confirm-email setting and the two-account end-to-end checklist below were not executed in this preparation.
+- Social is not merged or release-verified. D owns integration and merge; keep P1 gated until phone acceptance. The server/API/ranking are unchanged.
+
+D integration: one consolidated snippet
+Apply the following sections to the named files. Keep the existing SafeAreaProvider, SessionProvider, Shell, tab layout, SessionGate, RecoveryControls and guest placeholder behavior. The tab wrappers deliberately use main's existing placeholders with social off. These are instructions for D, not route files shipped by this PR.
+
+```tsx
+// apps/mobile/app/_layout.tsx: add the import, and replace only Layout's return.
+import { AuthProvider } from '../src/social';
+return <SafeAreaProvider><SessionProvider><AuthProvider><Shell /></AuthProvider></SessionProvider></SafeAreaProvider>;
+// Inside Shell's existing Stack, add:
+<Stack.Screen name="sign-in" options={{ headerShown: false }} />
+<Stack.Screen name="create-profile" options={{ headerShown: false }} />
+<Stack.Screen name="edit-profile" options={{ headerShown: false }} />
+<Stack.Screen name="follow-list" options={{ headerShown: false }} />
+<Stack.Screen name="user/[id]" options={{ headerShown: false }} />
+
+// apps/mobile/app/sign-in.tsx (new)
+import { useEffect } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { ErrorState, LoadingState } from '../src/components';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { SignInScreen, useAuth } from '../src/social';
+function Content() {
+  const router = useRouter();
+  const { mode } = useLocalSearchParams<{ mode?: string }>();
+  const auth = useAuth();
+  // Observe resolved auth/profile state; onDone can run before profile loading settles.
+  useEffect(() => {
+    if (auth.status === 'needsProfile') router.replace('/create-profile');
+    if (auth.status === 'ready') router.replace('/(tabs)/profile');
+  }, [auth.status, router]);
+  if (auth.loading) return <LoadingState message="Loading account…" />;
+  if (auth.profileError) return <ErrorState title="Profile unavailable" message="Check your connection and retry."
+    action={{ label: 'Retry', onPress: () => void auth.refreshProfile() }} />;
+  return <SignInScreen initialMode={mode === 'signUp' ? 'signUp' : 'signIn'}
+    onContinueAsGuest={() => router.replace('/(tabs)/map')} />;
+}
+export default function SignInRoute() { return <SessionGate><Content /></SessionGate>; }
+
+// apps/mobile/app/create-profile.tsx (new)
+import { Redirect, useRouter } from 'expo-router';
+import { ErrorState, LoadingState } from '../src/components';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { CreateProfileScreen, useAuth } from '../src/social';
+function Content() {
+  const router = useRouter(); const auth = useAuth();
+  if (auth.loading) return <LoadingState message="Loading account…" />;
+  if (!auth.enabled || !auth.user) return <Redirect href="/sign-in" />;
+  if (auth.profileError) return <ErrorState title="Profile unavailable" message="Check your connection and retry."
+    action={{ label: 'Retry', onPress: () => void auth.refreshProfile() }} />;
+  if (auth.profile) return <Redirect href="/(tabs)/profile" />;
+  return <CreateProfileScreen onDone={() => router.replace('/(tabs)/profile')}
+    onBack={() => { void auth.signOut().then(() => router.replace('/sign-in')); }} />;
+}
+export default function CreateProfileRoute() { return <SessionGate><Content /></SessionGate>; }
+
+// apps/mobile/app/edit-profile.tsx (new)
+import { useRouter } from 'expo-router';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { EditProfileScreen } from '../src/social';
+export default function EditProfileRoute() {
+  const router = useRouter();
+  return <SessionGate><EditProfileScreen onDone={() => router.replace('/(tabs)/profile')}
+    onBack={() => router.back()} /></SessionGate>;
+}
+
+// apps/mobile/app/follow-list.tsx (new)
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { FollowListScreen } from '../src/social';
+export default function FollowListRoute() {
+  const router = useRouter();
+  const { userId, kind } = useLocalSearchParams<{ userId?: string; kind?: string }>();
+  if (!userId || (kind !== 'followers' && kind !== 'following')) return <Redirect href="/(tabs)/profile" />;
+  return <SessionGate><FollowListScreen userId={userId} kind={kind} onBack={() => router.back()}
+    onOpenUser={(id) => router.push({ pathname: '/user/[id]', params: { id } })} /></SessionGate>;
+}
+
+// apps/mobile/app/user/[id].tsx (new; import paths have two parent levels)
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { SessionGate } from '../../src/features/session/SessionGate';
+import { UserProfileScreen } from '../../src/social';
+export default function UserRoute() {
+  const router = useRouter(); const { id } = useLocalSearchParams<{ id?: string }>();
+  if (!id) return <Redirect href="/(tabs)/friends" />;
+  return <SessionGate><UserProfileScreen userId={id} onBack={() => router.back()}
+    onOpenSpot={(spotId) => router.push({ pathname: '/spot/[id]', params: { id: spotId } })}
+    onOpenFollowList={(kind, userId) => router.push({ pathname: '/follow-list', params: { kind, userId } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })} /></SessionGate>;
+}
+
+// apps/mobile/app/(tabs)/friends.tsx: replace placeholder wrapper.
+import { useRouter } from 'expo-router';
+import { TabPlaceholder } from '../../src/features/navigation/TabPlaceholder';
+import { FriendsScreen, isSocialEnabled } from '../../src/social';
+export default function Friends() {
+  const router = useRouter();
+  if (!isSocialEnabled()) return <TabPlaceholder screen="Friends" />;
+  return <FriendsScreen onOpenProfile={(id) => router.push({ pathname: '/user/[id]', params: { id } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })} />;
+}
+
+// apps/mobile/app/(tabs)/profile.tsx: replace placeholder wrapper.
+import { ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { RecoveryControls } from '../../src/data/RecoveryControls';
+import { TabPlaceholder } from '../../src/features/navigation/TabPlaceholder';
+import { ProfileScreen, isSocialEnabled } from '../../src/social';
+export default function Profile() {
+  const router = useRouter();
+  if (!isSocialEnabled()) return <TabPlaceholder screen="Profile" />;
+  return <><ProfileScreen
+    onEditProfile={() => router.push('/edit-profile')}
+    onOpenFollowList={(kind, userId) => router.push({ pathname: '/follow-list', params: { kind, userId } })}
+    onEditPreferences={() => router.push('/preferences')}
+    onOpenSpot={(id) => router.push({ pathname: '/spot/[id]', params: { id } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })}
+    onFinishProfile={() => router.push('/create-profile')} />
+    {/* Keep demo recovery accessible when social replaces the placeholder. */}
+    <ScrollView style={{ maxHeight: 180 }}><RecoveryControls /></ScrollView></>;
+}
+// Existing (tabs)/_layout.tsx already declares friends and profile; retain it.
+// D may hide native tab headers for these two screens to avoid duplicate titles.
+
+// apps/mobile/src/data/SessionProvider.tsx: exactly two added lines.
+import { syncSavedSpot } from '../social/savedSync';
+// At the end of toggleSaved, AFTER store.update and local setSession succeed:
+void syncSavedSpot(id, savingNew, detail?.spot);
+
+// apps/mobile/.env (git-ignored): add the three social variables below.
+// EXPO_PUBLIC_SOCIAL_ENABLED=1
+// EXPO_PUBLIC_SUPABASE_URL=https://<nook-social-project-ref>.supabase.co
+// EXPO_PUBLIC_SUPABASE_ANON_KEY=<public-anon-or-publishable-key>
+// Keep the separate contacts flag OFF until phone checks pass:
+// EXPO_PUBLIC_CONTACTS_MATCHING=0
+// Preserve D's DATA_PROVIDER/API/NEARBY settings. Restart Metro after editing.
+// To verify P0 again: EXPO_NO_DOTENV=1 and remove all SOCIAL_ENABLED,
+// SUPABASE_* and CONTACTS_MATCHING env variables from the Metro process.
+```
+
+Manual two-account checklist (pending; use two real test accounts/devices or isolated sessions)
+- [ ] Configure nook-social, migrations 001 + 002, RLS script, Email provider and Confirm email OFF. Restart Metro with social enabled; leave contacts off.
+- [ ] Guest: Continue as guest -> onboarding -> Explore -> detail -> save/unsave -> restart; local saves survive and no account is required. With all social variables unset, repeat and confirm zero Supabase traffic.
+- [ ] Account A: create account/profile, lowercase unique username, duplicate/invalid username errors, optional fields empty, discoverability initially off. Back from profile creation signs out safely; finish setup after signing back in.
+- [ ] Account B: create a distinct profile. A searches B by username and display name; clear search, no results, network error/retry and rapid changed queries leave no stale results. Own account is excluded.
+- [ ] A opens B, follows/unfollows via Friends/profile/follow-list; button/count/list state survives navigation and refresh. Duplicate follow creates no duplicate edge; self-follow is unavailable/rejected. Open followers/following and select a person.
+- [ ] B saves a real current-dataset place. A cannot read B's saves before following, can read after following, and loses access after unfollowing. Reverse follow direction does not grant access. B cannot write A's profile/follows/saves; verify via the RLS script too.
+- [ ] A's existing device saves backfill once at sign-in. New save/unsave mirrors after local success; offline/cloud failure preserves the local result. Open own/other saved spots by stable ID; unavailable/out-of-dataset IDs show existing detail fallback.
+- [ ] Edit profile: display name/major/avatar/phone/discoverability; username remains fixed in both UI and DB. Update study preferences and verify vibe refresh. Sign out and restart; guest preferences/saves remain local and no other account's profile is shown.
+- [ ] Device photo picker: allow/deny/cancel, valid photo upload, invalid/oversized failure, and public avatar display after relaunch.
+- [ ] Only after phone review: enable EXPO_PUBLIC_CONTACTS_MATCHING=1 and restart Metro. Use known real test numbers, explicitly opt B into discovery; A grants/denies contacts permission and tests retry, no contacts/no matches, duplicates, international formatting and >200 contacts batching. Verify payloads contain hashes only; no automatic permission prompt or upload before tapping. Turn B's discovery off/remove number; matching stops. Return flag to 0 until accepted.
+- [ ] On presenter phone: supported Expo Go, keyboard/back/safe areas, native map, photo picker, large text, VoiceOver/TalkBack, loading/empty/error/offline recovery, guest Sign in entry points and two-account navigation. Record device/OS/Expo Go version and tested SHA before D merges.
+
+## Social route integration - October 25, 2026 (latest handoff)
+
+Implemented on feat/social at the user's explicit request to wire D-owned routes for D's review. This supersedes the uncommitted-route instructions above. D still owns merge and presenter-phone acceptance.
+
+Every route file changed in this integration:
+- apps/mobile/app/_layout.tsx: AuthProvider inside SessionProvider and five social Stack declarations.
+- apps/mobile/app/(tabs)/_layout.tsx: hide the Friends/Profile native headers because the screens supply titles.
+- apps/mobile/app/(tabs)/friends.tsx: FriendsScreen, profile links and sign-in/create-account entry points.
+- apps/mobile/app/(tabs)/profile.tsx: ProfileScreen, edit/preferences/saved-spot/follow-list links, finish-profile and auth entry points. Retains RecoveryControls and guest study preferences.
+- apps/mobile/app/sign-in.tsx (new): sign-in/sign-up mode, Continue as guest, and navigation after auth/profile resolution; retry on profile-load error.
+- apps/mobile/app/create-profile.tsx (new): account/profile loading guards, retry, completion and sign-out on Back.
+- apps/mobile/app/edit-profile.tsx (new): mounts form after profile loads; completion and Back.
+- apps/mobile/app/user/[id].tsx (new): UserProfileScreen with user, follow-list, spot and auth links.
+- apps/mobile/app/follow-list.tsx (new): follower/following parameter validation, signed-out guard, Back and person links.
+
+No Explore, detail, onboarding, ranking, provider, dependency, environment or migration edits in this integration. The pre-existing local SessionProvider save-sync edit was stashed for verification and remains excluded from this route commit; it is preserved locally for D's separate two-line integration. Auth is optional: no global account guard was added. Contacts remain gated. Preview/local harness files remain excluded.
+
+Actual verification:
+- npm run typecheck and npm run lint passed; git diff --check passed.
+- npm test: 506 passed, 1 failed assertion and one suite failed to load (41 passing / 2 failing files). Same two failures already reproduced on main: Windows C:\C:\... fixture path in reconstruct-cached-time.test.ts, and pinned fixture SHA-256 mismatch in evaluate-real.test.ts. No B/C-owned fixes attempted.
+- Actual Expo web fixture journey with all social variables unset: fresh onboarding -> default Study/manual UT Austin -> Explore -> first result detail -> save. Preferences/location/Explore/detail/saved text matched the previously captured main baseline exactly, including result order and scores. Zero Supabase requests.
+- Repeated the same fresh journey with social enabled, contacts off and a dummy public configuration pointing to a non-resolving .invalid domain, without an authenticated session. Onboarding/Explore/detail/save matched the social-off journey exactly; zero Supabase requests. No credentials or real accounts were used, and no sign-in request was submitted.
+- Social-enabled signed-out Friends/Profile render their actual guest screens. Friends Sign in opens /sign-in; Continue as guest returns to Explore. Profile Create account opens sign-up mode. Guest preferences and recovery remain accessible. /create-profile and /follow-list redirect signed-out users to sign-in; /edit-profile returns to Profile; /user/[id] renders its guest auth entry points. The user screen does not fabricate a profile or request one before sign-in.
+- Opening the first recommendation used its DOM link because the existing collapsed web result sheet is not pointer-accessible to automation. The unchanged web map uses its existing list fallback. These checks do not establish native touch/map acceptance.
+
+Not verified: real two-account authentication/profile/follow navigation, hosted Supabase setup/RLS, photo picker, contacts on a phone, native large text/accessibility and presenter-phone acceptance. Next smallest step: D reviews the nine route files and applies the separately preserved saved-sync lines, then runs the real-account and presenter-phone checklist before merge. gh is unavailable; handoff uses the main...feat/social compare URL.
+
+## Morning shared integration - October 25, 2026 (current handoff)
+
+The user designated A as coordinator while D is unreachable. Target is Devpost at 11:30 and judging at 14:00; A decides whether to merge main around 10:30 after the full demo works. Main remains the known-good fallback at 21ba7a0. No main merge, force push, dependency install/change, lockfile regeneration, DB migration or deployment was performed by A.
+
+Inventory and merge decisions:
+- GitHub's public API reports zero open PRs; gh is unavailable. Check https://github.com/amohash/nook/pulls and https://github.com/amohash/nook/branches. The complete fetched remote-branch list with last commit date/author is recorded below. No inference about D's unpushed work is possible.
+- At initial fetch only origin/fix/explore-study-ux (D, 87ed74e) and origin/feat/social (A, 616464d) were missing from main. PR #43 is merged (a08da34); every other pushed A design/preferences/dependency branch was already an ancestor of main. No redundant merges were made.
+- D and social dry merges had no conflicts. GitHub had zero statuses/check runs for both heads; its combined 'pending' state was not a running CI check. D's actual root typecheck/lint passed; its tests failed only on the same two baseline Windows issues. Social's prior checks had the same known failures. These branches were suitable for integration testing; this did not establish phone acceptance.
+- Created integration/morning from origin/main and pushed it. Pulled with --rebase before work and before each commit/merge, then pushed each small commit immediately. Merge order: D (269da05), skip already-merged #43/other A work, then social (1c715d0). Applied the exact two-line saved-sync addition after local storage succeeds (c810b0c). AuthProvider and all five stack routes/tab callbacks were already pushed in social, so they were retained without duplication. The historical snippet above is superseded by those route files.
+- During this run B pushed fictional-austin-v2 (27e8a93 / f8106b9) and the Windows fixture-path test fix (5b69d30) directly to integration/morning. Pulled and retained both. B's two explicitly fictional venues add real scorer-driven scenario variation; no new real venue facts, reviews or Muse results were fabricated. New dataset namespace intentionally starts fresh onboarding/preferences/saves.
+- Actual live testing found stale following counts when returning to retained tabs. Commit 1385d13 refreshes Profile, UserProfile, FollowList, Friends and useFollowState on focus and filters the Following list by current edges. Confirmed tab navigation updates counts and removes unfollowed rows. No state library, dependency or contract change.
+
+D-owned review scope relative to main (review the actual diff, not the old snippet):
+- apps/mobile/app/_layout.tsx: AuthProvider and five social Stack declarations.
+- apps/mobile/app/(tabs)/_layout.tsx: Friends/Profile header visibility only.
+- apps/mobile/app/(tabs)/friends.tsx and profile.tsx: real social screens, navigation callbacks, guest preferences and recovery.
+- New apps/mobile/app/sign-in.tsx, create-profile.tsx, edit-profile.tsx, follow-list.tsx and user/[id].tsx.
+- apps/mobile/src/data/SessionProvider.tsx: the exact import and void syncSavedSpot(id, savingNew, detail?.spot) call after local success.
+- D's own pushed changes also modify app/(tabs)/map.tsx, app/spot/[id].tsx, src/data/providers.ts, features/explore/PlaceAssistant.tsx, PlaceMap.native.tsx and PlaceMap.types.ts. Those are intentional D UX/tunnel changes, not social overrides. Unified D-owned diff was generated at .expo/morning-integration/d-owned.diff (ignored); public full comparison is https://github.com/amohash/nook/compare/main...integration/morning.
+
+Verification results on the combined shared branch:
+- PASS: npm run typecheck, npm run lint and git diff --check. No dependency/manifest/lockfile/config-plugin diff against origin/main.
+- FAIL, baseline Windows artifact bytes only: npm test reports 528 passed / 1 failed, 43 passing files / 1 failing file. The remaining packages/core/measurements/evaluate-real.test.ts SHA-256 assertion sees CRLF bytes 93646182...; LF normalization and the unchanged origin/main Git blob both hash to the pinned bae26a4d... value. No data corruption or real fixture edit. B fixed the other known C:\C:\... test-path failure; it now passes. A did not change C's test or normalize the checkout.
+- PASS, web guest functionality: physically moved apps/mobile/.env aside, left .env.hold untouched, removed SOCIAL_ENABLED, every SUPABASE_* and CONTACTS_MATCHING from the Metro process, set EXPO_NO_DOTENV=1, restarted --clear. Fresh three-step onboarding/manual UT Austin -> Study/Meet Friends -> explicit 10-minute filter -> web list fallback -> detail -> save -> reload worked. Current Study top three: Paper Lantern, Pocket Library, West Stacks; Friends: Gather Yard, Creekside Coffee, Little Bowl. 15 minutes yielded 12 candidates; 10 minutes yielded 10 and excluded both new 13-minute venues. Save survived reload, and browser Resource Timing recorded no Supabase resources. Existing disabled.test also passed.
+- Exact visual/dataset identity to origin/main: NOT A PASS CLAIM. D intentionally changed sheet/pins/copy; B intentionally changed the labeled fictional dataset from ten venues/v1 to twelve/v2. Social-off P0 behavior works, original-ten golden ranking remains tested, and constraints/ranker are unchanged. Native map interaction cannot be verified on web; the existing web fallback works. The old separate Map/List toggle described in DEMO.md is stale.
+- PASS, real nook-social web: created two clearly labeled QA accounts, created profiles without phone/photo, signed out and signed back in, opened Profile with preference-derived vibe and local saved spots, searched @username in Friends, followed/unfollowed, verified Following and counts, navigated follow lists/person profiles, and signed out to a working guest map. The final app Save generated a real saved_spots POST 201 after local success. Previous immediate full-page QA navigations interrupted an in-flight best-effort sync; reran with page retained until response completed. Local saves were preserved.
+- PASS, live saved-spot read boundary: with account A's real authenticated session, B's saved_spots query returned HTTP 200 / zero rows before follow, two rows after follow, zero after unfollow. The UI likewise switched between 'Saved spots are private' and B's two saved places. This verifies this read boundary, not the entire SQL authorization suite. Hosted RLS SQL test/migration execution and cross-user write denial were not rerun by A.
+- QA usernames qa_mvnx5wb6_a and qa_mvnx5wb6_b remain clearly labeled in nook-social with synthetic demo place snapshots and no phone/contact data. No fake social activity was presented as real users. The QA session is signed out at handoff. Do not use these QA people or counts as pitch evidence.
+- Environment handling: the user approved .env.hold. Printed variable names only; exactly SOCIAL_ENABLED / SUPABASE_URL / SUPABASE_ANON_KEY with public prefixes. Verified flag=1 and expected project URL by equality. JWT role=anon, ref=camhduhuzawmsrimtybw; never printed key/token/password. Copied without deleting .env.hold, ran ON with --clear, moved .env aside for OFF and restarted --clear, restored it, and restarted ON --clear. Final .env and .env.hold are byte-identical, both ignored, untracked and unstaged. Contacts flag is absent, so matching remains off; the QA process also explicitly used CONTACTS_MATCHING=0.
+- PENDING / NOT PHONE-VERIFIED: Expo Go compatibility, native maps/tiles/pins/sheet gestures, GPS allow/deny, Share/Maps, avatar photo picker/upload, contacts on a phone, system large text, safe areas, keyboard/Back and accessibility. No native performance, hosted nearby acquisition or Muse call result is claimed.
+
+Known demo documentation/configuration gaps:
+- Main and integration already declare Expo SDK 58 / RN 0.88, despite the user's SDK 57 description and old DEMO.md. PR #48 made that migration; A made no dependency changes. This branch requires matching SDK-58-compatible Expo Go. Running it in SDK-57-only Expo Go cannot be promised; do not downgrade during the demo.
+- DEMO.md was audited against 7e67622 and incorrectly describes social as absent, the custom navigation as unmounted, only ten demo venues, the older pin legend and the old API timeout/nearby state. Use the current code and fixture-v2 labels. B reports deployed Render cc8f7aa still lacks newer nearby/assistant guest APIs; no deployment was performed here. The verified fixture journey does not need that backend.
+- docs/demo-assets/nook-demo-final.mp4 and its screenshot folder do not exist. They are planned locations, not ready backups. Native device rehearsal and a video recording are still required before submission/judging. No evidence can reveal D's unpushed local changes; no additional pushed D branch was missed.
+
+Run from the repository root. A's Windows location is C:\Users\zgaud\Documents\Nook\nook; B should use his own checkout root. Existing uncommitted work must be committed or explicitly stashed by its owner before switching. Git won't transfer A's ignored .env to B; B needs his own ignored nook-social public configuration if testing accounts.
+
+```powershell
+Set-Location C:\Users\zgaud\Documents\Nook\nook
+git status --short
+git fetch --all --prune
+git switch integration/morning
+git pull --rebase origin integration/morning
+# Keep the installed dependencies from the existing lockfile; no upgrade/install command.
+Remove-Item Env:EXPO_NO_DOTENV -ErrorAction SilentlyContinue
+$env:EXPO_PUBLIC_DATA_PROVIDER = 'fixture'
+$env:EXPO_PUBLIC_CONTACTS_MATCHING = '0'
+# Web (stop with Ctrl+C before starting a different mode):
+npm.cmd run dev:web -- --port 8096 --clear
+# Expo Go on the same LAN, using an SDK-58-compatible client:
+npm.cmd run dev:mobile -- --clear
+# If Wi-Fi blocks Metro, use internet/tunnel instead:
+$env:NODE_PATH = (npm.cmd root -g)
+npm.cmd run dev:mobile -- --tunnel --clear
+```
+
+On B's non-Windows shell use the same Git/root npm scripts with npm instead of npm.cmd and the shell's normal environment syntax. Fixture mode is the verified fallback. A Metro tunnel carries JS, not a laptop-only API; real nearby mode additionally needs B's current reachable HTTPS backend/configuration. No dependency installation is authorized by these commands; if tunnel tooling or the matching Expo Go client is unavailable, that is a prerequisite, not a reason to alter manifests.
+
+Ready-to-paste message for B and C (prepared, not sent):
+
+> We are using integration/morning as the shared demo branch; main stays untouched as the fallback. Pull with git pull --rebase origin integration/morning before starting and again before every commit. Make small commits and push each immediately; never force-push this branch. No dependency/manifest/lockfile changes. Coordinate before overlapping files: A handles mobile/social integration, B backend/data, C ranking/AI. The branch includes D's pushed Explore UX, A social/routes/saved sync and B's labeled fixture-v2 additions/path-test fix. Current Windows checks: typecheck/lint pass; 528 tests pass, one remaining CRLF fixture-hash assertion fails. Web guest/social flows passed, including real followers-only saved reads; phone acceptance is pending. SDK is already 58, not 57. Only A decides a main merge around 10:30 after the complete demo works. Flag blockers immediately and preserve all labels/unknowns; no provider/DB/dependency changes without coordination.
+
+The full remote branch inventory follows; dates are the head commit's author date in its recorded offset, not a promise of last push time.
+
+```text
+origin/chore/backend-demo-release | 2026-10-25 02:14:00 -0500 | Andrew Sun | in main
+origin/chore/foundation | 2026-10-24 18:18:25 -0500 | amohash | in main
+origin/chore/social-deps | 2026-10-25 04:02:57 -0500 | ryhlu | in main
+origin/data/demo-locations | 2026-10-25 09:30:03 -0500 | Andrew Sun | not in main
+origin/docs/demo-pack | 2026-10-25 02:14:16 -0500 | amohash | in main
+origin/feat/austin-data-coverage | 2026-10-25 02:11:40 -0500 | Andrew Sun | in main
+origin/feat/cached-time-dataset | 2026-10-25 02:02:45 -0500 | Andrew Sun | in main
+origin/feat/complete-filters | 2026-10-25 01:25:42 -0500 | amohash | in main
+origin/feat/data-api | 2026-10-25 01:27:32 -0500 | Andrew Sun | in main
+origin/feat/demo-visual-integration | 2026-10-25 02:14:43 -0500 | amohash | in main
+origin/feat/design-detail | 2026-10-25 01:55:43 -0500 | ryhlu | in main
+origin/feat/design-explore | 2026-10-24 23:57:02 -0500 | ryhlu | in main
+origin/feat/design-filters | 2026-10-25 01:55:31 -0500 | ryhlu | in main
+origin/feat/design-onboarding | 2026-10-24 21:28:54 -0500 | ryhlu | in main
+origin/feat/design-tab-bar | 2026-10-25 01:34:33 -0500 | ryhlu | in main
+origin/feat/detail-reasons-sharing | 2026-10-25 01:27:24 -0500 | amohash | in main
+origin/feat/explore-map-layout | 2026-10-25 02:51:24 -0500 | amohash | in main
+origin/feat/group-compromise | 2026-10-25 02:02:48 -0500 | Jeff Jone | in main
+origin/feat/live-mobile-integration | 2026-10-25 03:01:37 -0500 | amohash | in main
+origin/feat/mobile-design-preview | 2026-10-24 22:05:20 -0500 | amohash | in main
+origin/feat/mobile-explore-integration | 2026-10-25 00:23:25 -0500 | amohash | in main
+origin/feat/mobile-flow | 2026-10-24 19:50:19 -0500 | amohash | in main
+origin/feat/mobile-onboarding-integration | 2026-10-24 22:41:55 -0500 | amohash | in main
+origin/feat/mobile-origin | 2026-10-24 20:17:43 -0500 | amohash | in main
+origin/feat/mobile-tabs | 2026-10-25 00:36:10 -0500 | amohash | in main
+origin/feat/muse-assistant-ui | 2026-10-25 02:35:54 -0500 | amohash | in main
+origin/feat/muse-evidence-quality | 2026-10-25 02:54:49 -0500 | amohash | in main
+origin/feat/no-match-recovery | 2026-10-25 01:34:32 -0500 | amohash | in main
+origin/feat/normalize-time-evidence | 2026-10-25 01:35:10 -0500 | amohash | in main
+origin/feat/offline-recovery | 2026-10-25 01:41:09 -0500 | amohash | in main
+origin/feat/onboarding-preferences | 2026-10-25 01:27:41 -0500 | amohash | in main
+origin/feat/place-assistant-evaluation | 2026-10-25 02:44:37 -0500 | amohash | in main
+origin/feat/preferences-page | 2026-10-25 03:23:06 -0500 | ryhlu | in main
+origin/feat/ranking-ai | 2026-10-24 20:37:31 -0500 | Jeff Jone | in main
+origin/feat/real-data-evaluation | 2026-10-25 02:12:47 -0500 | Jeff Jone | in main
+origin/feat/runtime-nearby-api | 2026-10-25 02:32:55 -0500 | amohash | in main
+origin/feat/runtime-nearby-server | 2026-10-25 02:51:46 -0500 | amohash | in main
+origin/feat/sdk-58 | 2026-10-25 04:33:40 -0500 | amohash | in main
+origin/feat/social | 2026-10-25 07:41:44 -0500 | ryhlu | not in main
+origin/feat/ui-apple-polish | 2026-10-25 03:50:28 -0500 | amohash | in main
+origin/fix/austin-discovery-tunnel | 2026-10-25 05:28:28 -0500 | amohash | in main
+origin/fix/cold-start-tolerance | 2026-10-25 04:22:24 -0500 | amohash | in main
+origin/fix/explore-study-ux | 2026-10-25 05:51:10 -0500 | amohash | not in main
+origin/fix/mobile-api-city | 2026-10-24 22:00:39 -0500 | amohash | in main
+origin/fix/muse-assistant-completion-budget | 2026-10-25 03:20:52 -0500 | amohash | in main
+origin/integrate/current-pr-batch | 2026-10-25 02:18:26 -0500 | amohash | in main
+origin/integration/morning | 2026-10-25 09:33:09 -0500 | ryhlu | not in main
+origin/main | 2026-10-25 05:29:01 -0500 | Amogh Astagi | in main
+```
+
+## Web Explore missing-data diagnosis - October 25, 2026
+
+- User reported no visible data/map. Checked running processes and Expo manifests: ports 8096 (PID 31812) and 8099 serve C:\Users\zgaud\Documents\Nook\nook\apps\mobile, SDK 58; checkout is integration/morning. At inspection local 96869d6 was one documentation-only B commit behind origin 878cbae; pulled current. Port 8081 is another Expo process but its manifest probe timed out; no user server was stopped.
+- Reproduced the actual display bug: twelve fixture cards were loaded, but the initial peek sheet hid its body and put the first card below the visible viewport. Fixed only app/(tabs)/map.tsx to initialize the sheet expanded on web. Native retains peek. Actual pointer click opened detail after this fix. Fresh web fixture preview shows twelve cards and the 'Demo scenario · fictional venues and synthetic facts' label.
+- apps/mobile/.env still contains only the three social public variables; it has no data backend configuration. No .env.local/development override exists. This is sufficient for fictional fixtures because data/index.ts defaults to demo unless DATA_PROVIDER=api; a missing backend URL alone does not explain missing fixture cards. Social configuration is independent of spot data; never use nook-social as the place API.
+- Every spot-data-related public variable read by the app: EXPO_PUBLIC_API_BASE_URL, EXPO_PUBLIC_DATA_PROVIDER (api or fixture; unset/non-api chooses demo), EXPO_PUBLIC_NEARBY_ENABLED (runtime discovery), EXPO_PUBLIC_ASSISTANT_ENABLED (Muse UI/API). The latter two must be 0 for the old hosted snapshot-only backend. .env.example defaults fixture, localhost:3001, nearby=1 and assistant=0; copying it into API mode without correcting URL/nearby is insufficient.
+- Render URL found in docs/DEMO.md and MOBILE-RUNTIME-ACCEPTANCE.md: https://nook-api-demo.onrender.com. Measured GET /health 200 / 470ms, /v1/cities 200 / 78ms, /v1/cities/us-tx-austin/spots 200 / 115ms. Backend is awake, CORS *, deployed cc8f7aa; serves 30 cached places, austin-20261025-muse-photos-v1.
+- Important additional backend incompatibility: current mobile recommendations request limit=200, while this older Render deployment returns 400 invalid_query for 200 (77ms) but 200 with 3 results for limit=3 (201ms). Adding API_BASE_URL alone still produces 'Places unavailable'. Did not silently reduce the requested candidate count or change contracts; B must deploy a compatible backend. Current local cached reranking works.
+- Fallbacks are explicit, not automatic: no bundled real Austin snapshot is loaded by the mobile fixture provider. Real offline cache requires a previous validated download; fictional demo is bundled and always available. Forced an unreachable API on port 8100: honest error/recovery screen -> Use fictional demo data -> twelve places with Demo scenario label. Downloaded real snapshot on 8101 -> Use cached real dataset -> three eligible cafes with Cached dataset label. Then injected backend failure, selected API to reproduce error, selected cached real again -> same three results, no extra API requests. No silent source mixing or fabricated facts.
+- Verified real cached list: Trippy Buck Coffee Truck, St Benedict Coffee Company and Lucky Lab Coffee Co.; first card on-screen at y364..598 in an 800px viewport. Native map is intentionally unsupported on web via PlaceMap.tsx; native implementation is PlaceMap.native.tsx. Web uses the shared ranked list; no map package/dependency upgrade.
+- Typecheck/lint passed; 37 focused recovery/provider/sheet tests passed. No broad test repeat for this two-line presentation fix. Preserved social-ON .env and .env.hold, ignored and unstaged; no env/dependency/lockfile change. Diagnosis test servers were separate; returned the preview to the normal fixture server on port 8096.
+
+For reliable bundled data, add these lines to the existing apps/mobile/.env without replacing its social values:
+EXPO_PUBLIC_DATA_PROVIDER=fixture
+EXPO_PUBLIC_API_BASE_URL=https://nook-api-demo.onrender.com
+EXPO_PUBLIC_NEARBY_ENABLED=0
+EXPO_PUBLIC_ASSISTANT_ENABLED=0
+EXPO_PUBLIC_CONTACTS_MATCHING=0
+
+Stop the chosen old server, run git pull --rebase origin integration/morning, remove stale EXPO_NO_DOTENV/process overrides if present, then npm.cmd run dev:web -- --port 8096 --clear from the root (or npx.cmd expo start --web --port 8096 --clear inside apps/mobile). For real data change DATA_PROVIDER to api with the same URL/flags, then explicitly choose Data & recovery -> Use cached real dataset after the initial snapshot download until B fixes the deployed recommendations contract. Metro process env overrides .env, so clear EXPO_PUBLIC_DATA_PROVIDER and EXPO_PUBLIC_API_BASE_URL overrides before retesting file-based configuration.

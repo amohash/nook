@@ -6,7 +6,7 @@ export function createInitialQuery(city: City, now: string): Query {
   return createDemoQuery({ cityId: city.id,
     // Start real discovery with study venue categories, visibly selected in Filters.
     // Missing atmosphere evidence must not make a nearby restaurant the default study pick.
-    ...(city.mode !== 'demo' ? { categories: ['cafe', 'library'] } : {}),
+    ...(city.mode !== 'demo' && !city.datasetVersion.startsWith('ut-austin-study-') ? { categories: ['cafe', 'library'] } : {}),
     origin: { lat: city.lat, lng: city.lng, source: 'manual' },
     departAt: city.mode === 'demo' ? DEMO_NOW : now });
 }

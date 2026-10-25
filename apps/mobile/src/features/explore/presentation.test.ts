@@ -1,9 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createDemoQuery, DEMO_NOW, snapshot } from '@space/fixtures';
 import { departureAt, hoursStatus, lookupPlaces, mapsUrl, venueTime } from './presentation';
 import { createSettingsStore, defaultSettings, SettingsSchema } from '../../data/settings';
 
 describe('Explore and detail presentation integration', () => {
+  it('keeps the venue weekday when Hermes reports weekday text as a literal', () => {
+    const original = Intl.DateTimeFormat.prototype.formatToParts;
+    const parts = vi.spyOn(Intl.DateTimeFormat.prototype, 'formatToParts').mockImplementation(function (this: Intl.DateTimeFormat, date) {
+      return original.call(this, date).map((part) => part.type === 'weekday' ? {...part, type: 'literal' as const} : part);
+    });
+    try {
+      expect(venueTime(DEMO_NOW, 'America/Chicago')).toMatchObject({weekday: 6, hour: 18});
+      expect(venueTime('2026-10-25T05:00:00Z', 'America/Chicago')).toMatchObject({weekday: 0, hour: 0});
+    } finally {parts.mockRestore();}
+  });
   it('converts instants in the venue timezone, including midnight and DST boundaries', () => {
     expect(venueTime('2026-10-25T05:00:00Z', 'America/Chicago')).toMatchObject({weekday: 0, hour: 0});
     expect(venueTime('2026-11-01T06:30:00Z', 'America/Chicago')).toMatchObject({weekday: 0, hour: 1});

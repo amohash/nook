@@ -8,7 +8,7 @@
 - Implemented and automated/browser-verified. Presenter-phone acceptance remains pending: verify native map/pins behind both sheet positions, touch drag, time/origin chip horizontal scrolling, denied GPS/manual origin, all cards, Profile, safe areas and large text on SDK-57-compatible Expo Go. Next smallest step is that device rehearsal. Merge status is recorded by PR #40 on GitHub.
 - Final self-review (`ecc:agent-self-evaluation`): accuracy 4/5 because browser/export evidence does not establish native map behavior; completeness 4/5 because physical-phone acceptance remains pending; clarity 4/5 because web fallback and native map require separate evidence; actionability 4/5 because device rehearsal needs the presenter phone; conciseness 4/5 because this handoff retains the corrected command and limitations. Overall 4.0/5. Highest-impact improvement: record physical-phone acceptance. Self-check: the implementation covers the requested wiring, and the remaining verification is explicit.
 
-Status: Runtime nearby discovery and focused Muse mobile integration are implemented and automatically/browser verified; main merge state is recorded by the integration PR. New live-provider verification and presenter-phone acceptance remain pending private configuration and physical-device access.
+Status: Morning integration fixes and the requested five-real-place UT startup collection are implemented and pushed to integration/morning. User reports device testing complete and requested no further testing. Main remains unmerged pending D’s explicit approval.
 
 > Read AGENTS.md, docs/PRD.md, docs/CONTRACTS.md and docs/EXECUTION.md. I am person D on feat/mobile-flow and the team's integration lead. Inspect the repository before scaffolding. Establish the smallest Expo Go app, root verification scripts, shared imports, a fixture DataProvider and working phone launch. Own routes, Explore map/list, filters, detail, saved places, native sharing, data adapters and demo reset. Use A's component API; do not wait for all Figma screens. Use C's scorer and B's contract rather than inventing result shapes. Implement loading/empty/error states and an explicit live/cached/demo distinction. Never call provider APIs with secret keys from the phone. Verify denied GPS/manual origin, stale request handling, estimated walk labels, save persistence, share cancel, map failure and reset. Keep the root lockfile serialized. Merge small reviewed PRs sequentially and smoke-test the combined phone flow. Freeze features at 3 a.m.; record before 6 a.m.; deliver by 8 a.m.
 
@@ -352,3 +352,94 @@ Next smallest step: run the above on the presenter phone, record acceptance, the
 - Restarted stopped Metro using npm run dev:phone, which launches Expo Go with --tunnel from apps/mobile. New public iOS manifest and 7,355,518-byte iOS development bundle both returned HTTP 200 with SDK 58. Tunnel address is ephemeral; use the active terminal output on restart. API and its existing tunnel remain running.
 - Implemented and automated/network verified; physical presenter-phone acceptance pending. Next smallest step: open current Expo tunnel in Expo Go, complete onboarding, tap Use my location, verify nearby list/map/detail and reload. Discovery remains bounded by provider retrieval, explicit filters and the existing approved account ceiling; no exhaustive Austin coverage claim.
 - Final self-review (ecc:agent-self-evaluation): accuracy 4/5 (network checks cannot establish device behavior); completeness 3/5 (presenter-phone acceptance remains outstanding); clarity 4/5 (bounded coverage disclosed); actionability 4/5 (active tunnel supplied, phone rehearsal needed); conciseness 4/5 (handoff preserves verification evidence). Overall 3.8/5. Highest-impact improvement is the physical phone rehearsal; it requires the presenter device and is explicitly handed off.
+
+
+## D morning return and real UT demo collection — October 25, 2026
+
+User asked to stop testing after reporting the team had tested the app. No further app tests were run after that instruction. The Expo tunnel remains running. No merge to main, deployment, migration, dependency or lockfile change was made by this task.
+
+### Protected local work
+
+- Initial checkout: `fix/explore-study-ux` at `87ed74e`, matching its remote. This is the comparison baseline for D's last pushed work.
+- Committed/pushed local `apps/mobile/app.json` bundle identifier and `apps/mobile/package.json` native run-script edits as `e500529` on `d/unpushed-20261025-1037`. Kept out of integration. The bundle identifier is unnecessary for Expo Go; `expo run:ios/android` creates native builds and is unnecessary for this workflow.
+- Preserved the lone local-only old merge `5ad5851` on remote `d/unpushed-20261025-1037-pr-batch`. It integrates older design-tab-bar work already represented in the current integration; do not merge this backup merely to retain its merge SHA.
+- No unpushed tracked dataset/fixture changes were present. Ignored local env files existed, originally selecting the real API through the existing Cloudflare tunnel with nearby/assistant enabled. Their local backups are also ignored; they were never staged.
+- Fetched all remotes with pruning, switched to `integration/morning`, pulled with rebase, and ran root `npm ci` successfully. npm reported five high-severity advisories; no dependency changes were made.
+
+### Review of D-owned files since 87ed74e
+
+- `app/_layout.tsx`: correct provider order, AuthProvider inside SessionProvider; five social stack routes registered. Disabled social retains a lazy/no-client guest path.
+- `app/(tabs)/_layout.tsx`: correct custom tab wiring and header removal for A's self-contained social screens. SDK 58 warns that anchor plus history does not imply anchor-back behavior; left unchanged. Fresh reload is preferable to relying on Fast Refresh during dataset changes.
+- `app/(tabs)/friends.tsx`: correct search/profile/sign-in/create-account route callbacks; social-off guest state remains available.
+- `app/(tabs)/profile.tsx`: correct profile/follow/preferences wiring. Fixed saved-place links to include `saved=1`, matching Bookmarks, so previously captured runtime spots open their retained snapshots. The separate 180px recovery scroll region is compact and needs deliberate scrolling.
+- `app/(tabs)/map.tsx`: A's web-only expanded initial sheet is appropriate; native preserves peek. Existing presets and filters still use the shared scorer. Final collection caption identifies real cached places and team-provided notes.
+- `app/(tabs)/bookmarks.tsx`: unchanged from the last pushed baseline; links to saved directory.
+- `app/sign-in.tsx`: waits for profile state before routing to Profile/create-profile; guest escape retained.
+- `app/create-profile.tsx`: auth/profile/loading/error guards and retry are correct. Back signs out; this asynchronous callback has no local rejection UI, a review risk rather than a reproduced blocker.
+- `app/edit-profile.tsx`: correct profile guard and return navigation.
+- `app/follow-list.tsx`: signed-in guard and followers/following parameter validation are correct.
+- `app/user/[id].tsx`: correct callbacks and missing-ID guard. Other-user saved places remain scoped to the selected place dataset; unavailable identities show the existing missing-place/recovery state.
+- `src/data/SessionProvider.tsx`: A's two-line sync addition runs after successful local persistence; disabled/signed-out paths are no-ops and remote failure does not undo local saves. It remains best-effort sync.
+- `app/index.tsx`: unchanged; onboarding/session gate then Map redirect is correct.
+- `app/spot/[id].tsx`: unchanged by the morning merge; current-query fit, evidence, unknowns, Save/Share/Maps retained. Final D addition displays the supplied campus notes and team hours without treating them as provider measurements.
+- `src/features/explore/FiltersSheet.tsx` and `filters.ts`: unchanged by morning merge. Draft/Apply/Cancel, preservation of current origin/time, strict unknown handling and explicit intent presets remain correct.
+- Full local diff: `/tmp/nook-d-morning-review.patch`; supporting screenshots and network captures: `/tmp/nook-d-verification/`. These local artifacts are not required by the app and are not uploaded.
+
+### Pushed fixes and final requested behavior
+
+- `c0c5d04`: fixed Hermes weekday parsing in D's presentation helper and, with explicit user authorization, C's shared crowd lookup. Expo Go 58 reported weekday text as a literal part. Two regression tests failed before the fix; numeric venue-local dates now preserve weekday and arrival-hour lookup.
+- `ce97c25`: made SessionGate loading/error/recovery content scrollable. At the largest accessibility size, recovery buttons were previously unreachable; they became reachable after this change.
+- `15b5218`: Profile opens saved snapshots, fixing Life Science Library's reproduced missing-place error while its archived detail already existed locally.
+- `9109ec6`: added a separate, bundled real campus collection in D's data adapter, preserving B's original fixtures and published Austin artifacts. Startup now uses FAC, Life Science Library, Lucky Lab Coffee Co., Texas Union and Perry-Castañeda Library. All five are real provider identities with SerpApi-sourced photos, not renamed fictional fixtures. This is a curated nearby collection, not an exhaustive nearest-five guarantee.
+- User-supplied access, university Wi-Fi, outlet, price, noise, qualitative activity and hours for the first three are labeled team-provided. Low/medium noise maps to curated ranking estimates. Approximate $10+ remains text rather than an invented price tier. Moderately busy remains qualitative; no numeric hourly crowd history or live occupancy was invented. Supplied hours are recorded for October 25 only, without inventing a recurring weekly schedule. Unknown facts for the remaining two remain unknown.
+- Photo acquisition reused private SerpApi captures for three places and made exactly two new, durably budgeted SerpApi searches for FAC and Texas Union. Subsequent reads were cache hits. All five photo URLs returned HTTP 200/image/jpeg. FAC uses a public Google Street View thumbnail via SerpApi; it is visibly lower resolution than the other venue photos. No Muse calls, schema changes or migrations.
+- Exact campus files: `src/data/campus.ts`, `campus-dataset.json`, `campus.test.ts`, `index.ts`, `initialQuery.ts`, `RecoveryControls.tsx`, `app/(tabs)/map.tsx`, `app/spot/[id].tsx`, and the public env template.
+
+### Backend, data and configuration
+
+- Deployed Render URL: `https://nook-api-demo.onrender.com`. Measured health 200/126ms, cities 200/125ms, Austin snapshot 200/155ms. It was already awake. Health SHA: `cc8f7aabebd4d19cba2d5c3fad6bbc21272e02a8`.
+- Render serves 30 real cached places, 30 photo URLs, 10 nonempty Muse summaries, zero known hours and zero typical-crowd records in `austin-20261025-muse-photos-v1`. Sample photo returned 200/image/jpeg.
+- Render still rejects the current app's recommendation limit=200 with 400 invalid_query. The existing HTTPS Cloudflare API tunnel accepted it with 200 and the three eligible campus cafés. No deployment was changed. This does not block the final bundled campus startup path.
+- API outage recovery is explicit: downloaded cached real data is available after validation; bundled data remains available without the place API. Remote photos/map tiles still need network access. The original fictional scenario remains a separately labeled test fixture, not the startup collection.
+- Active ignored `.env`, `.env.local`, `.env.development.local`: `EXPO_PUBLIC_DATA_PROVIDER=campus`, existing public HTTPS API URL retained, nearby=0, assistant=0, contacts=0. `.env` also has social=1 and the user-supplied nook-social public URL/anon key. The decoded JWT role is anon and its project ref matches the supplied URL; no key is recorded in this handoff.
+- Local `.env` files and backups are ignored. Git and the remote integration tree contain only `apps/mobile/.env.example` and `server/.env.example`, with placeholders. No history for the actual env file paths was found in available refs.
+- Repo runtime is SDK 58, not the SDK 57 described in older DEMO.md paragraphs. Simulator Expo Go is 58.0.7/iOS 26.4. User identified the presenter as iPhone 17 Pro with SDK-58-compatible Expo Go; exact physical-phone iOS/Expo Go versions were not supplied.
+
+### Actual verification before the stop instruction
+
+- PASS: npm ci; workspace typecheck; lint; 534 tests across 45 files; server build; whitespace checks. Final campus production export passed iOS, Android and web with social off. Social-on development bundling and native sign-in were exercised separately.
+- PASS in simulator: guest onboarding to manual UT origin; real cached map/pins/photo/detail; explicit cached-real and fictional recovery; original fictional Study/Friends order change; 10-minute walk filter; grouped unknowns; synthetic “Usually quiet” chart with unknown gap after Hermes fix; local save persisted through reload; native Share with fictional label and dismissal; draggable peek/expanded sheet; ordinary tab/safe-area layout.
+- PASS in simulator social-on: user entered password directly; own Profile showed @ryhlu, vibe and saved spots; searched existing real test account @follow_test_2; unfollow hid saves and decremented followers 2→1; follow restored saves and followers 1→2; original relationship restored; Profile snapshot fix opened archived Life Science Library; sign-out returned to guest.
+- PASS: anon Supabase settings endpoint; unauthenticated reads of public_profiles/saved_spots denied with 401/42501. No service-role credential used by the mobile app.
+- PASS in final real collection simulator: five places/pins with cached/team labels; FAC exterior image and supplied hours rendered; native Study/Friends reranked the same five (not a forced winner); all five initial candidates pass the default 15-minute limit.
+- LIMITED: largest-text recovery was fixed and checked, but the complete map/tab layout at extreme accessibility text can become crowded; do not claim a complete accessibility audit.
+- Physical phone: user reports testing completed and explicitly stopped further testing. This agent did not independently inspect the physical phone or receive a per-item pass/fail breakdown. No main merge is claimed.
+
+### Demo launch and backup recording
+
+- Leave the running Metro tunnel terminal alive: `exp://c-amohash-k0qjap-mvo0ugpscg2y4v6w.on.expo.app`. It serves the new campus collection and social config. Tunnel URLs change after restarting. From root, restart with `NODE_PATH="$(npm root -g)" npm run dev:mobile -- --tunnel --clear --port 8082` if necessary, then use the newly printed QR/link. A Metro tunnel serves JS; the retained Cloudflare URL is a separate place API tunnel.
+- Use SDK-58-compatible Expo Go. Disable automatic app updates in iPhone Settings → Apps → App Store → App Updates before presentation. Keep the Mac awake and both required tunnels running; already-loaded bundled place facts/ranking need no place backend.
+- DEMO.md's recording destination remains `docs/demo-assets/nook-demo-final.mp4`. Its fictional venue narration is superseded by this user-requested real-campus collection: describe team-provided notes as such, and do not narrate fabricated hourly crowd readings.
+- Simulator: `mkdir -p docs/demo-assets`; then `xcrun simctl io C5898D02-0F31-437E-8507-DB0F1A6EB69E recordVideo --codec=h264 docs/demo-assets/nook-demo-final.mp4`. In another window drive onboarding → Explore → intent/filter → FAC/Lucky Lab detail → Save → Share/dismiss. Press Ctrl+C in the recording terminal to finalize. This capture has no narration; record microphone narration separately if needed.
+- Phone: enable Screen Recording in Control Center, enable its microphone for narration, start, run the same real-campus flow, stop, then AirDrop/export to the same destination. Copy the final file to both presenting computers and play the entire local file with Wi-Fi off. No final backup video was created by this task.
+- Merge gate: main does not yet contain integration/morning at the final fetched checkpoint. Changes are pushed; only D may authorize the main merge. No merge performed.
+
+### Last 15 commits at handoff
+
+```text
+9109ec6 | amohash | feat(mobile): bundle five real UT study spots with SerpApi photos
+15b5218 | amohash | fix(mobile): open Profile saves from stored snapshots
+ce97c25 | amohash | fix(mobile): keep recovery reachable with large text
+c0c5d04 | amohash | fix: preserve venue weekdays in Hermes crowd lookup
+11c3af1 | ryhlu | Show the ranked list immediately in the web Explore fallback
+878cbae | Andrew Sun | Record measured morning demo readiness and blockers
+96869d6 | ryhlu | Record morning inventory, live social checks and demo handoff
+1385d13 | ryhlu | Refresh social counts and lists when returning to a screen
+5b69d30 | Andrew Sun | Fix cached time test fixture path on Windows
+f8106b9 | Andrew Sun | Merge branch 'data/demo-locations' into integration/morning
+27e8a93 | Andrew Sun | Add labeled fictional library and cafe for reproducible demos
+c810b0c | ryhlu | Wire optional saved-spot sync after successful local saves
+1c715d0 | ryhlu | Merge A social and route wiring into morning integration
+269da05 | ryhlu | Merge pushed D Explore UX into morning integration
+616464d | ryhlu | Wire social screens and optional auth routes (A)
+```

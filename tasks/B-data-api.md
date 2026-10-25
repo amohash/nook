@@ -594,3 +594,120 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   credential is available here. No deployment was attempted. User sign-in to the
   existing service and private runtime configuration are the exact release blockers.
   No new deployed commit, live-provider result or physical-phone acceptance claimed.
+
+## Morning demo fixtures — B, October 25
+
+- User authorized morning integration/fixture preparation despite the prior overnight
+  freeze, and designated A as integration/morning coordinator while D is unavailable.
+  Preserved root package-lock edit in stash named
+  `B morning preservation: existing root package-lock before demo-locations`.
+- Branch `data/demo-locations` from latest origin/main `21ba7a0`. Only bundled
+  fictional fixture data/docs and related tests change; every real cached JSON
+  artifact remains unchanged. Notified A/C in GitHub issue #3 comment 6398869271;
+  no screen/components/scorer/dependency implementation changes.
+- `fictional-austin-v2` extends the ten existing fictional venues with West Stacks
+  (quiet library) and Creekside Coffee (lively cafe), both explicitly fictional.
+  Coordinates, noise/group/amenity/opening facts and sparse typical patterns are
+  synthetic scenario inputs. All spots remain demo mode, with the existing Demo
+  scenario label. Ratings/review counts remain null; no fabricated real reviews,
+  Muse output, live crowd or seat claims. Real cached Austin datasets are untouched.
+- Actual shared ranker/provider at fixed demo clock: Study top three = Paper Lantern,
+  Pocket Library, West Stacks; Meet Friends = Gather Yard, Creekside Coffee, Little
+  Bowl. Both added venues estimate 13 walking minutes: 15-minute filter qualifies12,
+  10-minute filter qualifies10. No winner override or second scorer. Original ten
+  golden-order test remains scoped to those ten; new full-dataset test covers12.
+- Verification: root typecheck and lint passed; full suite501 tests passed after
+  updating data-count/order expectations. Four added tests cover schema/provenance,
+  actual intent-preset/provider parity, 15->10 walk exclusion, unknown-price strictness
+  and synthetic crowd gaps. Pending shared-branch merge and final checks below.
+- Render cold wake health200 took32.198s; subsequent health200 took0.233s,
+  cities2000.075s, list2000.109s. Hosted SHA cc8f7aa, cached photo-v1:30places,
+  30image URLs,10Muse summaries. This is older than current main and lacks newer
+  Nearby/assistant guest APIs; no redeployment/migration performed. Fixture demo
+  remains independent of server keys/network once the JS bundle is loaded.
+- SDK discrepancy: latest main AND morning branch declare Expo58/RN0.88, not user-
+  expected SDK57. No dependency changes by B. Warned A; phone must match actual SDK.
+  Social public env/account identity/profile photo and presenter phone are pending
+  user/A details. Do not substitute invented people/profile facts or use data DB
+  credentials in the separate nook-social project.
+- Morning shared-branch merge `f8106b9` pushed after pulling --rebase. Actual
+  integrated checks:529/529 tests across44files, typecheck, lint, server build pass.
+- Trivial Windows test-path fix: convert the fixture URL with fileURLToPath instead
+  of using URL.pathname, which incorrectly produces /C:/... on Windows. Focused
+  replay tests13/13 pass on Mac; no Windows machine execution claimed.
+
+### Morning B verification — Mac, 09:45–09:50 Central
+
+- Pulled A's `1385d13` social refresh and `96869d6` handoff with --rebase; no
+  conflicts. Original stashed root lockfile remains preserved, not reapplied to the
+  upgraded dependency tree. No main changes, force pushes, new services, provider
+  acquisitions, model calls, deployment or DB migrations in this morning task.
+- Final Mac source checks after A's refresh:529/529 tests/44files, workspace
+  typecheck and lint passed. Server build passed after integration. Real cached
+  JSON artifacts have zero diff against main. A separately reports one Windows
+  CRLF/raw-hash assertion failure; Mac success is not a Windows pass. The URL-path
+  server test fix is already pushed in5b69d30; C's raw-byte hash test was not edited.
+- Actual web guest checks on390x844: three-step onboarding/manual campus, Demo
+  scenario label, Study/Friends actual orders, explicit10-minute filter removing
+  both new13-minute sites, Creekside detail/synthetic label, local Save->reload
+  persistence, and Bookmarks entry passed with no page runtime errors. A's floating
+  overlay blocks pointer access to Use list at this viewport; drag did not work in
+  B's automation. To finish callback/detail testing, the QA invoked the fallback
+  click event programmatically. Therefore complete pointer/native flow is PARTIAL,
+  not a pass. No components/routes/SessionProvider/social edits were made by B.
+- Browser tooling: collaborative preview snapshot timed out twice with
+  `Preview automation snapshot timed out after 15000ms.` Switched to existing
+  Python Playwright + installed Chrome in an isolated headless guest context.
+  Local QA scripts/results/screenshots are ignored in `.expo/morning-qa`; they are
+  browser evidence, not physical-device screenshots.
+- Render mismatch reproduced independently: /v1/recommendations with current
+  limit200 returns400 invalid_query; the old deploy still accepts default limit3.
+  /v1/discovery/nearby-preflight returns404. Do not call this a current Nearby or
+  assistant deployment. Explicit recovery via Profile->Data & recovery -> cached
+  real -> fictional demo passed in a browser, retaining Cached dataset and Demo
+  scenario labels. No silent mode switch or constraint relaxation.
+- Actual mobile API+recovery adapter loaded30real spots/30image URLs/10Muse
+  summaries, fetched all10enriched details and verified their spot identities and
+  citations, and reranked with externalCalls0. Injected API failure retained API
+  choice until explicit switch. Downloaded cache retained facts/summaries/timestamps
+  and returned no extra detail snippets; demo switch returned12demo-mode spots/v2.
+- Public image browser check:28/30decoded,2failed and remained failed on one
+  bounded retry. Images are network-dependent; do not promise all photos on stage.
+  Existing failure placeholders remain. This task does not alter the real artifact.
+- Ignored Mac `.env.local` provider is now fixture for a reliable presentation;
+  previous file copied to ignored `.expo/morning-qa/mobile.env.local.before`.
+  SDK58 dev env loading uses .env.local, so shell-only provider overrides were not
+  sufficient here. No public/private keys were added. Social config still pending
+  from A/B; contacts remain off. A's ignored Windows env does not transfer via Git.
+- Running web: http://localhost:8088. Running Expo Go LAN:
+  exp://10.150.218.27:8089. Actual Android manifest reports sdkVersion58.0.0 and
+  runtimeVersion exposdk:58.0.0. SDK57-only Expo Go is incompatible; do not downgrade
+  or change dependencies for the demo. Both servers use the existing lockfile.
+- Exact Mac commands from `/Users/andrewsun/Desktop/nook` (servers already running;
+  stop the corresponding existing terminal before restarting):
+  `git pull --rebase origin integration/morning`
+  `npm run dev:web -- --port 8088 --clear`
+  `npm run dev:mobile -- --port 8089 --clear --lan`
+  Keep Mac/phone on reachable Wi-Fi; use matching SDK58 Expo Go from expo.dev/go
+  on Android. Expo tunnels only Metro, not a laptop API. Fixture mode needs no API
+  or provider keys once the bundle is loaded. Do not run dependency upgrades.
+- Social ON / real-user account / follows / synced real saves: BLOCKED on missing
+  public nook-social URL+anon/publishable key and the user's direct password entry.
+  Account identifier/profile/follow details are not written into the repository.
+  User selected andrewsun if available, major/photo omitted. Never use B's data
+  project service role for social or invent accounts/follows/profile data.
+- Presenter device: user reports one phone, model/OS/client version unconfirmed.
+  No physical phone, native maps/pins/tiles, GPS permission, native Share/Cancel,
+  photo picker, safe areas or keyboard/Back pass is claimed. That available phone
+  is the presenter candidate only after installing a matching client and rehearsal.
+- Judging risks:32.2s measured Render cold wake; old API contract/absent runtime
+  routes; remote photo failures; Metro/Wi-Fi connectivity; quota/session/key expiry
+  if later switching to real acquisition/assistant; missing local social config.
+  Pinned cached reads/local demo reranks do not require provider/model keys.
+- Code-supported Devpost wording: "We normalize SerpApi place evidence behind one
+  TypeScript API with shared Zod contracts and original source timestamps. The
+  same deterministic filter/ranker serves API, downloaded cache and labeled demo
+  modes. Muse summaries are cached with source evidence, so changing preferences
+  reranks without a new model call. Unknown facts remain unknown." This is not a
+  claim of live occupancy, exhaustive coverage, phone performance or working
+  hosted Nearby/assistant on the old Render deployment.

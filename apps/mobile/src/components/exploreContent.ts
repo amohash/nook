@@ -49,3 +49,9 @@ export const OPEN_STATUS_LABELS: Record<OpenStatus, string> = {
   open: 'Open', closing_soon: 'Closing soon', closed: 'Closed', temporarily_closed: 'Temporarily closed',
   permanently_closed: 'Permanently closed', unknown: 'Hours unknown', stale: 'Hours may be outdated',
 };
+
+/** Fixed estimated-walk bands stay comparable when filters change. */
+export function proximityLevel(minutes: number | null | undefined): 'near' | 'medium' | 'far' | 'unknown' {
+  if (minutes == null || !Number.isFinite(minutes) || minutes < 0) return 'unknown';
+  return minutes <= 10 ? 'near' : minutes <= 20 ? 'medium' : 'far';
+}

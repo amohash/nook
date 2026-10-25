@@ -1,5 +1,6 @@
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
+import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { coversSession, rankSpots } from '@space/core';
@@ -8,7 +9,7 @@ import { DatasetSchema, loadDataset } from '../data/dataset';
 import { diffTimeDataset, reconstructCachedTime, type CacheCapture } from './reconstruct-cached-time';
 import { publishReviewedTime, readCachedTimeRows } from './add-cached-time';
 
-const original = await loadDataset(new URL('../../../fixtures/data/austin-20261025-muse-photos-v1.json', import.meta.url).pathname);
+const original = await loadDataset(fileURLToPath(new URL('../../../fixtures/data/austin-20261025-muse-photos-v1.json', import.meta.url)));
 const spot = original.snapshot.spots[0]!;
 const time = '2026-10-25T05:00:00+00:00';
 const now = '2026-10-25T07:00:00Z';

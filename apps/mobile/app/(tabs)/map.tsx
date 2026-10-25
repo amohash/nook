@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/contracts';
 import { DEMO_LABEL, DEMO_NOW } from '@space/fixtures';
@@ -32,7 +32,9 @@ function Explore() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [sheetPosition, setSheetPosition] = useState<ExploreSheetPosition>('peek');
+  const [sheetPosition, setSheetPosition] = useState<ExploreSheetPosition>(Platform.OS === 'web' ? 'expanded' : 'peek');
+  const [activeTab, setActiveTab] = useState<'places' | 'muse'>('places');
+  const [mapInsets, setMapInsets] = useState({top: 160, bottom: 180});
   const [timeOpen, setTimeOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [timeMode, setTimeMode] = useState<'now' | 'later'>('now');
@@ -81,10 +83,15 @@ function Explore() {
   const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
   const shown = response?.results ?? [];
   const statusTitle = !canRank ? 'Nearby discovery required' : loading ? 'Finding matches…' : error ? 'Places unavailable'
-    : `${response?.results.length ?? 0} matches · ${query.maxWalkMinutes} min estimated walk · ${priceLabel(query.maxPriceLevel)}`;
+    : `${response?.results.length ?? 0} nooks · within ${query.maxWalkMinutes} min est. walk · ${priceLabel(query.maxPriceLevel)}`;
+  const topPick = shown[0];
+  const topPickLine = topPick && canRank && !loading && !error && topPick.estimatedWalkMinutes != null
+    ? `Best fit: ${topPick.spot.name} · ${topPick.estimatedWalkMinutes} min est. walk` : undefined;
   return <><ExploreLayout
-    mapSlot={<PlaceMap results={response?.results ?? []} origin={query.origin}
-      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={(id) => {setSelectedId(id); setSheetPosition('expanded');}} onFallback={() => setSheetPosition('expanded')} />}
+    onMapInsetsChange={setMapInsets}
+    mapSlot={<PlaceMap results={response?.results ?? []} origin={query.origin} edgeInsets={mapInsets}
+      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={(id) => {setSelectedId(id); location.cancel(); router.push({pathname: '/spot/[id]', params: {id}});}} onFallback={() => setSheetPosition('expanded')} />}
+    activeTab={activeTab} onTabChange={(tab) => {setActiveTab(tab); Keyboard.dismiss(); if (tab === 'muse') setSheetPosition('expanded');}}
     search={{value: search, onChangeText: (value) => {setSearch(value.slice(0, 120)); if (value.trim()) setSheetPosition('expanded');},
       onSubmit: () => Keyboard.dismiss(), placeholder: 'Find a place by name', accessibilityLabel: 'Find a place in this dataset'}}
     filters={{options: [{id: 'study', label: 'Study'}, {id: 'friends', label: 'Meet Friends'}],
@@ -96,9 +103,11 @@ function Explore() {
     originLabel={location.busy ? 'Locating…' : query.origin.source === 'manual' ? 'UT Austin' : location.accuracyMeters !== null && location.accuracyMeters >= 100 ? 'Approximate location' : 'Device location'}
     onOriginPress={() => {setOriginOpen((value) => !value); setTimeOpen(false); setSheetPosition('expanded');}}
     onAvatarPress={() => {location.cancel(); router.push('/(tabs)/profile');}}
-    title={statusTitle}
-    dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL : `Dataset ${city.datasetVersion}`}}
-    topAccessory={<>
+    title={activeTab === 'muse' ? 'Your place assistant' : statusTitle}
+    subtitle={activeTab === 'muse' ? undefined : topPickLine}
+    dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL
+      : city.datasetVersion.startsWith('ut-austin-study-') ? 'UT Austin study collection · team-provided notes' : `Dataset ${city.datasetVersion}`}}
+    topAccessory={activeTab === 'places' ? <>
       {(originOpen || location.busy || location.error) && <OriginCard origin={query.origin} busy={location.busy}
         error={location.error} accuracyMeters={location.accuracyMeters}
         onDevice={() => {void location.useDevice();}} onManual={location.useManual} />}
@@ -108,26 +117,25 @@ function Explore() {
         timeLabel={`${city.mode === 'demo' ? 'Demo clock · ' : ''}${venueTime(query.departAt, city.timezone).label}`}
         timezoneLabel={city.timezone} />}
       <NearbyControls />
-    </>}>
-    <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
+    </> : undefined}>
+    {activeTab === 'muse' ? <PlaceAssistant inline onClose={() => setActiveTab('places')} placeIds={response?.results.map((result) => result.spotId) ?? []} /> : <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
     {search.trim().length > 0 && <View style={s.panel}>
       <Text style={s.heading}>Place lookup</Text>
-      <Text style={s.small}>Looks up this dataset by name/address. Recommendation filters do not apply to these lookup links.</Text>
+      <Text style={s.small}>Matches by name or address. Filters don't apply here.</Text>
       {lookupLoading ? <LoadingState message="Loading place lookup…" /> : lookupFailed ? <ErrorState title="Place lookup unavailable"
         message="Recommendations remain separate. Retry the place directory." action={{label: 'Retry lookup', onPress: () => setLookupAttempt((value) => value + 1)}} />
         : lookup.length ? lookup.map((spot) => <Button key={spot.id} label={spot.name} variant="outline"
           onPress={() => {location.cancel(); Keyboard.dismiss(); router.push({pathname: '/spot/[id]', params: {id: spot.id}});}} />)
           : <EmptyState title="No place found" message="Try another name or clear your search." action={{label: 'Clear search', onPress: () => setSearch('')}} />}
     </View>}
-    <PlaceAssistant placeIds={response?.results.map((result) => result.spotId) ?? []} />
-    {!canRank && <Text style={s.small}>Nearby recommendations await discovery for the selected origin. Manual origin and explicit offline datasets remain available.</Text>}
+    {!canRank && <Text style={s.small}>Finding study spots near your location. You can also pick UT Austin as your starting point.</Text>}
     {!canRank && !nearby.busy && <RecoveryControls expanded />}
     {loading && <LoadingState />}
     {error && <ErrorState title="Places unavailable" message="Places could not be loaded. Check your connection and retry."
       action={{label: 'Retry', onPress: () => setAttempt((a) => a + 1)}} />}
     {error && <RecoveryControls expanded />}
     {!loading && response?.results.length === 0 && <View style={s.panel}>
-      <EmptyState title="No matching places" message="No known places meet your selected constraints. Choose one constraint to change, edit filters or explicitly reset. Constraints are never relaxed automatically; a change may still return no matches."
+      <EmptyState title="No matching places" message="Nothing fits all your filters. Loosen one below, or edit your filters. We won't change them for you."
         action={{label: 'Edit filters', onPress: () => setDraft(QuerySchema.parse(query))}} />
       <Text style={s.small}>{Object.entries(response.excludedCounts).map(([code, count]) => `${code.replaceAll('_', ' ')}: ${count}`).join(' · ')}</Text>
       {relaxations.length > 0 ? <>
@@ -143,8 +151,8 @@ function Explore() {
       <SpotCard variant="compact" result={result} rank={index + 1}
         accessibilityRole="link" onPress={location.cancel} />
     </Link>)}
-    <Text style={s.small}>{response && `Showing all ${response.metrics.qualifyingCount} matches from ${response.metrics.candidateCount} nearby candidates, best fit first. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
-  </ScrollView></ExploreLayout>
+    <Text style={s.small}>{response && `All ${response.metrics.qualifyingCount} matches, best fit first. `}Walk times are estimates from straight-line distance.</Text>
+  </ScrollView>}</ExploreLayout>
     {draft && <FiltersSheet query={draft} onChange={setDraft} onClose={() => setDraft(null)}
       onApply={() => {setQuery((current) => applyExploreFilters(current, draft)); setDraft(null);}} />}
   </>;
