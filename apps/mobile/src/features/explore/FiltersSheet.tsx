@@ -1,7 +1,7 @@
 import { theme } from '../../theme';
 import { useEffect } from 'react';
-import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SheetContainer } from '../../components';
 import type { Query } from '@space/contracts';
 import { activeFilterCount, applyIntentPreset, ATMOSPHERE_OPTIONS, CATEGORY_OPTIONS,
   priceLabel, resetExploreFilters, VIBE_OPTIONS } from './filters';
@@ -18,7 +18,6 @@ function Choice({ label, selected, onPress, multiple = false }: {
 export function FiltersSheet({ query, onChange, onApply, onClose }: {
   query: Query; onChange: (query: Query) => void; onApply: () => void; onClose: () => void;
 }) {
-  const insets = useSafeAreaInsets();
   useEffect(() => {
     if (Platform.OS !== 'web') return;
     const dismiss = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
@@ -29,12 +28,8 @@ export function FiltersSheet({ query, onChange, onApply, onClose }: {
     <View style={s.overlay}>
       <Pressable accessibilityRole="button" accessibilityLabel="Dismiss filters" onPress={onClose} style={StyleSheet.absoluteFill} />
       <View accessibilityViewIsModal onAccessibilityEscape={onClose} role="dialog" aria-modal aria-label="Filters"
-        style={[s.sheet, { paddingBottom: Math.max(16, insets.bottom) }]}>
-        <View style={s.header}>
-          <Text accessibilityRole="header" style={s.title}>Filters</Text>
-          <Pressable accessibilityRole="button" onPress={onClose} style={s.chip}><Text style={s.chipText}>Cancel</Text></Pressable>
-        </View>
-        <ScrollView contentContainerStyle={s.content}>
+        style={s.sheet}>
+        <SheetContainer title="Filters" onCancel={onClose} onReset={() => onChange(resetExploreFilters(query))} onApply={onApply}>
           <Text style={s.body}>{activeFilterCount(query)} active filters · changed groups from Study defaults. Changes take effect on Apply.</Text>
           <Text style={s.heading}>Intent presets</Text>
           <Text style={s.body}>Study is solo; Meet Friends uses a group of four. Presets keep your category, price and walk limits.</Text>
@@ -76,11 +71,7 @@ export function FiltersSheet({ query, onChange, onApply, onClose }: {
                 onChange({ ...query, tagWeights });
               }} />)}
           </View>
-        </ScrollView>
-        <View style={s.footer}>
-          <Pressable accessibilityRole="button" style={s.chip} onPress={() => onChange(resetExploreFilters(query))}><Text style={s.chipText}>Reset</Text></Pressable>
-          <Pressable accessibilityRole="button" style={[s.chip, s.selected]} onPress={onApply}><Text style={s.chipText}>Apply</Text></Pressable>
-        </View>
+        </SheetContainer>
       </View>
     </View>
   </Modal>;
@@ -88,7 +79,7 @@ export function FiltersSheet({ query, onChange, onApply, onClose }: {
 
 const s = StyleSheet.create({
   overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.6)' },
-  sheet: { maxHeight: '90%', width: '100%', maxWidth: 680, alignSelf: 'center', backgroundColor: theme.colors.background, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
+  sheet: { height: '90%', width: '100%', maxWidth: 680, alignSelf: 'center', backgroundColor: theme.colors.background, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, gap: 12 },
   title: { color: theme.colors.text, fontSize: 26, fontWeight: '700' },
   content: { paddingHorizontal: 20, paddingBottom: 24, gap: 12 },
