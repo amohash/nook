@@ -107,3 +107,13 @@ session's local date/time, save/restart and share, and exercise network failure.
 Measure phone and deployed-network latency independently if those claims are needed.
 No automated scorer defect was reproduced; the new negative-control regression
 ensures a changed API warning fails parity rather than producing a false success.
+
+
+## Focused assistant expansion follow-up
+
+See [ASSISTANT-EVALUATION.md](ASSISTANT-EVALUATION.md) for the separate eight-case
+recorded-real evaluation, exact score-component instrumentation, raw samples,
+blinded human relevance packet and reproduction commands. The original baseline
+above is unchanged. New nearby acquisition, current Muse access and physical
+phone acceptance remain separate unverified gates. No human relevance scores
+have been collected.

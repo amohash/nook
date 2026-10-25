@@ -108,6 +108,28 @@ describe('grounded focused place assistant', () => {
     const response = await createPlaceAssistant(deps({ complete: undefined }))(input());
     expect(response.httpStatus).toBe(503); expect(response.body.text).toContain('filters');
   });
+  it('renders missing evidence as unknown and never fills it with an inferred availability claim', async () => {
+    const data = structuredClone(snapshot);
+    data.spots[0]!.noise.value = null;
+    data.spots[0]!.priceLevel.value = null;
+    const complete = vi.fn(async (request: { user: string }) => {
+      const candidates = JSON.parse(request.user).candidates;
+      const fact = candidates[0].facts.find((f: { text: string }) => f.text === 'Noise unknown');
+      return JSON.stringify({ status: 'ready', selections: [{ placeId: data.spots[0]!.id, factIds: [fact.id] }] });
+    });
+    const response = await createPlaceAssistant(deps({ complete, resolveContext: async () => ({ snapshot: data, details: [] }) }))(input());
+    expect(response.body.text).toContain('Noise unknown');
+    expect(response.body.text).not.toMatch(/available seats|quiet atmosphere/);
+    expect(response.body.references[0]!.evidenceIds).toEqual([]);
+  });
+  it('rejects details from a different snapshot before provider access', async () => {
+    const complete = vi.fn(async () => selection());
+    const detail: SpotDetail = structuredClone(getDemoDetail(snapshot.spots[0]!.id));
+    detail.spot.datasetVersion = 'other-version';
+    const response = await createPlaceAssistant(deps({ complete,
+      resolveContext: async () => ({ snapshot, details: [detail] }) }))(input());
+    expect(response.body.status).toBe('unavailable'); expect(complete).not.toHaveBeenCalled();
+  });
   it('returns scope-specific help for unrelated tasks', async () => {
     const response = await createPlaceAssistant(deps({ complete: async () => JSON.stringify({ status: 'out_of_scope', selections: [] }) }))(input());
     expect(response.body.status).toBe('out_of_scope'); expect(response.body.references).toEqual([]);

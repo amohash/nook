@@ -128,7 +128,7 @@ export function createPlaceAssistant({ complete, authorizeSession, resolveContex
       sessions.set(input.sessionId, { calls: (current?.calls ?? 0) + 1, expires: current?.expires ?? now + 30 * 60_000 });
       total++;
       const { origin: _origin, cityId: _city, snapshotId: _snapshot, departAt: _time, ...preferences } = input.query;
-      const text = await Promise.race([complete({ model: MUSE_MODEL, system: SYSTEM,
+      const text = await Promise.race([complete({ model: MUSE_MODEL, system: SYSTEM, maxTokens: 768,
         user: JSON.stringify({ message: input.message, preferences, candidates }), signal: controller.signal }), deadline]);
       if (Buffer.byteLength(text) > 8192) throw new Error('output limit');
       const selection = SelectionSchema.parse(JSON.parse(text));

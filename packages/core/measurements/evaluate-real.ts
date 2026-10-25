@@ -11,7 +11,7 @@ import { createRecoveryProvider } from '../../../apps/mobile/src/data/recovery';
 import { createApiProvider, fixtureProvider } from '../../../apps/mobile/src/data/providers';
 import { DatasetSchema, type Dataset } from '../../../server/src/data/dataset';
 import { createRecommendationRouter } from '../../../server/src/routes/recommend';
-import { rankSpots } from '../src/index';
+import { rankSpots, type ScoreDiagnostic } from '../src/index';
 
 const InputSchema = z.strictObject({
   clock: InstantSchema,
@@ -104,9 +104,12 @@ export async function evaluateDataset(dataset: Dataset, input: ReturnType<typeof
         apiReportedRankNode: [] as number[], cachedMobileAdapterInNode: [] as number[],
         cachedReportedRankNode: [] as number[] };
       let baseline: ReturnType<typeof rankSpots> | undefined;
+      let scoreComponents: ScoreDiagnostic[] = [];
       for (let sample = 0; sample < samples; sample++) {
+        const diagnostics: ScoreDiagnostic[] = [];
         const started = performance.now();
-        const direct = rankSpots(dataset.snapshot.spots, query, { now: input.clock });
+        const direct = rankSpots(dataset.snapshot.spots, query, { now: input.clock },
+          (record) => diagnostics.push(record));
         rawMs.scorerLocalNode.push(performance.now() - started);
         const apiStarted = performance.now();
         const remote = await api.recommend(query);
@@ -131,11 +134,12 @@ export async function evaluateDataset(dataset: Dataset, input: ReturnType<typeof
           }
         }
         baseline = direct;
+        scoreComponents = diagnostics;
       }
       records.push({ label, query, parity: { scorerApiCached: true, repeatedSamplesStable: true, checkedSamples: samples },
         ranking: baseline!, names: baseline!.results.map((result) => ({ spotId: result.spotId,
           name: dataset.snapshot.spots.find((spot) => spot.id === result.spotId)!.name })),
-        acquisition: { externalCalls: 0, providerOrModelConstructed: false }, rawMs });
+        scoreComponents, acquisition: { externalCalls: 0, providerOrModelConstructed: false }, rawMs });
     }
     return records;
   } finally {
