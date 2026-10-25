@@ -8,13 +8,15 @@ export type ButtonProps = Pick<PressableProps, 'accessibilityLabel' | 'accessibi
   variant?: 'primary' | 'outline';
   disabled?: boolean;
   busy?: boolean;
+  selected?: boolean;
 };
 
-export function Button({ label, variant = 'primary', disabled = false, busy = false, ...props }: ButtonProps) {
+export function Button({ label, variant = 'primary', disabled = false, busy = false, selected, ...props }: ButtonProps) {
   const outlined = variant === 'outline';
   const unavailable = disabled || busy;
   return <Pressable {...props} accessibilityRole="button" disabled={unavailable}
-    accessibilityState={{ disabled: unavailable, busy }} aria-busy={busy} aria-disabled={unavailable}
+    accessibilityState={{ disabled: unavailable, busy, ...(selected === undefined ? {} : { selected }) }}
+    aria-pressed={selected} aria-busy={busy} aria-disabled={unavailable}
     style={({ pressed }) => [styles.button, outlined ? styles.outline : styles.primary,
       pressed && styles.pressed, unavailable && styles.disabled]}>
     {busy && <ActivityIndicator accessible={false} color={outlined ? theme.colors.text : theme.colors.buttonText} />}

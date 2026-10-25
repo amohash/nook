@@ -14,7 +14,7 @@ export type ChipProps = Pick<PressableProps, 'accessibilityHint' | 'testID'> & {
 export function Chip({ label, selected, selectionRole = 'checkbox', disabled = false, ...props }: ChipProps) {
   // The visual pill is 36pt; its non-overlapping touch target is at least 44pt.
   return <Pressable {...props} accessibilityRole={selectionRole} accessibilityLabel={label} disabled={disabled}
-    accessibilityState={{ checked: selected, disabled }} aria-checked={selected}
+    accessibilityState={{ checked: selected, selected, disabled }} aria-checked={selected}
     style={[styles.target, disabled && styles.disabled]}>
     {({ pressed }) => <View style={[styles.pill, selected && styles.selected, pressed && styles.pressed]}>
       <Text style={[styles.label, selected && styles.selectedLabel]}>{label}</Text>
