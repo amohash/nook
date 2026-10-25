@@ -584,3 +584,13 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   absent; exact names only emitted. User will configure after code. SerpApi attempts0,
   retries0; Muse attempts0. No live area artifacts, deployment, migration or physical-
   phone acceptance claimed. Existing public Render release unchanged by this work.
+- Final post-C-main-sync code `edf6dbb`:426tests across36files passed, including
+  18new focused acquisition/access/persistence tests; full workspace typecheck,
+  lint, server build and whitespace check passed. Runtime PR#41 is reviewable;
+  shared contracts PR#37 is merged. New tests preserve sparse listing facts and
+  validate atomic lease expiration/owner release plus service-wide concurrency.
+- Existing Render dashboard access was actually checked through T3 preview:
+  redirected to login; no authenticated deployment session or RENDER environment
+  credential is available here. No deployment was attempted. User sign-in to the
+  existing service and private runtime configuration are the exact release blockers.
+  No new deployed commit, live-provider result or physical-phone acceptance claimed.
