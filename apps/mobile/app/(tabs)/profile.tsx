@@ -11,7 +11,7 @@ export default function Profile() {
   return <><ProfileScreen onEditProfile={() => router.push('/edit-profile')}
     onOpenFollowList={(kind, userId) => router.push({pathname: '/follow-list', params: {kind, userId}})}
     onEditPreferences={() => router.push('/preferences')}
-    onOpenSpot={(id) => router.push({pathname: '/spot/[id]', params: {id}})}
+    onOpenSpot={(id) => router.push({pathname: '/spot/[id]', params: {id, saved: '1'}})}
     onSignIn={() => router.push('/sign-in')}
     onCreateAccount={() => router.push({pathname: '/sign-in', params: {mode: 'signUp'}})}
     onFinishProfile={() => router.push('/create-profile')} />
