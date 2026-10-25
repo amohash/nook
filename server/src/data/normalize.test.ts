@@ -66,8 +66,8 @@ describe('provider to normalized opening evidence', () => {
     expect(session(spot, '2026-11-01T01:15:00-05:00', '2026-11-01T01:45:00-06:00')).toBe(true);
     expect(session(spot, '2026-03-08T01:30:00-06:00', '2026-03-08T03:00:00-05:00')).toBe(true);
   });
-  it.each(['9–5 PM', '12AM–12AM', '25:00–26:00', '0AM–4AM', '9:70AM–5PM', '9AM–5PM (holiday)', '', '9AM–5PM–6PM'])
-    ('does not guess an ambiguous/invalid day: %s', (value) => expect(parseDayHours(value)).toBeNull());
+  it.each(['9–5 PM', '12AM–12AM', '25:00–26:00', '0AM–4AM', '9:70AM–5PM', '9AM–5PM (holiday)', '', '9AM–5PM–6PM'])(
+    'does not guess an ambiguous/invalid day: %s', (value) => expect(parseDayHours(value)).toBeNull());
 });
 
 describe('historical activity and separate live observations', () => {
@@ -126,8 +126,8 @@ describe('historical activity and separate live observations', () => {
     expect(normalize().typicalCrowd).toBeNull(); expect(normalize().liveObservation).toBeNull();
   });
   it.each([undefined, null, 'busy', {}, { live_hash: { time_spent: '45 minutes' } },
-    { graph_results: { sunday: [{ time: '6 AM', live_busyness_score: 60 }] } }])
-    ('does not derive crowd/live evidence from reviews, time spent or unsupported data (%j)', (popular_times) => {
+    { graph_results: { sunday: [{ time: '6 AM', live_busyness_score: 60 }] } }])(
+    'does not derive crowd/live evidence from reviews, time spent or unsupported data (%j)', (popular_times) => {
       const spot = normalize({ popular_times });
       expect(spot.liveObservation).toBeNull(); expect(spot.noise.value).toBeNull();
       expect(spot.wifi.value).toBe('unknown'); expect(spot.outlets.value).toBe('unknown');
