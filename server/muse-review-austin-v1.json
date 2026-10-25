@@ -1,0 +1,17 @@
+{
+  "sourceDatasetVersion": "austin-20261025-v1",
+  "omissions": [
+    {
+      "placeId": "google:469628681071309095718b65891e9efc",
+      "field": "outlets",
+      "expectedValue": "no",
+      "reason": "A reviewer reports not seeing many outlets. This does not establish absence; preserve unknown."
+    },
+    {
+      "placeId": "google:3a52175673db43628a18ba7a2862feda",
+      "field": "tag",
+      "tag": "date_night",
+      "reason": "The cited review describes brunch dates, without evidence for a night-time setting."
+    }
+  ]
+}
