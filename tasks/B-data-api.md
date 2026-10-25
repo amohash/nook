@@ -630,3 +630,8 @@ Maps thumbnails for all 30 stable places. No additional paid acquisition was mad
   Social public env/account identity/profile photo and presenter phone are pending
   user/A details. Do not substitute invented people/profile facts or use data DB
   credentials in the separate nook-social project.
+- Morning shared-branch merge `f8106b9` pushed after pulling --rebase. Actual
+  integrated checks:529/529 tests across44files, typecheck, lint, server build pass.
+- Trivial Windows test-path fix: convert the fixture URL with fileURLToPath instead
+  of using URL.pathname, which incorrectly produces /C:/... on Windows. Focused
+  replay tests13/13 pass on Mac; no Windows machine execution claimed.
