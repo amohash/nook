@@ -1,4 +1,4 @@
-import { ApiErrorSchema, CitiesSchema, QuerySchema, RecommendationSchema, SnapshotSchema,
+import { CitiesSchema, QuerySchema, RecommendationSchema, SnapshotSchema,
   SpotDetailSchema, type DataProvider, type Query } from '@space/contracts';
 import { rankSpots } from '@space/core';
 import { cities, DEMO_NOW, getDemoDetail, snapshot } from '@space/fixtures';
@@ -36,22 +36,29 @@ export const fixtureProvider: DataProvider = {
   },
 };
 
-export function createApiProvider(baseUrl: string): DataProvider {
-  const base = baseUrl.replace(/\/$/, '');
+export function createApiProvider(baseUrl: string, timeoutMs = 8000): DataProvider {
+  const base = publicApiBase(baseUrl);
   async function request(path: string, query?: Query): Promise<unknown> {
-    if (!/^https?:\/\//.test(base)) throw new Error('Set a valid API base URL before using the API provider.');
+    if (!base) throw new Error('Set a valid API base URL before using the API provider.');
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    try {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    // Race the whole operation, including body reads. Abort alone is not a deadline
+    // on transports that fail to settle after cancellation.
+    const operation = async () => {
       const response = await fetch(`${base}${path}`, { signal: controller.signal,
         ...(query ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(QuerySchema.parse(query)) } : {}) });
       if (response.status === 404 && path.startsWith('/v1/spots/')) throw new PlaceNotFoundError();
       const body: unknown = await response.json();
-      if (!response.ok) {
-        const parsed = ApiErrorSchema.safeParse(body);
-        throw new Error(parsed.success ? parsed.data.error.message : 'API request failed');
-      }
+      if (!response.ok) throw new Error('API unavailable. Retry or choose an offline dataset.');
       return body;
+    };
+    try {
+      return await Promise.race([operation(), new Promise<never>((_, reject) => {
+        timeout = setTimeout(() => {
+          controller.abort();
+          reject(new Error('API timed out. Retry or choose an offline dataset.'));
+        }, timeoutMs);
+      })]);
     } finally { clearTimeout(timeout); }
   }
   return {
@@ -60,4 +67,13 @@ export function createApiProvider(baseUrl: string): DataProvider {
     async getSpot(id) { return SpotDetailSchema.parse(await request(`/v1/spots/${encodeURIComponent(id)}`)); },
     async recommend(query) { return RecommendationSchema.parse(await request('/v1/recommendations', query)); },
   };
+}
+
+// Public API configuration must not contain a secret-bearing query or user info.
+export function publicApiBase(value: string): string | null {
+  try {
+    const url = new URL(value);
+    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash) return null;
+    return url.toString().replace(/\/$/, '');
+  } catch {return null;}
 }
