@@ -3,10 +3,12 @@ import { useRouter } from 'expo-router';
 import { Button } from '../../components';
 import { RecoveryControls } from '../../data/RecoveryControls';
 import { theme } from '../../theme';
+import { StudyPreferencesRow, usePreferenceTags } from '../preferences';
 
 // Temporary D-owned route content until A's placeholder exports are pushed.
 export function TabPlaceholder({screen}: {screen: 'Friends' | 'Bookmarks' | 'Profile'}) {
   const router = useRouter();
+  const tags = usePreferenceTags();
   return <ScrollView contentContainerStyle={s.page}>
     <Text accessibilityRole="header" style={s.title}>{screen}</Text>
     <Text style={s.body}>{screen === 'Friends'
@@ -14,7 +16,7 @@ export function TabPlaceholder({screen}: {screen: 'Friends' | 'Bookmarks' | 'Pro
       : `${screen} design preview coming soon. Your existing on-device features are available below.`}</Text>
     {screen === 'Bookmarks' && <Button label="Open saved places" onPress={() => router.push('/saved')} />}
     {screen === 'Profile' && <RecoveryControls />}
-    {screen === 'Profile' && <Button label="Preferences on this device" onPress={() => router.push('/preferences')} />}
+    {screen === 'Profile' && <StudyPreferencesRow tags={tags} onPress={() => router.push('/preferences')} />}
   </ScrollView>;
 }
 const s = StyleSheet.create({

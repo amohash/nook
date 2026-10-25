@@ -9,6 +9,7 @@ import { PreferencesScreen, type PreferenceValues } from '../preferences';
 import { LocationScreen } from './LocationScreen';
 import { StudyStyleScreen } from './StudyStyleScreen';
 import { WelcomeScreen } from './WelcomeScreen';
+import type { StudyStyleId } from './studyStyle';
 
 export type DesignPreviewProps = { screen?: 'welcome' | 'study-style' | 'location' | 'preferences' | 'components' };
 
@@ -18,6 +19,7 @@ export function DesignPreview({ screen = 'study-style' }: DesignPreviewProps) {
   const [showComponents, setShowComponents] = useState(screen === 'components');
   const [query] = useState(() => createDemoQuery());
   const [preferences, setPreferences] = useState<PreferenceValues>(query);
+  const [styles, setStyles] = useState<StudyStyleId[]>(['quiet', 'outlets']);
   const [selectedId, setSelectedId] = useState<string | null>('ut-austin');
   const back = () => Alert.alert('Preview: Back pressed');
   const skip = () => Alert.alert('Preview: Skip pressed — nothing saved');
@@ -35,8 +37,13 @@ export function DesignPreview({ screen = 'study-style' }: DesignPreviewProps) {
       onUseLocation={() => Alert.alert('Preview only', 'D connects foreground GPS. No permission requested in this preview.')}
       onContinue={() => Alert.alert('Preview starting point — not saved', selectedId ?? 'None')} />}
     {screen === 'preferences' && <PreferencesScreen value={preferences} onChange={setPreferences}
+      styles={styles} onStylesChange={setStyles}
+      origin={{ origin: query.origin, busy: false, error: null, accuracyMeters: null,
+        onDevice: () => Alert.alert('Preview only', 'D connects foreground GPS. No permission requested in this preview.'),
+        onManual: () => Alert.alert('Preview: Use UT Austin pressed') }}
       onSave={() => Alert.alert('Preview preferences — not saved')} onCancel={back}
-      onReset={() => setPreferences(createDemoQuery())} />}
+      onReset={() => {setPreferences(createDemoQuery()); setStyles([]);}}
+      onRedoOnboarding={() => Alert.alert('Preview: Redo onboarding pressed — nothing cleared')} />}
     <SafeAreaView edges={['bottom']} style={{ paddingHorizontal: theme.spacing.xl, backgroundColor: theme.colors.background }}>
       <Button label="Explore component states" variant="outline" onPress={() => setShowComponents(true)} />
     </SafeAreaView>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { QuerySchema, TAGS } from '@space/contracts';
 import { createDemoQuery } from '@space/fixtures';
-import { toggleVibe, VIBE_LABELS } from './preferences';
+import { getPreferenceTags, toggleVibe, VIBE_LABELS } from './preferences';
 
 describe('preference edits', () => {
   it('uses only the shared tag vocabulary', () => {
@@ -24,5 +24,16 @@ describe('preference edits', () => {
     expect(merged.maxWalkMinutes).toBe(5);
     expect(merged.amenities).toEqual(initial.amenities);
     expect(merged.tagWeights.outdoor).toBe(1);
+  });
+});
+
+describe('getPreferenceTags', () => {
+  it('lists saved study styles, then vibes not already covered by a style', () => {
+    expect(getPreferenceTags({ styles: ['outlets', 'quiet'],
+      preferences: { tagWeights: { quiet: 1, study: 1, cozy: 0 } } })).toEqual(['Silent', 'Outlets', 'Study']);
+  });
+
+  it('is empty when nothing is saved', () => {
+    expect(getPreferenceTags({ styles: [], preferences: { tagWeights: {} } })).toEqual([]);
   });
 });
