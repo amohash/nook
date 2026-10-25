@@ -122,3 +122,20 @@ Next smallest step: record the physical-phone filter-sheet smoke above, then rev
 6. While Finding location is visible, tap Use UT Austin. Wait longer than the deadline: it must remain manual. Repeat by opening a visible detail card while lookup is pending; return via Back and confirm the previous origin/filters persist. If GPS completes too quickly to reproduce a race, record that case as simulated-only rather than claiming device verification.
 7. Open Filters while a location lookup is pending, make selections, then Apply after GPS completes: the newer origin must remain selected. Confirm Study/Meet Friends, Reset filters and detail/Back continue to work without changing the selected origin.
 8. Record actual results and regressions before merge. The next implementation milestone after origin verification is map/list integration against the same provider results; A's component handoff and B's real-data endpoint can be integrated when available.
+
+## API city identity recovery — October 24, 2026
+
+- The previous quick tunnel became unavailable (HTTP 530 / Cloudflare 1033, then DNS failure). The replacement endpoint advertises cached city `us-tx-austin`, version `austin-20261025-v1`, with 30 places. The old mobile bootstrap requested `demo-austin`, reproducing a 404 City not found.
+- On `fix/mobile-api-city`, Explore now initializes from DataProvider.listCities before requesting recommendations, using the advertised city coordinates and current departure time for cached/live data; demo mode retains DEMO_NOW. Loading/error/Retry and stale-request cancellation are preserved. No contract, scorer, A component or backend changes.
+- Updated the ignored mobile .env.local endpoint and restarted Expo with --clear. No credentials were added to tracked files.
+- Verified: 132 tests, workspace typecheck, lint, server build and diff whitespace check pass. The actual new API returns three recommendations, a valid detail (Trippy Buck Coffee Truck), and zero results for a strict library/free query through the existing validated mobile DataProvider.
+- Browser visual verification was blocked by two snapshot timeouts (`Preview automation snapshot timed out after 15000ms`). Physical-phone reload, real-data list/detail/Back, filter/reset and API error/Retry remain pending. The new UI fix is not merged or phone-verified yet.
+
+
+## A design device preview — October 24, 2026
+
+- Prepared on feat/mobile-design-preview from the preserved API-city fix, in a separate worktree. A’s latest remote commit remains 807b81f, already merged through PR #6.
+- Added a development-only /design-preview route with a screen selector, explicit unsaved/GPS-preview label and return to Explore. It mounts A’s existing Welcome, StudyStyle, Location and Preferences exports without changing A-owned files. Explore has a development-only preview entry. Production redirects the preview route to Explore.
+- This is visual review, not completed onboarding/persistence/GPS integration. A’s preview controls show callback alerts; choices reset when switching preview screens.
+- Physical-phone visual review remains pending.
+- Actual checks: 132 tests, workspace TypeScript, lint, server build, and diff whitespace check passed. Metro returned HTTP 200 for the iOS Expo Router bundle (7.3 MB), including the new preview and A screens. Expo serves the isolated worktree on port 8083; the existing root checkout/server on port 8081 is preserved. Native visual verification remains pending.
