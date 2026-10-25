@@ -37,6 +37,7 @@ export const CoordinatesSchema = z.strictObject({
 });
 export const QuerySchema = z.strictObject({
   schemaVersion: z.literal(1), cityId: IdSchema,
+  snapshotId: IdSchema.optional(),
   origin: CoordinatesSchema.extend({ source: z.enum(['device', 'manual']) }),
   departAt: InstantSchema, sessionMinutes: z.number().int().min(15).max(240),
   categories: z.array(z.string().min(1).max(60)).max(20),
@@ -129,7 +130,64 @@ export const ApiErrorSchema = z.strictObject({ error: z.strictObject({ code: z.s
 
 export interface DataProvider {
   listCities(): Promise<City[]>;
-  listSpots(cityId: string): Promise<Snapshot>;
-  getSpot(id: string): Promise<SpotDetail>;
+  listSpots(cityId: string, snapshotId?: string): Promise<Snapshot>;
+  getSpot(id: string, snapshotId?: string): Promise<SpotDetail>;
   recommend(query: Query): Promise<Recommendation>;
+  discover?(request: DiscoveryRequest): Promise<DiscoveryResponse>;
+  assist?(request: AssistantRequest): Promise<AssistantResponse>;
 }
+
+// Runtime operations are opt-in and require a short-lived tester session. Tokens
+// stay in device memory; the operator access code never belongs in a bundle.
+export const TesterSessionRequestSchema = z.strictObject({ accessCode: z.string().min(8).max(128) });
+export const TesterSessionResponseSchema = z.strictObject({
+  schemaVersion: z.literal(1), sessionId: z.string().min(32).max(128), expiresAt: InstantSchema,
+});
+export const DiscoveryRequestSchema = z.strictObject({
+  sessionId: z.string().min(32).max(128), origin: QuerySchema.shape.origin,
+  refresh: z.boolean().default(false),
+});
+export const DiscoveryCoverageSchema = z.strictObject({
+  policy: z.literal('central-austin-v1'), center: CoordinatesSchema,
+  radiusMeters: z.literal(3000),
+});
+export const DiscoveryResponseSchema = z.strictObject({
+  schemaVersion: z.literal(1), requestId: IdSchema,
+  status: z.enum(['ready', 'empty', 'partial', 'quota', 'timeout', 'unsupported_area', 'unavailable']),
+  snapshotId: IdSchema.nullable(), snapshot: SnapshotSchema.nullable(),
+  coverage: DiscoveryCoverageSchema.nullable(),
+  metrics: z.strictObject({
+    externalAttempts: z.number().int().min(0).max(18), cacheHits: z.number().int().nonnegative(),
+    coalesced: z.number().int().nonnegative(), partialFailures: z.number().int().nonnegative(),
+    sourceOldestAt: InstantSchema.nullable(), sourceNewestAt: InstantSchema.nullable(), stale: z.boolean(),
+  }), warnings: z.array(z.string().max(300)).max(20),
+}).superRefine((value, ctx) => {
+  if ((value.snapshot === null) !== (value.snapshotId === null) ||
+      (value.snapshot && value.snapshot.datasetVersion !== value.snapshotId) ||
+      (value.status === 'ready' && !value.snapshot?.spots.length) ||
+      (value.status === 'empty' && (!value.snapshot || value.snapshot.spots.length !== 0))) {
+    ctx.addIssue({ code: 'custom', message: 'Discovery identity or state mismatch' });
+  }
+});
+export type DiscoveryRequest = z.infer<typeof DiscoveryRequestSchema>;
+export type DiscoveryResponse = z.infer<typeof DiscoveryResponseSchema>;
+export const AssistantQueryPatchSchema = QuerySchema.pick({
+  categories: true, maxWalkMinutes: true, maxPriceLevel: true, requireOpenForSession: true,
+  intent: true, groupSize: true, targetNoise: true, targetCrowd: true, tagWeights: true,
+  amenities: true, access: true,
+}).partial();
+export const AssistantRequestSchema = z.strictObject({
+  sessionId: z.string().min(32).max(128), snapshotId: IdSchema,
+  message: z.string().trim().min(1).max(800), query: QuerySchema,
+  placeIds: z.array(IdSchema).max(3),
+});
+export const AssistantResponseSchema = z.strictObject({
+  schemaVersion: z.literal(1), requestId: IdSchema,
+  status: z.enum(['ready', 'empty', 'quota', 'unavailable', 'out_of_scope']),
+  text: z.string().min(1).max(1600),
+  references: z.array(z.strictObject({ placeId: IdSchema, evidenceIds: z.array(IdSchema).max(20) })).max(3),
+  proposedQueryPatch: AssistantQueryPatchSchema.optional(),
+});
+export type AssistantQueryPatch = z.infer<typeof AssistantQueryPatchSchema>;
+export type AssistantRequest = z.infer<typeof AssistantRequestSchema>;
+export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
