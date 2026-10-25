@@ -34,7 +34,9 @@ export function NookTabBar({ state, descriptors, navigation, insets }: NookTabBa
         }}
         onLongPress={() => navigation.emit({ type: 'tabLongPress', target: route.key })}
         style={styles.tab}>
-        <StrokeIcon label={label} color={color} />
+        <View style={[styles.iconPill, selected && styles.activeIconPill]}>
+          <StrokeIcon label={label} color={color} />
+        </View>
         <Text style={[styles.label, { color, fontWeight: selected
           ? theme.typography.weight.semibold : theme.typography.weight.regular }]}>{label}</Text>
       </Pressable>;
@@ -76,6 +78,8 @@ const styles = StyleSheet.create({
   tab: { flex: 1, minWidth: theme.sizes.tapTarget, minHeight: theme.sizes.tapTarget,
     alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: theme.spacing.xxs, gap: theme.spacing.xxs },
   icon: { width: theme.sizes.tabIcon, height: theme.sizes.tabIcon },
+  iconPill: { width: 56, height: 32, borderRadius: theme.radii.pill, alignItems: 'center', justifyContent: 'center' },
+  activeIconPill: { backgroundColor: theme.colors.chipSelectedBackground },
   label: { textAlign: 'center', flexShrink: 1, maxWidth: '100%', fontFamily: theme.typography.bodyFamily,
     fontSize: theme.typography.size.caption, lineHeight: theme.typography.lineHeight.caption },
 });
