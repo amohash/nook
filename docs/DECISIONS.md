@@ -20,3 +20,19 @@ Record actual team choices here. These starting decisions are proposals from the
 | Final repo/deployment/tag | Fill at release | D/B | Pending |
 
 For each changed decision append: time, owner, reason, affected paths, required caller changes and rollback. Avoid editing the same status row from multiple branches.
+
+## Runtime nearby discovery and focused assistant — October 25, 2026 (D)
+
+The user's explicit expansion authorizes foreground nearby acquisition, measured ranking evaluation and a focused place assistant despite the original no-chat scope. General-purpose chat, background location and custom native dependencies remain outside scope.
+
+Integration plan (agreed with B/C/A; schemas are published by B before callers):
+
+1. Preserve existing foreground Expo location, SessionProvider, explicit API/cached-real/fictional recovery and shared scorer. Current Explore only ranks city snapshots; discovery will supply an immutable candidate snapshot. Origin remains in memory and drives both acquisition and ranking.
+2. B publishes shared Zod schemas first, preserving `Query.origin` (`lat`, `lng`, `source`), `Snapshot` and `SpotDetail`. Endpoints: `POST /v1/discovery`, `GET /v1/discovery/:snapshotId`, `GET /v1/discovery/:snapshotId/places/:placeId`, existing `POST /v1/recommendations` with optional snapshot ID, and C's `POST /v1/assistant`. B owns contracts, discovery/cache/access and app mounting; C owns recommendation resolver integration, assistant implementation/Muse and measured evaluation. D owns mobile providers/session/routes and root dependencies. A owns controlled assistant components and origin presentation.
+3. Acquisition covers B's explicit central Austin bounds using quantized provider search centers. Outside coverage shows an explicit unsupported message and manual Austin choice; Austin results are never labeled nearby elsewhere. Exact bounds and access configuration will be recorded after B publishes them. Acquire all supported categories once; filter changes rerank the same candidates. Only origin changes or deliberate Refresh nearby initiate discovery. Category changes do not spend provider calls.
+4. Nearby is opt-in using `EXPO_PUBLIC_NEARBY_ENABLED=1` on mobile and B's server runtime flag. Assistant is opt-in using `EXPO_PUBLIC_ASSISTANT_ENABLED=1` plus server configuration. Missing access/configuration displays an unavailable state with explicit fallback choices. Short-lived tester authorization stays in memory; no admin/provider secret in the bundle.
+5. SerpApi acquisition hard limit: 18 attempts including all retries, with a shared durable account cap. Live verification in this work is limited to 18 SerpApi attempts total, owned/countable by B; D makes no extra paid calls. C owns Muse live verification: at most two attempts total including one correction if necessary. Runtime assistant budgets are enforced separately server-side. Report actual attempts, cache hits and failures; mock verification is not live verification.
+6. Assistant UI receives controlled input, status, bounded display messages, place references and callbacks. D maps validated shared responses through DataProvider. Proposed preference changes show before/after and require explicit Apply; origin, identity and snapshot changes cannot be model-proposed. Conversation text and precise coordinates are neither persisted nor ordinarily logged.
+7. Merge order: B shared schemas → B discovery runtime → C assistant/evaluation → A assistant UI → D mobile integration. D reviews each PR and runs combined root checks and mobile export. Presenter-phone acceptance remains a separate pending gate until tested on physical Expo Go over reachable HTTPS/LAN.
+
+Rollback: disable the two mobile flags and server paid-action flags; retain explicit city snapshot, cached-real and fictional demo paths. No schema reset or alternate scorer is introduced.
