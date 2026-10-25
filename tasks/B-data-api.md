@@ -5,7 +5,7 @@ private-role checks passed on project `nntbhzrhvqgvmwrmorhe` (`us-east-1`). Real
 Austin snapshot captured: 30 places, ten details, 13 total external attempts under
 the 18-attempt ceiling. Real dataset API smoke passed locally. Presenter-phone
 acceptance of this real snapshot and a hosted/restarted server remain pending.
-GitHub reports PR #7 open; D owns main merge.
+PR #7 is merged. Anonymous-review/cache follow-up is ready for D/C review; D owns main merge.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -178,3 +178,9 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
   extraction; B publishes a separately versioned enriched snapshot after review, and
   D verifies source labels/claims on the presenter phone. P0 real Muse summaries are
   not yet implemented/verified by this B handoff.
+
+- Follow-up sync: merged current main `8517e69` after PR #7 merged (`d31e3d3`).
+  D's API-city initialization and design-preview routes are preserved. Re-ran all
+  checks: 164/164 tests across 18 files, workspace typecheck, lint, server build and
+  diff check pass. Evidence/cache implementation commit: `b3b9fe2`; follow-up PR
+  will contain that code and this updated integration record.

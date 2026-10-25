@@ -359,3 +359,8 @@ passed. Live private-store verification read ten bundles/50 bounded snippets and
 confirmed zero known reviewer-name/ID matches. Original observation times were
 present on all 50 snippets. The temporary extraction-cache test used an all-unknown,
 explicitly test-only record and was removed; it was not a real Muse extraction.
+
+After syncing main `8517e69` (including merged PR #7 and D's later mobile fixes),
+the integrated suite passes 164/164 tests across 18 files, plus workspace typecheck,
+lint, server build and whitespace checks. Evidence/cache implementation commit is
+`b3b9fe2`; follow-up PR contains that code and the main sync. D retains main merge.
