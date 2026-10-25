@@ -57,6 +57,7 @@ export function createEvidenceExtractor({ complete, cache, now = () => new Date(
     let cached: ExtractionRecord | undefined;
     try { cached = await beforeDeadline(cache.get(key), deadline); }
     catch { return { status: 'unavailable', record: null, externalCalls: 0, cacheHits: 0, durationMs: performance.now() - started }; }
+    if (performance.now() >= deadline) return { status: 'unavailable', record: null, externalCalls: 0, cacheHits: 0, durationMs: performance.now() - started };
     if (cached && cached.key === key && cached.model === model && cached.sourceHash === sourceHash &&
       cached.promptVersion === PROMPT_VERSION && cached.language === source.language) {
       try {
@@ -79,12 +80,14 @@ export function createEvidenceExtractor({ complete, cache, now = () => new Date(
       try {
         if (!source.snippets.length) return { status: 'unavailable', record: null, externalCalls, cacheHits: 0, durationMs: performance.now() - started };
         for (let attempt = 0; attempt < 2 && !controller.signal.aborted; attempt++) {
+          if (performance.now() >= deadline) { controller.abort(); break; }
           try {
             externalCalls++;
             const text = await Promise.race([complete({ model, system: SYSTEM,
               user: JSON.stringify({ source, correction: attempt ? 'Previous attempt failed validation. Follow the schema, identity and evidence constraints exactly.' : null }),
               signal: controller.signal }), timeout]);
             const output = parseExtraction(text, source);
+            if (performance.now() >= deadline) { controller.abort(); break; }
             const record: ExtractionRecord = { key, sourceHash, model, promptVersion: PROMPT_VERSION,
               language: source.language, generatedAt: InstantSchema.parse(now()), output };
             let cacheWriteFailed = false;
