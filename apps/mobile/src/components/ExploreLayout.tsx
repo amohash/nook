@@ -30,9 +30,9 @@ export function ExploreLayout({ map, children, search, filters, mode, onModeChan
   const [height, setHeight] = useState(0);
   const [controlsHeight, setControlsHeight] = useState(0);
   const available = Math.max(0, height - controlsHeight);
-  const sheetHeight = mode === 'list' ? available : Math.min(available, height * theme.layout.exploreSheetRatio);
+  const sheetHeight = mode === 'list' ? available : available * theme.layout.exploreSheetRatio;
   return <View style={styles.page} onLayout={(event) => setHeight(event.nativeEvent.layout.height)}>
-    <View style={StyleSheet.absoluteFill} pointerEvents={mode === 'list' ? 'none' : 'auto'}
+    <View style={[StyleSheet.absoluteFill, mode === 'map' && {top: controlsHeight, bottom: sheetHeight}]} pointerEvents={mode === 'list' ? 'none' : 'auto'}
       aria-hidden={mode === 'list'}
       accessibilityElementsHidden={mode === 'list'} importantForAccessibility={mode === 'list' ? 'no-hide-descendants' : 'auto'}>
       {map}
@@ -54,7 +54,7 @@ export function ExploreLayout({ map, children, search, filters, mode, onModeChan
       <ScrollView nestedScrollEnabled style={{ flexGrow: 0, maxHeight: sheetHeight * theme.layout.exploreHeaderRatio }}
         contentContainerStyle={styles.header}>
         <View accessible={false} style={styles.handle} />
-        <Text accessibilityRole="header" style={styles.title}>{title}</Text>
+        {!!title && <Text accessibilityRole="header" style={styles.title}>{title}</Text>}
         <Text style={styles.subtitle}>{subtitle}</Text>
         <Text style={styles.caption}>{datasetLabel(dataset.mode)}{dataset.description ? ` · ${dataset.description}` : ''}
           {dataset.fetchedAt ? ` · Dataset fetched: ${dataset.fetchedAt}` : ''}</Text>

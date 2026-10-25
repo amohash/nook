@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button } from '../../components';
+import { RecoveryControls } from '../../data/RecoveryControls';
 import { theme } from '../../theme';
 
 // Temporary D-owned route content until A's placeholder exports are pushed.
@@ -12,6 +13,7 @@ export function TabPlaceholder({screen}: {screen: 'Friends' | 'Bookmarks' | 'Pro
       ? 'Friends is a preview. Social features will stay unavailable until the core demo passes verification.'
       : `${screen} design preview coming soon. Your existing on-device features are available below.`}</Text>
     {screen === 'Bookmarks' && <Button label="Open saved places" onPress={() => router.push('/saved')} />}
+    {screen === 'Profile' && <RecoveryControls />}
     {screen === 'Profile' && <Button label="Preferences on this device" onPress={() => router.push('/preferences')} />}
   </ScrollView>;
 }

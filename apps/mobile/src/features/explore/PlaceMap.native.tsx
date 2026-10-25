@@ -1,5 +1,5 @@
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { ErrorState, MapLegend, MapPin } from '../../components';
 import { crowdHours, typicalLevel } from '../../components/exploreContent';
@@ -27,7 +27,7 @@ function NativeMap({results, origin, departAt, selectedId, onSelect, onFallback}
     if (!ready) return;
     map.current?.fitToCoordinates([{latitude: origin.lat, longitude: origin.lng},
       ...results.map(({spot}) => ({latitude: spot.lat, longitude: spot.lng}))],
-    {edgePadding: {top: 65, right: 50, bottom: 65, left: 50}, animated: true});
+    {edgePadding: {top: 20, right: 30, bottom: 20, left: 30}, animated: true});
   }, [ready, results, origin]);
   if (timedOut && !ready) return <ErrorState title="Map took too long" message="Use the list while map tiles are unavailable."
     action={{label: 'Use list', onPress: onFallback}} />;
@@ -48,9 +48,8 @@ function NativeMap({results, origin, departAt, selectedId, onSelect, onFallback}
       })}
     </MapView>
     <MapLegend />
-    <Text style={s.caption}>Tap a pin to select its card. If tiles do not load, switch to List. No seat availability is implied.</Text>
   </View>;
 }
 export function PlaceMap(props: PlaceMapProps) {return <MapBoundary onFallback={props.onFallback}><NativeMap {...props} /></MapBoundary>;}
-const s = StyleSheet.create({container: {gap: 12}, map: {height: 360, width: '100%', borderRadius: 20},
+const s = StyleSheet.create({container: {flex: 1, gap: 4}, map: {flex: 1, width: '100%', borderRadius: 20},
   caption: {fontSize: 12, lineHeight: 18, color: theme.colors.textMuted}});

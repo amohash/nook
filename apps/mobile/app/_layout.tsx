@@ -11,7 +11,7 @@ function Shell() {
       contentStyle: {backgroundColor: theme.colors.background}}}>
       <Stack.Screen name="index" options={{headerShown: false}} />
       <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-      <Stack.Screen name="spot/[id]" options={{title: 'Place details'}} />
+      <Stack.Screen name="spot/[id]" options={{headerShown: false}} />
       <Stack.Screen name="onboarding" options={{headerShown: false, gestureEnabled: false}} />
       <Stack.Screen name="saved" options={{title: 'Saved places'}} />
       <Stack.Screen name="preferences" options={{headerShown: false}} />
