@@ -1,17 +1,21 @@
+import { SessionGate } from '../src/features/session/SessionGate';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { QuerySchema, type Query, type Recommendation } from '@space/contracts';
 import { DEMO_LABEL } from '@space/fixtures';
 import { provider } from '../src/data';
-import { createInitialQuery } from '../src/data/initialQuery';
+import { useSession } from '../src/data/SessionProvider';
+import { SpotCard } from '../src/components';
+import { theme } from '../src/theme';
 import { FiltersSheet } from '../src/features/explore/FiltersSheet';
 import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../src/features/explore/filters';
 import { OriginControls } from '../src/features/explore/OriginControls';
 import { useOrigin } from '../src/features/explore/useOrigin';
 
-export default function Explore() {
-  const [query, setQuery] = useState<Query | null>(null);
+function Explore() {
+  const {session, setQuery} = useSession();
+  const query = session?.query ?? null;
   const [draft, setDraft] = useState<Query | null>(null);
   const [response, setResponse] = useState<Recommendation | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,20 +25,6 @@ export default function Explore() {
     setQuery((current) => current ? QuerySchema.parse({ ...current, origin }) : current);
   }, []);
   const location = useOrigin(selectOrigin);
-  useEffect(() => {
-    if (query) return;
-    let active = true;
-    setLoading(true); setError(null);
-    provider.listCities().then((cities) => {
-      if (!active) return;
-      const city = cities[0];
-      if (!city) throw new Error('No supported datasets');
-      setQuery(createInitialQuery(city, new Date().toISOString()));
-    }).catch(() => {
-      if (active) { setError('Dataset could not be loaded. Check your connection and try again.'); setLoading(false); }
-    });
-    return () => { active = false; };
-  }, [query, attempt]);
   useEffect(() => {
     if (!query) return;
     let active = true;
@@ -57,6 +47,7 @@ export default function Explore() {
     {__DEV__ && <Link href="/design-preview" asChild>
       <Pressable accessibilityRole="link" style={s.chip}><Text style={s.chipText}>Preview A’s design</Text></Pressable>
     </Link>}
+    <Link href="/preferences" asChild><Pressable accessibilityRole="link" style={s.chip} onPress={location.cancel}><Text style={s.chipText}>Preferences</Text></Pressable></Link>
     <Text style={s.eyebrow}>FIND YOUR SPACE</Text>
     <Text style={s.title}>A place for{ '\n' }this moment.</Text>
     <OriginControls origin={query.origin} busy={location.busy} error={location.error} accuracyMeters={location.accuracyMeters}
@@ -78,7 +69,7 @@ export default function Explore() {
     <Text style={s.small}>Within {query.maxWalkMinutes} min estimated walk · {priceLabel(query.maxPriceLevel)}{ '\n' }
       Categories: {query.categories.length ? query.categories.join(', ') : 'any'} · {query.intent === 'study' ? 'Solo study' : 'Meeting friends'}
     </Text>
-    {loading && <ActivityIndicator color="#bbef91" accessibilityLabel="Loading places" style={s.loader} />}
+    {loading && <ActivityIndicator color={theme.colors.chipSelectedText} accessibilityLabel="Loading places" style={s.loader} />}
     {error && <View style={s.card}><Text role="alert" style={s.body}>{error}</Text>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setAttempt((a) => a + 1)}><Text style={s.chipText}>Retry</Text></Pressable></View>}
     {!loading && response?.results.length === 0 && <View style={s.card}><Text style={s.cardTitle}>No matching places</Text>
@@ -89,13 +80,7 @@ export default function Explore() {
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setDraft(QuerySchema.parse(query))}><Text style={s.chipText}>Edit filters</Text></Pressable>
       <Pressable accessibilityRole="button" style={s.chip} onPress={() => setQuery(resetExploreFilters(query))}><Text style={s.chipText}>Reset filters</Text></Pressable></View>}
     {response?.results.map((result, index) => <Link key={result.spotId} href={{ pathname: '/spot/[id]', params: { id: result.spotId } }} asChild>
-      <Pressable accessibilityRole="link" style={s.card} onPress={location.cancel}>
-        <View style={s.topline}><Text style={s.rank}>0{index + 1}</Text><Text style={s.score}>Fit score {Math.round(result.score)}/100</Text></View>
-        <Text style={s.cardTitle}>{result.spot.name}</Text>
-        <Text style={s.small}>{result.spot.categories.join(' · ')} · {result.estimatedWalkMinutes} min estimated walk</Text>
-        {result.reasons.slice(1).map((reason) => <Text key={reason.code} style={s.reason}>{reason.text}</Text>)}
-        <Text style={s.action}>Explore this place →</Text>
-      </Pressable>
+      <SpotCard result={result} rank={index + 1} accessibilityRole="link" onPress={location.cancel} />
     </Link>)}
     <Text style={s.footer}>{response && `Ranked among ${response.metrics.candidateCount} known ${response.mode === 'demo' ? 'fictional ' : ''}candidates. `}Walking estimates use straight-line distance with a detour heuristic.</Text>
   </ScrollView>
@@ -106,21 +91,23 @@ export default function Explore() {
 
 const s = StyleSheet.create({
   page: { padding: 24, gap: 16, paddingBottom: 48, width: '100%', maxWidth: 680, alignSelf: 'center' },
-  eyebrow: { color: '#bbef91', fontSize: 12, letterSpacing: 3, fontWeight: '700' },
-  title: { color: '#eff7ef', fontSize: 40, lineHeight: 46, fontWeight: '700' },
-  body: { color: '#b4c3c9', fontSize: 15, lineHeight: 23 },
-  banner: { backgroundColor: '#233224', padding: 16, borderRadius: 14, gap: 8 },
-  badge: { color: '#c7efb2', fontSize: 13, fontWeight: '600' },
-  small: { color: '#b4c3c9', fontSize: 13, lineHeight: 20 },
+  eyebrow: { color: theme.colors.chipSelectedText, fontSize: 12, letterSpacing: 3, fontWeight: '700' },
+  title: { color: theme.colors.text, fontSize: 40, lineHeight: 46, fontWeight: '700' },
+  body: { color: theme.colors.textMuted, fontSize: 15, lineHeight: 23 },
+  banner: { backgroundColor: theme.colors.chipSelectedBackground, padding: 16, borderRadius: 14, gap: 8 },
+  badge: { color: theme.colors.chipSelectedText, fontSize: 13, fontWeight: '600' },
+  small: { color: theme.colors.textMuted, fontSize: 13, lineHeight: 20 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  chip: { minHeight: 48, justifyContent: 'center', paddingHorizontal: 18, borderWidth: 1, borderColor: '#43564d', borderRadius: 24 },
-  selected: { backgroundColor: '#34513b', borderColor: '#bbef91' },
-  chipText: { color: '#eff7ef', fontSize: 15, fontWeight: '600' },
-  section: { color: '#eff7ef', fontSize: 23, fontWeight: '600', marginTop: 8 },
-  card: { padding: 20, gap: 12, borderRadius: 20, backgroundColor: '#18242c', borderWidth: 1, borderColor: '#2c3d47' },
+  chip: { minHeight: 48, justifyContent: 'center', paddingHorizontal: 18, borderWidth: 1, borderColor: theme.colors.chipBorder, borderRadius: 24 },
+  selected: { backgroundColor: theme.colors.chipSelectedBackground, borderColor: theme.colors.chipSelectedText },
+  chipText: { color: theme.colors.text, fontSize: 15, fontWeight: '600' },
+  section: { color: theme.colors.text, fontSize: 23, fontWeight: '600', marginTop: 8 },
+  card: { padding: 20, gap: 12, borderRadius: 20, backgroundColor: theme.colors.surface, borderWidth: 1, borderColor: theme.colors.chipBorder },
   topline: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
-  rank: { color: '#bbef91', fontSize: 20, fontWeight: '700' }, score: { color: '#bbef91', fontSize: 13 },
-  cardTitle: { color: '#eff7ef', fontSize: 21, fontWeight: '600' },
-  reason: { color: '#d4e0d5', fontSize: 14 }, action: { color: '#bbef91', fontSize: 14, marginTop: 4 },
-  loader: { padding: 30 }, footer: { color: '#a2b3b9', fontSize: 12, lineHeight: 19 },
+  rank: { color: theme.colors.chipSelectedText, fontSize: 20, fontWeight: '700' }, score: { color: theme.colors.chipSelectedText, fontSize: 13 },
+  cardTitle: { color: theme.colors.text, fontSize: 21, fontWeight: '600' },
+  reason: { color: theme.colors.text, fontSize: 14 }, action: { color: theme.colors.chipSelectedText, fontSize: 14, marginTop: 4 },
+  loader: { padding: 30 }, footer: { color: theme.colors.textMuted, fontSize: 12, lineHeight: 19 },
 });
+
+export default function ExploreRoute() {return <SessionGate><Explore /></SessionGate>;}

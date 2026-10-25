@@ -1,3 +1,4 @@
+import { theme } from '../../theme';
 import { useEffect } from 'react';
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -87,15 +88,15 @@ export function FiltersSheet({ query, onChange, onApply, onClose }: {
 
 const s = StyleSheet.create({
   overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.6)' },
-  sheet: { maxHeight: '90%', width: '100%', maxWidth: 680, alignSelf: 'center', backgroundColor: '#121b20', borderTopLeftRadius: 24, borderTopRightRadius: 24 },
+  sheet: { maxHeight: '90%', width: '100%', maxWidth: 680, alignSelf: 'center', backgroundColor: theme.colors.background, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, gap: 12 },
-  title: { color: '#eff7ef', fontSize: 26, fontWeight: '700' },
+  title: { color: theme.colors.text, fontSize: 26, fontWeight: '700' },
   content: { paddingHorizontal: 20, paddingBottom: 24, gap: 12 },
-  heading: { color: '#eff7ef', fontSize: 19, fontWeight: '600', marginTop: 12 },
-  body: { color: '#b4c3c9', fontSize: 14, lineHeight: 21 },
+  heading: { color: theme.colors.text, fontSize: 19, fontWeight: '600', marginTop: 12 },
+  body: { color: theme.colors.textMuted, fontSize: 14, lineHeight: 21 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  chip: { minHeight: 48, justifyContent: 'center', paddingHorizontal: 16, borderWidth: 1, borderColor: '#43564d', borderRadius: 24 },
-  selected: { backgroundColor: '#34513b', borderColor: '#bbef91' },
-  chipText: { color: '#eff7ef', fontSize: 15, fontWeight: '600' },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 12, gap: 12, borderTopWidth: 1, borderColor: '#43564d' },
+  chip: { minHeight: 48, justifyContent: 'center', paddingHorizontal: 16, borderWidth: 1, borderColor: theme.colors.chipBorder, borderRadius: 24 },
+  selected: { backgroundColor: theme.colors.chipSelectedBackground, borderColor: theme.colors.chipSelectedText },
+  chipText: { color: theme.colors.text, fontSize: 15, fontWeight: '600' },
+  footer: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 12, gap: 12, borderTopWidth: 1, borderColor: theme.colors.chipBorder },
 });
