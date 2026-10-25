@@ -8,6 +8,8 @@ export { ProfileScreen, ProfileView, GuestProfileCard, type ProfileScreenProps, 
 export { EditProfileScreen, type EditProfileScreenProps } from './EditProfileScreen';
 export { UserProfileScreen, UserProfileView, type UserProfileScreenProps } from './UserProfileScreen';
 export { FollowListScreen, FollowListView, type FollowListScreenProps } from './FollowListScreen';
+export { FriendsScreen, FriendsView, type FriendsScreenProps, type FriendsViewProps } from './FriendsScreen';
+export { contactsMatchingEnabled } from './config';
 export { syncSavedSpot } from './savedSync';
 export type { FollowKind, PublicProfile } from './socialApi';
 export { SocialPreview } from './SocialPreview';

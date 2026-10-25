@@ -7,6 +7,7 @@ import { socialConfig } from './config';
 import { CreateProfileScreen } from './CreateProfileScreen';
 import { EditProfileScreen } from './EditProfileScreen';
 import { FollowListScreen } from './FollowListScreen';
+import { FriendsScreen, FriendsView } from './FriendsScreen';
 import { ProfileScreen, ProfileView } from './ProfileScreen';
 import { SignInScreen } from './SignInScreen';
 import type { FollowKind, PublicProfile } from './socialApi';
@@ -22,6 +23,8 @@ const VIEWS = [
   { id: 'profile-live', label: 'Profile (live)' },
   { id: 'edit-live', label: 'Edit profile (live)' },
   { id: 'follows-live', label: 'Follow list (live)' },
+  { id: 'friends-live', label: 'Friends (live)' },
+  { id: 'friends-test', label: 'Friends (test data)' },
   { id: 'profile-test', label: 'Profile (test data)' },
   { id: 'user-test', label: 'Other profile (test data)' },
   { id: 'create-design', label: 'Create profile (design)' },
@@ -41,6 +44,8 @@ export function SocialPreview() {
     {view === 'profile-live' && <LiveProfileFlow />}
     {view === 'edit-live' && <EditProfileScreen onDone={() => setView('profile-live')} />}
     {view === 'follows-live' && <LiveFollowLists />}
+    {view === 'friends-live' && <LiveFriendsFlow />}
+    {view === 'friends-test' && <TestBanner><TestFriends /></TestBanner>}
     {view === 'profile-test' && <TestBanner><TestProfile /></TestBanner>}
     {view === 'user-test' && <TestBanner><TestUserProfile /></TestBanner>}
     {view === 'create-design' && <AuthPreviewProvider><CreateProfileScreen onBack={() => setView('live')} /></AuthPreviewProvider>}
@@ -79,6 +84,35 @@ function TestUserProfile() {
     isSelf={false} following={following} onToggleFollow={() => setFollowing((value) => !value)}
     savedSpots={following ? [{ spot_id: 'test-spot-3', name: 'Sample reading room (test)', category: 'library', saved_at: '' }] : null}
     onOpenFollowList={() => {}} onOpenSpot={() => {}} onBack={() => {}} />;
+}
+
+const TEST_RESULTS = [
+  { id: 'test-maya', username: 'maya_test', display_name: 'Test Maya', avatar_url: null, vibe_tags: ['Study', 'Silent', 'Solo'] },
+  { id: 'test-marco', username: 'marco_test', display_name: 'Test Marco', avatar_url: null, vibe_tags: ['Meet Friends', 'Group tables'] },
+];
+const TEST_FOLLOWING = [{ id: 'test-teammate', username: 'teammate_test', display_name: 'Test Teammate', avatar_url: null,
+  vibe_tags: ['Group tables'] }];
+
+function TestFriends() {
+  const [query, setQuery] = useState('@ma');
+  const [ids, setIds] = useState<Set<string>>(new Set(['test-marco', 'test-teammate']));
+  const results = TEST_RESULTS.filter((person) => !query.replace(/^@/, '') || person.username.startsWith(query.replace(/^@/, '').toLowerCase()));
+  return <FriendsView query={query} onQueryChange={setQuery} search={{ status: 'done', query: query.trim().replace(/^@/, ''), results }}
+    following={TEST_FOLLOWING} followingCount={ids.has('test-teammate') ? 4 : 3} followingIds={ids} busyIds={new Set()}
+    onToggleFollow={(person) => setIds((value) => { const next = new Set(value); if (next.has(person.id)) next.delete(person.id); else next.add(person.id); return next; })}
+    onOpenProfile={() => {}} contacts={{ status: 'idle', matches: [] }} onCheckContacts={() => {}} />;
+}
+
+function LiveFriendsFlow() {
+  const [userId, setUserId] = useState<string | null>(null);
+  const [note, setNote] = useState<string | null>(null);
+  return <View style={styles.page}>
+    {note && <Text style={styles.banner}>{note}</Text>}
+    {userId ? <UserProfileScreen userId={userId} onBack={() => setUserId(null)} onOpenSpot={(id) => setNote(`Would open spot ${id}`)}
+      onOpenFollowList={() => setNote('Follow lists: use the Profile (live) tab')} />
+      : <FriendsScreen onOpenProfile={setUserId} onSignIn={() => setNote('Use the Live auth tab to sign in')}
+        onCreateAccount={() => setNote('Use the Live auth tab')} />}
+  </View>;
 }
 
 type Route = { name: 'profile' } | { name: 'edit' } | { name: 'list'; kind: FollowKind; userId: string } | { name: 'user'; userId: string };

@@ -76,3 +76,27 @@ export async function updateProfile(client: SupabaseClient, userId: string, patc
   if (error) throw error;
   return data as Profile;
 }
+
+/** Prefix search on public_profiles by username or display name, excluding me. Username matches first. */
+export async function searchProfiles(client: SupabaseClient, me: string, pattern: string, limit: number): Promise<PublicProfile[]> {
+  const [byUsername, byName] = await Promise.all([
+    client.from('public_profiles').select(PUBLIC_COLUMNS).ilike('username', pattern.toLowerCase()).neq('id', me)
+      .order('username').limit(limit),
+    client.from('public_profiles').select(PUBLIC_COLUMNS).ilike('display_name', pattern).neq('id', me)
+      .order('display_name').limit(limit),
+  ]);
+  if (byUsername.error) throw byUsername.error;
+  if (byName.error) throw byName.error;
+  const merged = new Map<string, PublicProfile>();
+  for (const profile of [...(byUsername.data ?? []), ...(byName.data ?? [])] as PublicProfile[]) merged.set(profile.id, profile);
+  return [...merged.values()].slice(0, limit);
+}
+
+export type ContactMatch = Pick<PublicProfile, 'id' | 'username' | 'display_name' | 'avatar_url'>;
+
+/** match_contacts RPC: hashes in, discoverable profiles out (never the caller). ≤200 hashes per call. */
+export async function matchContactHashes(client: SupabaseClient, hashes: string[]): Promise<ContactMatch[]> {
+  const { data, error } = await client.rpc('match_contacts', { hashes });
+  if (error) throw error;
+  return (data ?? []) as ContactMatch[];
+}

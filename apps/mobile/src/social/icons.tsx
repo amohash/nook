@@ -35,6 +35,13 @@ export function BookmarkIcon({ color = theme.colors.text }: { color?: string }) 
   </View>;
 }
 
+export function SearchIcon({ color = theme.colors.textMuted }: { color?: string }) {
+  return <View {...hidden} style={styles.box}>
+    <View style={[styles.lensRing, { borderColor: color }]} />
+    <View style={[styles.lensHandle, { backgroundColor: color }]} />
+  </View>;
+}
+
 export function BackChevron() {
   return <View {...hidden} style={styles.chevron} />;
 }
@@ -58,6 +65,10 @@ const styles = StyleSheet.create({
   bookmarkBody: { width: 18, height: 22 },
   bookmarkNotch: { position: 'absolute', bottom: 0, width: 0, height: 0, borderLeftWidth: 9, borderRightWidth: 9,
     borderBottomWidth: 7, borderLeftColor: 'transparent', borderRightColor: 'transparent' },
+  lensRing: { position: 'absolute', top: 3, left: 3, width: 14, height: 14, borderRadius: theme.radii.pill,
+    borderWidth: theme.borders.icon },
+  lensHandle: { position: 'absolute', top: 17, left: 15, width: 7, height: theme.borders.icon, borderRadius: theme.radii.pill,
+    transform: [{ rotate: '45deg' }] },
   chevron: { width: theme.sizes.backChevron + 2, height: theme.sizes.backChevron + 2, marginLeft: theme.spacing.xxs,
     borderLeftWidth: theme.borders.icon, borderBottomWidth: theme.borders.icon, borderColor: theme.colors.text,
     transform: [{ rotate: '45deg' }] },

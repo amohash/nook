@@ -6,7 +6,7 @@ import { pickAvatar, uploadAvatar } from './avatar';
 import { getSupabase } from './client';
 import { formStyles } from './FormField';
 import { BookmarkIcon, CameraIcon } from './icons';
-import { avatarToneIndex, initialFor } from './profileRules';
+import { avatarToneIndex, initialFor, personSubtitle } from './profileRules';
 
 // Shared pieces for the social screens. Designs: docs/design/social-*.png; wording: docs/design/README.md.
 export const DISCOVERY_LABEL = 'Let people who have my number find me';
@@ -98,6 +98,30 @@ export function SavedSpotListRow({ name, meta, imageUrl, onPress }: {
     accessibilityHint="Opens the place" onPress={onPress}
     style={({ pressed }) => [styles.row, pressed && styles.countPressed]}>{body}</Pressable>
     : <View accessible accessibilityLabel={[name, meta].filter(Boolean).join(', ')} style={styles.row}>{body}</View>;
+}
+
+/** Person row (Friends design): avatar, name, "@username · top tags", Follow/Following. */
+export function PersonRow({ person, following, busy, showFollow = true, onToggleFollow, onOpen }: {
+  person: { id: string; username: string; display_name: string | null; avatar_url: string | null; vibe_tags?: readonly string[] };
+  following: boolean; busy?: boolean; showFollow?: boolean; onToggleFollow: () => void; onOpen?: () => void;
+}) {
+  const name = person.display_name || person.username;
+  const identity = <>
+    <Avatar id={person.id} url={person.avatar_url} name={person.display_name} username={person.username} size={48} />
+    <View style={styles.rowText}>
+      <Text style={styles.personName} numberOfLines={2}>{name}</Text>
+      <Text style={formStyles.small} numberOfLines={2}>{personSubtitle(person.username, person.vibe_tags ?? [])}</Text>
+    </View>
+  </>;
+  return <View style={styles.personRow}>
+    {onOpen ? <Pressable accessibilityRole="link" accessibilityLabel={`${name}, @${person.username}`} accessibilityHint="Opens profile"
+      onPress={onOpen} style={({ pressed }) => [styles.personIdentity, pressed && styles.countPressed]}>{identity}</Pressable>
+      : <View style={styles.personIdentity}>{identity}</View>}
+    {/* Optimistic: the new label shows at once; the button is only disabled while the request runs. */}
+    {showFollow && <PillButton label={following ? 'Following' : 'Follow'} variant={following ? 'outline' : 'primary'} disabled={busy}
+      onPress={onToggleFollow}
+      accessibilityLabel={following ? `Following @${person.username}. Tap to unfollow.` : `Follow @${person.username}`} />}
+  </View>;
 }
 
 /** Photo row used by Create and Edit profile. Library only; uploads to avatars/{uid}/avatar.jpg. */
@@ -207,6 +231,11 @@ const styles = StyleSheet.create({
   thumbImage: { width: '100%', height: '100%' },
   rowText: { flex: 1, gap: theme.spacing.xxs },
   rowName: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily, fontSize: theme.typography.size.button,
+    lineHeight: theme.typography.lineHeight.button, fontWeight: theme.typography.weight.semibold },
+  personRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: theme.spacing.md },
+  personIdentity: { flex: 1, minWidth: 180, flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md,
+    minHeight: theme.sizes.tapTarget, borderRadius: theme.radii.field },
+  personName: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily, fontSize: theme.typography.size.button,
     lineHeight: theme.typography.lineHeight.button, fontWeight: theme.typography.weight.semibold },
   pickerGroup: { gap: theme.spacing.xs },
   pickerRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: theme.spacing.lg, minHeight: theme.sizes.tapTarget },

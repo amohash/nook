@@ -42,3 +42,6 @@ if (!socialConfig.enabled && socialConfig.reason === 'secret_key') {
 }
 
 export const isSocialEnabled = () => socialConfig.enabled;
+
+/** Contacts matching (Friends) is a separate opt-in on top of social: EXPO_PUBLIC_CONTACTS_MATCHING=1. Default off. */
+export const contactsMatchingEnabled = socialConfig.enabled && process.env.EXPO_PUBLIC_CONTACTS_MATCHING?.trim() === '1';
