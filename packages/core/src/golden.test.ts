@@ -70,8 +70,9 @@ describe('Person C golden constraints and evidence', () => {
     expect(rankSpots([spot], query, clock).results[0]!.score).toBeCloseTo(expected, 10);
   });
   it('ten fictional goldens have fixed study and friends orders', () => {
-    const study = rankSpots(snapshot.spots, createDemoQuery(), clock);
-    const friends = rankSpots(snapshot.spots, createDemoQuery({ intent: 'friends', groupSize: 4,
+    const goldens = snapshot.spots.slice(0, 10);
+    const study = rankSpots(goldens, createDemoQuery(), clock);
+    const friends = rankSpots(goldens, createDemoQuery({ intent: 'friends', groupSize: 4,
       targetNoise: 0.65, tagWeights: { lively: 1, group_friendly: 1 } }), clock);
     expect(study.results.map((r) => r.spotId)).toEqual(['demo:spot-1', 'demo:spot-3', 'demo:spot-5']);
     expect(friends.results.map((r) => r.spotId)).toEqual(['demo:spot-2', 'demo:spot-10', 'demo:spot-6']);

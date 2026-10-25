@@ -43,7 +43,7 @@ describe('shared mobile / Node imports and API boundary', () => {
   });
   it('returns 200 with an empty result set rather than silently relaxing constraints', async () => {
     const result = await createApiProvider(baseUrl).recommend(createDemoQuery({ categories: ['missing'] }));
-    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(10);
+    expect(result.results).toEqual([]); expect(result.excludedCounts.category).toBe(snapshot.spots.length);
   });
   it.each(['/missing', '/v1/spots/missing', '/v1/cities/missing/spots'])(
     'returns a safe 404 for %s', async (path) => {
