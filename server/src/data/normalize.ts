@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { SpotSchema, type Evidence, type Spot } from '@space/contracts';
 import { ProviderPlaceSchema } from '../providers/serpapi';
+import { normalizeTimeEvidence } from '../providers/serpapi-time';
 import { providerImage } from './place-image';
 
 export const AUSTIN_CITY_ID = 'us-tx-austin';
@@ -23,9 +24,7 @@ export function normalizePlace(raw: unknown, fetchedAt: string, datasetVersion: 
     rating: fact(place.rating ?? null), reviewCount: fact(place.reviews ?? null),
     noise: fact(null), groupFriendly: fact(null), wifi: fact('unknown'), outlets: fact('unknown'), publicAccess: fact('unknown'),
     tags: fact(null), summary: fact(null), image: providerImage(place.thumbnail), publicPlaceUrl: sourceUrl,
-    // open_now and free-text hours cannot establish a verified weekly schedule.
-    hoursStatus: 'unknown', hoursFetchedAt: null, weeklyHours: [], hoursExceptions: {},
-    typicalCrowd: null, liveObservation: null,
+    ...normalizeTimeEvidence(place, fetchedAt),
   });
 }
 
