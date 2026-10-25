@@ -69,3 +69,31 @@ Run `npx tsx packages/core/measurements/measure.ts > packages/core/measurements/
 - 200 candidates, open-session filter True: 180 qualify; first 36.82 ms; subsequent median 36.28 ms, p95 37.02 ms.
 
 Next smallest steps: B mounts the router and supplies persistent cache/real snapshots; D verifies both scenario flows on the presenter phone and owns the main merge.
+
+## Step 3 — contract coordination
+
+Status: shared baseline verified; C accepts the implemented v1 interface. Explicit B/D confirmation is pending. Do not treat this record as their approval. No new implementation was started for this coordination step.
+
+Verification on October 24, 2026 (America/Chicago):
+
+- `AGENTS.md`, `docs/CONTRACTS.md` and `docs/ALGORITHM.md` exist and were reviewed. The canonical assignment is this file; `tasks/C.md` now points here to support the setup guide's filename.
+- The executable contract is `packages/contracts/src/index.ts`, introduced by foundation commit `57b1225` and shared through merge `3345efa`. After fetching, `origin/main` is `d97520b`; the instructions, contract/algorithm documents, schemas and fixtures are unchanged from the foundation.
+- D's merged `apps/mobile/src/data/providers.ts` imports the same Query/Recommendation/Snapshot schemas, uses `@space/core` for fixture ranking and calls `POST /v1/recommendations` for API ranking. This demonstrates implementation compatibility, not explicit team sign-off on C's newer changes.
+- `docs/DECISIONS.md` still lists contract v1 as proposed. B's task file has no completed contract handoff; no `feat/data-api` remote branch or B/D T3 threads were available in this environment. Those absences do not establish whether B has work on another machine. Contact details or recorded confirmation are needed to complete coordination.
+- There is one production server bootstrap, `server/src/index.ts`, with the existing Express app. C's `createRecommendationRouter` is a mountable Router with no listener; B replaces the inline foundation handler when integrating it. No second backend was created.
+
+### Confirmation request prepared for B and D (not sent)
+
+Please confirm the following shared baseline, or identify the exact contract changes you need before further integration:
+
+1. **Place schema:** use `SpotSchema` from `@space/contracts`, with stable `id`/`providerPlaceId`, `cityId`, coordinates, IANA timezone, dataset mode/version and source timestamps. Facts retain nullable values and provenance/confidence. Required amenities/access need positive evidence; unknown is not yes. Weekly/exception hours, typical activity and live observations stay separate. B owns normalization, shared schemas, database, migrations and bootstrap; C consumes these types.
+2. **Query fields:** retain `schemaVersion`, `cityId`, `origin`, offset-qualified `departAt`, `sessionMinutes`, `categories`, `maxWalkMinutes`, nullable `maxPriceLevel`, `requireOpenForSession`, `intent`, `groupSize`, `targetNoise`, `targetCrowd`, `tagWeights`, `amenities`, `access` and `limit`. Use the existing schema bounds and default limit 3. Category arrays match any selected category; an empty array means any supported category. No silent constraint relaxation.
+3. **Response:** use `RecommendationSchema`: `schemaVersion`, `requestId`, `mode`, `datasetVersion`, `generatedAt`, joined `results`, `excludedCounts`, proposed `relaxations` and measured `metrics`. Results include the normalized `spot`, score, evidence coverage, estimated walk, arrival, reasons with evidence IDs and warnings. Zero matches is 200; errors use `ApiErrorSchema`. B mounts C's `createRecommendationRouter({loadSnapshot, clock})` at `/v1/recommendations` in the existing app. D consumes it through the existing DataProvider.
+4. **Fixtures:** retain the ten explicitly fictional records in `fixtures/src/index.ts`, city `demo-austin`, version `fictional-austin-v1`, fixed `DEMO_NOW = 2026-10-24T18:00:00-05:00`, timezone `America/Chicago`. C's current goldens expect study 1/3/5 and friends 2/10/6. B supplies a separate versioned real snapshot with capture times; do not relabel synthetic data as real. C/D use the same scorer for both modes.
+5. **Open interpretation checks:** confirm that a dated hours exception overrides the entire local date, including previous weekly overnight spillover. Note the current partial-query schema adds `limit:3` to relaxation patches; C preserves the original limit explicitly. B should own any schema fix. The tested Muse extraction has only synthetic input so far; B's real evidence and persistent cache adapter are still needed.
+
+Please record B's schema/normalization confirmation and D's consumer/fixture confirmation (or objections), with the agreed commit/dataset version. The shared decisions owner can then update `docs/DECISIONS.md`; C has not edited that shared record.
+
+- B confirmation: pending; no message delivered yet.
+- D confirmation: pending; merged consumer compatibility verified, explicit response still needed.
+- Next action: obtain the existing B/D contact channel or their recorded confirmation, send the request above, and record their responses before claiming Step 3 complete.
