@@ -1,5 +1,5 @@
 import { CitySchema, QuerySchema, RecommendationSchema, SnapshotSchema, SpotDetailSchema, z,
-  type City, type DataProvider, type Query, type Snapshot } from '@space/contracts';
+  DiscoveryResponseSchema, AssistantResponseSchema, type City, type DataProvider, type Query, type Snapshot } from '@space/contracts';
 import { rankSpots } from '@space/core';
 import { PlaceNotFoundError } from './providers';
 import type { SettingsStorage } from './settings';
@@ -41,6 +41,8 @@ export function createRecoveryProvider(options: {
   let bundle: Bundle | null = null;
   let selected: Bundle | null = null;
   let apiCity: City | null = null;
+  const snapshots = new Map<string, Snapshot>();
+  let discoverySequence = 0;
   let writeQueue: Promise<unknown> = Promise.resolve();
   const now = options.now ?? (() => new Date().toISOString());
   const listeners = new Set<() => void>();
@@ -78,7 +80,15 @@ export function createRecoveryProvider(options: {
     return SnapshotSchema.parse({...selected.snapshot, mode: 'cached',
       spots: selected.snapshot.spots.map((spot) => ({...spot, datasetMode: 'cached'}))});
   }
-  function checkSpot(spot: Snapshot['spots'][number]) {
+  function checkSpot(spot: Snapshot['spots'][number], snapshotId?: string) {
+    if (snapshotId) {
+      const snapshot = snapshots.get(snapshotId);
+      if (!snapshot || !snapshot.spots.some((item) => item.id === spot.id) || spot.cityId !== snapshot.cityId ||
+        spot.datasetVersion !== snapshot.datasetVersion || spot.datasetMode !== snapshot.mode || hasSynthetic(spot)) {
+        throw new Error('Discovery dataset changed. Refresh nearby explicitly.');
+      }
+      return;
+    }
     if (!apiCity || spot.cityId !== apiCity.id || spot.datasetVersion !== apiCity.datasetVersion ||
       spot.datasetMode !== apiCity.mode || (apiCity.mode !== 'demo' && hasSynthetic(spot))) {
       throw new Error('API dataset changed. Select API again to reload it.');
@@ -90,6 +100,33 @@ export function createRecoveryProvider(options: {
     catch (error) {assertCurrent(revision); throw error;}
   }
   const provider: DataProvider = {
+    createTesterSession: (input) => guarded(async (choice) => {
+      if (choice !== 'api' || !options.api.createTesterSession) throw new Error('Tester access requires the API provider.');
+      return options.api.createTesterSession(input);
+    }),
+    discover: (input) => guarded(async (choice, revision) => {
+      if (choice !== 'api' || !options.api.discover) throw new Error('Nearby discovery requires the API provider.');
+      const sequence = ++discoverySequence;
+      const result = DiscoveryResponseSchema.parse(await options.api.discover(input));
+      assertCurrent(revision);
+      if (sequence !== discoverySequence) throw new StaleProviderError();
+      if (result.snapshot && result.snapshotId) {
+        const snapshot = result.snapshot;
+        if (!apiCity || apiCity.id !== snapshot.cityId) throw new Error('Discovery city mismatch.');
+        const city = {...apiCity, mode: snapshot.mode, datasetVersion: snapshot.datasetVersion};
+        const value = validateRealBundle({version: 1, city, snapshot});
+        snapshots.set(result.snapshotId, snapshot);
+        await storeBundle(value, revision);
+      }
+      return result;
+    }),
+    assist: (input) => guarded(async (choice) => {
+      if (choice !== 'api' || !options.api.assist || !snapshots.has(input.snapshotId)) throw new Error('Assistant requires the current nearby snapshot.');
+      const result = AssistantResponseSchema.parse(await options.api.assist(input));
+      const snapshot = snapshots.get(input.snapshotId)!;
+      if (result.references.some((ref) => !snapshot.spots.some((spot) => spot.id === ref.placeId))) throw new Error('Assistant referenced an unknown place.');
+      return result;
+    }),
     listCities: () => guarded(async (choice, revision) => {
       if (choice === 'demo') return options.demo.listCities();
       if (choice === 'cached') return [{...selected!.city, mode: 'cached'}];
@@ -109,7 +146,12 @@ export function createRecoveryProvider(options: {
       apiCity = city;
       return [city];
     }),
-    listSpots: (id) => guarded(async (choice) => {
+    listSpots: (id, snapshotId) => guarded(async (choice) => {
+      if (choice === 'api' && snapshotId) {
+        const snapshot = snapshots.get(snapshotId);
+        if (!snapshot || snapshot.cityId !== id) throw new Error('Discovery snapshot unavailable. Refresh nearby.');
+        return snapshot;
+      }
       if (choice === 'demo') return options.demo.listSpots(id);
       if (choice === 'cached') {
         const snapshot = offlineSnapshot();
@@ -120,10 +162,10 @@ export function createRecoveryProvider(options: {
       if (!apiCity || snapshot.cityId !== apiCity.id || snapshot.datasetVersion !== apiCity.datasetVersion || snapshot.mode !== apiCity.mode) {
         throw new Error('API dataset changed. Select API again to reload it.');
       }
-      snapshot.spots.forEach(checkSpot);
+      snapshot.spots.forEach((spot) => checkSpot(spot));
       return snapshot;
     }),
-    getSpot: (id) => guarded(async (choice) => {
+    getSpot: (id, snapshotId) => guarded(async (choice) => {
       if (choice === 'demo') return options.demo.getSpot(id);
       if (choice === 'cached') {
         const spot = offlineSnapshot().spots.find((item) => item.id === id);
@@ -131,8 +173,8 @@ export function createRecoveryProvider(options: {
         // Source snippets are not in the snapshot endpoint. Never invent citations.
         return SpotDetailSchema.parse({schemaVersion: 1, spot, evidence: []});
       }
-      const detail = await options.api.getSpot(id);
-      checkSpot(detail.spot);
+      const detail = await options.api.getSpot(id, snapshotId);
+      checkSpot(detail.spot, snapshotId);
       return detail;
     }),
     recommend: (input) => guarded(async (choice) => {
@@ -140,10 +182,14 @@ export function createRecoveryProvider(options: {
       if (choice === 'demo') return options.demo.recommend(query);
       if (choice === 'api') {
         const response = await options.api.recommend(query);
-        if (!apiCity || query.cityId !== apiCity.id || response.datasetVersion !== apiCity.datasetVersion || response.mode !== apiCity.mode) {
+        if (!query.snapshotId && (!apiCity || query.cityId !== apiCity.id || response.datasetVersion !== apiCity.datasetVersion || response.mode !== apiCity.mode)) {
           throw new Error('API dataset changed. Select API again to reload it.');
         }
-        response.results.forEach((result) => checkSpot(result.spot));
+        if (query.snapshotId) {
+          const snapshot = snapshots.get(query.snapshotId);
+          if (!snapshot || response.datasetVersion !== snapshot.datasetVersion || response.mode !== snapshot.mode) throw new Error('Discovery recommendation identity mismatch.');
+        }
+        response.results.forEach((result) => checkSpot(result.spot, query.snapshotId));
         return response;
       }
       const snapshot = offlineSnapshot();
@@ -167,6 +213,7 @@ export function createRecoveryProvider(options: {
       if (choice === 'cached' && !bundle) throw new Error('No validated real offline dataset is available. Choose API or the fictional demo.');
       selected = choice === 'cached' ? bundle : null;
       apiCity = null;
+      snapshots.clear();
       publish({choice, revision: state.revision + 1});
     },
   };
@@ -175,5 +222,5 @@ export function createRecoveryProvider(options: {
 // Keep active strict constraints on switch, clear GPS and reset the clock for the
 // destination dataset. Mode-specific saved IDs/preferences are loaded separately.
 export function queryAfterSwitch(previous: Query | undefined, city: City, initial: Query): Query {
-  return previous ? QuerySchema.parse({...previous, cityId: city.id, origin: initial.origin, departAt: initial.departAt}) : initial;
+  return previous ? QuerySchema.parse({...previous, cityId: city.id, origin: initial.origin, departAt: initial.departAt, snapshotId: undefined}) : initial;
 }

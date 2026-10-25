@@ -7,6 +7,7 @@ import { useSession } from '../../src/data/SessionProvider';
 import { hoursStatus, venueTime } from '../../src/features/explore/presentation';
 import { isShareCancellation, matchingRecommendation, publicAccessLabel, publicMapsUrl, shareMessage,
   supportedReasons, type RecommendationContext } from '../../src/features/detail/explanations';
+import { PlaceAssistant } from '../../src/features/explore/PlaceAssistant';
 import { provider } from '../../src/data';
 import { RecoveryControls } from '../../src/data/RecoveryControls';
 import { PlaceNotFoundError } from '../../src/data/providers';
@@ -16,8 +17,8 @@ import { SessionGate } from '../../src/features/session/SessionGate';
 import { theme } from '../../src/theme';
 
 function Detail() {
-  const {id} = useLocalSearchParams<{id: string}>();
-  const {session, toggleSaved} = useSession();
+  const {id, saved} = useLocalSearchParams<{id: string; saved?: string}>();
+  const {session, toggleSaved, nearby} = useSession();
   const query = session!.query;
   const [context, setContext] = useState<RecommendationContext | null>(null);
   const [fitLoading, setFitLoading] = useState(true);
@@ -26,11 +27,12 @@ function Detail() {
   useEffect(() => {
     let active = true;
     setContext(null); setFitLoading(true); setFitError(false);
+    if (nearby.enabled && !query.snapshotId) {setFitLoading(false); return;}
     provider.recommend(query).then((response) => {if (active) setContext({query, response});})
       .catch(() => {if (active) setFitError(true);})
       .finally(() => {if (active) setFitLoading(false);});
     return () => {active = false;};
-  }, [query, id, fitAttempt]);
+  }, [query, id, fitAttempt, nearby.enabled]);
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const mounted = useRef(true);
@@ -40,14 +42,18 @@ function Detail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<'missing' | 'unavailable' | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const archived = saved === '1' ? session!.settings.savedPlaces?.find((item) => item.spot.id === id) : undefined;
+  const detailSnapshotId = nearby.result?.snapshot?.spots.some((item) => item.id === id) ? query.snapshotId : undefined;
   useEffect(() => {
     let active = true;
     setLoading(true); setError(null); setDetail(null);
-    provider.getSpot(id).then((data) => {if (active) setDetail(data);})
+    const load = archived ? Promise.resolve({...archived, spot: {...archived.spot,
+      datasetMode: archived.spot.datasetMode === 'demo' ? 'demo' as const : 'cached' as const}}) : provider.getSpot(id, detailSnapshotId);
+    load.then((data) => {if (active) setDetail(data);})
       .catch((cause: unknown) => {if (active) setError(cause instanceof PlaceNotFoundError ? 'missing' : 'unavailable');})
       .finally(() => {if (active) setLoading(false);});
     return () => {active = false;};
-  }, [id, attempt]);
+  }, [id, attempt, detailSnapshotId, archived]);
   const spot = detail?.spot;
   const result = spot ? matchingRecommendation(spot, query, context) : null;
   const reasons = spot ? supportedReasons(spot, result) : [];
@@ -91,7 +97,7 @@ function Detail() {
     rating={spot.rating.value} reviewCount={spot.reviewCount.value} fitScore={result?.score ?? null}
     openStatus={status}
     dataset={{mode: spot.datasetMode, fetchedAt: spot.fetchedAt,
-      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : undefined}}
+      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : archived ? 'Saved public place snapshot; current conditions unverified.' : undefined}}
     typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour}
     liveObservation={spot.liveObservation}
     vibe={{summary: spot.summary, tags: Object.keys(spot.tags.value ?? {}).map((tag) => tag.replaceAll('_', ' '))}}
@@ -107,6 +113,7 @@ function Detail() {
     actions={{saved: session!.settings.savedIds.includes(id), saving, mapsDisabled: !url,
       onSave: () => {void save();}, onShare: () => {void share();}, onOpenMaps: () => {void openLink(url);}}}
     footnote={<>
+      <PlaceAssistant placeIds={[spot.id]} />
       <Text style={s.body}>{spot.address}</Text>
       <Text style={s.small}>{result ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {query.sessionMinutes} min session</Text>
       <View style={s.panel}><Text style={s.heading}>Why this spot</Text>

@@ -61,7 +61,8 @@ export function OnboardingFlow() {
     onSelect={location.useManual} onUseLocation={() => {void location.useDevice();}}
     onBack={back} onContinue={() => {void finish(styles);}}
     status={location.busy ? 'requesting' : session.query.origin.source === 'device' ? 'ready' : 'idle'}
-    deviceOriginLabel={session.query.origin.source === 'device' ? 'Device location · one-time reading' : undefined}
+    deviceOriginLabel={session.query.origin.source === 'device'
+      ? `${location.accuracyMeters !== null && location.accuracyMeters >= 100 ? 'Approximate location' : 'Device location'} · ${location.accuracyMeters === null ? 'accuracy unknown' : `±${Math.ceil(location.accuracyMeters)} m`} · one-time reading` : undefined}
     error={location.error} />;
 }
 const s = StyleSheet.create({

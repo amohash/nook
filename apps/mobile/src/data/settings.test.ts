@@ -144,3 +144,15 @@ describe('onboarding choices', () => {
       intent: 'study', maxPriceLevel: null, maxWalkMinutes: 15, origin: {...initial.origin, source: 'manual'}});
   });
 });
+
+it('retains a validated saved-place snapshot across storage reload without the selecting origin', async () => {
+  const {getDemoDetail} = await import('@space/fixtures');
+  const {store, storage, values} = memory();
+  const query = createDemoQuery({origin: {lat: 12.3456789, lng: 45.6789123, source: 'device'}});
+  const detail = getDemoDetail('demo:spot-1');
+  await store.save('saved-runtime', {...defaultSettings(query), savedIds: [detail.spot.id], savedPlaces: [detail]});
+  const restarted = createSettingsStore(storage);
+  expect((await restarted.load('saved-runtime'))?.savedPlaces?.[0]).toEqual(detail);
+  expect(values.get('saved-runtime')).not.toContain(String(query.origin.lat));
+  expect(values.get('saved-runtime')).not.toContain('"origin"');
+});

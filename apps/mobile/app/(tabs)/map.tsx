@@ -5,20 +5,23 @@ import { QuerySchema, type Query, type Recommendation, type Spot } from '@space/
 import { DEMO_LABEL, DEMO_NOW } from '@space/fixtures';
 import { provider } from '../../src/data';
 import { RecoveryControls } from '../../src/data/RecoveryControls';
+import { NearbyControls } from '../../src/features/explore/NearbyControls';
+import { PlaceAssistant } from '../../src/features/explore/PlaceAssistant';
 import { useSession } from '../../src/data/SessionProvider';
 import { Button, EmptyState, ErrorState, ExploreLayout, LoadingState,
   NowLaterControl, OriginCard, SpotCard } from '../../src/components';
+import type { ExploreSheetPosition } from '../../src/components/exploreSheet';
 import { theme } from '../../src/theme';
 import { SessionGate } from '../../src/features/session/SessionGate';
 import { FiltersSheet } from '../../src/features/explore/FiltersSheet';
-import { activeFilterCount, applyExploreFilters, applyIntentPreset, resetExploreFilters } from '../../src/features/explore/filters';
+import { activeFilterCount, applyExploreFilters, applyIntentPreset, priceLabel, resetExploreFilters } from '../../src/features/explore/filters';
 import { applyRelaxation, relaxationActions } from '../../src/features/explore/relaxations';
 import { useOrigin } from '../../src/features/explore/useOrigin';
 import { PlaceMap } from '../../src/features/explore/PlaceMap';
 import { departureAt, lookupPlaces, venueTime } from '../../src/features/explore/presentation';
 
 function Explore() {
-  const {session, setQuery} = useSession();
+  const {session, setQuery, nearby} = useSession();
   const query = session!.query;
   const city = session!.city;
   const router = useRouter();
@@ -29,35 +32,39 @@ function Explore() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [sheetPosition, setSheetPosition] = useState<'peek' | 'expanded'>('expanded');
+  const [sheetPosition, setSheetPosition] = useState<ExploreSheetPosition>('peek');
+  const [timeOpen, setTimeOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [timeMode, setTimeMode] = useState<'now' | 'later'>('now');
   const [offset, setOffset] = useState<0 | 60 | 120>(0);
   const [search, setSearch] = useState('');
   const [originOpen, setOriginOpen] = useState(false);
-  const [timeOpen, setTimeOpen] = useState(false);
   const [places, setPlaces] = useState<Spot[]>([]);
   const [lookupLoading, setLookupLoading] = useState(true);
   const [lookupFailed, setLookupFailed] = useState(false);
   const [lookupAttempt, setLookupAttempt] = useState(0);
   const selectOrigin = useCallback((origin: Query['origin']) => setQuery((current) => QuerySchema.parse({...current, origin})), [setQuery]);
   const location = useOrigin(selectOrigin);
+  useEffect(() => {if (location.busy || location.error) setSheetPosition('expanded');}, [location.busy, location.error]);
+  const canRank = !nearby.enabled || (!!query.snapshotId && nearby.result?.snapshotId === query.snapshotId && !nearby.busy);
   useEffect(() => {
     let active = true;
+    if (!canRank) {setLoaded(null); setLoading(false); setError(false); return;}
     setLoading(true); setError(false); setLoaded(null); setSelectedId(null);
     provider.recommend(query).then((data) => {if (active) setLoaded({query, data});})
       .catch(() => {if (active) setError(true);})
       .finally(() => {if (active) setLoading(false);});
     return () => {active = false;};
-  }, [query, attempt]);
+  }, [query, attempt, canRank]);
   useEffect(() => {
     let active = true;
     setPlaces([]); setLookupFailed(false); setLookupLoading(true);
-    provider.listSpots(city.id).then((snapshot) => {if (active) setPlaces(snapshot.spots);})
+    if (!canRank) {setLookupLoading(false); return;}
+    provider.listSpots(city.id, query.snapshotId).then((snapshot) => {if (active) setPlaces(snapshot.spots);})
       .catch(() => {if (active) setLookupFailed(true);})
       .finally(() => {if (active) setLookupLoading(false);});
     return () => {active = false;};
-  }, [city.id, lookupAttempt]);
+  }, [city.id, query.snapshotId, lookupAttempt, canRank]);
   const changeTime = (minutes: 0 | 60 | 120) => {
     setOffset(minutes); setTimeMode(minutes === 0 ? 'now' : 'later');
     const now = city.mode === 'demo' ? DEMO_NOW : new Date().toISOString();
@@ -73,21 +80,23 @@ function Explore() {
   const lookup = lookupPlaces(places, search);
   const selected = response?.results.find((r) => r.spotId === selectedId) ?? response?.results[0];
   const shown = response?.results ?? [];
+  const statusTitle = !canRank ? 'Nearby discovery required' : loading ? 'Finding matches…' : error ? 'Places unavailable'
+    : `${response?.results.length ?? 0} places · ${query.maxWalkMinutes} min estimated walk · ${priceLabel(query.maxPriceLevel)}`;
   return <><ExploreLayout
     mapSlot={<PlaceMap results={response?.results ?? []} origin={query.origin}
-      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={setSelectedId} onFallback={() => setSheetPosition('expanded')} />}
-    search={{value: search, onChangeText: (value) => setSearch(value.slice(0, 120)),
+      departAt={query.departAt} selectedId={selected?.spotId ?? null} onSelect={(id) => {setSelectedId(id); setSheetPosition('expanded');}} onFallback={() => setSheetPosition('expanded')} />}
+    search={{value: search, onChangeText: (value) => {setSearch(value.slice(0, 120)); if (value.trim()) setSheetPosition('expanded');},
       onSubmit: () => Keyboard.dismiss(), placeholder: 'Find a place by name', accessibilityLabel: 'Find a place in this dataset'}}
     filters={{options: [{id: 'study', label: 'Study'}, {id: 'friends', label: 'Meet Friends'}],
       selectedId: query.intent === 'study' || query.intent === 'friends' ? query.intent : null,
       onSelect: chooseIntent, filterCount: activeFilterCount(query), onOpenFilters: () => setDraft(QuerySchema.parse(query))}}
     sheetPosition={sheetPosition} onSheetPositionChange={setSheetPosition}
-    timeLabel={timeMode === 'now' ? 'Now' : `Later · ${venueTime(query.departAt, city.timezone).label}`}
+    timeLabel={timeMode === 'now' ? 'Now' : offset === 120 ? 'In 2 hours' : 'In 1 hour'}
     onTimePress={() => {setTimeOpen((value) => !value); setOriginOpen(false); setSheetPosition('expanded');}}
-    originLabel={query.origin.source === 'manual' ? 'UT Austin' : 'Device location'}
+    originLabel={location.busy ? 'Locating…' : query.origin.source === 'manual' ? 'UT Austin' : location.accuracyMeters !== null && location.accuracyMeters >= 100 ? 'Approximate location' : 'Device location'}
     onOriginPress={() => {setOriginOpen((value) => !value); setTimeOpen(false); setSheetPosition('expanded');}}
-    onAvatarPress={() => {location.cancel(); router.push('/profile');}}
-    title=""
+    onAvatarPress={() => {location.cancel(); router.push('/(tabs)/profile');}}
+    title={statusTitle}
     dataset={{mode: response?.mode ?? city.mode, description: city.mode === 'demo' ? DEMO_LABEL : `Dataset ${city.datasetVersion}`}}
     topAccessory={<>
       {(originOpen || location.busy || location.error) && <OriginCard origin={query.origin} busy={location.busy}
@@ -98,6 +107,7 @@ function Explore() {
         selectedPresetId={offset ? String(offset) : null} onSelectPreset={(id) => changeTime(id === '120' ? 120 : 60)}
         timeLabel={`${city.mode === 'demo' ? 'Demo clock · ' : ''}${venueTime(query.departAt, city.timezone).label}`}
         timezoneLabel={city.timezone} />}
+      <NearbyControls />
     </>}>
     <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
     {search.trim().length > 0 && <View style={s.panel}>
@@ -109,6 +119,9 @@ function Explore() {
           onPress={() => {location.cancel(); Keyboard.dismiss(); router.push({pathname: '/spot/[id]', params: {id: spot.id}});}} />)
           : <EmptyState title="No place found" message="Try another name or clear your search." action={{label: 'Clear search', onPress: () => setSearch('')}} />}
     </View>}
+    <PlaceAssistant placeIds={response?.results.map((result) => result.spotId) ?? []} />
+    {!canRank && <Text style={s.small}>Nearby recommendations await discovery for the selected origin. Manual origin and explicit offline datasets remain available.</Text>}
+    {!canRank && !nearby.busy && <RecoveryControls expanded />}
     {loading && <LoadingState />}
     {error && <ErrorState title="Places unavailable" message="Places could not be loaded. Check your connection and retry."
       action={{label: 'Retry', onPress: () => setAttempt((a) => a + 1)}} />}

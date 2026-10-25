@@ -1,8 +1,8 @@
-import { z, QuerySchema, type Query, type City } from '@space/contracts';
+import { z, QuerySchema, SpotDetailSchema, type Query, type City } from '@space/contracts';
 import { createInitialQuery } from './initialQuery';
 import { applyIntentPreset } from '../features/explore/filters';
 import { STUDY_STYLE_OPTIONS, type StudyStyleId } from '../features/onboarding/studyStyle';
-import type { PreferenceValues } from '../features/preferences';
+import type { PreferenceValues } from '../features/preferences/preferences';
 
 export const PreferenceSchema = QuerySchema.pick({intent: true, maxWalkMinutes: true,
   maxPriceLevel: true, tagWeights: true, amenities: true}).strip();
@@ -11,6 +11,7 @@ const StyleSchema = z.enum(STUDY_STYLE_OPTIONS.map(({id}) => id) as [StudyStyleI
 export const SettingsSchema = z.strictObject({version: z.literal(1), completed: z.boolean(),
   rankingPreferences: RankingPreferencesSchema.optional(),
   savedIds: z.array(z.string().min(1).max(200)).max(200).default([]),
+  savedPlaces: z.array(SpotDetailSchema).max(200).optional(),
   styles: z.array(StyleSchema).max(STUDY_STYLE_OPTIONS.length), preferences: PreferenceSchema});
 export type Settings = z.infer<typeof SettingsSchema>;
 export type SettingsStorage = {getItem(key: string): Promise<string | null>; setItem(key: string, value: string): Promise<void>};

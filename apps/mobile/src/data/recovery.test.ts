@@ -172,3 +172,83 @@ describe('bounded API deadlines', () => {
     await expect(createApiProvider('https://example.test').listCities()).rejects.toThrow('API unavailable');
   });
 });
+
+describe('immutable nearby candidate recovery', () => {
+  function runtimeSnapshot() {
+    const version = 'nearby-test-v1';
+    return SnapshotSchema.parse({...snapshot, datasetVersion: version,
+      spots: snapshot.spots.map((spot) => ({...spot, datasetVersion: version}))});
+  }
+  function discovery(data: Snapshot) {
+    return {schemaVersion: 1 as const, requestId: 'discovery-1', status: 'ready' as const,
+      snapshotId: data.datasetVersion, snapshot: data,
+      coverage: {policy: 'central-austin-v1' as const, center: {lat: 30.28, lng: -97.74}, radiusMeters: 3000 as const},
+      metrics: {externalAttempts: 4, cacheHits: 0, coalesced: 0, partialFailures: 0,
+        sourceOldestAt: data.fetchedAt, sourceNewestAt: data.fetchedAt, stale: false}, warnings: []};
+  }
+  it('preserves snapshot identity through lookup/detail and persists only public candidates', async () => {
+    const {controller, api, storage} = setup();
+    await controller.provider.listCities();
+    const data = runtimeSnapshot();
+    api.discover = vi.fn(async () => discovery(data));
+    api.getSpot = vi.fn(async () => ({schemaVersion: 1 as const, spot: data.spots[0]!, evidence: []}));
+    const origin = {lat: 30.281234567, lng: -97.741234567, source: 'device' as const};
+    const token = 'private-session'.repeat(3);
+    await controller.provider.discover!({sessionId: token, origin, refresh: false});
+    expect(await controller.provider.listSpots(city.id, data.datasetVersion)).toEqual(data);
+    const detail = await controller.provider.getSpot(data.spots[0]!.id, data.datasetVersion);
+    expect(detail.spot.datasetVersion).toBe(data.datasetVersion);
+    expect(api.getSpot).toHaveBeenCalledWith(data.spots[0]!.id, data.datasetVersion);
+    await Promise.resolve();
+    const serialized = storage.setItem.mock.calls.map((call) => call[1]).join('');
+    expect(serialized).not.toContain(String(origin.lat));
+    expect(serialized).not.toContain(String(origin.lng));
+    expect(serialized).not.toContain(token);
+    expect(serialized).not.toContain('snapshotId');
+  });
+  it('does not install or persist an older acquisition after a provider switch', async () => {
+    const {controller, api, storage} = setup();
+    await controller.provider.listCities();
+    await Promise.resolve();
+    const before = storage.setItem.mock.calls.length;
+    let finish!: (value: ReturnType<typeof discovery>) => void;
+    api.discover = () => new Promise((resolve) => {finish = resolve;});
+    const pending = controller.provider.discover!({sessionId: 't'.repeat(32), origin: createDemoQuery().origin, refresh: false});
+    const rejected = expect(pending).rejects.toBeInstanceOf(StaleProviderError);
+    await controller.switchTo('demo');
+    finish(discovery(runtimeSnapshot()));
+    await rejected;
+    expect(storage.setItem.mock.calls.length).toBe(before);
+    expect(controller.getState().choice).toBe('demo');
+  });
+  it('rejects an unrelated empty recommendation response instead of accepting a mismatched snapshot', async () => {
+    const {controller, api} = setup();
+    await controller.provider.listCities();
+    const data = runtimeSnapshot();
+    api.discover = async () => discovery(data);
+    await controller.provider.discover!({sessionId: 't'.repeat(32), origin: createDemoQuery().origin, refresh: false});
+    api.recommend = async () => ({schemaVersion: 1, requestId: 'wrong', mode: snapshot.mode,
+      datasetVersion: snapshot.datasetVersion, generatedAt: DEMO_NOW, results: [], excludedCounts: {}, relaxations: [],
+      metrics: {rankMs: 0, candidateCount: 0, qualifyingCount: 0, externalCalls: 0, cacheHits: 0}});
+    await expect(controller.provider.recommend({...createInitialQuery(city, DEMO_NOW), snapshotId: data.datasetVersion}))
+      .rejects.toThrow('identity mismatch');
+  });
+});
+
+it('a late acquisition cannot replace the newer area in the explicit offline cache', async () => {
+  const {controller, api} = setup();
+  await controller.provider.listCities();
+  let finish!: (value: import('@space/contracts').DiscoveryResponse) => void;
+  let calls = 0;
+  const response = (version: string): import('@space/contracts').DiscoveryResponse => ({schemaVersion: 1, requestId: version, status: 'ready',
+    snapshotId: version, snapshot: {...snapshot, datasetVersion: version, spots: snapshot.spots.map((spot) => ({...spot, datasetVersion: version}))},
+    coverage: null, metrics: {externalAttempts: 0, cacheHits: 1, coalesced: 0, partialFailures: 0,
+      sourceOldestAt: snapshot.fetchedAt, sourceNewestAt: snapshot.fetchedAt, stale: false}, warnings: []});
+  api.discover = async () => ++calls === 1 ? new Promise((resolve) => {finish = resolve;}) : response('new-area');
+  const older = controller.provider.discover!({sessionId: 't'.repeat(32), origin: createDemoQuery().origin, refresh: false});
+  const rejected = expect(older).rejects.toBeInstanceOf(StaleProviderError);
+  await controller.provider.discover!({sessionId: 't'.repeat(32), origin: {lat: 30.26, lng: -97.74, source: 'manual'}, refresh: false});
+  finish(response('old-area')); await rejected;
+  await controller.switchTo('cached');
+  expect((await controller.provider.listSpots(city.id)).datasetVersion).toBe('new-area');
+});
