@@ -135,6 +135,7 @@ export interface DataProvider {
   recommend(query: Query): Promise<Recommendation>;
   discover?(request: DiscoveryRequest): Promise<DiscoveryResponse>;
   assist?(request: AssistantRequest): Promise<AssistantResponse>;
+  createTesterSession?(request: TesterSessionRequest): Promise<TesterSessionResponse>;
 }
 
 // Runtime operations are opt-in and require a short-lived tester session. Tokens
@@ -143,6 +144,8 @@ export const TesterSessionRequestSchema = z.strictObject({ accessCode: z.string(
 export const TesterSessionResponseSchema = z.strictObject({
   schemaVersion: z.literal(1), sessionId: z.string().min(32).max(128), expiresAt: InstantSchema,
 });
+export type TesterSessionRequest = z.infer<typeof TesterSessionRequestSchema>;
+export type TesterSessionResponse = z.infer<typeof TesterSessionResponseSchema>;
 export const DiscoveryRequestSchema = z.strictObject({
   sessionId: z.string().min(32).max(128), origin: QuerySchema.shape.origin,
   refresh: z.boolean().default(false),
