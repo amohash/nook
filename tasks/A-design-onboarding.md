@@ -165,6 +165,106 @@ No merge is authorized for A. D integrates and records the new screens' presente
 - Presenter phone still required: Expo Go SDK compatibility, native foreground permission allow/deny and Settings recovery, GPS cancellation/manual/restart, AsyncStorage after force-close, system large text/VoiceOver/touch scrolling/safe areas, Android Back, both Skip paths, Reset and Retry. Record phone model/OS/Expo Go version and tested commit before calling P0 verified. Unfinished draft restart is intentional; precise GPS always resets to manual campus after relaunch.
 - Next smallest step: review this PR alongside the recovery SessionProvider generation-guard integration, then perform the presenter-phone checklist. No merge authorized or performed.
 
+## Filters sheet visual handoff — 2026-10-25
+
+Implemented on `feat/design-filters` from latest fetched `origin/main` at `7e67622`.
+SheetContainer, Chip and NowLaterControl were already on main; no A-branch stacking was needed.
+
+- Added `src/components/FilterSection.tsx`, `SegmentedControl.tsx`, `ChipGroup.tsx`, `LevelPicker.tsx`, `OriginCard.tsx` and `FiltersDesignPreview.tsx` (paths relative to `apps/mobile`). Visual styles use existing theme tokens; radio/checkbox pills reuse Chip's 44pt targets and text wrapping. No theme changes were needed.
+- All five components are controlled. SegmentedControl options and ChipGroup options are `{ value, label }`; callbacks return the exact option value. Null and zero remain distinct. LevelPicker accepts three to five numeric labeled steps without interpolation, normalization or rounding. D supplies the actual targetNoise/targetCrowd values; no crowd scale has been invented. Existing noise choices remain Quiet 0.15, Balanced 0.4, Lively 0.65, rather than relabeling Quiet as Silent.
+- OriginCard props are type-linked to OriginControls: `origin`, `busy`, `error`, `accuracyMeters`, `onDevice`, `onManual`. Denial uses D's error verbatim; no error-text parsing or new status enum. While locating, only device lookup is disabled; manual stays available. Manual/device/unknown accuracy wording is retained. It never requests GPS or changes origin itself.
+- FiltersDesignPreview assembles the entire current filter set inside SheetContainer, initially showing Filters (3). It reuses D's existing preset/reset/count helpers; in-memory preview handlers never save, request GPS or change results. All group sizes, durations, amenity choices, access, free/0..4/null prices, seven walk caps and vibe values remain available. Departure time is outside D's current FiltersSheet and was not added. Caller provides SafeAreaProvider and bounded height. `originState` accepts manual, denied, locating or device; these are explicitly illustrative states.
+- No D files, components/index.ts, route, Modal, dependencies, lockfile or package manifest were edited. The user's root package.json allowScripts change remains uncommitted.
+
+### Drop-in usage for D
+
+Keep the existing Modal, overlay, accessibility/dismissal handlers, query/onChange/onApply/onClose props and SheetContainer. Import components directly until D adds the exports below. Replace only section markup and Choice presentation. The following goes inside the existing SheetContainer; callbacks are the current sheet callbacks:
+
+```tsx
+import { FilterSection } from '../../components/FilterSection';
+import { SegmentedControl } from '../../components/SegmentedControl';
+import { ChipGroup } from '../../components/ChipGroup';
+import { LevelPicker } from '../../components/LevelPicker';
+
+// Existing wrapper stays:
+<SheetContainer title="Filters" onCancel={onClose}
+  onReset={() => onChange(resetExploreFilters(query))} onApply={onApply}>
+  <Text style={s.body}>{activeFilterCount(query)} active filters · changed groups from Study defaults. Changes take effect on Apply.</Text>
+  {/* Keep current intent, group, duration, amenities and access callbacks.
+      For each existing single-choice map use SegmentedControl as below. */}
+  <FilterSection title="Place category" helper="Select any combination. No selection means any category.">
+    <ChipGroup options={CATEGORY_OPTIONS} selected={query.categories}
+      onToggle={(value) => onChange({ ...query, categories: query.categories.includes(value)
+        ? query.categories.filter((category) => category !== value) : [...query.categories, value] })} />
+  </FilterSection>
+  <FilterSection title="Maximum price" helper="A strict cap excludes unknown prices. Dollar signs are price levels, not exact amounts.">
+    <SegmentedControl accessibilityLabel="Maximum price"
+      options={([null, 0, 1, 2, 3, 4] as const).map((value) => ({ value, label: priceLabel(value) }))}
+      value={query.maxPriceLevel} onChange={(maxPriceLevel) => onChange({ ...query, maxPriceLevel })} />
+  </FilterSection>
+  <FilterSection title="Maximum estimated walk">
+    <SegmentedControl accessibilityLabel="Maximum estimated walk"
+      options={[5, 10, 15, 20, 30, 45, 60].map((value) => ({ value, label: `${value} min` }))}
+      value={query.maxWalkMinutes} onChange={(maxWalkMinutes) => onChange({ ...query, maxWalkMinutes })} />
+  </FilterSection>
+  <FilterSection title="Atmosphere preference" helper="Atmosphere and vibe influence ranking; they do not exclude places or promise available seats.">
+    <LevelPicker accessibilityLabel="Target noise" steps={ATMOSPHERE_OPTIONS}
+      value={query.targetNoise} onChange={(targetNoise) => onChange({ ...query, targetNoise })} />
+  </FilterSection>
+  <FilterSection title="Vibe preferences">
+    <ChipGroup options={VIBE_OPTIONS.map((value) => ({ value, label: value.replaceAll('_', ' ') }))}
+      selected={VIBE_OPTIONS.filter((tag) => (query.tagWeights[tag] ?? 0) > 0)}
+      onToggle={(tag) => {
+        const tagWeights = { ...query.tagWeights };
+        if ((tagWeights[tag] ?? 0) > 0) delete tagWeights[tag]; else tagWeights[tag] = 1;
+        onChange({ ...query, tagWeights });
+      }} />
+  </FilterSection>
+</SheetContainer>
+```
+
+This excerpt illustrates visual substitutions, not a replacement that removes the other sections. `FiltersDesignPreview.tsx` contains the full assembly, including the existing intent/group/session/open/amenity/access handlers. Transfer those sections too and retain every existing helper/explanation. Do not mount the preview as production UI: its handlers are intentionally local. OriginCard replaces OriginControls wherever D already supplies those props; it does not acquire draft origin or change filter Apply semantics:
+
+```tsx
+import { OriginCard } from '../../components/OriginCard';
+<OriginCard origin={origin} busy={busy} error={error} accuracyMeters={accuracyMeters}
+  onDevice={onDevice} onManual={onManual} />
+// With useOrigin: onDevice={originController.useDevice}, onManual={originController.useManual}.
+// Keep the existing onSelect ownership/cancellation logic.
+```
+
+For targetCrowd D may pass its approved 3–5 numeric steps to LevelPicker with `value={query.targetCrowd}` and `onChange={(targetCrowd) => onChange({ ...query, targetCrowd })}`. Current FiltersSheet defines no standalone crowd steps; this PR supplies no new scale or mapping. NowLaterControl stays at its existing call site, with D's timestamps and presets.
+
+Preview import (inside D's development-only host, under SafeAreaProvider, in a flex:1/bounded container):
+
+```tsx
+import { FiltersDesignPreview } from '../src/components/FiltersDesignPreview';
+return <FiltersDesignPreview originState="denied" />;
+```
+
+### Verification and release status
+
+- `npm.cmd run typecheck`: passed after correcting the preview intent callback type.
+- `npm.cmd run lint`: passed.
+- `npm.cmd test`: 333 tests passed in 29 files; no new logic tests added for controlled visual wrappers.
+- `git diff --check`: passed.
+- Isolated React Native Web/esbuild harness rendered the actual components. Headless Chrome interaction assertions passed manual/denied/locating/doubled-text states: count 3, every selection target >=44px, zero/null prices, 60-minute walk choice, independent category selection, noise step, Reset count 0, preview Apply/Cancel, disabled device lookup/manual fallback, error alert, sticky Apply and no horizontal overflow. Doubled-text check was 320×568; standard screenshots 390×844. This simulates text scaling and does not verify native system font scaling.
+- T3 preview snapshots failed twice with `Preview automation snapshot timed out after 15000ms.` Local headless Chrome was the fallback; no dependency was installed. Harness files stay ignored under `.expo/filters-qa`.
+- Browser captures in `apps/mobile/assets/design-review/filters`: top, levels, strict, denied, locating, large, large-bottom. These are actual browser renders, not presenter-phone screenshots; safe insets are zero in this harness.
+- Not merged or presenter-phone verified. D is the merger and owns integration, native Modal focus/Android Back, real GPS, system text scaling, safe areas and device validation. Next smallest step: D imports the five pieces and mounts the preview before replacing existing visual markup.
+
+Export lines for D (A deliberately did not edit components/index.ts):
+
+```ts
+export { FilterSection, type FilterSectionProps } from './FilterSection';
+export { SegmentedControl, type SegmentedControlProps, type SelectionOption, type SelectionValue } from './SegmentedControl';
+export { ChipGroup, type ChipGroupProps } from './ChipGroup';
+export { LevelPicker, type LevelPickerProps, type LevelSteps } from './LevelPicker';
+export { OriginCard, type OriginCardProps } from './OriginCard';
+export { FiltersDesignPreview } from './FiltersDesignPreview';
+```
+
+- Final isolation: another thread switched root to `feat/design-detail` during verification. Filters were moved into `C:/Users/zgaud/Documents/Nook/nook-design-filters` on the requested branch; original edits and package.json remain in root. A temporary shared node_modules junction misresolved Zod; removed it and ran `npm.cmd ci --ignore-scripts` from the existing lockfile (no manifest/lock changes). Then typecheck, lint and all 333 tests passed in the isolated worktree. Browser harness was rebuilt against these isolated files with one React instance; all four interaction scenarios passed again and captures were refreshed.
 ## Demo pack — October 25, 2026
 
 - Implemented documentation on `docs/demo-pack`, isolated from the preserved Windows `feat/design-tab-bar` checkout and its uncommitted package.json change; based on freshly fetched `origin/main` 7e67622.

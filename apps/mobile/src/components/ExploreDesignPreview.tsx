@@ -16,6 +16,7 @@ import { SearchBar } from './SearchBar';
 import { SheetContainer } from './SheetContainer';
 import { TabBarDesignPreview } from './TabBarDesignPreview';
 import { ExploreLayoutDesignPreview } from './ExploreLayoutDesignPreview';
+import { SpotDetailDesignPreview } from './SpotDetailDesignPreview';
 import type { OpenStatus, TypicalCrowd } from './exploreContent';
 
 const FETCHED = '2026-10-24T18:00:00-05:00';
@@ -34,6 +35,7 @@ const statuses: OpenStatus[] = ['open', 'closing_soon', 'closed', 'temporarily_c
 /** Labeled synthetic visual specimens. No API calls, GPS, storage or native actions. */
 export function ExploreDesignPreview({ onClose }: { onClose?: () => void }) {
   const [showLayout, setShowLayout] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [intent, setIntent] = useState<'study' | 'friends'>('study');
   const [emptyIntent, setEmptyIntent] = useState<'study' | 'friends' | null>(null);
   const [view, setView] = useState<'map' | 'list'>('map');
@@ -46,6 +48,7 @@ export function ExploreDesignPreview({ onClose }: { onClose?: () => void }) {
   const [otherSaved, setOtherSaved] = useState(true);
   const [note, setNote] = useState('Preview only. Data and timestamps are illustrative, not provider observations.');
   if (showLayout) return <ExploreLayoutDesignPreview onClose={() => setShowLayout(false)} />;
+  if (showDetail) return <SpotDetailDesignPreview onClose={() => setShowDetail(false)} />;
   return <SafeAreaView style={styles.page}>
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
       <Text accessibilityRole="header" style={styles.title}>Explore component states</Text>
@@ -55,6 +58,7 @@ export function ExploreDesignPreview({ onClose }: { onClose?: () => void }) {
 
       <TabBarDesignPreview />
       <Button label="Explore layout + compact cards" onPress={() => setShowLayout(true)} />
+      <Button label="Spot detail layout states" onPress={() => setShowDetail(true)} />
 
       <Text accessibilityRole="header" style={styles.heading}>MapPin + MapLegend</Text>
       <View style={styles.row}>

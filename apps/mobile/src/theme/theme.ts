@@ -44,7 +44,8 @@ export const theme = {
   },
   spacing: { none: 0, xxs: 4, xs: 8, sm: 10, md: 12, lg: 16, section: 20, xl: 24, xxl: 28, xxxl: 40, hero: 56 },
   radii: { field: 12, card: 20, sheet: 24, pill: 999 },
-  layout: { exploreSheetRatio: 0.48, exploreControlsRatio: 0.55, exploreHeaderRatio: 0.5 },
+  layout: { exploreSheetRatio: 0.48, exploreControlsRatio: 0.55, exploreHeaderRatio: 0.5,
+    detailFactBasis: '45%', detailActionsMaxHeight: '45%', detailPreviewToolbarMaxHeight: '40%' },
   borders: { thin: 1, outline: 1.5, icon: 2 },
   typography: {
     bodyFamily: Platform.select({ ios: 'System', android: 'sans-serif', default: 'system-ui' }),
@@ -65,6 +66,7 @@ export const theme = {
     radio: 18,
     radioSelectedBorder: 6,
     thumbnail: 72,
+    detailHero: 220,
     logoWidth: 304,
     logoHeight: 158,
     logoMinSpace: 240,
