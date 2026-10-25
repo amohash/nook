@@ -11,6 +11,10 @@ export const ProviderPlaceSchema = z.object({
     .transform((value) => typeof value === 'string' ? value : value[0]).optional(), rating: z.number().min(0).max(5).optional(),
   reviews: z.number().int().nonnegative().optional(), price: z.string().max(40).optional(),
   permanently_closed: z.boolean().optional(), temporarily_closed: z.boolean().optional(),
+  // Retain only these optional raw fields across seed validation. Each parser fails
+  // soft on malformed evidence rather than rejecting an otherwise valid place.
+  hours: z.unknown().optional(), operating_hours: z.unknown().optional(),
+  popular_times: z.unknown().optional(),
 });
 export const ProviderResponseSchema = z.object({
   local_results: z.array(z.unknown()).max(200).optional(),
