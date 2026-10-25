@@ -103,3 +103,104 @@ Please record B's schema/normalization confirmation and D's consumer/fixture con
 - Synced `feat/ranking-ai` with `origin/main` at `d97520b` via merge `b45a825`; no conflicts. D's merged filters/list/detail changes are preserved.
 - Integrated checks rerun: `npm run typecheck`, `npm test` (100/100), `npm run lint`, `npm run build:server`, and `git diff --check` all passed.
 - Request review from repository owner `amohash`; D retains responsibility for the main merge. B still mounts the route and supplies real data/persistent cache; presenter-phone verification and explicit B/D contract confirmation remain pending.
+
+## Real-data evaluation — October 25, 2026
+
+Status: implemented and locally verified before the 03:00 America/Chicago freeze;
+not merged, not presenter-phone verified. Isolated branch `feat/real-data-evaluation`
+starts at updated `origin/main` `7e67622`; the existing checkout/worktrees and all
+prior work are preserved. Only new files under `packages/core/measurements` and
+this uniquely headed task section change. No scorer, weights, shared contracts,
+API implementation, mobile code, root manifest/lockfile, dataset or provider edits.
+Preserve the separate group-compromise deferral and evidence-quality sections when
+D integrates the concurrent C task-file append-only PRs.
+
+### Artifact and coordination
+
+- Selected with the evidence-quality peer and B/D relay: committed
+  `fixtures/data/austin-20261025-muse-photos-v1.json`, version
+  `austin-20261025-muse-photos-v1`, cached, 30 candidates, 10 Muse summaries.
+  Raw-byte SHA-256:
+  `bae26a4d32597262f8f8cbfa4740535505b732f5a30684a921781f3c7ab1b731`.
+  B's final task/operations record identifies this as the deployed artifact;
+  deployment is not semantic or phone acceptance. No newer approved artifact was
+  confirmed for this baseline. Pending B1 `feat/cached-time-dataset` / PR #30 is
+  not silently substituted; evaluate it separately if D/B approve it.
+- Original coordination relay tagged B @drewsun461 and D @amohash in issue #3
+  comment `6394670950`. Tested preliminary inputs and defensible limitations were
+  relayed to A @zgaudin, B and D in comment `6394700193`. Final checked results are
+  handed back with this PR. No shared-file edits were needed; shared decisions
+  remain with their owner. No acquisition, paid calls or publication performed.
+- Later evidence-quality fixes (Zod composition/deadline guards) and withheld
+  inference claims are a separate PR/workstream. They do not change this pinned
+  scorer/router/cached-adapter baseline or establish semantic approval.
+
+### Reproduction and recorded scope
+
+```sh
+npx tsx packages/core/measurements/evaluate-real.ts \
+  fixtures/data/austin-20261025-muse-photos-v1.json \
+  packages/core/measurements/real-inputs.json > /tmp/nook-real-evaluation.json
+```
+
+`real-baseline.json` records dataset/snapshot/input hashes, retrieval ages, exact
+resolved queries, ranking scores/reasons/warnings/exclusions and raw timing arrays
+with OS/CPU/Node/V8/ICU metadata. The baseline was measured at
+`2026-10-25T07:08:23.375Z` on local Node `v26.12.0`, Apple M4 Pro. Snapshot retrieval
+is `2026-10-25T02:51:29.146Z`, age 3.3919 hours relative to the explicit evaluation
+clock, not relative to measurement wall time. All individual evidence retrieval
+ages remain recorded; retrieval is not observation time.
+
+Every case has 21 sequential samples. All **147 iterations** agree across direct
+`rankSpots`, the production recommendation router through loopback HTTP and the
+actual mobile recovery cached adapter with the same snapshot/query/clock. This is
+441 scorer invocations, not 147 total invocations. No competing scorer or API was
+added. Separate timing arrays distinguish direct rank, API-reported rank, loopback
+round trip, cached-reported rank and cached adapter total. All run in local Node;
+none measure a phone, deployed network, cold process/server, battery or savings.
+Manual public demo origins only; device GPS inputs fail before report generation.
+The cache bundle is memory-only and any attempted storage write fails closed.
+
+### Tested scenarios and truthful claims
+
+- Clock `2026-10-25T01:15:00-05:00`; Study and Meet Friends depart
+  `2026-10-25T13:00:00-05:00` for 60 minutes; Later departs
+  `2026-10-25T19:00:00-05:00` for 120 minutes, all on October 25 in Chicago time.
+  These are labeled future what-if sessions, not now/live observations.
+- Campus manual origin `(30.2862, -97.7394)`, estimated walk cap 15 minutes:
+  3 qualify, 27 distance exclusions. Study/Friends/Later all return Trippy Buck
+  Coffee Truck, St Benedict Coffee Company, Lucky Lab Coffee Co. in that order.
+  Do not pitch this as different real Study/Friends winners or open-later proof.
+- Downtown manual origin `(30.2672, -97.7431)`, otherwise the same Study query:
+  5 qualify, 25 distance exclusions; Cielito Lindo Cafe, Trippy Buck Coffee,
+  Black Fox Coffee are returned. This and campus are truthful origin-dependent
+  shortlist scenarios, not claims of measured routes or complete city coverage.
+- All 30 records have unknown numeric noise, price, hours, Wi-Fi and outlets;
+  just one has inferred group friendliness. Strict campus price <=1, full-session
+  opening, and required Wi-Fi each yield zero, with 27 distance exclusions plus
+  3 unknown-price / unknown-hours / amenity exclusions respectively. No constraints
+  are relaxed automatically. The quiet/cheap/open-later real-data story is not
+  established. Existing inference holds remain held regardless of deployment.
+- Separately labeled **fictional** goldens retain unchanged Study demo 1/3/5 and
+  Friends demo 2/10/6. Neither fictional facts nor hard-coded real winners are
+  substituted into the dataset. No production scorer failure was reproduced;
+  regressions cover real outcomes, unknown strict constraints, stable synthetic
+  ties, GPS/clock/query validation and an API-warning parity negative control.
+
+### Actual checks and remaining phone gate
+
+- Focused measurement/core/router/recovery tests: **61 passed / 5 files**.
+- Root `npm test`: **339 passed / 30 files**.
+- Root `npm run typecheck`, `npm run lint`, `npm run build:server`, dedicated
+  `npx tsc --noEmit -p packages/core/measurements/tsconfig.json`, and
+  `git diff --check`: passed. The first dedicated typecheck needed JSX configured
+  for the transitive mobile types; initial lint found one unused import. Both
+  evaluator-only issues were corrected and their checks rerun successfully.
+- Existing root dependency manifests/lockfile are unchanged. Physical phone,
+  native storage, public-network parity/latency and provider/model acquisition
+  were not tested or claimed by this command.
+- D owns merge and still needs presenter-phone API/downloaded-cache comparison
+  for these exact manual queries/version, source/unknown labels, Later local
+  time, strict empty-state recovery, save/restart/share and network loss. Any
+  phone or deployed-network performance claim needs its own measurement. After
+  03:00 only release-blocking fixes, not unfinished P1 work, should continue.
