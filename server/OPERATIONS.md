@@ -473,3 +473,67 @@ health's exact commit, dataset mode/version, all enriched details and recommenda
 No new service, private runtime keys, new ingestion, or migration is needed. The
 old dataset path remains a rollback option. Do not update the service path before
 the deployed checkout contains the new file.
+
+
+## Reviewed Muse snapshot — live Render verification
+
+- PR #13 merged as a8946ad; manually deployed current reviewed main
+  f969326afcfd6f611bab163af5f33aa5ca6472b0 on the existing Free service
+  srv-dbenp18ae00c73doen00. Successful deploy: dep-dbeosi7avr4c73bkh4f0.
+- DATASET_PATH=../fixtures/data/austin-20261025-muse-v1.json. Public base remains
+  https://nook-api-demo.onrender.com . No runtime provider/model/DB credentials,
+  new services, acquisitions, model calls, or migrations were needed.
+- Verified 2026-10-25T05:08:11Z: /health reports the exact deployed main SHA;
+  cities and 30-place cached snapshot match the committed artifact exactly.
+  All ten enriched detail endpoints return 200, pass shared schemas and match
+  the artifact. Their 34 anonymous review citations resolve from Muse evidence IDs,
+  retain HTTPS source URLs and stay within 500 characters. They also retain ten
+  original provider-detail evidence entries (44 total entries across ten details).
+- Verified Wi-Fi/outlets remain unknown and both reviewed claims remain withheld.
+  Recommendations return three results, current server time and externalCalls=0;
+  slash/no-slash routes agree. Empty-category and strict unknown-amenity queries
+  return zero results; invalid query returns 400, unknown city returns 404.
+- Current-main checks: 188/188 tests across 22 files, workspace typecheck, lint,
+  server build and diff check pass. Render install/build/start and health gate pass.
+- Limits: the default campus shortlist still has no Muse summaries; the ten other
+  enriched details are verified over public HTTPS. D must verify the new version,
+  an enriched detail, source labels and recovery on the physical presenter phone.
+  Warm /health before testing because Free-tier idle/cold-start behavior remains.
+- Rollback: restore DATASET_PATH=../fixtures/data/austin-20261025-v1.json and
+  manually redeploy reviewed main. Both immutable artifacts remain available.
+
+
+## Real place-photo recovery — prepared, not live
+
+The live Muse dataset set every image to null: normalization discarded provider
+thumbnail fields. Existing SerpApi cache entries already supplied public Google
+Maps thumbnails for all 30 stable places. No additional paid acquisition was made.
+
+- Normalization now retains a safe optional thumbnail with Google Maps via SerpApi
+  attribution. Unsupported/malformed/private/proxy URLs leave image null without
+  rejecting the place. Public images are restricted to HTTPS Google image hosts,
+  without credentials, query strings or custom ports. No private raw cache is exposed.
+- New immutable artifact/version: austin-20261025-muse-photos-v1, published in
+  Supabase. It preserves all ten Muse summaries, 34 anonymous review citations,
+  source facts, timestamps, stable IDs, unknown amenities and reviewed omissions.
+  Only image objects and dataset-version identities change. Earlier artifacts remain.
+- Cache-only operator job: from server/, run
+  ../node_modules/.bin/tsx src/jobs/add-cached-images.ts
+  --source=../fixtures/data/austin-20261025-muse-v1.json
+  --version=austin-20261025-muse-photos-v1
+  (--publish performed successfully; do not republish this immutable version).
+  It reads private cache, checks each image response, and fails closed unless all
+  places have verified photos. No SerpApi endpoint or Muse transport is constructed.
+- Verification: all 30 source URLs returned image/jpeg or image/png, and all 30
+  decoded successfully in a real browser (naturalWidth > 0, no failures). Actual
+  app HTTP smoke passed with images on 30 list entries, all 30 details, and all
+  three default recommendations; recommendation externalCalls=0.
+- 207 tests across 24 files, typecheck, lint, server build and diff check passed.
+  New tests cover unsafe sources, fail-soft normalization and exact preservation
+  of the original artifact apart from photos/version. Mobile rendering code unchanged.
+- Not live yet: D must merge the updated PR #15. Then B sets the existing Render
+  service DATASET_PATH=../fixtures/data/austin-20261025-muse-photos-v1.json,
+  manually deploys reviewed main and verifies public list/detail/recommendation
+  images plus health SHA. D checks the photos on the presenter phone afterward.
+- Limits: photos are public Google-hosted resources and require network access;
+  existing image-failure placeholders remain. No claim of device verification.
