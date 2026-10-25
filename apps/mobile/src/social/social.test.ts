@@ -72,13 +72,15 @@ describe('profile rules', () => {
     expect(await sha256Hex(toE164('+1 512 555 0123')!)).toBe(hash);
   });
 
-  it('caps vibe tags at 10 and templates a line from the top three non-intent tags', () => {
+  it('puts intent first, caps vibe tags at 10 and templates a line from the top three non-intent tags', () => {
     const tags = vibeTagsFrom(['Silent', 'Outlets', 'Silent', 'Open late', 'Solo', 'Group tables', 'Good Wi-Fi',
       'Coffee nearby', 'Outdoors', 'Whiteboards', 'Study', 'Cozy']);
     expect(tags).toHaveLength(10);
     expect(new Set(tags).size).toBe(10);
-    expect(vibeLineFrom(['Silent', 'Outlets', 'Open late', 'Solo'])).toBe('Silent · Outlets · Open late studier.');
-    expect(vibeLineFrom(['Study', 'Silent'])).toBe('Silent studier.');
+    expect(tags[0]).toBe('Study');
+    expect(vibeTagsFrom(['Silent', 'Outlets', 'Study'])).toEqual(['Study', 'Silent', 'Outlets']);
+    expect(vibeLineFrom(['Study', 'Silent', 'Outlets', 'Open late', 'Solo'])).toBe('Silent · Outlets · Open late studier');
+    expect(vibeLineFrom(['Study', 'Silent'])).toBe('Silent studier');
     expect(vibeLineFrom(['Study'])).toBeNull();
   });
 });

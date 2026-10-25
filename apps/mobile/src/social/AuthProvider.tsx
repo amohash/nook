@@ -153,6 +153,13 @@ function useVibeSync(client: NonNullable<ReturnType<typeof getSupabase>>, profil
   }, [client, profile, wanted, tags, line, setProfile]);
 }
 
+/** Design previews only: looks signed in without a profile; makes no auth calls. */
+export function AuthPreviewProvider({ children }: { children: ReactNode }) {
+  const value = useMemo<AuthContextValue>(() => ({ ...GUEST, enabled: true, status: 'needsProfile',
+    user: { id: '00000000-0000-4000-8000-000000000000', email: 'preview@example.com' } as User }), []);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
 export function useAuth(): AuthContextValue {
   return useContext(AuthContext);
 }

@@ -7,14 +7,19 @@ import { theme } from '../theme';
 import { useAuth } from './AuthProvider';
 import { pickAvatar, uploadAvatar } from './avatar';
 import { getSupabase } from './client';
-import { FormField, formStyles } from './FormField';
+import { FormField, formStyles, type FieldStatus } from './FormField';
+import { BackChevron, CameraIcon } from './icons';
 import { hashPhone } from './phoneHash';
 import { createProfile, isUsernameAvailable } from './profileApi';
 import { displayNameProblem, majorProblem, normalizeUsernameInput, toE164, usernameProblem, vibeLineFrom,
   vibeTagsFrom } from './profileRules';
 
+// Design: docs/design/social-create-profile.png. Privacy wording is fixed by docs/design/README.md.
+const DISCOVERY_LABEL = 'Let people who have my number find me';
+const DISCOVERY_NOTE = 'People who have your number can find you. Only a hashed version is stored. You can turn this off anytime.';
+const FIXED = 'can’t be changed later';
+
 type Availability = 'idle' | 'checking' | 'available' | 'taken' | 'error';
-const DISCOVERY_NOTE = 'People who have your number can find you. You can turn this off anytime.';
 
 /** Debounced (400 ms) is_username_available check; stale responses are ignored. */
 function useUsernameAvailability(username: string): Availability {
@@ -24,7 +29,6 @@ function useUsernameAvailability(username: string): Availability {
     if (!client || usernameProblem(username)) return;
     let active = true;
     const timer = setTimeout(() => {
-      setState({ name: username, value: 'checking' });
       isUsernameAvailable(client, username)
         .then((free) => { if (active) setState({ name: username, value: free ? 'available' : 'taken' }); })
         .catch(() => { if (active) setState({ name: username, value: 'error' }); });
@@ -35,16 +39,23 @@ function useUsernameAvailability(username: string): Availability {
   return state.name === username ? state.value : 'checking';
 }
 
-const AVAILABILITY_TEXT: Record<Exclude<Availability, 'idle'>, { text: string; tone: 'neutral' | 'good' | 'bad' }> = {
-  checking: { text: 'Checking…', tone: 'neutral' },
-  available: { text: 'Available', tone: 'good' },
-  taken: { text: 'That username is taken.', tone: 'bad' },
-  error: { text: 'Couldn’t check right now. You can still try to create your profile.', tone: 'neutral' },
+function usernameStatus(name: string, availability: Availability): FieldStatus {
+  switch (availability) {
+    case 'available': return { text: `✓ @${name} is available · ${FIXED}`, tone: 'good' };
+    case 'taken': return { text: `@${name} is taken. Try another.`, tone: 'bad' };
+    case 'checking': return { text: `Checking @${name}… · ${FIXED}`, tone: 'neutral' };
+    case 'error': return { text: `Couldn’t check right now · ${FIXED}`, tone: 'neutral' };
+    default: return { text: `3–20 lowercase letters, numbers or _ · ${FIXED}`, tone: 'neutral' };
+  }
+}
+
+export type CreateProfileScreenProps = {
+  onDone?: () => void;
+  /** Back chevron. Defaults to signing out, since an account without a profile can't be used. */
+  onBack?: () => void;
 };
 
-export type CreateProfileScreenProps = { onDone?: () => void };
-
-export function CreateProfileScreen({ onDone }: CreateProfileScreenProps) {
+export function CreateProfileScreen({ onDone, onBack }: CreateProfileScreenProps) {
   const { enabled, user, refreshProfile, signOut } = useAuth();
   const preferenceTags = usePreferenceTags();
   const [username, setUsername] = useState('');
@@ -77,7 +88,7 @@ export function CreateProfileScreen({ onDone }: CreateProfileScreenProps) {
 
   const chooseAvatar = async () => {
     const client = getSupabase();
-    if (!client) return;
+    if (!client || avatarBusy) return;
     setAvatarError(null);
     try {
       const picked = await pickAvatar();
@@ -96,17 +107,17 @@ export function CreateProfileScreen({ onDone }: CreateProfileScreenProps) {
   const submit = async () => {
     setTouched(true); setError(null);
     const client = getSupabase();
-    if (!client || !valid) return;
+    if (!client || !valid || busy) return;
     setBusy(true);
     try {
-      // Only the hash leaves the device; the raw number is never stored.
+      // Only the hash leaves the device; the raw number is never stored or sent.
       const phone_hash = e164 ? await hashPhone(e164) : null;
       const result = await createProfile(client, user.id, {
         username, display_name: displayName.trim(), major: major.trim() || null, avatar_url: avatar?.url ?? null,
         vibe_tags: tags, vibe_line: vibeLine, phone_hash, discoverable_by_phone: !!phone_hash && discoverable,
       });
       if (!result.ok) {
-        setError(result.reason === 'username_taken' ? 'That username was just taken. Try another.'
+        setError(result.reason === 'username_taken' ? `@${username} was just taken. Try another.`
           : 'Couldn’t create your profile. Check your connection and try again.');
         return;
       }
@@ -122,87 +133,99 @@ export function CreateProfileScreen({ onDone }: CreateProfileScreenProps) {
   return <SafeAreaView style={styles.safe}>
     <KeyboardAvoidingView style={styles.safe} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={formStyles.page} keyboardShouldPersistTaps="handled">
+        <View style={styles.header}>
+          <Pressable accessibilityRole="button" accessibilityLabel={onBack ? 'Back' : 'Back and sign out'}
+            onPress={onBack ?? (() => void signOut())} disabled={busy} style={[formStyles.iconButton, styles.back]}>
+            <BackChevron />
+          </Pressable>
+          <Text style={formStyles.small}>Almost done</Text>
+        </View>
         <View style={styles.intro}>
-          <Text accessibilityRole="header" style={formStyles.title}>Set up your profile</Text>
-          <Text style={formStyles.body}>Friends see your name, photo and study vibe.</Text>
+          <Text accessibilityRole="header" style={formStyles.title}>Create your profile</Text>
+          <Text style={formStyles.body}>This is what friends see when they find you.</Text>
         </View>
-
-        <View style={styles.avatarRow}>
-          <View accessible={false} style={styles.avatar}>
-            {avatar ? <Image source={{ uri: avatar.preview }} style={styles.avatarImage} accessibilityIgnoresInvertColors />
-              : <Text style={styles.avatarInitial}>{(displayName.trim()[0] ?? username[0] ?? '?').toUpperCase()}</Text>}
-          </View>
-          <View style={styles.avatarActions}>
-            <Button label={avatar ? 'Change photo' : 'Add photo'} variant="outline" onPress={() => void chooseAvatar()}
-              busy={avatarBusy} accessibilityHint="Opens your photo library. Optional; you can add one later." />
-            {avatar && <Pressable accessibilityRole="button" onPress={() => setAvatar(null)} style={formStyles.textButton}>
-              <Text style={formStyles.textButtonLabel}>Remove photo</Text>
-            </Pressable>}
-            {avatarError && <Text accessibilityLiveRegion="polite" style={formStyles.alert}>{avatarError}</Text>}
-          </View>
-        </View>
-
-        <FormField label="Username" value={username} onChangeText={(value) => setUsername(normalizeUsernameInput(value))}
-          autoCapitalize="none" autoCorrect={false} autoComplete="username-new" maxLength={20} placeholder="e.g. longhorn_reads"
-          helper="3–20 lowercase letters, numbers or _. You can’t change it later."
-          error={(touched || username.length >= 3) ? problems.username : null}
-          status={availability === 'idle' ? null : AVAILABILITY_TEXT[availability]} />
-        <FormField label="Display name" value={displayName} onChangeText={setDisplayName} autoComplete="name"
-          textContentType="name" maxLength={50} error={touched ? problems.displayName : null} />
-        <FormField label="Major (optional)" value={major} onChangeText={setMajor} maxLength={60} error={problems.major} />
 
         <View style={styles.group}>
-          <FormField label="Phone (optional)" value={phone} onChangeText={setPhone} keyboardType="phone-pad"
-            inputMode="tel" autoComplete="tel" textContentType="telephoneNumber" maxLength={20}
-            placeholder="(512) 555-0123" error={touched || e164 ? problems.phone : null}
-            helper="Hashed on this device. Nook stores only the hash, never your number." />
-          <Pressable accessibilityRole="switch" accessibilityState={{ checked: discoverable, disabled: !e164 }}
-            accessibilityLabel="Let people who have my number find me" accessibilityHint={DISCOVERY_NOTE}
-            disabled={!e164} onPress={() => setDiscoverable((value) => !value)} style={styles.switchRow}>
-            <View style={styles.switchText}>
-              <Text style={formStyles.section}>Let people who have my number find me</Text>
-              <Text style={formStyles.body}>{e164 ? DISCOVERY_NOTE : 'Add a phone number to turn this on.'}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={avatar ? 'Change photo' : 'Add a photo'}
+            accessibilityHint="Optional. Opens your photo library." accessibilityState={{ busy: avatarBusy }}
+            onPress={() => void chooseAvatar()} style={styles.avatarRow}>
+            <View style={[styles.avatar, !avatar && styles.avatarEmpty]}>
+              {avatar ? <Image source={{ uri: avatar.preview }} style={styles.avatarImage} accessibilityIgnoresInvertColors />
+                : <CameraIcon />}
             </View>
+            <View style={styles.avatarText}>
+              <Text style={styles.avatarTitle}>{avatarBusy ? 'Uploading…' : avatar ? 'Change photo' : 'Add a photo'}</Text>
+              <Text style={formStyles.small}>Optional · from your photo library</Text>
+            </View>
+          </Pressable>
+          {avatar && !avatarBusy && <Pressable accessibilityRole="button" onPress={() => setAvatar(null)}
+            style={[formStyles.iconButton, styles.removePhoto]}>
+            <Text style={[formStyles.small, formStyles.link]}>Remove photo</Text>
+          </Pressable>}
+          {avatarError && <Text accessibilityLiveRegion="polite" style={formStyles.alert}>{avatarError}</Text>}
+        </View>
+
+        <FormField label="Username" prefix="@" value={username}
+          onChangeText={(value) => setUsername(normalizeUsernameInput(value.replace(/^@/, '')))}
+          autoCapitalize="none" autoCorrect={false} autoComplete="username-new" maxLength={20}
+          error={(touched || username.length >= 3) ? problems.username : null}
+          status={usernameStatus(username, availability)} />
+        <FormField label="Display name" value={displayName} onChangeText={setDisplayName} autoComplete="name"
+          textContentType="name" maxLength={50} placeholder="Your name" error={touched ? problems.displayName : null} />
+        <FormField label="Major (optional)" value={major} onChangeText={setMajor} maxLength={60}
+          placeholder="e.g. Computer Science" error={problems.major} />
+        <FormField label="Phone (optional)" value={phone} onChangeText={setPhone} keyboardType="phone-pad"
+          inputMode="tel" autoComplete="tel" textContentType="telephoneNumber" maxLength={20}
+          placeholder="(512) 555-0123" error={touched || e164 ? problems.phone : null} />
+
+        <Pressable accessibilityRole="switch" accessibilityLabel={DISCOVERY_LABEL}
+          accessibilityState={{ checked: discoverable && !!e164, disabled: !e164 }}
+          accessibilityHint={e164 ? DISCOVERY_NOTE : 'Add a phone number to turn this on.'}
+          disabled={!e164} onPress={() => setDiscoverable((value) => !value)} style={formStyles.card}>
+          <View style={styles.switchRow}>
+            <Text style={[formStyles.cardTitle, styles.flex]}>{DISCOVERY_LABEL}</Text>
             <Switch value={discoverable && !!e164} disabled={!e164} onValueChange={setDiscoverable}
               accessible={false} importantForAccessibility="no"
-              trackColor={{ false: theme.colors.progressInactive, true: theme.colors.chipSelectedBorder }} />
-          </Pressable>
-        </View>
+              trackColor={{ false: theme.colors.placeholder, true: theme.colors.chipSelectedBorder }} />
+          </View>
+          <Text style={formStyles.small}>{DISCOVERY_NOTE}</Text>
+          {!e164 && <Text style={formStyles.small}>Add a phone number to turn this on.</Text>}
+        </Pressable>
 
-        <View style={styles.group}>
-          <Text style={formStyles.section}>Your study vibe</Text>
+        <View style={formStyles.card}>
+          <Text style={formStyles.eyebrow}>Your study vibe · from your preferences</Text>
           {tags.length ? <>
+            {vibeLine && <Text style={styles.vibeLine}>{vibeLine}</Text>}
             <View style={styles.tags}>{tags.map((tag) => <Chip key={tag} label={tag} selected displayOnly onPress={() => {}} />)}</View>
-            {vibeLine && <Text style={formStyles.body}>{vibeLine}</Text>}
-            <Text style={styles.caption}>From your study preferences. It updates when you change them.</Text>
-          </> : <Text style={formStyles.body}>Pick study preferences and they’ll show here.</Text>}
+          </> : <Text style={formStyles.small}>Pick study preferences and they’ll show here.</Text>}
         </View>
 
         {error && <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={formStyles.alert}>{error}</Text>}
-        <View style={styles.actions}>
-          <Button label="Create profile" onPress={() => void submit()} busy={busy} disabled={avatarBusy} />
-          <Button label="Sign out" variant="outline" onPress={() => void signOut()} disabled={busy} />
-        </View>
+        <Button label="Create profile" onPress={() => void submit()} busy={busy} disabled={avatarBusy} />
       </ScrollView>
     </KeyboardAvoidingView>
   </SafeAreaView>;
 }
 
+const AVATAR = 88;
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: theme.colors.background },
-  intro: { gap: theme.spacing.sm },
-  group: { gap: theme.spacing.md },
-  avatarRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: theme.spacing.lg },
-  avatar: { width: theme.sizes.thumbnail, height: theme.sizes.thumbnail, borderRadius: theme.radii.pill, overflow: 'hidden',
-    backgroundColor: theme.colors.chipSelectedBackground, alignItems: 'center', justifyContent: 'center' },
+  flex: { flex: 1 },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: theme.spacing.md },
+  back: { marginLeft: -theme.spacing.md },
+  intro: { gap: theme.spacing.xs },
+  group: { gap: theme.spacing.xs },
+  avatarRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: theme.spacing.lg, minHeight: theme.sizes.tapTarget },
+  avatar: { width: AVATAR, height: AVATAR, borderRadius: theme.radii.pill, overflow: 'hidden',
+    alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.placeholder },
+  avatarEmpty: { borderWidth: theme.borders.outline, borderStyle: 'dashed', borderColor: theme.colors.chipBorder },
   avatarImage: { width: '100%', height: '100%' },
-  avatarInitial: { color: theme.colors.sageText, fontFamily: theme.typography.headingFamily,
-    fontSize: theme.typography.size.title, fontWeight: theme.typography.weight.bold },
-  avatarActions: { flex: 1, minWidth: 160, gap: theme.spacing.xs },
-  switchRow: { flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md, minHeight: theme.sizes.tapTarget },
-  switchText: { flex: 1, gap: theme.spacing.xxs },
+  avatarText: { flex: 1, minWidth: 160, gap: theme.spacing.xxs },
+  avatarTitle: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily, fontSize: theme.typography.size.button,
+    lineHeight: theme.typography.lineHeight.button, fontWeight: theme.typography.weight.semibold },
+  removePhoto: { alignSelf: 'flex-start' },
+  switchRow: { flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md },
+  vibeLine: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily, fontSize: theme.typography.size.button,
+    lineHeight: theme.typography.lineHeight.button, fontWeight: theme.typography.weight.semibold },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.xs },
-  caption: { color: theme.colors.secondaryText, fontFamily: theme.typography.bodyFamily,
-    fontSize: theme.typography.size.caption, lineHeight: theme.typography.lineHeight.caption },
-  actions: { gap: theme.spacing.md },
 });

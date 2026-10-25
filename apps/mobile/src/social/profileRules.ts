@@ -41,15 +41,18 @@ export function toE164(input: string, defaultCountryCode = '1'): string | null {
   return digits.length >= 6 && digits.length <= 15 ? `+${defaultCountryCode}${digits}` : null;
 }
 
-export function vibeTagsFrom(preferenceTags: readonly string[]): string[] {
-  return [...new Set(preferenceTags.map((tag) => tag.trim()).filter(Boolean))].slice(0, VIBE_TAG_MAX);
-}
-
 // Intent labels describe what the user does, not a vibe; "Study studier" reads badly.
 const INTENT_LABELS = new Set(['Study', 'Meet Friends']);
 
-/** Template line from the top three non-intent tags, e.g. "Silent · Outlets · Open late studier." No AI. */
+/** Unique tags, intent first (as in docs/design), capped at 10. */
+export function vibeTagsFrom(preferenceTags: readonly string[]): string[] {
+  const unique = [...new Set(preferenceTags.map((tag) => tag.trim()).filter(Boolean))];
+  return [...unique.filter((tag) => INTENT_LABELS.has(tag)), ...unique.filter((tag) => !INTENT_LABELS.has(tag))]
+    .slice(0, VIBE_TAG_MAX);
+}
+
+/** Template line from the top three non-intent tags, e.g. "Silent · Outlets · Open late studier". No AI. */
 export function vibeLineFrom(tags: readonly string[]): string | null {
   const top = tags.filter((tag) => !INTENT_LABELS.has(tag)).slice(0, 3);
-  return top.length ? `${top.join(' · ')} studier.` : null;
+  return top.length ? `${top.join(' · ')} studier` : null;
 }
