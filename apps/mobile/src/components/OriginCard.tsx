@@ -9,17 +9,17 @@ export type OriginCardProps = ComponentProps<typeof OriginControls>;
 
 export function OriginCard({ origin, busy, error, accuracyMeters, onDevice, onManual }: OriginCardProps) {
   return <View style={styles.card}>
-    <Text style={styles.title}>Starting from: {origin.source === 'manual' ? 'UT Austin campus' : 'Device location'}</Text>
+    <Text style={styles.title}>Starting from: {origin.source === 'manual' ? 'UT Austin campus' : accuracyMeters !== null && accuracyMeters >= 100 ? 'Approximate location' : 'Device location'}</Text>
     <Text style={styles.body}>{origin.source === 'manual'
       ? 'Manual origin · explore the UT Austin area without location permission.'
       : `One-time reading · ${accuracyMeters === null ? 'accuracy unknown' : `reported accuracy ±${Math.ceil(accuracyMeters)} m`}. Walking times are estimates.`}</Text>
     <View style={styles.row}>
-      <View style={styles.action}><Button variant="outline" label={busy ? 'Finding location…' : 'Use my location'}
+      <View style={styles.action}><Button variant="outline" label={busy ? 'Finding location…' : error ? 'Retry my location' : 'Use my location'}
         busy={busy} onPress={onDevice} /></View>
       <View style={styles.action}><Button variant="outline" label="Use UT Austin" onPress={onManual} /></View>
     </View>
     {busy && <Text accessibilityLiveRegion="polite" style={styles.body}>Keeping the selected origin until a location is ready. Use UT Austin to cancel.</Text>}
-    {error && <Text accessibilityRole="alert" role="alert" style={styles.error}>{error} The selected origin has not changed.</Text>}
+    {error && <Text accessibilityRole="alert" role="alert" style={styles.error}>{error} The selected origin has not changed. Retry or use UT Austin.</Text>}
   </View>;
 }
 
