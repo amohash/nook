@@ -3,18 +3,18 @@
 ## Current state
 
 Implementation on `feat/data-api` preserves contract version 1. No remote deployment,
-real SerpApi capture, Supabase migration application, or C/D sign-off has occurred.
+real SerpApi capture or Supabase migration application has occurred.
 Coordination is now recorded in [GitHub issue #3](https://github.com/amohash/nook/issues/3),
 **Contract v1: docs/CONTRACTS.md**, tagging C (@Jeffjone) and D (@amohash).
-Both must explicitly approve before further implementation against the contract.
-The earlier local implementation remains provisional. No approval or agreed C export
-has been received. The schema review and adapter/fixture plan are in
+The user reports that C/D approval is complete; the original review record remains
+in issue #3. No additional contract-dependent implementation is included in this handoff.
+The earlier local implementation remains provisional. C now supplies a recommendation router on main; mounting it remains an integration task. The schema review and adapter/fixture plan are in
 [CONTRACT-V1-REVIEW.md](CONTRACT-V1-REVIEW.md).
 
-There is no host or Supabase project yet. B recommends a paid always-running Render
-Node web service; the user will create the account/project and the Supabase project,
-then provide the project ref and region. Prod is the only environment. No resources
-will be created by B as part of this proposal; migrations remain files only.
+Current choice: run the API on B's laptop and share it through a temporary Cloudflare
+Quick Tunnel. The user rejected Koyeb; Render and Koyeb notes below are historical,
+not active deployment instructions. No paid host or Supabase project was created.
+Migrations remain files only. No shared contract changes are part of this setup.
 
 The active bundled dataset remains **`fictional-austin-v1`**, city `demo-austin`,
 capture/scenario time `2026-10-24T18:00:00-05:00`. Its ten venues are fictional.
@@ -153,7 +153,7 @@ and ten real details, migration execution and actual role-denial checks, host/co
 validation, remote health/data smoke, C's handler mount, and phone acceptance. Preserve
 unknowns rather than filling these gaps with fictional facts.
 
-## Proposed Render setup — user creates the service
+## Previous Render proposal — superseded by local tunnel hosting
 
 Select a paid always-running Node web service in the prod environment. Choose a region
 near the Supabase region once known. Use the repository root as the build directory,
@@ -163,3 +163,81 @@ disabled so B controls deployments after D's main merges. The first health deplo
 can use the merged foundation; it needs no SerpApi or Supabase secret. Set the deployed
 commit identifier as `COMMIT_SHA`. Confirm the service URL and health response before
 enabling any provider integration. No Render service has been created.
+
+## Previous Koyeb preparation — rejected; do not execute
+
+Use the existing `server/Dockerfile` with repository root as build context. It pins
+Node 24 and runs the existing server build; no root manifest or shared contract
+change is required. Docker build remains unverified locally because Docker is absent.
+
+After resolving the account billing prerequisite, connect GitHub repository
+`amohash/nook`. The local `feat/data-api` branch must first be published before
+Koyeb can select it. Configure a Web Service named `nook-api-prod`, Free instance,
+Washington, D.C. region, one instance, Dockerfile path `server/Dockerfile`, and no
+work-directory override. Keep the Dockerfile's default start command.
+Expose HTTP port 3001 with route `/`; set the HTTP health check to `/health` on 3001.
+Set `PORT=3001`, `NODE_ENV=production` and `COMMIT_SHA` to the exact deployed Git SHA.
+Leave `DATASET_PATH` unset. No provider or Supabase credentials are needed for health.
+Disable automatic deployments. Do not provision databases, volumes or workers.
+
+Stop before the creation/deploy action until the user confirms the exact $0 setup.
+After deployment, verify HTTPS `/health` returns 200, contractVersion 1 and the
+matching commit; record the public URL. The existing demo routes are also exposed.
+
+References: https://www.koyeb.com/docs/faqs/pricing and
+https://www.koyeb.com/docs/reference/instances .
+
+## Current local team access
+
+Started on 2026-10-25 UTC from code commit
+`f33b0e61422b2ded58968f8a8cc73a69e0da9102`.
+The server is running on `0.0.0.0:3001`, with `caffeinate -i` preventing idle sleep
+while the server command runs. Keep the laptop powered, online and its lid open.
+Cloudflared was installed via Homebrew; no login, hosting account or payment was needed.
+
+Current temporary base URL:
+`https://milwaukee-always-ecological-port.trycloudflare.com`
+
+Health URL:
+`https://milwaukee-always-ecological-port.trycloudflare.com/health`
+
+LAN alternative (same Wi-Fi; network may block peer access):
+`http://10.150.227.120:3001`
+
+Verified from B's laptop: loopback and LAN health; four simultaneous requests through
+public HTTPS all returned 200; HTTPS cities/list/detail returned 200. The user subsequently confirmed phone access after the tunnel restart. Individual
+phone models and Expo Go versions have not been recorded in this B handoff.
+The dataset remains the labeled fictional demo; no provider credits are spent.
+
+Each teammate can set these public values in their own `apps/mobile/.env.local`
+(preserve any existing settings; D owns the shared mobile code):
+
+```dotenv
+EXPO_PUBLIC_DATA_PROVIDER=api
+EXPO_PUBLIC_API_BASE_URL=https://milwaukee-always-ecological-port.trycloudflare.com
+```
+
+Restart Expo after editing: `npm run dev:mobile -- --clear` from the repo root.
+Do not use localhost for a phone accessing B's backend. The tunnel exposes only the
+API port, not Expo/Metro; each teammate still runs their own mobile development setup.
+Anyone with the URL can access the public demo API. Provider cache and paid operations
+are not exposed. No provider credentials belong in these Expo variables.
+
+To restart after the current processes stop, use two terminals from the repo root:
+
+```sh
+# Terminal 1
+npm run build:server
+COMMIT_SHA="$(git rev-parse HEAD)" caffeinate -i npm run start:server
+```
+
+```sh
+# Terminal 2
+cloudflared tunnel --url http://127.0.0.1:3001 --no-autoupdate
+```
+
+Stop each with Ctrl+C in its owning terminal. The current processes were started in
+T3 command sessions; ask B's agent to stop them before launching duplicates.
+A new tunnel gets a new hostname: share it and update each app's base URL.
+Quick Tunnels have no uptime guarantee; they are for development and demo access.
+Reference: https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/ .

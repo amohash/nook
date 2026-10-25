@@ -1,11 +1,9 @@
 # B data and infrastructure assignment
 
-Status: contract review pending in [issue #3](https://github.com/amohash/nook/issues/3),
-with C (@Jeffjone) and D (@amohash) explicitly asked to approve. Earlier local provider/
-cache work is provisional; no further contract-dependent implementation until approval.
-The user creates the prod host and Supabase project and configures secrets in dashboards.
-B recommends paid always-running Render. Migrations are files only; do not apply yet.
-Real data, deployed health and migration application are NOT verified.
+Status: user reports C/D contract approval and presenter-phone/API access complete.
+Earlier local provider/cache work is ready for D's PR review. Local laptop hosting
+uses a temporary HTTPS tunnel. Supabase setup and credentials are pending;
+migrations remain unapplied and real SerpApi capture is not verified.
 
 > Read AGENTS.md, docs/PRD.md and docs/CONTRACTS.md. I am person B on feat/data-api. Verify branch and existing work. Own Supabase schema/migrations, SerpApi adapter, normalized real fixtures, cache, jobs, deployment, server bootstrap and shared schemas. First coordinate contract version 1 with C and D, deploy /health, and normalize one real place without exposing keys. Expand to a bounded 20–30-place Austin snapshot with stable IDs, timestamps, nullable fields and source links. Implement list/detail endpoints with Zod validation, request timeouts, deduplication, cache expiry and request accounting. Mount C's recommendation route through an agreed export; do not implement a competing scorer. Keep the provider cache private; add explicit authorization for any spend-triggering operation. You alone apply migrations/deploys. Verify a cold request, a cached repeat and provider failure. City jobs/auth/social are gated P1. Hand off endpoint examples, dataset version, tests and remaining unknowns without secret values.
 
@@ -40,6 +38,12 @@ For optional builds, cap all request attempts, persist jobs, deduplicate request
 - Current coordination draft: [server/CONTRACT-V1-REVIEW.md](../server/CONTRACT-V1-REVIEW.md).
   Existing Zod schemas were reviewed, not duplicated or extended with new API fields.
   Focused validation: 16 contract tests pass; contracts typecheck passes.
-- Next: C/D explicitly approve issue #3; user creates Render and Supabase and supplies
-  only service/project identifiers and region. Deploy health first after host handoff.
-  Migrations remain unapplied until project handoff and authorization. No secrets requested.
+- Next: user finishes Supabase/SerpApi configuration in ignored `server/.env`; B verifies
+  the target project and applies the migration through the agreed operator workflow,
+  then captures one real place before expanding. D reviews and merges this branch.
+
+- Local team-access update: API running on port 3001 with Cloudflare Quick Tunnel.
+  Current URL and restart instructions are in `server/OPERATIONS.md`. Four concurrent
+  HTTPS health requests and cities/list/detail passed from B's laptop; each teammate
+  confirmed phone access in this conversation after the tunnel restart. No paid service
+  or database was created by this agent.
