@@ -314,3 +314,201 @@ Actual verification:
 - Physical-device verified: none. Native keyboard visibility/avoidance, hardware Back, modal focus/VoiceOver/TalkBack, native text scaling and nonzero safe insets remain pending. No phone acceptance claimed.
 
 Self-evaluation (ECC agent-self-evaluation): accuracy 4 (browser passed; native behavior unverified), completeness 4 (requested presentation states provided; device acceptance pending), clarity 4 (direct typed API; D still maps response facts), actionability 4 (preview/reproduction supplied; D integrates), conciseness 4 (one focused panel; handoff necessarily detailed), overall 4.0/5. Highest-impact next step: D integrate the real response and run the presenter phone checks, then merge the small PR as owner.
+
+
+## Social PR handoff - October 25, 2026
+
+Status: implemented and browser-checked; pending D integration/merge, hosted-project setup verification and presenter-phone acceptance. Final preparation adds only a disabled-social regression and this owned task record. Local D snippets remain uncommitted; original snippets are also preserved in stash.
+
+Profiles, follows and friend search (A)
+
+Adds optional social accounts while preserving the guest onboarding, Explore, detail and local-save journey. Rebased feat/social onto origin/main 21ba7a0; PR #43 is merged and its merge commit a08da34 is an ancestor of main. Only rebase conflict: apps/mobile/.env.example; retained both main's discovery configuration and social configuration.
+
+Included
+- Email/password sign-up, sign-in and sign-out behind EXPO_PUBLIC_SOCIAL_ENABLED, with a lazy Supabase client and Continue as guest callback.
+- Create/edit profile, fixed unique username, optional avatar/major/phone, preference-derived vibe, own/other profiles, followers/following, follow/unfollow and debounced username/display-name friend search.
+- Local-save mirroring after successful local writes; one-time saved-place backfill per account/dataset. Local saves remain authoritative; cloud failures do not block them. No remote-to-local restore or continuous retry queue is promised.
+- Separately gated, explicit contacts matching, with loading/empty/error/permission handling. Contacts stay disabled pending phone checks.
+- Isolated supabase-social migrations/RLS checks, public env template, design references, social rule tests and a disabled-social regression.
+- Changes are in apps/mobile/src/social, the optional StudyPreferencesRow link variant, apps/mobile/.env.example, docs/design, supabase-social and A's task status. No root manifest/lockfile changes; dependencies/config plugins are already in main. D-owned route/data integration is supplied below, not committed in this PR.
+- /social-preview and SocialPreview.tsx are absent from the PR tree. The ignored local route was moved outside app/ for QA; no local harness, .env, credentials or preview artifacts are included.
+
+Supabase project setup (manual; not applied by this PR preparation)
+1. Use the separate nook-social project, never B's data/API project.
+2. Run supabase-social/migrations/001_social.sql, then 002_username_fixed.sql.
+3. Run supabase-social/tests/social_rls.sql; require the final "social RLS checks passed" result. It rolls back its throwaway accounts/data. The repository documents prior PGlite checks with Supabase stand-ins; a real hosted-project RLS pass is not established by this handoff.
+4. Enable the Email auth provider and turn Confirm email OFF: sign-up expects an immediate session.
+5. Copy only the project's public URL and anon/publishable key into apps/mobile/.env as below. Never use a service-role/secret key. Restart Metro after env changes.
+
+Privacy
+- Phone numbers are normalized to E.164 and SHA-256 hashed on the device. Only hashes are sent; raw phone numbers and contact names are not uploaded. Contacts matching runs only after an explicit tap/permission, with at most 200 hashes per RPC call.
+- Phone discoverability is opt-in, default off, and can be disabled/removed in Edit profile. Base profile phone fields are owner-only; public_profiles excludes phone_hash/discoverability.
+- Saved spots are readable by their owner and people who follow that owner; saves are not private from followers. Follows are one-way, visible to signed-in users and require no approval; there is no blocking/private-account mode. Avatars have public URLs.
+- Unsalted phone hashes are vulnerable to enumeration because the phone-number space is small. The per-call cap is not a rate limit; the RPC has no rate limiting. Hashing is not anonymity.
+
+Checks actually run
+- npm run typecheck: PASS, all workspaces, after removing the ignored local preview route from app/.
+- npm run lint: PASS.
+- npm test: 506 passed, 1 failed, 1 additional suite failed to load (41 passing / 2 failing files). Both failures reproduced independently against a clean git archive of origin/main 21ba7a0: reconstruct-cached-time.test.ts constructs C:\C:\... on Windows; evaluate-real.test.ts fails the approved fixture SHA-256 assertion (received 93646182..., expected bae26a4d...). Left B/C-owned tests/fixtures unchanged. Full suite is NOT green.
+- npm test -- apps/mobile/src/social: PASS, 23 tests / 4 files, including the new regression proving no client creation, fetch or sync-storage access when all social env variables are unset.
+- git diff --check: PASS. No tracked preview route/local-only files or D route/data changes in the branch diff.
+- Actual Expo web comparison, fixture mode: EXPO_NO_DOTENV=1; EXPO_PUBLIC_SOCIAL_ENABLED, every EXPO_PUBLIC_SUPABASE_* and EXPO_PUBLIC_CONTACTS_MATCHING removed from each Metro process environment. Branch ran with the two local D snippets (AuthProvider and syncSavedSpot) applied. Clean main archive ran separately with the same dependencies and fixture mode. Welcome -> Study/default preferences -> manual UT Austin -> Explore -> Paper Lantern detail -> Save: identical onboarding/location/Explore/detail/saved text, result order/scores and serialized local settings. Save survived reload. Browser network log: zero Supabase requests. The web map reports its existing list fallback; opening the result used its DOM link because the collapsed result sheet was not pointer-accessible to automation. This is browser functional parity, not native touch/map acceptance.
+
+Not verified
+- Native device photo picker/upload behavior, contacts permission/matching on a phone, native system large text/accessibility and presenter-phone Expo Go acceptance.
+- Real hosted nook-social migrations/RLS result, confirm-email setting and the two-account end-to-end checklist below were not executed in this preparation.
+- Social is not merged or release-verified. D owns integration and merge; keep P1 gated until phone acceptance. The server/API/ranking are unchanged.
+
+D integration: one consolidated snippet
+Apply the following sections to the named files. Keep the existing SafeAreaProvider, SessionProvider, Shell, tab layout, SessionGate, RecoveryControls and guest placeholder behavior. The tab wrappers deliberately use main's existing placeholders with social off. These are instructions for D, not route files shipped by this PR.
+
+```tsx
+// apps/mobile/app/_layout.tsx: add the import, and replace only Layout's return.
+import { AuthProvider } from '../src/social';
+return <SafeAreaProvider><SessionProvider><AuthProvider><Shell /></AuthProvider></SessionProvider></SafeAreaProvider>;
+// Inside Shell's existing Stack, add:
+<Stack.Screen name="sign-in" options={{ headerShown: false }} />
+<Stack.Screen name="create-profile" options={{ headerShown: false }} />
+<Stack.Screen name="edit-profile" options={{ headerShown: false }} />
+<Stack.Screen name="follow-list" options={{ headerShown: false }} />
+<Stack.Screen name="user/[id]" options={{ headerShown: false }} />
+
+// apps/mobile/app/sign-in.tsx (new)
+import { useEffect } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { ErrorState, LoadingState } from '../src/components';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { SignInScreen, useAuth } from '../src/social';
+function Content() {
+  const router = useRouter();
+  const { mode } = useLocalSearchParams<{ mode?: string }>();
+  const auth = useAuth();
+  // Observe resolved auth/profile state; onDone can run before profile loading settles.
+  useEffect(() => {
+    if (auth.status === 'needsProfile') router.replace('/create-profile');
+    if (auth.status === 'ready') router.replace('/(tabs)/profile');
+  }, [auth.status, router]);
+  if (auth.loading) return <LoadingState message="Loading account…" />;
+  if (auth.profileError) return <ErrorState title="Profile unavailable" message="Check your connection and retry."
+    action={{ label: 'Retry', onPress: () => void auth.refreshProfile() }} />;
+  return <SignInScreen initialMode={mode === 'signUp' ? 'signUp' : 'signIn'}
+    onContinueAsGuest={() => router.replace('/(tabs)/map')} />;
+}
+export default function SignInRoute() { return <SessionGate><Content /></SessionGate>; }
+
+// apps/mobile/app/create-profile.tsx (new)
+import { Redirect, useRouter } from 'expo-router';
+import { ErrorState, LoadingState } from '../src/components';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { CreateProfileScreen, useAuth } from '../src/social';
+function Content() {
+  const router = useRouter(); const auth = useAuth();
+  if (auth.loading) return <LoadingState message="Loading account…" />;
+  if (!auth.enabled || !auth.user) return <Redirect href="/sign-in" />;
+  if (auth.profileError) return <ErrorState title="Profile unavailable" message="Check your connection and retry."
+    action={{ label: 'Retry', onPress: () => void auth.refreshProfile() }} />;
+  if (auth.profile) return <Redirect href="/(tabs)/profile" />;
+  return <CreateProfileScreen onDone={() => router.replace('/(tabs)/profile')}
+    onBack={() => { void auth.signOut().then(() => router.replace('/sign-in')); }} />;
+}
+export default function CreateProfileRoute() { return <SessionGate><Content /></SessionGate>; }
+
+// apps/mobile/app/edit-profile.tsx (new)
+import { useRouter } from 'expo-router';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { EditProfileScreen } from '../src/social';
+export default function EditProfileRoute() {
+  const router = useRouter();
+  return <SessionGate><EditProfileScreen onDone={() => router.replace('/(tabs)/profile')}
+    onBack={() => router.back()} /></SessionGate>;
+}
+
+// apps/mobile/app/follow-list.tsx (new)
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { SessionGate } from '../src/features/session/SessionGate';
+import { FollowListScreen } from '../src/social';
+export default function FollowListRoute() {
+  const router = useRouter();
+  const { userId, kind } = useLocalSearchParams<{ userId?: string; kind?: string }>();
+  if (!userId || (kind !== 'followers' && kind !== 'following')) return <Redirect href="/(tabs)/profile" />;
+  return <SessionGate><FollowListScreen userId={userId} kind={kind} onBack={() => router.back()}
+    onOpenUser={(id) => router.push({ pathname: '/user/[id]', params: { id } })} /></SessionGate>;
+}
+
+// apps/mobile/app/user/[id].tsx (new; import paths have two parent levels)
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
+import { SessionGate } from '../../src/features/session/SessionGate';
+import { UserProfileScreen } from '../../src/social';
+export default function UserRoute() {
+  const router = useRouter(); const { id } = useLocalSearchParams<{ id?: string }>();
+  if (!id) return <Redirect href="/(tabs)/friends" />;
+  return <SessionGate><UserProfileScreen userId={id} onBack={() => router.back()}
+    onOpenSpot={(spotId) => router.push({ pathname: '/spot/[id]', params: { id: spotId } })}
+    onOpenFollowList={(kind, userId) => router.push({ pathname: '/follow-list', params: { kind, userId } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })} /></SessionGate>;
+}
+
+// apps/mobile/app/(tabs)/friends.tsx: replace placeholder wrapper.
+import { useRouter } from 'expo-router';
+import { TabPlaceholder } from '../../src/features/navigation/TabPlaceholder';
+import { FriendsScreen, isSocialEnabled } from '../../src/social';
+export default function Friends() {
+  const router = useRouter();
+  if (!isSocialEnabled()) return <TabPlaceholder screen="Friends" />;
+  return <FriendsScreen onOpenProfile={(id) => router.push({ pathname: '/user/[id]', params: { id } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })} />;
+}
+
+// apps/mobile/app/(tabs)/profile.tsx: replace placeholder wrapper.
+import { ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { RecoveryControls } from '../../src/data/RecoveryControls';
+import { TabPlaceholder } from '../../src/features/navigation/TabPlaceholder';
+import { ProfileScreen, isSocialEnabled } from '../../src/social';
+export default function Profile() {
+  const router = useRouter();
+  if (!isSocialEnabled()) return <TabPlaceholder screen="Profile" />;
+  return <><ProfileScreen
+    onEditProfile={() => router.push('/edit-profile')}
+    onOpenFollowList={(kind, userId) => router.push({ pathname: '/follow-list', params: { kind, userId } })}
+    onEditPreferences={() => router.push('/preferences')}
+    onOpenSpot={(id) => router.push({ pathname: '/spot/[id]', params: { id } })}
+    onSignIn={() => router.push('/sign-in')}
+    onCreateAccount={() => router.push({ pathname: '/sign-in', params: { mode: 'signUp' } })}
+    onFinishProfile={() => router.push('/create-profile')} />
+    {/* Keep demo recovery accessible when social replaces the placeholder. */}
+    <ScrollView style={{ maxHeight: 180 }}><RecoveryControls /></ScrollView></>;
+}
+// Existing (tabs)/_layout.tsx already declares friends and profile; retain it.
+// D may hide native tab headers for these two screens to avoid duplicate titles.
+
+// apps/mobile/src/data/SessionProvider.tsx: exactly two added lines.
+import { syncSavedSpot } from '../social/savedSync';
+// At the end of toggleSaved, AFTER store.update and local setSession succeed:
+void syncSavedSpot(id, savingNew, detail?.spot);
+
+// apps/mobile/.env (git-ignored): add the three social variables below.
+// EXPO_PUBLIC_SOCIAL_ENABLED=1
+// EXPO_PUBLIC_SUPABASE_URL=https://<nook-social-project-ref>.supabase.co
+// EXPO_PUBLIC_SUPABASE_ANON_KEY=<public-anon-or-publishable-key>
+// Keep the separate contacts flag OFF until phone checks pass:
+// EXPO_PUBLIC_CONTACTS_MATCHING=0
+// Preserve D's DATA_PROVIDER/API/NEARBY settings. Restart Metro after editing.
+// To verify P0 again: EXPO_NO_DOTENV=1 and remove all SOCIAL_ENABLED,
+// SUPABASE_* and CONTACTS_MATCHING env variables from the Metro process.
+```
+
+Manual two-account checklist (pending; use two real test accounts/devices or isolated sessions)
+- [ ] Configure nook-social, migrations 001 + 002, RLS script, Email provider and Confirm email OFF. Restart Metro with social enabled; leave contacts off.
+- [ ] Guest: Continue as guest -> onboarding -> Explore -> detail -> save/unsave -> restart; local saves survive and no account is required. With all social variables unset, repeat and confirm zero Supabase traffic.
+- [ ] Account A: create account/profile, lowercase unique username, duplicate/invalid username errors, optional fields empty, discoverability initially off. Back from profile creation signs out safely; finish setup after signing back in.
+- [ ] Account B: create a distinct profile. A searches B by username and display name; clear search, no results, network error/retry and rapid changed queries leave no stale results. Own account is excluded.
+- [ ] A opens B, follows/unfollows via Friends/profile/follow-list; button/count/list state survives navigation and refresh. Duplicate follow creates no duplicate edge; self-follow is unavailable/rejected. Open followers/following and select a person.
+- [ ] B saves a real current-dataset place. A cannot read B's saves before following, can read after following, and loses access after unfollowing. Reverse follow direction does not grant access. B cannot write A's profile/follows/saves; verify via the RLS script too.
+- [ ] A's existing device saves backfill once at sign-in. New save/unsave mirrors after local success; offline/cloud failure preserves the local result. Open own/other saved spots by stable ID; unavailable/out-of-dataset IDs show existing detail fallback.
+- [ ] Edit profile: display name/major/avatar/phone/discoverability; username remains fixed in both UI and DB. Update study preferences and verify vibe refresh. Sign out and restart; guest preferences/saves remain local and no other account's profile is shown.
+- [ ] Device photo picker: allow/deny/cancel, valid photo upload, invalid/oversized failure, and public avatar display after relaunch.
+- [ ] Only after phone review: enable EXPO_PUBLIC_CONTACTS_MATCHING=1 and restart Metro. Use known real test numbers, explicitly opt B into discovery; A grants/denies contacts permission and tests retry, no contacts/no matches, duplicates, international formatting and >200 contacts batching. Verify payloads contain hashes only; no automatic permission prompt or upload before tapping. Turn B's discovery off/remove number; matching stops. Return flag to 0 until accepted.
+- [ ] On presenter phone: supported Expo Go, keyboard/back/safe areas, native map, photo picker, large text, VoiceOver/TalkBack, loading/empty/error/offline recovery, guest Sign in entry points and two-account navigation. Record device/OS/Expo Go version and tested SHA before D merges.
