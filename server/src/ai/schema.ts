@@ -1,5 +1,4 @@
-import { z } from 'zod';
-import { TAGS } from '@space/contracts';
+import { z, TAGS } from '@space/contracts';
 
 const ids = z.array(z.string().min(1).max(100)).max(8).refine((v) => new Set(v).size === v.length);
 const measure = z.strictObject({ value: z.number().min(0).max(1).nullable(), evidenceIds: ids });
