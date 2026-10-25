@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyState, ErrorState, LoadingState } from '../components';
@@ -55,7 +56,7 @@ export function FollowListScreen({ userId, kind, onBack, onOpenUser }: FollowLis
   const [loadError, setLoadError] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const client = getSupabase();
     if (!client || !me) return;
     let active = true;
@@ -63,7 +64,7 @@ export function FollowListScreen({ userId, kind, onBack, onOpenUser }: FollowLis
     fetchFollowList(client, userId, kind).then((list) => { if (active) setPeople(list); })
       .catch(() => { if (active) setLoadError(true); });
     return () => { active = false; };
-  }, [userId, kind, me, attempt]);
+  }, [userId, kind, me, attempt]));
 
   const page = (children: ReactNode) => <SafeAreaView edges={['top']} style={styles.safe}>{children}</SafeAreaView>;
   if (!auth.enabled || !me) return page(<View style={formStyles.page}>

@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, LoadingState } from '../components';
@@ -114,14 +115,14 @@ export function FriendsScreen({ onOpenProfile, onSignIn, onCreateAccount }: Frie
   const [contacts, setContacts] = useState<ContactsState>({ status: contactsAvailable ? 'idle' : 'unavailable', matches: [] });
   const searchSeq = useRef(0);
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const client = getSupabase();
     if (!client || !me) return;
     let active = true;
     fetchFollowList(client, me, 'following').then((list) => { if (active) setLoadedFollowing(list); })
       .catch(() => { if (active) setLoadedFollowing([]); });
     return () => { active = false; };
-  }, [me]);
+  }, [me]));
 
   useEffect(() => {
     const client = getSupabase();
@@ -140,8 +141,9 @@ export function FriendsScreen({ onOpenProfile, onSignIn, onCreateAccount }: Frie
   const following = useMemo(() => {
     if (!loadedFollowing) return null;
     const seen = new Set(loadedFollowing.map((person) => person.id));
-    return [...extra.filter((person) => !seen.has(person.id)), ...loadedFollowing];
-  }, [loadedFollowing, extra]);
+    return [...extra.filter((person) => !seen.has(person.id)), ...loadedFollowing]
+      .filter((person) => follows.followingIds.has(person.id));
+  }, [loadedFollowing, extra, follows.followingIds]);
 
   const toggleFollow = (person: Person) => {
     if (!follows.followingIds.has(person.id)) setExtra((list) => [person, ...list.filter((item) => item.id !== person.id)]);

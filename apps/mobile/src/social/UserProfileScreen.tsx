@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, EmptyState, ErrorState, LoadingState } from '../components';
@@ -94,7 +95,7 @@ export function UserProfileScreen({ userId, onBack, onOpenSpot, onOpenFollowList
     try { setSaved(await fetchSavedSpots(client, userId)); } catch { setSaved([]); }
   }, [userId]);
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const client = getSupabase();
     if (!client || !me) return;
     let active = true;
@@ -107,7 +108,7 @@ export function UserProfileScreen({ userId, onBack, onOpenSpot, onOpenFollowList
       })
       .catch(() => { if (active) setError(true); });
     return () => { active = false; };
-  }, [userId, me, attempt, loadSaved]);
+  }, [userId, me, attempt, loadSaved]));
 
   const toggleFollow = async () => {
     const client = getSupabase();

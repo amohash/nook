@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { estimatedWalkMinutes } from '@space/core';
@@ -96,7 +97,7 @@ export function ProfileScreen(props: ProfileScreenProps) {
   const [countsError, setCountsError] = useState(false);
   const userId = auth.profile?.id ?? null;
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const client = getSupabase();
     if (!client || !userId) return;
     let active = true;
@@ -104,7 +105,7 @@ export function ProfileScreen(props: ProfileScreenProps) {
     fetchFollowCounts(client, userId).then((value) => { if (active) setCounts(value); })
       .catch(() => { if (active) setCountsError(true); });
     return () => { active = false; };
-  }, [userId]);
+  }, [userId]));
 
   const savedSpots = useMemo<ProfileSavedSpot[]>(() => {
     if (!session) return [];

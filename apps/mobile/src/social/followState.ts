@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { getSupabase } from './client';
 import { toggledSet } from './friendsRules';
 import { fetchFollowingIds, follow, unfollow } from './socialApi';
@@ -21,7 +22,7 @@ export function useFollowState(me: string | null) {
   const ids = useRef<Set<string>>(new Set());
   const apply = useCallback((next: Set<string>) => { ids.current = next; setFollowingIds(next); }, []);
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const client = getSupabase();
     if (!client || !me) return;
     let active = true;
@@ -29,7 +30,7 @@ export function useFollowState(me: string | null) {
     fetchFollowingIds(client, me).then((found) => { if (active) { apply(found); setLoaded(true); } })
       .catch(() => { if (active) setLoadError(true); });
     return () => { active = false; };
-  }, [me, attempt, apply]);
+  }, [me, attempt, apply]));
 
   const toggle = useCallback(async (personId: string) => {
     const client = getSupabase();
