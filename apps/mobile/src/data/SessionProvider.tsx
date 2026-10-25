@@ -9,6 +9,7 @@ import { applyPreferences, applyStudyStyles, onboardingQuery, createSettingsStor
   restoredQuery, settingsKey, type Settings } from './settings';
 import type { StudyStyleId } from '../features/onboarding/studyStyle';
 import type { PreferenceValues } from '../features/preferences';
+import { syncSavedSpot } from '../social/savedSync';
 
 const store = createSettingsStore(AsyncStorage);
 type Session = {city: City; query: Query; settings: Settings};
@@ -186,6 +187,7 @@ export function SessionProvider({children}: {children: ReactNode}) {
     });
     const {savedIds, savedPlaces} = settings;
     setSession((current) => current ? {...current, settings: {...current.settings, savedIds, savedPlaces}} : current);
+    void syncSavedSpot(id, savingNew, detail?.spot);
   };
   const reset = async () => {
     if (!session) throw new Error('Session unavailable');
