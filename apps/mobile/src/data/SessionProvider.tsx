@@ -141,13 +141,19 @@ export function SessionProvider({children}: {children: ReactNode}) {
   };
   const toggleSaved = async (id: string) => {
     if (!session) throw new Error('Session unavailable');
+    const savingNew = !session.settings.savedIds.includes(id);
+    const detail = savingNew ? await provider.getSpot(id,
+      nearby.result?.snapshot?.spots.some((spot) => spot.id === id) ? session.query.snapshotId : undefined) : null;
     const settings = await store.update(settingsKey(session.city), (current) => {
       const value = current ?? session.settings;
       const ids = value.savedIds;
-      return {...value, savedIds: ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]};
+      const removing = ids.includes(id);
+      const savedPlaces = (value.savedPlaces ?? []).filter((item) => item.spot.id !== id);
+      return {...value, savedIds: removing ? ids.filter((item) => item !== id) : [...ids, id],
+        savedPlaces: !removing && detail ? [...savedPlaces, detail] : savedPlaces};
     });
-    const savedIds = settings.savedIds;
-    setSession((current) => current ? {...current, settings: {...current.settings, savedIds}} : current);
+    const {savedIds, savedPlaces} = settings;
+    setSession((current) => current ? {...current, settings: {...current.settings, savedIds, savedPlaces}} : current);
   };
   const reset = async () => {
     if (!session) throw new Error('Session unavailable');

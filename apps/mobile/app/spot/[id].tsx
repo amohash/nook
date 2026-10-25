@@ -17,7 +17,7 @@ import { SessionGate } from '../../src/features/session/SessionGate';
 import { theme } from '../../src/theme';
 
 function Detail() {
-  const {id} = useLocalSearchParams<{id: string}>();
+  const {id, saved} = useLocalSearchParams<{id: string; saved?: string}>();
   const {session, toggleSaved, nearby} = useSession();
   const query = session!.query;
   const [context, setContext] = useState<RecommendationContext | null>(null);
@@ -42,14 +42,18 @@ function Detail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<'missing' | 'unavailable' | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const archived = saved === '1' ? session!.settings.savedPlaces?.find((item) => item.spot.id === id) : undefined;
+  const detailSnapshotId = nearby.result?.snapshot?.spots.some((item) => item.id === id) ? query.snapshotId : undefined;
   useEffect(() => {
     let active = true;
     setLoading(true); setError(null); setDetail(null);
-    provider.getSpot(id, query.snapshotId).then((data) => {if (active) setDetail(data);})
+    const load = archived ? Promise.resolve({...archived, spot: {...archived.spot,
+      datasetMode: archived.spot.datasetMode === 'demo' ? 'demo' as const : 'cached' as const}}) : provider.getSpot(id, detailSnapshotId);
+    load.then((data) => {if (active) setDetail(data);})
       .catch((cause: unknown) => {if (active) setError(cause instanceof PlaceNotFoundError ? 'missing' : 'unavailable');})
       .finally(() => {if (active) setLoading(false);});
     return () => {active = false;};
-  }, [id, attempt, query.snapshotId]);
+  }, [id, attempt, detailSnapshotId, archived]);
   const spot = detail?.spot;
   const result = spot ? matchingRecommendation(spot, query, context) : null;
   const reasons = spot ? supportedReasons(spot, result) : [];
@@ -93,7 +97,7 @@ function Detail() {
     rating={spot.rating.value} reviewCount={spot.reviewCount.value} fitScore={result?.score ?? null}
     openStatus={status}
     dataset={{mode: spot.datasetMode, fetchedAt: spot.fetchedAt,
-      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : undefined}}
+      description: spot.datasetMode === 'demo' ? 'Fictional venue and synthetic scenario facts.' : archived ? 'Saved public place snapshot; current conditions unverified.' : undefined}}
     typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour}
     liveObservation={spot.liveObservation}
     vibe={{summary: spot.summary, tags: Object.keys(spot.tags.value ?? {}).map((tag) => tag.replaceAll('_', ' '))}}

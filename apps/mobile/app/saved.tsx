@@ -22,18 +22,22 @@ function Saved() {
     let active = true;
     setLoading(true); setEntries([]);
     void Promise.all(ids.map(async (id) => {
-      try {return {id, detail: await provider.getSpot(id), missing: false};}
+      try {
+        const saved = session!.settings.savedPlaces?.find((item) => item.spot.id === id);
+        return {id, detail: saved ?? await provider.getSpot(id, session!.query.snapshotId), missing: false};
+      }
       catch (error) {return {id, detail: null, missing: error instanceof PlaceNotFoundError};}
     })).then((data) => {if (active) {setEntries(data); setLoading(false);}});
     return () => {active = false;};
-  }, [ids, attempt]);
+  }, [ids, attempt, session]);
   return <ScrollView contentContainerStyle={s.page}>
     <Text style={s.caption}>Saved on this device · {session!.city.name} · {session!.city.datasetVersion}</Text>
     {loading ? <LoadingState message="Loading saved places…" /> : !ids.length
       ? <EmptyState title="No saved places" message="Open a place and tap Save to find it here." action={{label: 'Explore places', onPress: () => router.replace('/')}} />
       : entries.map(({id, detail, missing}) => <View key={id} style={s.card}>
         {detail ? <><Text style={s.title}>{detail.spot.name}</Text><Text style={s.caption}>{detail.spot.address}</Text>
-          <Button label="View place" onPress={() => router.push({pathname: '/spot/[id]', params: {id}})} />
+          <Text style={s.caption}>Saved public place facts · source fetched {detail.spot.fetchedAt}. Conditions may have changed.</Text>
+          <Button label="View place" onPress={() => router.push({pathname: '/spot/[id]', params: {id, saved: '1'}})} />
         </> : <ErrorState title={missing ? 'Saved place no longer available' : 'Saved place unavailable'}
           message={missing ? 'This place is not in the current dataset. You can remove this saved ID.' : 'Check your connection and retry. Your saved ID is kept.'}
           action={!missing ? {label: 'Retry', onPress: () => setAttempt((a) => a + 1)} : undefined} />}
