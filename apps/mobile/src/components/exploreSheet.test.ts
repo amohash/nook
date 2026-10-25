@@ -1,5 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import { sheetDestination, sheetHeights } from './exploreSheet';
+import { rubberBand, sheetDestination, sheetHeights } from './exploreSheet';
+
+describe('Explore sheet never covers the controls above it', () => {
+  it('stops the expanded sheet below the measured top controls', () => {
+    expect(sheetHeights(800, 92, 0, 250)).toEqual({ peek: 140, expanded: 550 });
+  });
+  it('falls back to 60% until the controls are measured and never shrinks below the peek', () => {
+    expect(sheetHeights(800, 92, 0)).toEqual({ peek: 140, expanded: 480 });
+    expect(sheetHeights(400, 92, 0, 380)).toEqual({ peek: 140, expanded: 140 });
+  });
+});
+
+describe('Explore sheet rubber band', () => {
+  it('follows the finger one to one inside the limits', () => {
+    expect(rubberBand(120, 0, 400)).toBe(120);
+  });
+  it('resists past either end instead of stopping dead', () => {
+    expect(rubberBand(-40, 0, 400)).toBe(-10);
+    expect(rubberBand(440, 0, 400)).toBe(410);
+  });
+});
 
 describe('Explore sheet bounds and gesture settling', () => {
   it('uses a 140pt peek and 60% expanded viewport', () => {

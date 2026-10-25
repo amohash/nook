@@ -64,7 +64,11 @@ export function createApiProvider(baseUrl: string, requestedTimeoutMs?: number):
     // on transports that fail to settle after cancellation.
     const operation = async () => {
       const response = await fetch(`${base}${path}`, { signal: controller.signal,
-        headers: { ...(body ? {'Content-Type': 'application/json'} : {}), ...(sessionId ? {Authorization: `Bearer ${sessionId}`} : {}) },
+        headers: {
+          ...(body ? {'Content-Type': 'application/json'} : {}),
+          ...(sessionId ? {Authorization: `Bearer ${sessionId}`} : {}),
+          'ngrok-skip-browser-warning': 'true',
+        },
         ...(body ? { method: 'POST', body: JSON.stringify(body) } : {}) });
       if (response.status === 404 && (path.startsWith('/v1/spots/') || /^\/v1\/discovery\/[^/]+\/places\//.test(path))) throw new PlaceNotFoundError();
       if (response.status === 404 && (path.startsWith('/v1/cities/') || path === '/v1/recommendations')) throw new Error('City not found');

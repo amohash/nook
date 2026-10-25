@@ -24,6 +24,7 @@ export type MuseFilterProposal = {
 };
 export type MuseAssistantStatus = 'idle' | 'waiting' | 'empty' | 'error' | 'quota' | 'unavailable';
 export type MuseAssistantPanelProps = {
+  embedded?: boolean;
   input: string;
   onInputChange: (value: string) => void;
   onSubmit: () => void;
@@ -55,7 +56,7 @@ const statusCopy = {
 };
 
 /** Mount in a bounded sheet under SafeAreaProvider. D owns Modal/focus/Back and all state. */
-export function MuseAssistantPanel({ input, onInputChange, onSubmit, onRetry, onClose, status, messages,
+export function MuseAssistantPanel({ embedded = false, input, onInputChange, onSubmit, onRetry, onClose, status, messages,
   canSubmit, disabledReason, statusMessage, retryable = false, inputMaxLength = 1000,
   proposal, onApply, onCancel, onPlacePress, onSourcePress, keyboardVerticalOffset = 0 }: MuseAssistantPanelProps) {
   const scroll = useRef<ScrollViewInstance>(null);
@@ -63,9 +64,9 @@ export function MuseAssistantPanel({ input, onInputChange, onSubmit, onRetry, on
   const blocked = !canSubmit || waiting || status === 'quota' || status === 'unavailable';
   const submit = () => { if (!blocked && input.trim()) onSubmit(); };
   return <KeyboardAvoidingView testID="muse-panel" style={styles.panel} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset}>
-    <SafeAreaView edges={['top', 'left', 'right']} style={styles.header}>
+    <SafeAreaView edges={embedded ? ['left', 'right'] : ['top', 'left', 'right']} style={styles.header}>
       <View style={styles.heading}><Text accessibilityRole="header" style={styles.title}>Muse</Text></View>
-      <View style={styles.close}><Button label="Close" variant="outline" onPress={onClose} /></View>
+      <View style={styles.close}><Button label={embedded ? "Places" : "Close"} variant="outline" onPress={onClose} /></View>
     </SafeAreaView>
     <ScrollView testID="muse-conversation" ref={scroll} style={styles.scroll} contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"

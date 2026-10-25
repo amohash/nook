@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '../theme';
-import { normalizedFit, type TypicalLevel } from './exploreContent';
+import { normalizedFit, proximityLevel, type TypicalLevel } from './exploreContent';
 
 export type MapPinProps = {
   fitScore: number | null;
   rank?: number;
+  estimatedWalkMinutes?: number | null;
   typicalLevel: TypicalLevel;
   selected?: boolean;
   label?: string;
@@ -12,13 +13,15 @@ export type MapPinProps = {
 
 const ringColors = { quiet: theme.colors.sage, moderate: theme.colors.amber, busy: theme.colors.rust, unknown: theme.colors.grey };
 
-export function MapPin({ fitScore, rank, typicalLevel, selected = false, label }: MapPinProps) {
+export function MapPin({ fitScore, rank, estimatedWalkMinutes, typicalLevel, selected = false, label }: MapPinProps) {
   const fit = normalizedFit(fitScore);
-  const high = fit !== null && fit >= 67;
-  const fill = fit === null ? theme.colors.placeholder : high ? theme.colors.fitHigh
-    : fit >= 34 ? theme.colors.fitModerate : theme.colors.fitLow;
+  const proximity = proximityLevel(estimatedWalkMinutes);
+  const high = proximity === 'near' || proximity === 'far';
+  const fill = {near: theme.colors.sageText, medium: theme.colors.amber, far: theme.colors.rust, unknown: theme.colors.grey}[proximity];
   return <View accessible accessibilityRole="image" accessibilityState={{ selected }}
     accessibilityLabel={[label, rank === undefined ? null : `Rank ${rank}`,
+      proximity === 'unknown' ? 'Walking distance unknown' : `About ${estimatedWalkMinutes} minutes estimated walk`,
+      'Opens place details',
       fit === null ? 'Fit unknown' : `Fit score ${Math.round(fit)} out of 100`,
       typicalLevel === 'unknown' ? 'Typical crowd unknown' : `Usually ${typicalLevel} at this time`,
       selected ? 'Selected' : null].filter(Boolean).join('. ')}
@@ -26,7 +29,7 @@ export function MapPin({ fitScore, rank, typicalLevel, selected = false, label }
     <View style={styles.ringBacking}>
       <View style={[styles.ring, { borderColor: ringColors[typicalLevel], borderStyle: typicalLevel === 'unknown' ? 'dashed' : 'solid' }]}>
         <View style={[styles.pin, { backgroundColor: fill }]}>
-          <Text style={[styles.score, high && styles.light]}>{fit === null ? '?' : Math.round(fit)}</Text>
+          <Text style={[styles.score, high && styles.light]}>{proximity === 'unknown' ? '?' : estimatedWalkMinutes}</Text>
         </View>
       </View>
     </View>
@@ -35,7 +38,7 @@ export function MapPin({ fitScore, rank, typicalLevel, selected = false, label }
 }
 
 export function MapLegend() {
-  return <Text style={styles.legend}>Pin = fit for you · Ring = usually busy at this time · Dashed = no data</Text>;
+  return <Text style={styles.legend}>Pin = estimated walk: green ≤10 min · amber 11–20 min · rust over 20 min. Ring = typical activity · dashed = unknown. Tap a pin for details.</Text>;
 }
 
 const styles = StyleSheet.create({
@@ -50,7 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background },
   pin: { width: theme.sizes.mapPin, height: theme.sizes.mapPin, borderRadius: theme.radii.pill,
     alignItems: 'center', justifyContent: 'center' },
-  score: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily,
+  // Small-text exception: text is 3.82:1 on the amber pin; this ink is 5.57:1.
+  score: { color: '#1F1A0E', fontFamily: theme.typography.bodyFamily,
     fontSize: theme.typography.size.caption, fontWeight: theme.typography.weight.bold },
   light: { color: theme.colors.buttonText },
   rank: { color: theme.colors.text, fontFamily: theme.typography.bodyFamily,
