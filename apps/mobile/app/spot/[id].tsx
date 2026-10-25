@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Image, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { InstantSchema, type SpotDetail } from '@space/contracts';
+import type { SpotDetail } from '@space/contracts';
 import { DEMO_NOW } from '@space/fixtures';
 import { useSession } from '../../src/data/SessionProvider';
-import { hoursStatus, mapsUrl, venueTime } from '../../src/features/explore/presentation';
+import { hoursStatus, venueTime } from '../../src/features/explore/presentation';
+import { isShareCancellation, matchingRecommendation, publicAccessLabel, publicMapsUrl, shareMessage,
+  supportedReasons, type RecommendationContext } from '../../src/features/detail/explanations';
 import { provider } from '../../src/data';
 import { PlaceNotFoundError } from '../../src/data/providers';
 import { ActionRow, BusynessChart, DatasetLabel, EvidenceLabel, ErrorState, LiveObservationBadge, LoadingState, OpenStatusPill } from '../../src/components';
@@ -13,8 +15,21 @@ import { SessionGate } from '../../src/features/session/SessionGate';
 import { theme } from '../../src/theme';
 
 function Detail() {
-  const {id, arrivalAt} = useLocalSearchParams<{id: string; arrivalAt?: string}>();
+  const {id} = useLocalSearchParams<{id: string}>();
   const {session, toggleSaved} = useSession();
+  const query = session!.query;
+  const [context, setContext] = useState<RecommendationContext | null>(null);
+  const [fitLoading, setFitLoading] = useState(true);
+  const [fitError, setFitError] = useState(false);
+  const [fitAttempt, setFitAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    setContext(null); setFitLoading(true); setFitError(false);
+    provider.recommend(query).then((response) => {if (active) setContext({query, response});})
+      .catch(() => {if (active) setFitError(true);})
+      .finally(() => {if (active) setFitLoading(false);});
+    return () => {active = false;};
+  }, [query, id, fitAttempt]);
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const mounted = useRef(true);
@@ -33,12 +48,13 @@ function Detail() {
     return () => {active = false;};
   }, [id, attempt]);
   const spot = detail?.spot;
-  const parsedArrival = InstantSchema.safeParse(arrivalAt);
-  const selectedTime = parsedArrival.success ? parsedArrival.data : session!.query.departAt;
+  const result = spot ? matchingRecommendation(spot, query, context) : null;
+  const reasons = spot ? supportedReasons(spot, result) : [];
+  const selectedTime = result?.arrivalAt ?? query.departAt;
   const moment = venueTime(selectedTime, spot?.timezone ?? session!.city.timezone);
   const now = session!.city.mode === 'demo' ? DEMO_NOW : new Date().toISOString();
   const status = spot ? hoursStatus(spot, selectedTime, session!.query.sessionMinutes, now) : {status: 'unknown' as const};
-  const url = spot ? mapsUrl(spot) : null;
+  const url = spot ? publicMapsUrl(spot) : null;
   const save = async () => {
     if (saving) return;
     setSaving(true); setActionError(null);
@@ -55,8 +71,8 @@ function Detail() {
   const share = async () => {
     if (!spot) return;
     setActionError(null);
-    try {await Share.share({message: `${spot.datasetMode === 'demo' ? '[Demo scenario] ' : ''}${spot.name}\n${spot.address}${url ? `\n${url}` : ''}`});}
-    catch {if (mounted.current) setActionError('Sharing is unavailable. Try again on your phone.');}
+    try {await Share.share({message: shareMessage(spot, query, context)});}
+    catch (cause) {if (mounted.current && !isShareCancellation(cause)) setActionError('Sharing is unavailable. Try again on your phone.');}
   };
   const [imageFailed, setImageFailed] = useState(false);
   return <ScrollView contentContainerStyle={s.page}>
@@ -73,11 +89,32 @@ function Detail() {
       <Text style={s.title}>{spot.name}</Text>
       <Text style={s.body}>{spot.categories.join(' · ')}{'\n'}{spot.address}</Text>
       <OpenStatusPill status={status.status} label={status.label} />
-      <Text style={s.small}>{parsedArrival.success ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {session!.query.sessionMinutes} min session</Text>
+      <Text style={s.small}>{result ? 'Estimated arrival' : 'Selected start (travel not included)'}: {moment.label} · {query.sessionMinutes} min session</Text>
       <ActionRow saved={session!.settings.savedIds.includes(id)} saving={saving} mapsDisabled={!url}
         onSave={() => {void save();}} onShare={() => {void share();}} onOpenMaps={() => {void openLink(url);}} />
       {spot.datasetMode === 'demo' && <Text style={s.small}>Maps is unavailable for fictional demo places.</Text>}
       {actionError && <Text role="alert" style={s.body}>{actionError}</Text>}
+      <View style={s.panel}><Text style={s.heading}>Why this spot</Text>
+        {result ? <>
+          <Text style={s.small}>Matches in the current ranked shortlist. Fit is based on available evidence, not guaranteed conditions.</Text>
+          {reasons.map((reason) => <View key={reason.code}>
+            <Text style={s.body}>{reason.text}</Text>
+            {reason.evidence ? <EvidenceLabel evidence={reason.evidence} /> :
+              <Text style={s.small}>Estimated from distance; actual walking routes may differ.</Text>}
+          </View>)}
+          {!reasons.length && <Text style={s.body}>No supported fit explanations available.</Text>}
+          {result.warnings.length > 0 && <Text style={s.heading}>Things to check</Text>}
+          {result.warnings.map((warning, index) => <Text key={index} style={s.body}>{warning}</Text>)}
+        </> : <>
+          <Text style={s.body}>{fitLoading ? 'Checking fit with your current preferences…' : fitError
+            ? 'Fit check unavailable. Place facts are shown below.'
+            : 'This place is not verified in the current ranked shortlist. It may not satisfy your selected filters.'}</Text>
+          <Text style={s.small}>Saved and name-lookup places are not automatically recommendations.</Text>
+          {!fitLoading && <Pressable accessibilityRole="button" onPress={() => setFitAttempt((value) => value + 1)}>
+            <Text style={s.action}>Check fit again</Text>
+          </Pressable>}
+        </>}
+      </View>
       <BusynessChart typicalCrowd={spot.typicalCrowd} weekday={moment.weekday} currentHour={moment.hour} />
       <Text style={s.small}>Historical typical crowd at the selected time in {spot.timezone}. This is not seat availability.</Text>
       <LiveObservationBadge liveObservation={spot.liveObservation} />
@@ -90,6 +127,8 @@ function Detail() {
         <Text style={s.body}>Wi-Fi: {spot.wifi.value ?? 'unknown'} · Outlets: {spot.outlets.value ?? 'unknown'}</Text>
         <EvidenceLabel label="Wi-Fi" evidence={spot.wifi} />
         <EvidenceLabel label="Outlets" evidence={spot.outlets} />
+        <Text style={s.body}>{publicAccessLabel(spot)}</Text>
+        <EvidenceLabel label="Public access" evidence={spot.publicAccess} />
         <Text style={s.body}>Hours: {spot.hoursStatus === 'known' ? 'Weekly schedule available; source times apply' : 'Unknown'}</Text>
         <Text style={s.small}>Hours fetched: {spot.hoursFetchedAt ?? 'Unknown'} · Timezone: {spot.timezone}</Text>
       </View>
