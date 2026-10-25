@@ -1,77 +1,137 @@
-# Space three minute demonstration and pitch
+# Nook demo pack — A
 
-## The story
+Audited October 25, 2026 against freshly fetched `origin/main` **7e67622** (offline recovery #25 merged). This replaces the planned three-minute pitch. “Implemented” below does not establish presenter-phone acceptance: native maps, GPS, storage, Share/Cancel, SDK compatibility and layout still require D's device check. README/STARTER and older task entries describe earlier foundations and can lag main.
 
-One person wants to study. Their friends want somewhere social. Space helps them choose a place for this moment, explains the fit, and lets them share a decision. The live product action is a real change of constraints producing a new ranking. Do not try to tour every screen in three minutes.
+## Honest feature list
 
-Use one speaker and one phone driver. Other teammates cover questions afterwards. A prepares the story; D drives the phone. Keep one simple architecture/scale slide available, but stay on the app for most of the pitch. The draft has about 295 spoken words, leaving time for taps and deliberate pauses; rehearse to the timer rather than forcing every sentence into the slot.
+**Live** means a working interaction/computation, not fresh venue data. **Cached** means previously captured/generated real information. **Demo data** means fictional/synthetic. **Mocked** means placeholder/preview. **Not built** means absent from the working product journey.
 
-## Run of show and suggested wording
+| User-facing feature | Status | Code-supported behavior and limits |
+| --- | --- | --- |
+| Logo, guest onboarding, Back, Skip | Live | Welcome → study style → location; no account. Back retains drafts; step-two Skip discards edits. Incomplete onboarding restarts at Welcome after relaunch. |
+| Study style, intent, budget, walking limit | Live | Supported choices feed the shared Query and local settings. No price cap or strict price levels; estimated walk 5–60 min. |
+| Coffee nearby / Whiteboards choices | Mocked | Explicitly saved-only; no matching/ranking effect. Open late is a soft vibe, not verified hours. |
+| Manual origin | Live | UT Austin main campus only, not arbitrary-address entry; no permission request. |
+| Optional GPS | Live | One foreground fix after a tap; denied/timeout/manual recovery. Coordinates stay in memory, enter API ranking requests, and are not persisted. No background tracking. |
+| Ranked list / fit scores / explanations | Live | Default top three among known eligible candidates; one deterministic scorer. Fit is not a probability or an exhaustive city result. |
+| Study vs Meet Friends | Live | Changes targets, tags, scoring weights and group size (Friends = four). Strict filters stay. Real default order currently stays the same; fictional scenario changes order. |
+| Filters | Live | Staged category, price, walk, atmosphere/vibe, group size 1–8, session 15–240 min, open-session, Wi-Fi/outlets Ignore/Prefer/Require and public-only access. Reset needs Apply; Cancel discards. |
+| Empty/loading/error/Retry | Live | Actual fewer/zero matches, exclusions and explicit individual relaxation actions. No automatic relaxation; failed reranks hide stale cards. |
+| Now / Later | Live | Now, In 1 hour, In 2 hours; departure and venue timezone labels. No arbitrary slider or future occupancy forecast. |
+| Native map, pins, selection, list fallback | Live | react-native-maps shows returned shortlist plus origin; pin selects its card, card opens detail. Tile/readiness failure offers list; web uses list. Native phone acceptance pending. |
+| Pin legend | Live | Fill and number = fit; ring = typical busyness at selected time; dashed = missing hour/data. No known real crowd values in published artifacts. |
+| Austin place directory and name/address lookup | Cached | 30 real SerpApi places. Lookup returns at most ten links and is explicitly outside recommendation filtering, not new-city discovery. |
+| Venue photos | Cached | Photo artifact has 30 Google-hosted thumbnails via SerpApi with attribution; remote network required, failure placeholder available. |
+| Detail / why this spot / warnings | Live | Rechecks current shortlist before personalized reasons/arrival. Saved/lookup places outside it show unverified fit. Facts/unknowns remain visible. |
+| Muse summaries / atmosphere / tags | Cached | Ten real cached Muse summaries in enriched artifacts; default campus top three have none. Lookup UFO Coffee & Tea for an enriched detail. |
+| Fact sources, timestamps, source citations | Cached | Labels retain SerpApi/Muse/curated provenance as supplied. API detail has selected anonymous review snippets; offline snapshot lacks extra snippets. Provenance is not proof an inference is true. |
+| Typical-crowd chart / Usually wording | Demo data | Working chart UI with gaps; bundled synthetic patterns illustrate it. All 30 published real places lack typical crowd. No measured live occupancy. |
+| Hours / open-session evidence | Cached | Parser, overnight/timezone logic and status UI exist; all 30 real places currently have unknown hours. Strict open-session can return zero. Parser merge did not republish the data. |
+| Wi-Fi / outlets / access evidence | Cached | Unknown stays unknown. All 30 real places have unknown Wi-Fi/outlets, so required amenity filters return no matches. Other missing facts stay unknown too. |
+| Current observations / seat availability | Not built | Optional source-observation display exists, but published real snapshots contain zero live observations. No sensing/check-in service; seats explicitly unknown. |
+| Save / Unsave / saved directory | Live | AsyncStorage saved IDs scoped by city/mode/version, on this device. Bookmarks tab links to real saved directory. No cloud sync. |
+| Share place / Open in Maps | Live | Native OS text share with supported reasons/caveats and public Maps link for real places. Cancel handled. Fictional shares labeled; Maps disabled. No shortlist-share action or joined room. |
+| Preferences / reset | Live | Save/Cancel and draft defaults; full local preferences/saves/onboarding reset returns to Welcome for this dataset. No shared DB reset. |
+| Data & recovery switching | Live | Explicit API, validated offline real cache, bundled demo. Guards stale responses; preserves applied constraints, clears search/selection/drafts/GPS, resets destination clock. Choice lasts only this session. |
+| Offline real list/detail/ranking | Cached | Requires successful validated API bootstrap/cache save first. Retains summaries/fact provenance and original times, not additional snippets or downloaded photos/tiles. |
+| Bundled fictional scenario | Demo data | Ten fictional venues, synthetic facts, handwritten summaries, fixed clock; same scorer. JS bundle must already be loaded in Expo Go. |
+| Map/Friends/Bookmarks/Profile navigation | Live | Default Expo Router tab shell mounted. Custom NookTabBar, compact cards and new Explore layout exports are merged but not mounted in functional routes. |
+| Friends / Profile screens | Mocked | Honest placeholders; Profile links to on-device preferences. No real friend activity/account profile. Design previews are not working product features. |
+| Group compromise, auth, follows, feed, user ratings | Not built | Friends preset is one query, not multiple joined users or a group optimizer. |
+| Second-city build / city progress / arbitrary-city UI | Not built | Operator Austin acquisition exists; no public city-build/job routes or progress journey. API uses first advertised city. |
+| Full time slider, uploads, photo reviews, check-ins, chat, notifications, payments | Not built | Outside working prototype scope. No custom native project or background tracking. |
 
-| Time | Screen/action | Spoken draft |
-|---|---|---|
-| 0:00–0:15 | Austin Explore ready; no setup/login | “You have ninety minutes before your next class. One friend needs quiet, another wants coffee, and nobody wants a twenty-minute argument about where to go. Space helps you choose a place that fits the moment.” |
-| 0:15–0:35 | Briefly show completed onboarding choices; select Study | “Start with what you want to do, your budget, and how far you're willing to walk. You can use your location or choose a starting point manually. We'll look for a quiet place near campus.” |
-| 0:35–1:15 | Apply budget/walk constraints, top three, open first detail | “Space filters the available places, then ranks the ones that fit. Here's why this one appears: the estimated walk fits our limit, the price fits our budget, and the review evidence suggests the right atmosphere. Muse turns that evidence into a short description and tags. We keep the sources visible, and missing information stays unknown.” |
-| 1:15–1:45 | Change to Meet friends; show ranking change; tap Share | “Now our friends are joining. We switch the intent, and group suitability matters more. Watch the recommendations change. We can compare the tradeoffs, choose a place, and share the shortlist. Our aim is to help a group make a decision they can act on together.” |
-| 1:45–2:10 | Evidence label and one later-time preset; optional city replaces this segment | “Timing matters too. This chart shows typical activity, not a guarantee of open seats. We distinguish historical patterns, fresh observations, and demo scenarios. The ranking is computed from the current filters; the answers aren't preselected.” |
-| 2:10–2:45 | Show concise architecture/scale visual or actual request counter | “SerpApi supplies place data. Muse extracts reusable atmosphere features. After that, the same cached facts can serve many different preferences without another model call for every tap. We limit new-area requests, enrich selected candidates, and refresh data as it ages. Our next step is a campus pilot, then broader coverage and shared group preferences.” |
-| 2:45–3:00 | Return to the chosen place and share action | “Space connects the places around you to what you and your friends want to do. Tonight's prototype demonstrates the choice, the explanation, and the action. We want to make deciding where to meet feel easy.” |
+### Data modes and sources
 
-This script assumes the stated features are working. Edit claims to the actual build. If Muse is unavailable, say summaries are curated prototype content and do not claim a working Muse integration. If sharing is only a native text sheet, do not imply the recipient can open a deployed collaborative room. If using a fixed demo clock or synthetic data, say so at the first relevant screen and keep its badge visible.
+Transport is separate from dataset mode: `EXPO_PUBLIC_DATA_PROVIDER=api` means HTTP, not live venue facts. `fixture` starts the bundled demo. Runtime recovery choices are API, offline cached real, fictional demo; relaunch uses the configured transport again.
 
-If group compromise works, substitute it for the simple Meet friends segment: show two labeled preference profiles, each person's fit, and the balanced result. If second-city import is proven reliable, replace the 1:45–2:10 segment with a prepared city job and explain whether it is live, cached or a replay. Do not add another segment beyond three minutes or ask for an arbitrary city on stage.
+| Mode / version | Where it comes from / what it contains |
+| --- | --- |
+| `demo` / `fictional-austin-v1`; city `demo-austin` | `fixtures/src/index.ts`: ten fictional venues and synthetic evidence; handwritten summaries, not Muse. Fixed `2026-10-24T18:00:00-05:00`, America/Chicago. Manual/default coordinates are scenario inputs. |
+| `cached` / `austin-20261025-v1`; city `us-tx-austin` | `fixtures/data/austin-20261025-v1.json`: 30 normalized real SerpApi captures, no summaries/images. `austin-20261025-v1-one.json` is a one-place smoke artifact, not full coverage. |
+| `cached` / `austin-20261025-muse-v1` | Same 30 places plus ten previously generated Muse summaries and 34 selected anonymous review citations across enriched details; no images. |
+| `cached` / `austin-20261025-muse-photos-v1` | Same 30 / ten summaries plus 30 remote images. All 30: zero typical-crowd records, known hours or live observations; unknown Wi-Fi/outlets. Hosted version observed during audit. |
+| `live` | Supported contract/display mode, but no audited real artifact or automatic mobile acquisition flow uses it. Label would be “Live request · source times vary,” still not live occupancy. Never relabel cached as live. |
 
-## Prepare three deterministic scenarios
+Sources: **SerpApi** captures Google place facts; **Muse** infers bounded atmosphere/summary features from reviews; **curated** identifies explicit manual facts/defaults where labeled; **synthetic** identifies fictional fixtures. Curated fallback is not Muse output. Private Supabase Postgres caches/evidence support server operator jobs. The deployed read-only Node/Express API loads a versioned normalized JSON artifact; the phone does not call SerpApi, Muse or Supabase directly.
 
-| Scenario | Prepared input | Expected behavior |
-|---|---|---|
-| Quiet solo study | Manual UT origin; quiet preference; affordable cap; 15-minute estimated walk; 90-minute session | A qualifying quiet venue outranks a closer noisy one; reasons show the tradeoff |
-| Meet four friends | Same area; explicit group size and social atmosphere; user-approved filters retained | Group-friendly option rises through actual scoring; unknown seating never becomes a booking guarantee |
-| Later or no match | Later dated start, or incompatible strict constraints | Closed venues fail the open-session filter; zero results offers a visible relaxation instead of violating constraints |
+Public audit check: `https://nook-api-demo.onrender.com/health` returned commit `cc8f7aabebd4d19cba2d5c3fad6bbc21272e02a8`; `/v1/cities` advertised cached `austin-20261025-muse-photos-v1`. This deployment is older than mobile main. Recheck before presentation; B owns deployment.
 
-For fictional golden fixtures, use unmistakably named venues such as “Demo Grove Cafe,” “Demo Corner Library” and “Demo Social Hall.” Encode known hours, price, noise and group suitability so C can calculate expected ordering. Do not attach synthetic ratings or crowds to a real business without an explicit scenario overlay and label. For a real cached demonstration, B/C verify the scenario on the actual snapshot; do not force the ranking to match this narrative if evidence differs.
+## Two-minute demo script
 
-Freeze the demo clock to a dated local instant, for example Saturday October 24 at 6 p.m. Central, and display “Demo time.” This prevents an overnight rehearsal from unexpectedly closing all the venues. Live mode uses actual time; reset must restore the selected mode and clock consistently.
+One speaker, D drives. Use the **labeled fictional scenario** for reproducible order changes and illustrative crowd data. The default real shortlist changes scores but not order and has no crowd data. Never describe fictional summaries as Muse output.
 
-## What can be hard coded
+Before timer: Map → **Data & recovery** → **Use fictional demo data**. If onboarding is complete: **Preferences** → **Reset local preferences, saves & onboarding**. This resets demo saves/preferences, then shows the logo. Keep Metro connected, search blank, default Now, 15-minute walk, no price cap. Rehearse native Share dismissal and scrolling on the actual phone.
 
-Safe: onboarding copy, preference presets, allowed tags, campus origin, verified cached places, cached Muse outputs, local saved IDs, fictional test profiles, known error scenarios, fixed demo clock and a labeled cached-import replay. These are data or scenario inputs.
+| Time | Exact taps | Spoken line |
+| --- | --- | --- |
+| 0:00–0:12 | Logo / Find your nook → **Get started** | “Nook helps students choose a place to study or meet friends. This walkthrough uses labeled fictional venues and synthetic crowd patterns; we also support cached real Austin places.” |
+| 0:12–0:30 | Study style: **Study**; keep **No price cap**, **15 min**; select **Silent**; scroll → **Continue** | “Choose your intent, budget and estimated walking limit. These choices become ranking inputs, and missing facts stay unknown.” |
+| 0:30–0:40 | **UT Austin main campus** → **Start exploring** | “We'll start at UT Austin without sharing GPS. A one-time location lookup is optional.” |
+| 0:40–0:55 | Explore on Map tab, list visible: **Study** → **Meet Friends** | “Watch the order change. Study favors atmosphere; Meet Friends gives group suitability more weight. The same code ranks both scenarios.” |
+| 0:55–1:10 | **Filters** → scroll to Maximum estimated walk → **10 min** → **Apply** | “Filters are explicit. We'll limit the estimated walk to ten minutes. Required facts need evidence; constraints never loosen silently.” |
+| 1:10–1:25 | **Map** in Map/List toggle → tap highest-fit pin → tap its displayed card | “The pin's fill and number show fit. The ring shows typical busyness at this time; dashed means no data. These patterns are synthetic here, not available seats.” |
+| 1:25–1:45 | Detail → scroll to **Typical crowd**, then **Summary and evidence** / source labels | “We say ‘Usually … at this hour’ when data exists, or show missing data. Source labels distinguish demo estimates from real cached evidence. Real places currently have no crowd readings; their Muse summaries are cached review inferences.” |
+| 1:45–2:00 | Scroll to actions → **Save** → **Share** → dismiss sheet with rehearsed **Cancel**, close or Android Back | “Save keeps the place on this device. Share opens the phone's share sheet, labeled fictional here, or with a public Maps link for a real venue. We help people choose without pretending to know seat availability.” |
 
-Keep real: navigation, filters, scoring, explanations derived from fields, save/unsave, share invocation, API integration where claimed, and actual job progress where called live. Do not hard code the winner, claim sample accounts are users, invent Google reviews, or display fake API savings. Use separate badges for dataset mode and crowd evidence.
+**Unmerged dependencies: none at audit time.** All timed steps exist in main: onboarding #21, map/detail/save integration, complete filters #18, explanations/share #19 and recovery #25 are merged. GitHub open-PR list was empty. Recheck before capture; local previews are not shipped functionality. #24's custom tab bar/compact layout is merged but not mounted, so do not promise it.
 
-## Evidence and efficient scaling
+Actual scorer smoke: default Study = Paper Lantern, Pocket Library, Moon Desk; Meet Friends = Gather Yard, Little Bowl, Courtyard Club (all fictional). After 10-minute filter show actual eligible results, not forced names. If old strict settings cause zero results, **Filters → Reset → Apply**, then repeat choices. The two-minute budget needs device rehearsal, not a claim of measured presentation duration.
 
-The main defensible efficiency claim is architectural: “We extract features once and reuse them when preferences change.” Add measured numbers only after recording them from this build. Track cold/warm elapsed time, candidate count, provider requests, app cache hits, model calls and scoring duration. Count retries. Compare equivalent datasets/workloads if claiming an improvement.
+### Optional real-data walkthrough, outside timed script
 
-Do not say “the second visitor costs nothing,” “we have every place,” “we guarantee the best three,” or “any city builds in under a minute” without evidence. Better: “Shared caching avoids repeating expensive provider and model work; fresh data still needs refresh.” The original simulator's savings can be described in technical Q&A as synthetic experiments, never as real deployment results.
+Map → Data & recovery → **Use API dataset** (or **Reconnect API dataset**). If needed, **Filters → Reset → Apply**. Confirm **Cached dataset / austin-20261025-muse-photos-v1**. Study/Meet Friends recomputes scores, but default order remains Trippy Buck Coffee Truck, St Benedict Coffee Company, Lucky Lab Coffee Co.; do not promise a changed winner.
 
-## Fallback sequence
+Search **UFO Coffee & Tea** → its lookup result → **Summary and evidence** → **Source: muse**, timestamps, **View source**. Say: “This is a real cached Muse summary from review evidence. Lookup is outside recommendation filters; this place may not be in our shortlist.” Show **No typical crowd data yet**, unknown amenities and **Seat availability: unknown**. Open in Maps works for real venues. Offline real mode retains summary/fact labels but lacks extra source snippets. Clear search on return.
 
-1. Start from a warm presenter phone with a deployed backend, known snapshot, loaded bundle and charger.
-2. If a live response exceeds five seconds, keep the current results, show a cached-data label and continue. Do not narrate repeated retries.
-3. If map tiles fail, use the ranked list; the same filter story still works.
-4. If the app or mirroring fails, play the locally saved demo video and explain it is a recording of the prototype.
-5. Do not depend on login, a new city import, email, an app-store installation or an unknown judge's hometown.
+## Backup plan
 
-## Rehearsal and submission checklist
+1. **Backend down:** warm public `/health` before stage time; avoid repeated narrated retries. API requests time out after eight seconds; bootstrap has two sequential requests and can take sixteen. From Map, or bootstrap/detail failure recovery: **Data & recovery → Use fictional demo data**. Applied strict filters survive switching: **Filters → Reset → Apply** if needed. Say “We're switching to the labeled offline scenario; the same ranker still runs.” **Use cached real dataset** is another explicit choice only if a validated copy was saved; otherwise disabled. No silent fallback. Keep Metro running while testing only the API outage.
+2. **Venue Wi-Fi fails:** keep loaded app open; connect phone/laptop to the rehearsed hotspot and rescan reachable Metro QR if needed. Or use pretested `npm run dev:mobile -- --tunnel`; tooling must be ready in advance and internet is still required. Metro tunnel does not repair a failed backend. Switch to fictional data and **List** if API/tiles fail. Bundled data works after JS loads; a fresh Expo Go launch still needs Metro. Keep laptop awake, powered, and firewall/network access tested.
+3. **Expo Go fails:** presenter phone must already have **SDK-57-compatible Expo Go** for this SDK-57 project. Disable automatic updates; no auto-update or SDK upgrade on stage. Use the rehearsed **iOS Simulator on D's Mac** with matching Expo Go/bundle (`npm run dev:mobile`, then Expo's `i` shortcut on that Mac). Windows A cannot run iOS Simulator. If simulator/mirroring fails, play the local recording.
+4. **Backup video location:** reserve **`docs/demo-assets/nook-demo-final.mp4`**. On A's presenting checkout: `C:\Users\zgaud\Documents\Nook\nook\docs\demo-assets\nook-demo-final.mp4`; same repo-relative copy on D's Mac, plus local desktop copy. **No video exists in the audited repo; this is a planned capture destination, not a ready backup.** Record by 06:00 and verify complete playback with Wi-Fi off on both presenting computers. Say “This is a recording of the prototype and its labeled data mode.”
 
-- Presenter and driver agree on every tap, reset step and fallback line.
-- One device mirrors cleanly with readable text; Do Not Disturb is on; battery/power and hotspot checked.
-- Three complete timed rehearsals fit within three minutes; five consecutive app flows pass without crash.
-- Backup video and screenshots exist before 6 a.m., play locally, and match the final feature claims.
-- Devpost includes the problem, working features, stack, source repo, demo video, limitations, AI use and third-party attribution as required by the actual form.
-- Soft submission prepared by Saturday 11:15 p.m.; final materials ready/submitted before the team's Sunday 8 a.m. deadline.
-- Track choices fit the actual build. Meta's human-connection story is the shared choice; SerpApi is substantive place discovery. Best Pitch participation/sign-up is checked in event announcements.
+## Devpost copy — plain text to paste
 
-## Likely judge questions
+### What it does
 
-**Why not Google Maps?** Space adds explicit personal/group constraints, an explainable short list and atmosphere interpretation. Do not claim existing products have no similar features.
+Nook helps students around UT Austin choose a place to study or meet friends. Set an intent, budget and estimated walking limit, then compare a ranked shortlist on a list or map. Explicit filters apply before ranking, and details show supported reasons, source labels and unknown information. Save places on your device and share a place through your phone's share sheet.
 
-**Is it live?** State exactly which data is fresh, cached, typical or synthetic. Popular times does not mean live available seats.
+The prototype includes 30 cached real Austin places captured through SerpApi, with cached Muse summaries for ten. A separately labeled fictional scenario demonstrates preference changes and synthetic typical-crowd patterns. The real dataset currently has no typical-crowd readings or verified opening schedules, and Wi-Fi and outlets remain unknown. Nook does not measure live occupancy or guarantee seats.
 
-**How does it scale?** Shared area caches, bounded provider jobs, reusable AI features and cheap local ranking; later spatial indexing and workers. Coverage and freshness cost money.
+### How we built it
 
-**Why AI?** It turns varied review text into structured atmosphere evidence and short summaries. Numeric ranking and hard constraints stay inspectable.
+We built Nook with Expo SDK 57, React Native, Expo Router and TypeScript. Native maps use react-native-maps; AsyncStorage keeps guest preferences and saved places on the device. Shared Zod contracts validate data between the app and a Node.js/Express backend hosted on Render. Server-side operator jobs use SerpApi for bounded Google Maps place acquisition and private Supabase Postgres storage for provider caches and evidence. The demo API serves a versioned normalized snapshot instead of acquiring new data on every tap.
 
-**What did you actually build?** Demonstrate the committed prototype and identify precomputed data, manual fallbacks and roadmap features plainly.
+Muse extracts bounded summaries and atmosphere features from anonymous review evidence. Outputs are validated, cached by source/model/prompt identity and reviewed before publication. Missing or unsupported facts remain unknown. Muse does not select winning places or run on each filter change.
+
+One deterministic TypeScript ranker serves API, offline real-cache and fictional modes. Strict constraints come first, followed by normalized intent weights over proximity, atmosphere, tag overlap, rating confidence, affordability, preferred amenities and group suitability, with an uncertainty penalty and stable ties. Walking time is a straight-line estimate with a detour heuristic. Results are the best matches among known candidates under this model, with explicit fallback and source labels.
+
+### Built with
+
+Expo SDK 57, React Native, React, Expo Router, TypeScript, react-native-maps, expo-location, AsyncStorage, Node.js, Express, Zod, SerpApi, Meta Muse (muse-spark-1.3), Supabase/PostgreSQL, Render, Vitest, npm workspaces.
+
+## Judge Q&A
+
+1. **Is this live data?** The API runs now, but Austin facts and ten Muse summaries are cached captures. The scripted scenario is fictional and labeled. Neither is live seat availability; source timestamps remain visible.
+2. **How do you rank?** Strict filters first, then normalized intent weights over distance, atmosphere, tags, quality, price, amenities and group fit, with uncertainty penalties and stable ties. One scorer in all modes; no hard-coded winners or whole-city completeness claim.
+3. **Why do some places show unknown?** Captured evidence doesn't establish those facts. All 30 real places currently lack typical crowd and known hours; Wi-Fi/outlets are unknown. Strict requirements exclude unknowns rather than guessing.
+4. **What does Muse contribute?** Cached review-based summaries, tags and supported atmosphere inferences for ten real places. Extraction is bounded/validated and can abstain; it's not a per-tap ranker. Default top-three cards have no Muse summaries.
+5. **Why Nook instead of a maps directory; can friends join?** We focus on a short explainable list for your intent and explicit constraints. Today you can share a place; Friends is a placeholder, not a joined group or social feed.
+6. **What's next?** Physical-phone acceptance and a campus pilot first. Improve verified hours/amenity/crowd coverage and freshness, evaluate ranking with users, then consider multi-person compromise. More cities/accounts/social features are not shipped promises.
+
+## 06:00 America/Chicago checklist — A with D
+
+- [ ] Record final mobile commit, backend health SHA, dataset version, phone model/OS/Expo Go version and actual native acceptance. Freeze is 03:00: unfinished P1 stays unavailable. D alone merges; B alone deploys/migrates. This docs PR does neither.
+- [ ] Capture final device screenshots: Welcome/logo; study style with intent/budget/walk; UT Austin location; Study and Meet Friends ranked lists with data badge; Filters/Apply; native map and legend; real detail's unknown crowd/amenities; enriched Muse summary and source labels; fictional chart with demo label; saved directory; native Share draft without sending; recovery and empty state. Planned folder: `docs/demo-assets/screenshots/`. Existing design-review PNGs are browser previews, not final phone proof.
+- [ ] Recheck every feature-table row against merged code, mounted routes and actual selected artifact. Confirm counts: 30 real, ten summaries, zero crowd/known-hours/live records, unknown Wi-Fi/outlets. If B publishes a new artifact, audit again; parser merge alone changes no published facts.
+- [ ] Rehearse timed taps three times on the presenter phone: demo ranking order changes, filters stay applied, source labels are honest, map/list fallback works, Save survives force-close, Share/Cancel and real Maps work. Use the tested native share-sheet wording.
+- [ ] Test backend outage → explicit demo/cached-real recovery; fresh install without cache; denied GPS → manual; zero results → explicit single change/reset. Runtime provider choice is session-only; strict constraints survive switches.
+- [ ] Record exact two-minute walkthrough plus a separate cached real Muse detail take. Preserve demo labels; don't splice synthetic crowd onto a real venue. Export `docs/demo-assets/nook-demo-final.mp4`, copy to A's presenting laptop and D's Mac, play fully with Wi-Fi off. Until then video backup is **not ready**.
+- [ ] Check charger/battery, Do Not Disturb, mirroring, hotspot/tunnel, disabled auto-updates, SDK-57 phone launch and D's iOS Simulator. Keep Metro running. Paste final copy/video link into Devpost and verify event submission requirements. No unmeasured performance claims. Team hard delivery deadline: 08:00.
+
+## Audit evidence and handoff
+
+Read AGENTS, README, PRD, CONTRACTS, ALGORITHM and all task files; checked actual routes, components, provider/recovery/session/settings, server app/operator/AI boundaries, shared ranker and versioned JSONs. Key code: `apps/mobile/src/features/session/OnboardingFlow.tsx`, `app/(tabs)/map.tsx`, `(tabs)/_layout.tsx`, FiltersSheet/filters, MapPin, BusynessChart, `app/spot/[id].tsx`, detail/explanations, saved/preferences routes, `src/data/recovery.ts`, `packages/core/src/index.ts`, `server/src/app.ts`.
+
+This pass counted fixture facts, checked public health/city metadata and GitHub open PRs, and ran a read-only ranking smoke with the actual scorer/preset functions (unchanged between preserved local checkout and audited main). Cached default order stayed unchanged; fictional order changed as above. No provider acquisition/model calls, app/config/dependency edits or physical-device checks. Full app tests/builds were not rerun for docs-only edits; old task passes are historical evidence, not new results. PR checks: `git diff --check` and changed-file scope. Next smallest step: D's phone rehearsal and A's video capture.
