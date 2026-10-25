@@ -316,9 +316,9 @@ Actual verification:
 Self-evaluation (ECC agent-self-evaluation): accuracy 4 (browser passed; native behavior unverified), completeness 4 (requested presentation states provided; device acceptance pending), clarity 4 (direct typed API; D still maps response facts), actionability 4 (preview/reproduction supplied; D integrates), conciseness 4 (one focused panel; handoff necessarily detailed), overall 4.0/5. Highest-impact next step: D integrate the real response and run the presenter phone checks, then merge the small PR as owner.
 
 
-## Social PR handoff - October 25, 2026
+## Social PR preparation before route wiring - October 25, 2026 (historical)
 
-Status: implemented and browser-checked; pending D integration/merge, hosted-project setup verification and presenter-phone acceptance. Final preparation adds only a disabled-social regression and this owned task record. Local D snippets remain uncommitted; original snippets are also preserved in stash.
+Historical status at 1b1fda8, before the user authorized route integration below. The snippet in this historical section is superseded by the committed route files and the latest handoff at the end of this task record. Hosted-project setup verification, D merge and presenter-phone acceptance remain pending.
 
 Profiles, follows and friend search (A)
 
@@ -512,3 +512,30 @@ Manual two-account checklist (pending; use two real test accounts/devices or iso
 - [ ] Device photo picker: allow/deny/cancel, valid photo upload, invalid/oversized failure, and public avatar display after relaunch.
 - [ ] Only after phone review: enable EXPO_PUBLIC_CONTACTS_MATCHING=1 and restart Metro. Use known real test numbers, explicitly opt B into discovery; A grants/denies contacts permission and tests retry, no contacts/no matches, duplicates, international formatting and >200 contacts batching. Verify payloads contain hashes only; no automatic permission prompt or upload before tapping. Turn B's discovery off/remove number; matching stops. Return flag to 0 until accepted.
 - [ ] On presenter phone: supported Expo Go, keyboard/back/safe areas, native map, photo picker, large text, VoiceOver/TalkBack, loading/empty/error/offline recovery, guest Sign in entry points and two-account navigation. Record device/OS/Expo Go version and tested SHA before D merges.
+
+## Social route integration - October 25, 2026 (latest handoff)
+
+Implemented on feat/social at the user's explicit request to wire D-owned routes for D's review. This supersedes the uncommitted-route instructions above. D still owns merge and presenter-phone acceptance.
+
+Every route file changed in this integration:
+- apps/mobile/app/_layout.tsx: AuthProvider inside SessionProvider and five social Stack declarations.
+- apps/mobile/app/(tabs)/_layout.tsx: hide the Friends/Profile native headers because the screens supply titles.
+- apps/mobile/app/(tabs)/friends.tsx: FriendsScreen, profile links and sign-in/create-account entry points.
+- apps/mobile/app/(tabs)/profile.tsx: ProfileScreen, edit/preferences/saved-spot/follow-list links, finish-profile and auth entry points. Retains RecoveryControls and guest study preferences.
+- apps/mobile/app/sign-in.tsx (new): sign-in/sign-up mode, Continue as guest, and navigation after auth/profile resolution; retry on profile-load error.
+- apps/mobile/app/create-profile.tsx (new): account/profile loading guards, retry, completion and sign-out on Back.
+- apps/mobile/app/edit-profile.tsx (new): mounts form after profile loads; completion and Back.
+- apps/mobile/app/user/[id].tsx (new): UserProfileScreen with user, follow-list, spot and auth links.
+- apps/mobile/app/follow-list.tsx (new): follower/following parameter validation, signed-out guard, Back and person links.
+
+No Explore, detail, onboarding, ranking, provider, dependency, environment or migration edits in this integration. The pre-existing local SessionProvider save-sync edit was stashed for verification and remains excluded from this route commit; it is preserved locally for D's separate two-line integration. Auth is optional: no global account guard was added. Contacts remain gated. Preview/local harness files remain excluded.
+
+Actual verification:
+- npm run typecheck and npm run lint passed; git diff --check passed.
+- npm test: 506 passed, 1 failed assertion and one suite failed to load (41 passing / 2 failing files). Same two failures already reproduced on main: Windows C:\C:\... fixture path in reconstruct-cached-time.test.ts, and pinned fixture SHA-256 mismatch in evaluate-real.test.ts. No B/C-owned fixes attempted.
+- Actual Expo web fixture journey with all social variables unset: fresh onboarding -> default Study/manual UT Austin -> Explore -> first result detail -> save. Preferences/location/Explore/detail/saved text matched the previously captured main baseline exactly, including result order and scores. Zero Supabase requests.
+- Repeated the same fresh journey with social enabled, contacts off and a dummy public configuration pointing to a non-resolving .invalid domain, without an authenticated session. Onboarding/Explore/detail/save matched the social-off journey exactly; zero Supabase requests. No credentials or real accounts were used, and no sign-in request was submitted.
+- Social-enabled signed-out Friends/Profile render their actual guest screens. Friends Sign in opens /sign-in; Continue as guest returns to Explore. Profile Create account opens sign-up mode. Guest preferences and recovery remain accessible. /create-profile and /follow-list redirect signed-out users to sign-in; /edit-profile returns to Profile; /user/[id] renders its guest auth entry points. The user screen does not fabricate a profile or request one before sign-in.
+- Opening the first recommendation used its DOM link because the existing collapsed web result sheet is not pointer-accessible to automation. The unchanged web map uses its existing list fallback. These checks do not establish native touch/map acceptance.
+
+Not verified: real two-account authentication/profile/follow navigation, hosted Supabase setup/RLS, photo picker, contacts on a phone, native large text/accessibility and presenter-phone acceptance. Next smallest step: D reviews the nine route files and applies the separately preserved saved-sync lines, then runs the real-account and presenter-phone checklist before merge. gh is unavailable; handoff uses the main...feat/social compare URL.
